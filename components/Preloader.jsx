@@ -45,19 +45,14 @@ export default function Preloader() {
   return (
     <AnimatePresence>
       {isLoading && (
-        <div className="fixed inset-0 z-[9999] pointer-events-none flex">
-          {/* 5-panel shutter exit */}
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ y: 0 }}
-              exit={{ y: "-100vh" }}
-              transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: i * 0.05 }}
-              className="h-full w-1/5 bg-[#050505] border-r border-white/5"
-            />
-          ))}
-
-          {/* Content overlay */}
+        <div className="fixed inset-0 z-[9999] pointer-events-none flex items-center justify-center">
+          {/* Expanding Circle Exit (Shrinking mask) */}
+          <motion.div
+            initial={{ clipPath: "circle(150% at 50% 50%)" }}
+            exit={{ clipPath: "circle(0% at 50% 50%)" }}
+            transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+            className="absolute inset-0 bg-[#050505]"
+          />
           <motion.div
             key="preloader-content"
             initial={{ opacity: 1 }}
@@ -83,7 +78,7 @@ export default function Preloader() {
                 transition={{ delay: 0.2 }}
                 className="font-mono text-xs md:text-sm text-white/50 uppercase tracking-widest"
               >
-                INITIALIZING WEbGL PIPELINE...
+                INITIALIZING CORE...
               </motion.p>
             </div>
           </motion.div>

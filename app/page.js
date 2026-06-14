@@ -8,18 +8,16 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import HorizontalGallery from "@/components/HorizontalGallery";
 import VelocityMarquee from "@/components/VelocityMarquee";
-import ParticleBackground from "@/components/ParticleBackground";
 
 export default function Home() {
   return (
     <>
       <Preloader />
-      <ParticleBackground />
       <NoiseOverlay />
       <ScrollIndicator />
       <CustomCursor />
       <Navbar />
-      <main>
+      <main className="relative z-10 bg-[#050505]">
         <Hero />
         <VelocityMarquee text="BUILDING THINGS THAT ARE FUN TO BREAK APART • " />
         <HorizontalGallery />

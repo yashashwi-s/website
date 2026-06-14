@@ -7,6 +7,7 @@ import { GithubIcon } from "@/components/icons/GithubIcon";
 import { LinkedinIcon } from "@/components/icons/LinkedinIcon";
 import ScrollReveal from "./ScrollReveal";
 import Magnetic from "@/components/Magnetic";
+import RevealText from "@/components/RevealText";
 
 export default function About() {
   const links = [
@@ -56,11 +57,8 @@ export default function About() {
   return (
     <section id="about" className="px-6 max-w-5xl mx-auto py-32 relative">
       <ScrollReveal>
-        <h2 className="text-4xl md:text-5xl font-black text-white mb-12 relative inline-block">
-          About Me
-          <svg className="absolute top-1 -right-10 w-8 h-8 text-[var(--chalk-mint)] animate-spin-slow" viewBox="0 0 50 50" style={{ animationDuration: '10s' }}>
-            <path d="M25,0 L30,20 L50,25 L30,30 L25,50 L20,30 L0,25 L20,20 Z" fill="currentColor" />
-          </svg>
+        <h2 className="text-5xl md:text-8xl font-black text-white mb-12 relative inline-block uppercase tracking-tighter">
+          About
         </h2>
       </ScrollReveal>
 
@@ -73,23 +71,13 @@ export default function About() {
             onMouseLeave={() => setIsHovered(false)}
             className="flex-1 p-8 md:p-10 border-l border-white/20 relative"
           >
-            {/* Base Text Layer (Dim) */}
-            <p className="text-xl md:text-3xl text-white/20 leading-tight mb-12 font-medium tracking-tight">
-              {personal.bio}
-            </p>
-
-            {/* Masked X-Ray Text Layer (Bright) */}
-            <div 
-              className="absolute top-8 md:top-10 left-8 md:left-10 right-8 md:right-10 pointer-events-none transition-opacity duration-300"
-              style={{
-                opacity: isHovered ? 1 : 0,
-                WebkitMaskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-                maskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, black 0%, transparent 100%)`,
-              }}
-            >
-              <p className="text-xl md:text-3xl text-white leading-tight mb-12 font-medium tracking-tight">
-                {personal.bio}
-              </p>
+            {/* Staggered Reveal Text */}
+            <div className="mb-16">
+              <RevealText 
+                text={personal.bio} 
+                className="text-2xl md:text-4xl text-white leading-tight font-medium tracking-tight"
+                delay={0}
+              />
             </div>
 
             <div className="flex flex-wrap items-center gap-6 relative z-10">

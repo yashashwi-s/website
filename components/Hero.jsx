@@ -1,118 +1,105 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { personal } from "@/data/personal";
 import { ArrowDown } from "lucide-react";
 import { GithubIcon } from "@/components/icons/GithubIcon";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Magnetic from "@/components/Magnetic";
-import TextReveal from "@/components/TextReveal";
+import RevealText from "@/components/RevealText";
 
 export default function Hero() {
-  const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 400]);
   const opacity = useTransform(scrollY, [0, 600], [1, 0]);
-  const scale = useTransform(scrollY, [0, 600], [1, 0.8]);
 
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-    },
-  };
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
-    },
-  };
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
 
-  const Wrapper = prefersReducedMotion ? "div" : motion.div;
-  const ItemWrapper = prefersReducedMotion ? "div" : motion.div;
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  const smoothMouseX = useSpring(mousePosition.x, { damping: 50, stiffness: 400 });
+  const smoothMouseY = useSpring(mousePosition.y, { damping: 50, stiffness: 400 });
 
   return (
     <section
       id="hero"
-      className="min-h-screen flex flex-col justify-center px-6 max-w-5xl mx-auto relative overflow-hidden"
+      className="min-h-screen flex flex-col justify-center px-6 md:px-20 relative overflow-hidden"
     >
-      {/* Decorative SVG Squiggles */}
-      <div className="absolute top-[20%] right-[10%] opacity-40 pointer-events-none hidden md:block">
-        <svg width="120" height="120" viewBox="0 0 100 100" className="text-[var(--chalk-pink)]">
-          <path d="M10,50 Q30,10 50,50 T90,50" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-          <path d="M75,35 L90,50 L75,65" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        </svg>
-      </div>
-      
-      <div className="absolute bottom-[20%] left-[5%] opacity-40 pointer-events-none hidden md:block">
-        <svg width="80" height="80" viewBox="0 0 100 100" className="text-[var(--chalk-yellow)]">
-          <path d="M50,10 L60,40 L90,50 L60,60 L50,90 L40,60 L10,50 L40,40 Z" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" />
-        </svg>
-      </div>
+      {/* Interactive Mesh Gradient Orb */}
+      <motion.div
+        className="absolute w-[60vw] h-[60vw] md:w-[30vw] md:h-[30vw] rounded-full mix-blend-screen pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0) 70%)",
+          filter: "blur(60px)",
+          x: smoothMouseX,
+          y: smoothMouseY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      />
 
-      <Wrapper
-        {...(!prefersReducedMotion ? { variants: container, initial: "hidden", animate: "show", style: { y, opacity, scale } } : {})}
-        className="relative z-10"
+      <motion.div
+        style={{ y, opacity }}
+        className="relative z-10 w-full"
       >
-        <ItemWrapper {...(!prefersReducedMotion ? { variants: item } : {})}>
-          <div className="inline-block mb-4 relative">
-            <p className="font-hand text-2xl text-[var(--chalk-cyan)] rotate-[-2deg]">
-              hey, i'm
-            </p>
-            {/* Underline doodle */}
-            <svg className="absolute -bottom-2 left-0 w-full text-[var(--chalk-cyan)]" viewBox="0 0 100 20" preserveAspectRatio="none">
-              <path d="M5,10 Q50,20 95,5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+        <div className="mb-6 overflow-hidden">
+          <motion.p 
+            initial={{ y: "100%" }}
+            animate={{ y: "0%" }}
+            transition={{ delay: 2.2, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            className="font-mono text-sm md:text-lg text-white/50 uppercase tracking-widest"
+          >
+            Creative Developer
+          </motion.p>
+        </div>
+
+        <h1 className="text-[12vw] leading-[0.85] font-black tracking-tighter text-white mb-8 uppercase">
+          <RevealText delay={2.4} text={personal.name.split(" ")[0]} />
+          <span className="text-white/30 block ml-[10vw]">
+            <RevealText delay={2.6} text={personal.name.split(" ")[1]} />
+          </span>
+        </h1>
+
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-10 mt-20">
+          <div className="max-w-xl">
+            <RevealText 
+              delay={2.8} 
+              className="text-xl md:text-3xl text-white/70 leading-tight font-medium tracking-tight"
+              text={personal.tagline} 
+            />
           </div>
-        </ItemWrapper>
 
-        <ItemWrapper {...(!prefersReducedMotion ? { variants: item } : {})}>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-6 relative z-10 uppercase">
-            <TextReveal delay={2.5}>{personal.name.split(" ")[0]}</TextReveal>
-            <br className="md:hidden" />
-            <span className="text-white/50 block mt-2">
-              <TextReveal delay={2.7}>{personal.name.split(" ")[1]}</TextReveal>
-            </span>
-          </h1>
-        </ItemWrapper>
-
-        <ItemWrapper {...(!prefersReducedMotion ? { variants: item } : {})}>
-          <p className="text-xl md:text-2xl font-hand text-[var(--chalk-pink)] max-w-2xl mb-10 leading-relaxed rotate-[1deg]">
-            <TextReveal delay={3.1}>{`"${personal.tagline}"`}</TextReveal>
-          </p>
-        </ItemWrapper>
-
-        <ItemWrapper {...(!prefersReducedMotion ? { variants: item } : {})}>
-          <div className="flex flex-wrap items-center gap-6">
+          <div className="flex gap-6">
             <Magnetic>
               <a
                 href={personal.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-bold hover:scale-105 active:scale-95 transition-all duration-200"
+                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white hover:bg-white hover:text-black transition-colors duration-300"
               >
-                <GithubIcon size={20} />
-                GitHub
-                {/* Highlight doodle behind button */}
-                <div className="absolute inset-0 bg-[var(--chalk-yellow)] rounded-xl -z-10 translate-y-1.5 translate-x-1.5 opacity-50 group-hover:translate-y-2 group-hover:translate-x-2 transition-transform" />
+                <GithubIcon size={24} />
               </a>
             </Magnetic>
             
             <Magnetic>
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-white/20 text-white font-bold hover:bg-white/10 hover:scale-105 active:scale-95 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors duration-300 uppercase tracking-widest text-sm"
               >
-                See my work
-                <ArrowDown size={18} className="animate-bounce" />
+                Explore
+                <ArrowDown size={18} />
               </a>
             </Magnetic>
           </div>
-        </ItemWrapper>
-      </Wrapper>
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -40,12 +40,16 @@ export const metadata = {
 };
 
 import SmoothScroll from "@/components/SmoothScroll";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${nunito.variable} ${caveat.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans text-white cursor-none overflow-x-hidden selection:bg-pink-500/30 selection:text-pink-200">
+      <body className="font-sans text-white cursor-none overflow-x-hidden selection:bg-white/30 selection:text-white">
         <SmoothScroll>{children}</SmoothScroll>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

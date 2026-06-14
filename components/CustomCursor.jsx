@@ -43,14 +43,14 @@ export default function CustomCursor() {
   const variants = {
     default: { width: 16, height: 16, x: -8, y: -8, borderRadius: "50%", opacity: 1 },
     pointer: { width: 48, height: 48, x: -24, y: -24, borderRadius: "50%", opacity: 0.5 },
-    project: { width: 120, height: 120, x: -60, y: -60, borderRadius: "50%", opacity: 1 },
+    project: { width: 180, height: 180, x: -90, y: -90, borderRadius: "50%", opacity: 1 },
     text: { width: 4, height: 32, x: -2, y: -16, borderRadius: "2px", opacity: 0.8 },
   };
 
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 bg-white pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center overflow-hidden"
+        className="fixed top-0 left-0 bg-white pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center overflow-hidden backdrop-blur-md"
         animate={{
           x: mousePosition.x + variants[hoverState].x,
           y: mousePosition.y + variants[hoverState].y,
@@ -59,7 +59,7 @@ export default function CustomCursor() {
           borderRadius: variants[hoverState].borderRadius,
           opacity: variants[hoverState].opacity,
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 25, mass: 0.5 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20, mass: 0.5 }}
       >
         <motion.span 
           className="text-black font-black text-xl"
