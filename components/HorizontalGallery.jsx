@@ -1,10 +1,76 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useVelocity, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useVelocity, useSpring, useInView } from "framer-motion";
 import { projects } from "@/data/projects";
 import { GithubIcon } from "./icons/GithubIcon";
 import { ExternalLink } from "lucide-react";
+
+const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <motion.div 
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ skewX: skewVelocity }}
+      className="w-full h-[70%] relative overflow-hidden mb-6 bg-[#111] border border-white/10 group"
+    >
+      <motion.div 
+        style={{ x: imageX, scale: 1.1 }} 
+        className="w-full h-full transform transition-transform duration-700 ease-out group-hover:scale-100"
+      >
+        <img 
+          src={project.image || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop"} 
+          alt={project.title}
+          className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+        />
+      </motion.div>
+
+      {/* Holographic Glare */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none z-20 mix-blend-overlay opacity-0 transition-opacity duration-300"
+        animate={{ opacity: isHovered ? 0.4 : 0 }}
+        style={{
+          background: `radial-gradient(circle 400px at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.8), transparent 40%)`
+        }}
+      />
+
+      {/* CRT Scanlines on Hover */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none z-20 opacity-0 transition-opacity duration-300"
+        animate={{ opacity: isHovered ? 0.15 : 0 }}
+        style={{
+          backgroundImage: "linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))",
+          backgroundSize: "100% 4px, 3px 100%"
+        }}
+      />
+      
+      {/* The Diagonal Slash Overlay */}
+      <motion.div
+         initial={{ x: "0%" }}
+         animate={isInView ? { x: "150%" } : {}}
+         transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.1 }}
+         className="absolute inset-[-50%] bg-[#050505] z-10 pointer-events-none"
+         style={{ transformOrigin: "left", skewX: "-20deg" }}
+      />
+    </motion.div>
+  );
+};
 
 export default function HorizontalGallery() {
   const targetRef = useRef(null);
@@ -34,7 +100,7 @@ export default function HorizontalGallery() {
   const sortedProjects = [...projects].sort((a, b) => (a.order || 99) - (b.order || 99)).slice(0, 5); // Take top 5 for gallery
 
   return (
-    <section ref={targetRef} className="relative md:h-[400vh] bg-[#050505]">
+    <section id="projects" ref={targetRef} className="relative md:h-[400vh] bg-[#050505]">
       {/* Desktop Horizontal View */}
       <div className="hidden md:flex sticky top-0 h-screen items-center overflow-hidden pl-20">
         <motion.div style={{ x }} className="flex gap-20 items-center h-full">
@@ -47,22 +113,7 @@ export default function HorizontalGallery() {
 
           {sortedProjects.map((project, idx) => (
             <div key={idx} className="w-[60vw] h-[70vh] flex-shrink-0 flex flex-col justify-center group">
-              <motion.div 
-                style={{ skewX: skewVelocity }}
-                className="w-full h-[70%] relative overflow-hidden mb-6 bg-[#111] border border-white/10"
-              >
-                <motion.div 
-                  style={{ x: imageX, scale: 1.1 }} 
-                  className="w-full h-full transform transition-transform duration-700 ease-out group-hover:scale-100"
-                >
-                  {/* Fallback image if project doesn't have one */}
-                  <img 
-                    src={project.image || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop"} 
-                    alt={project.title}
-                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
-                  />
-                </motion.div>
-              </motion.div>
+              <DiagonalSlashImage project={project} imageX={imageX} skewVelocity={skewVelocity} />
               
               <div className="flex justify-between items-end">
                 <div>

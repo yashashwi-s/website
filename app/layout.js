@@ -47,6 +47,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${nunito.variable} ${caveat.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans text-white cursor-none overflow-x-hidden selection:bg-white/30 selection:text-white">
+        <div className="noise-bg" />
         <SmoothScroll>{children}</SmoothScroll>
         <Analytics />
         <SpeedInsights />

@@ -22,6 +22,11 @@ export default function Home() {
         <VelocityMarquee text="BUILDING THINGS THAT ARE FUN TO BREAK APART • " />
         <HorizontalGallery />
         <About />
+        <div className="h-[40vh] w-full bg-[#050505] relative z-10 border-t border-white/5 flex items-center justify-center">
+          <div className="w-[1px] h-32 bg-white/10 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1/3 bg-white animate-[slide_1.5s_ease-in-out_infinite]" />
+          </div>
+        </div>
       </main>
       <Footer />
     </>

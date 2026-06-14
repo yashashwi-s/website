@@ -1,6 +1,6 @@
 export const personal = {
   name: "Yashashwi Singhania",
-  tagline: "Building things that are fun to break apart.",
+  tagline: "Building systems and overthinking algorithms.",
   bio: "I'm a student at IIT BHU with a thing for reinforcement learning, systems programming, and making tools people actually want to use. I spend most of my time building multi-agent environments, contributing to open source, and occasionally overthinking chess algorithms.",
   github: "https://github.com/yashashwi-s",
   resume: "https://drive.google.com/file/d/1AmkUaCxnGZbGdZDqCY1ytLgMna99dUAm/view?usp=sharing",

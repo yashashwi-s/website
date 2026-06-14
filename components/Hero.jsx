@@ -4,14 +4,21 @@ import { useState, useEffect } from "react";
 import { personal } from "@/data/personal";
 import { ArrowDown } from "lucide-react";
 import { GithubIcon } from "@/components/icons/GithubIcon";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useVelocity } from "framer-motion";
 import Magnetic from "@/components/Magnetic";
 import RevealText from "@/components/RevealText";
+import ScrambleText from "@/components/ScrambleText";
 
 export default function Hero() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1000], [0, 400]);
   const opacity = useTransform(scrollY, [0, 600], [1, 0]);
+
+  // Kinetic typography distortion
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
+  const skewY = useTransform(smoothVelocity, [-1000, 0, 1000], [-5, 0, 5]);
+  const scaleY = useTransform(smoothVelocity, [-1000, 0, 1000], [1.2, 1, 1.2]);
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -60,12 +67,15 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        <h1 className="text-[12vw] leading-[0.85] font-black tracking-tighter text-white mb-8 uppercase">
+        <motion.h1 
+          style={{ skewY, scaleY, transformOrigin: "bottom" }}
+          className="text-[12vw] leading-[0.85] font-black tracking-tighter text-white mb-8 uppercase origin-bottom"
+        >
           <RevealText delay={2.4} text={personal.name.split(" ")[0]} />
           <span className="text-white/30 block ml-[10vw]">
             <RevealText delay={2.6} text={personal.name.split(" ")[1]} />
           </span>
-        </h1>
+        </motion.h1>
 
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-10 mt-20">
           <div className="max-w-xl">
@@ -82,7 +92,7 @@ export default function Hero() {
                 href={personal.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white hover:bg-white hover:text-black transition-colors duration-300"
+                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white transition-colors duration-300"
               >
                 <GithubIcon size={24} />
               </a>
@@ -91,10 +101,10 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-colors duration-300 uppercase tracking-widest text-sm"
+                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold transition-colors duration-300 uppercase tracking-widest text-sm group"
               >
-                Explore
-                <ArrowDown size={18} />
+                <ScrambleText text="Explore" />
+                <ArrowDown size={18} className="group-hover:animate-bounce" />
               </a>
             </Magnetic>
           </div>
