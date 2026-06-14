@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-hand), cursive;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  :root {
+    --color-bg: #050505;
+    --color-bg-card: rgba(20, 20, 20, 0.4);
+    --color-bg-card-hover: rgba(40, 40, 40, 0.8);
+    --color-border: rgba(255, 255, 255, 0.05);
+    --color-border-hover: rgba(255, 255, 255, 0.15);
+    --color-text-muted: #666666;
+    
+    /* Monochrome accents */
+    --accent: #ffffff;
+    --accent-muted: #888888;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    font-family: var(--font-sans);
+    color: #ffffff;
+    overflow-x: hidden;
+  }
+
+  /* Force hide native cursor everywhere when using a mouse pointer */
+  @media (hover: hover) and (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+  }
+}
+
+/* Custom interactive classes */
+@layer utilities {
+  .font-hand {
+    font-family: var(--font-hand);
+  }
+  
+  .glass-card {
+    @apply bg-[var(--color-bg-card)] border border-[var(--color-border)] backdrop-blur-xl rounded-none;
+  }
+  
+  .chalk-text {
+    /* Removed for brutalist */
+  }
+}
+
+/* Revert to native behavior on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+  * {
+    cursor: auto !important;
+  }
+}
