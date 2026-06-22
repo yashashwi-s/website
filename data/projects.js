@@ -1,10 +1,10 @@
 export const projects = [
   {
-    title: "PhotoWidgetOSX",
+    title: "Tableau",
     description:
       "A macOS menu bar app that places photos on your desktop as borderless, always-on-desktop overlays — perfectly matching each image's native aspect ratio. No cropping, no black bars.",
     tags: ["Swift", "macOS", "WidgetKit"],
-    github: "https://github.com/yashashwi-s/PhotoWidgetOSX",
+    github: "https://github.com/yashashwi-s/Tableau",
     live: null,
     type: "personal",
     featured: true,
