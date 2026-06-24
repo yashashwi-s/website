@@ -122,12 +122,12 @@ export default function HorizontalGallery() {
                 </div>
                 <div className="flex gap-4">
                   {project.github && (
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-3 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-3 border border-white/20 rounded-full hover:border-white hover:bg-white/10 transition-all">
                       <GithubIcon size={24} />
                     </a>
                   )}
                   {project.live && (
-                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="p-3 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
+                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="p-3 border border-white/20 rounded-full hover:border-white hover:bg-white/10 transition-all">
                       <ExternalLink size={24} />
                     </a>
                   )}
@@ -171,12 +171,12 @@ export default function HorizontalGallery() {
                 </div>
                 <div className="flex gap-3">
                   {project.github && (
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full bg-white/5 hover:bg-white hover:text-black transition-colors">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full bg-white/5 hover:border-white hover:bg-white/10 transition-all">
                       <GithubIcon size={20} />
                     </a>
                   )}
                   {project.live && (
-                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full bg-white/5 hover:bg-white hover:text-black transition-colors">
+                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full bg-white/5 hover:border-white hover:bg-white/10 transition-all">
                       <ExternalLink size={20} />
                     </a>
                   )}

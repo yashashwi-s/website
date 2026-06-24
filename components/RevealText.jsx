@@ -46,8 +46,8 @@ export default function RevealText({ text, className = "", delay = 0 }) {
       className={className}
     >
       {words.map((word, index) => (
-        <span key={index} style={{ overflow: "hidden", display: "inline-block" }}>
-          <motion.span style={{ display: "inline-block", transformOrigin: "left bottom" }} variants={child}>
+        <span key={index} style={{ overflow: "hidden", display: "inline-block", paddingRight: "0.15em", paddingBottom: "0.1em", marginRight: "-0.15em" }}>
+          <motion.span style={{ display: "inline-block", transformOrigin: "left bottom", paddingRight: "0.05em" }} variants={child}>
             {word === " " ? "\u00A0" : word}
           </motion.span>
         </span>

@@ -95,6 +95,6 @@
   100% { transform: translateY(300%); }
 }
 
-.animate-\\[slide_1\\.5s_ease-in-out_infinite\\] {
+.animate-slide {
   animation: slide 1.5s ease-in-out infinite;
 }

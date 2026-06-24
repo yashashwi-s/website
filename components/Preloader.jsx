@@ -62,7 +62,7 @@ export default function Preloader() {
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           >
             {/* The massive kinetic percentage */}
-            <div className="relative overflow-hidden h-[15vw] flex items-center justify-center">
+            <div className="relative overflow-hidden h-[20vw] px-8 flex items-center justify-center">
               <motion.div
                 initial={{ y: "100%", opacity: 0 }}
                 animate={{ y: "0%", opacity: 1 }}

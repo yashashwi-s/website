@@ -8,6 +8,9 @@ import ScrollIndicator from "@/components/ScrollIndicator";
 import NoiseOverlay from "@/components/NoiseOverlay";
 import HorizontalGallery from "@/components/HorizontalGallery";
 import VelocityMarquee from "@/components/VelocityMarquee";
+import ExperienceSection from "@/components/ExperienceSection";
+import SkillsSection from "@/components/SkillsSection";
+import AchievementsSection from "@/components/AchievementsSection";
 
 export default function Home() {
   return (
@@ -21,10 +24,13 @@ export default function Home() {
         <Hero />
         <VelocityMarquee text="BUILDING THINGS THAT ARE FUN TO BREAK APART • " />
         <HorizontalGallery />
+        <ExperienceSection />
         <About />
-        <div className="h-[40vh] w-full bg-[#050505] relative z-10 border-t border-white/5 flex items-center justify-center">
+        <SkillsSection />
+        <AchievementsSection />
+        <div className="h-[30vh] w-full bg-[#050505] relative z-10 border-t border-white/5 flex items-center justify-center">
           <div className="w-[1px] h-32 bg-white/10 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1/3 bg-white animate-[slide_1.5s_ease-in-out_infinite]" />
+            <div className="absolute top-0 left-0 w-full h-1/3 bg-white animate-slide" />
           </div>
         </div>
       </main>
