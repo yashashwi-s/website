@@ -7,9 +7,9 @@ import Magnetic from "@/components/Magnetic";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
+  { label: "About", href: "#about" },
   { label: "Capabilities", href: "#skills" },
   { label: "Milestones", href: "#achievements" },
   {
