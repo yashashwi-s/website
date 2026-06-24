@@ -29,6 +29,18 @@
     font-family: var(--font-sans);
     color: #ffffff;
     overflow-x: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  ::selection {
+    background-color: #ffffff;
+    color: #000000;
   }
 
   /* Force hide native cursor everywhere when using a mouse pointer */

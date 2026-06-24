@@ -1,6 +1,7 @@
 "use client";
 
 import { personal } from "@/data/personal";
+import Magnetic from "@/components/Magnetic";
 
 export default function Footer() {
   return (
@@ -18,8 +19,12 @@ export default function Footer() {
           </a>
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex gap-8">
-              <a href={personal.github} target="_blank" rel="noreferrer" className="text-lg uppercase text-white hover:text-white/50">Github</a>
-              <a href={personal.linkedin} target="_blank" rel="noreferrer" className="text-lg uppercase text-white hover:text-white/50">LinkedIn</a>
+              <Magnetic>
+                <a href={personal.github} target="_blank" rel="noreferrer" className="text-lg uppercase text-white hover:text-white/50 transition-colors">Github</a>
+              </Magnetic>
+              <Magnetic>
+                <a href={personal.linkedin} target="_blank" rel="noreferrer" className="text-lg uppercase text-white hover:text-white/50 transition-colors">LinkedIn</a>
+              </Magnetic>
             </div>
             <p className="text-white/30 text-sm mt-4 md:mt-0">© {new Date().getFullYear()} {personal.name}</p>
           </div>
