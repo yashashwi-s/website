@@ -22,18 +22,18 @@ function AchievementRow({ item, index }) {
         {/* Sweep background */}
         <div className="absolute inset-0 bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-[0.22,1,0.36,1] z-0 pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 mix-blend-difference text-white pointer-events-none">
           <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-16">
-            <span className="font-black text-5xl md:text-7xl text-white group-hover:text-[#050505] transition-colors duration-500 transform group-hover:translate-x-4 md:w-80 shrink-0">
+            <span className="font-black text-5xl md:text-7xl transform group-hover:translate-x-4 transition-transform duration-700 ease-[0.22,1,0.36,1] md:w-80 shrink-0">
               {item.stat}
             </span>
-            <span className="text-2xl md:text-4xl text-white/70 group-hover:text-[#050505]/90 font-medium transition-colors duration-500">
+            <span className="text-2xl md:text-4xl font-medium">
               {item.label}
             </span>
           </div>
           
           {item.detail && (
-            <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-white/40 group-hover:text-[#050505]/60 transition-colors duration-500 lg:text-right max-w-xs">
+            <span className="font-mono text-xs md:text-sm uppercase tracking-widest lg:text-right max-w-xs">
               {item.detail}
             </span>
           )}
