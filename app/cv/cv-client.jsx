@@ -159,7 +159,9 @@ export default function CVClient({ data }) {
         <div className="fixed top-1/2 right-4 md:right-8 -translate-y-1/2 flex flex-col gap-3 z-50 print:hidden">
           <ActionBtn
             as="a"
-            href="/Yashashwi_Singhania_Resume.pdf"
+            href="https://yashashwi.me/Yashashwi_Singhania_Resume.pdf"
+            target="_blank"
+            rel="noreferrer"
             download="Yashashwi_Singhania_Resume.pdf"
             title="Download PDF"
             icon={<Download className="w-5 h-5" />}
