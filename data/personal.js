@@ -8,7 +8,7 @@ export const personal = {
   location: "Varanasi, India",
   interests: ["Competitive Programming", "Full Stack Development", "Systems Programming", "Reinforcement Learning", "Open Source"],
   github: "https://github.com/yashashwi-s",
-  resume: "https://drive.google.com/drive/folders/1mDk8mgYj28gaX1cGEzPCXkzFz9YiNwwn?usp=sharing",
+  resume: "https://cv.yashashwi.me",
   email: "yashashwi.singhania.bce23@itbhu.ac.in",
   linkedin: "https://linkedin.com/in/yashashwi-singhania-b500bb2a9",
   twitter: null,

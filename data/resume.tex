@@ -1,0 +1,183 @@
+\documentclass[letterpaper,10.5pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{
+  \item\small{#1 \vspace{-2pt}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[3]{
+  \item
+  \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} \textit{- #2} & \textit{#3} \\
+  \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]} 
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge \scshape Yashashwi Singhania} \\ \vspace{1pt}
+    \small +91-7905584242 $|$ \href{mailto:yashashwi.singhania.bce23@itbhu.ac.in}{\underline{yashashwi.singhania.bce23@itbhu.ac.in}} $|$
+    \href{https://linkedin.com/in/yashashwi-singhania-b500bb2a9}{\underline{LinkedIn}} $|$
+    \href{https://github.com/yashashwi-s}{\underline{GitHub}} $|$
+    \href{https://yashashwi.me/}{\underline{Personal Website}}
+\end{center}
+
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+  {Indian Institute of Technology (BHU) Varanasi}{Aug 2023 -- May 2028 (Expected)}
+  {B.Tech. + M.Tech. in Biochemical Engineering \textbar{} CGPA: 8.74}{Varanasi, India}
+  \resumeSubHeadingListEnd
+
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Machine Learning Intern}{June 2025 -- July 2025}
+      {Fxis.ai}{Remote}
+      \resumeItemListStart
+  \resumeItem{Architected a \textbf{multimodal RAG pipeline} utilizing \textbf{Weaviate} to parse complex enterprise documents.}
+  \resumeItem{Engineered \textbf{advanced embedding models} to seamlessly extract \textbf{structured text and tabular data}.}
+  \resumeItem{Automated \textbf{analytical report generation} from UK corporate tax filings to \textbf{accelerate compliance}.}
+\resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+% \section{Research Experience}
+%   \resumeSubHeadingListStart
+%     \resumeSubheading
+%       {Research Project on Two-Agent Reinforcement Games}{Aug 2024 -- Nov 2024}
+%       {Indian Institute of Technology (BHU) Varanasi}{Varanasi, India}
+%       \resumeItemListStart
+%         \resumeItem{Collaborated with faculty to explore theoretical aspects of two-agent reinforcement games without shared states.}
+%         \resumeItem{Developed value/policy iteration algorithms for non-shared state systems, proving convergence to Nash equilibrium.}
+%         \resumeItem{Simulated adversarial dynamics in competitive settings and analyzed resulting strategic behaviors.}
+%       \resumeItemListEnd
+%   \resumeSubHeadingListEnd
+
+\section{Projects}
+\resumeSubHeadingListStart
+
+  \resumeProjectHeading
+    {Tableau}{Swift, SwiftUI, AppKit, Core Animation}{June 2026}
+  \resumeItemListStart
+    % \resumeItem{\hspace{0pt}\href{https://github.com/yashashwi-s/Tableau}{\textcolor{blue}{\underline{GitHub}}} \textbar{} \href{https://github.com/yashashwi-s/Tableau/releases/latest}{\textcolor{blue}{\underline{Download}}}}
+    \resumeItem{Developed a native, open-source \textbf{macOS desktop widget} using \textbf{SwiftUI and AppKit} that preserves true image aspect ratios without forced cropping, delivering a polished user aesthetic that acquired \textbf{14+ GitHub stars} and 20+ downloads.}
+    \resumeItem{Engineered a custom ``Smart Canvas" engine utilizing \textbf{GPU-accelerated Core Animation} crossfades and cyclic spatial memory, ensuring the retention of independent coordinate and proportional size states for dynamically rotating user images.}
+    \resumeItem{Implemented deep macOS system integrations, incorporating custom \textbf{click-through window mechanics}, \textbf{global modifier-key event monitoring}, and seamless \textbf{Mission Control lifecycle management} to guarantee a frictionless desktop user experience. $|$ \textbf{Links:} \href{https://github.com/yashashwi-s/Tableau}{\textcolor{blue}{\underline{GitHub}}} \textbar{} \href{https://github.com/yashashwi-s/Tableau/releases/latest}{\textcolor{blue}{\underline{Download}}}}
+  \resumeItemListEnd
+
+  \resumeProjectHeading
+    {OMR-Checker}{Python, OpenCV, NumPy}{May 2026} % Update dates as needed
+\resumeItemListStart
+  % \resumeItem{\hspace{0pt}\href{https://github.com/yashashwi-s/OMR-Checker}{\textcolor{blue}{\underline{GitHub}}}}
+  \resumeItem{Built an \textbf{optical mark recognition (OMR)} system using \textbf{Python and OpenCV} to process \textbf{200+ sheets per minute}.}
+  \resumeItem{Achieved \textbf{near 100\% accuracy} on scanned documents and \textbf{90\% on mobile images} under varying lighting conditions.}
+  \resumeItem{Engineered \textbf{dynamic layout configurations} and \textbf{visual debugging tools} to adapt to complex custom OMR templates. $|$ \textbf{Links:} \hspace{0pt}\href{https://github.com/yashashwi-s/OMR-Checker}{\textcolor{blue}{\underline{GitHub}}}}
+\resumeItemListEnd
+
+  \resumeProjectHeading
+    {TDigest}{C++, Multithreading, STL}{June 2025}
+  \resumeItemListStart
+    % \resumeItem{\hspace{0pt}\href{https://github.com/Grimreaper00025/TDigest}{\textcolor{blue}{\underline{GitHub}}}}
+    \resumeItem{Built $\text{C++17}$ \textbf{t-Digest library} achieving $\mathcal{O}(\delta)$ space complexity for \textbf{real-time streaming quantile estimation}.}
+    \resumeItem{Optimized \textbf{multithreaded ingestion system} achieving \textbf{$8.4M+$ points/second throughput} with \textbf{$0.52\mu s$ query latency}.}
+    \resumeItem{Created \textbf{automated benchmarking framework} with build scripts and \textbf{performance profiling} across multiple configurations. $|$ \textbf{Links:} \hspace{0pt}\href{https://github.com/Grimreaper00025/TDigest}{\textcolor{blue}{\underline{GitHub}}}}
+  \resumeItemListEnd
+
+    \resumeProjectHeading
+    {pyFOOMB GUI}{Next.js, React, Data Visualization}{May 2026}
+  \resumeItemListStart
+    \resumeItem{Built a responsive \textbf{Next.js GUI} for pyFOOMB to streamline complex \textbf{bioprocess modeling workflows}.}
+    \resumeItem{Engineered \textbf{interactive visualizations} and dynamic layouts for \textbf{real-time multi-reactor analysis}. $|$ \textbf{Link:} \hspace{0pt}\href{https://github.com/yashashwi-s/pyFOOMB}{\textcolor{blue}{\underline{GitHub}}}}
+  \resumeItemListEnd
+  
+\resumeSubHeadingListEnd
+
+\section{Campus Involvement}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Club of Programmers (COPS), IIT BHU}{}
+      {Category Head}{}
+      \resumeItemListStart
+        \resumeItem{Organised Byte the Bits under Technex, attracting \textbf{over 3000 participants} all over India.}
+        \resumeItem{Facilitated an `Intro to  Python' workshop attended by \textbf{200+ students} at IIT BHU.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+\section{Achievements}
+  \resumeItemListStart
+    \resumeItem{\textbf{Programming \& Hackathons:} Achieved a \textbf{Codeforces rating of 1720} (\href{https://codeforces.com/profile/hackerman15}{\texttt{hackerman15}}), awarded \textbf{1st Prize in DevBits} at Udyam (IIT BHU 2025), and secured \textbf{top 50 national rankings} in AMS Derive 2026 (\textbf{AIR 13} in POSTERIOR, \textbf{AIR 39} in PRIOR).}
+    \resumeItem{\textbf{National Examinations \& Olympiads:} Attained \textbf{AIR 1105 in KVPY-SA} 2021-2022, secured \textbf{State Rank 20 (Uttar Pradesh)} in the \textbf{National Talent Search Exam (NTSE)}, and qualified the \textbf{Indian Olympiad Qualifier in Mathematics (IOQM)} 2021.}
+  \resumeItemListEnd
+
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+  \small{\item{
+    \textbf{Languages}{: Python, C++, JavaScript, TypeScript, Markdown, \LaTeX} \\
+    \textbf{Web/Frameworks}{: NextJS, React, Flask, Tailwind CSS, SwiftUI, AppKit} \\
+    \textbf{Tools/Platforms}{: Docker, Git, GitHub Actions, Render, Google Colab, VS Code, Vercel, Bash, Zsh, SSH} \\
+    \textbf{Operating System}{: Linux, macOS}
+  }}
+\end{itemize}
+
+\end{document}

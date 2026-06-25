@@ -21,12 +21,12 @@ function ExperienceCard({ exp, i, progress, total }) {
   const opacity = useTransform(progress, range, [1, 0.5]);
 
   return (
-    <div className="h-screen w-full flex items-center justify-center sticky top-0 px-6 md:px-20">
+    <div className="h-screen w-full flex items-center justify-center sticky top-0 px-6 md:px-20 md:pl-40 pt-[5vh]">
       <motion.div 
         style={{ 
           scale: i === total - 1 ? 1 : scale,
           opacity: i === total - 1 ? 1 : opacity,
-          top: `calc(10vh + ${i * 20}px)` 
+          top: `calc(${i * 20}px)` 
         }} 
         className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-[30px] md:rounded-[40px] p-8 md:p-14 shadow-2xl flex flex-col origin-top overflow-hidden"
       >
@@ -92,17 +92,17 @@ export default function ExperienceSection() {
 
   return (
     <section ref={containerRef} id="experience" className="relative bg-[#050505]">
-      {/* Sticky Title */}
-      <div className="sticky top-0 h-[20vh] md:h-[30vh] flex flex-col justify-end max-w-7xl mx-auto px-6 md:px-20 z-0 pointer-events-none">
+      {/* Sticky Vertical Sidebar Title */}
+      <div className="sticky top-0 h-screen w-full pointer-events-none z-0 overflow-hidden">
         <ScrollReveal>
-          <h2 className="text-6xl md:text-[10vw] leading-none font-black text-white/5 uppercase tracking-tighter">
+          <h2 className="absolute top-1/2 -translate-y-1/2 left-0 -translate-x-[40%] md:-translate-x-[25%] -rotate-90 text-[20vh] md:text-[30vh] font-black text-white/5 uppercase tracking-tighter whitespace-nowrap">
             Experience
           </h2>
         </ScrollReveal>
       </div>
 
-      {/* Spacer to push cards below title initially */}
-      <div className="-mt-[10vh] md:-mt-[20vh]">
+      {/* Cards Container */}
+      <div className="-mt-[100vh] relative z-10">
         {experience.map((exp, i) => (
           <ExperienceCard 
             key={i} 
