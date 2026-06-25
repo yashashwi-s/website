@@ -1,0 +1,33 @@
+name: Compile Resume PDF
+
+on:
+  push:
+    paths:
+      - "data/resume.tex"
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX to PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: data/resume.tex
+
+      - name: Place PDF in public/
+        run: |
+          mv data/resume.pdf public/Yashashwi_Singhania_Resume.pdf
+
+      - name: Commit compiled PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/Yashashwi_Singhania_Resume.pdf
+          git diff --cached --quiet || git commit -m "chore: auto-compile resume PDF from resume.tex"
+          git push
