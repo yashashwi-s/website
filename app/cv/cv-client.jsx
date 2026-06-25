@@ -9,6 +9,7 @@ import {
   Check,
 } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import { motion } from "framer-motion";
 
 // ── Premium Toast ─────────────────────────────────────────
 
@@ -156,7 +157,12 @@ export default function CVClient({ data }) {
 
       <div className="min-h-screen bg-[#050505] text-white selection:bg-white selection:text-black font-sans relative">
         {/* ── Floating Action Dock ───────────────────── */}
-        <div className="fixed top-1/2 right-4 md:right-8 -translate-y-1/2 flex flex-col gap-3 z-50 print:hidden">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed top-1/2 right-4 md:right-8 -translate-y-1/2 flex flex-col gap-3 z-50 print:hidden"
+        >
           <ActionBtn
             as="a"
             href="https://yashashwi.me/Yashashwi_Singhania_Resume.pdf"
@@ -188,12 +194,17 @@ export default function CVClient({ data }) {
               icon={<MessageCircle className="w-5 h-5" />}
             />
           )}
-        </div>
+        </motion.div>
 
         {/* ── CV Document ────────────────────────────── */}
         <div className="max-w-[900px] mx-auto py-24 px-8 md:px-16 bg-[#0a0a0a] min-h-screen border-x border-white/5">
           {/* Header */}
-          <header className="mb-14 text-center border-b border-white/10 pb-10">
+          <motion.header
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-8 text-center"
+          >
             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-widest mb-6">
               {data.name}
             </h1>
@@ -224,7 +235,7 @@ export default function CVClient({ data }) {
                 </span>
               ))}
             </div>
-          </header>
+          </motion.header>
 
           {/* Dynamic Sections */}
           {data.sections?.map((section, si) => (
@@ -241,7 +252,7 @@ export default function CVClient({ data }) {
 function SectionBlock({ section, isLast }) {
   return (
     <section className={isLast ? "" : "mb-10"}>
-      <h2 className="text-xl font-bold uppercase tracking-[0.2em] mb-6 border-b border-white/10 pb-2 text-white/90">
+      <h2 className="text-xl font-bold uppercase tracking-[0.2em] mb-6 pb-2 text-white/90">
         {section.title}
       </h2>
 

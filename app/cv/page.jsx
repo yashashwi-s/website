@@ -10,5 +10,9 @@ export const metadata = {
 export default function CVPage() {
   // This runs at BUILD TIME — reads resume.tex and parses it
   const data = parseResume();
+  // Filter out the personal website link (redundant on the web CV since they're already here)
+  if (data.links) {
+    data.links = data.links.filter(link => !link.url.includes("yashashwi.me"));
+  }
   return <CVClient data={data} />;
 }

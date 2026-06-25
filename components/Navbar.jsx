@@ -22,11 +22,38 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Active section tracking
+  useEffect(() => {
+    const sectionIds = ["hero", ...navLinks
+      .filter((l) => l.href.startsWith("#"))
+      .map((l) => l.href.slice(1))];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            // When hero is in view, clear active section so no nav link highlights
+            setActiveSection(entry.target.id === "hero" ? "" : entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -44,12 +71,12 @@ export default function Navbar() {
     <>
       {/* Desktop Floating Dock */}
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.5 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
         className={`hidden md:flex fixed top-8 left-1/2 -translate-x-1/2 z-50 items-center px-2 py-2 rounded-full transition-all duration-500 border ${
           scrolled
-            ? "bg-[#0a0a0a]/80 backdrop-blur-xl border-white/10 shadow-2xl"
+            ? "bg-[#0a0a0a]/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.8)]"
             : "bg-transparent border-transparent"
         }`}
       >
@@ -63,17 +90,32 @@ export default function Navbar() {
           <div className="w-[1px] h-4 bg-white/10" />
 
           <div className="flex items-center gap-1 pl-2">
-          {navLinks.map((link) => (
-            <Magnetic key={link.label}>
-              <a
-                href={link.href}
-                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="px-5 py-2.5 rounded-full text-sm font-medium text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300"
-              >
-                {link.label}
-              </a>
-            </Magnetic>
-          ))}
+          {navLinks.map((link) => {
+            const sectionId = link.href.startsWith("#") ? link.href.slice(1) : null;
+            const isActive = sectionId && activeSection === sectionId;
+            return (
+              <Magnetic key={link.label}>
+                <a
+                  href={link.href}
+                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "text-white bg-white/10"
+                      : "text-white/60 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      className="absolute inset-0 rounded-full bg-white/10"
+                      transition={{ type: "spring", stiffness: 400, damping: 40 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </a>
+              </Magnetic>
+            );
+          })}
           </div>
         </div>
       </motion.nav>
@@ -101,9 +143,10 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="md:hidden fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-2xl flex flex-col items-center justify-center"
           >
             <div className="flex flex-col items-center gap-8">
@@ -115,7 +158,7 @@ export default function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={{ delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
                   className="text-3xl font-black text-white/70 hover:text-white uppercase tracking-tighter transition-colors"
                 >
                   {link.label}

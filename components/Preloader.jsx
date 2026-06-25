@@ -11,7 +11,7 @@ export default function Preloader() {
     // Prevent scrolling while loading
     document.body.style.overflow = "hidden";
 
-    const duration = 1800; // 1.8 seconds
+    const duration = 1200; // 1.2 seconds
     const intervalTime = 20; // 50fps
     const steps = duration / intervalTime;
     let currentStep = 0;
@@ -35,7 +35,7 @@ export default function Preloader() {
           document.body.style.overflow = "";
           // Dispatch event so Hero text can start animating
           window.dispatchEvent(new Event("preloader-finished"));
-        }, 400); // Wait slightly at 100%
+        }, 200); // Wait slightly at 100%
       }
     }, intervalTime);
 
@@ -50,7 +50,7 @@ export default function Preloader() {
           <motion.div
             initial={{ clipPath: "circle(150% at 50% 50%)" }}
             exit={{ clipPath: "circle(0% at 50% 50%)" }}
-            transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
             className="absolute inset-0 bg-[#050505]"
           />
 

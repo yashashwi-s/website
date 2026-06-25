@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { personal } from "@/data/personal";
 import { ArrowDown } from "lucide-react";
 import { GithubIcon } from "@/components/icons/GithubIcon";
-import { motion, useScroll, useTransform, useSpring, useVelocity } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useVelocity, useMotionValue } from "framer-motion";
 import Magnetic from "@/components/Magnetic";
 import RevealText from "@/components/RevealText";
 import ScrambleText from "@/components/ScrambleText";
@@ -20,26 +20,27 @@ export default function Hero() {
   const skewY = useTransform(smoothVelocity, [-1000, 0, 1000], [-5, 0, 5]);
   const scaleY = useTransform(smoothVelocity, [-1000, 0, 1000], [1.2, 1, 1.2]);
 
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  // Use MotionValues directly to avoid re-renders on every mousemove
+  const rawMouseX = useMotionValue(0);
+  const rawMouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(rawMouseX, { damping: 50, stiffness: 300, mass: 0.5 });
+  const smoothMouseY = useSpring(rawMouseY, { damping: 50, stiffness: 300, mass: 0.5 });
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      rawMouseX.set(e.clientX);
+      rawMouseY.set(e.clientY);
     };
-
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  const smoothMouseX = useSpring(mousePosition.x, { damping: 50, stiffness: 400 });
-  const smoothMouseY = useSpring(mousePosition.y, { damping: 50, stiffness: 400 });
+  }, [rawMouseX, rawMouseY]);
 
   return (
     <section
       id="hero"
       className="min-h-screen flex flex-col justify-center px-6 md:px-20 relative overflow-hidden"
     >
-      {/* Interactive Mesh Gradient Orb */}
+      {/* Interactive Mesh Gradient Orb — no re-renders, pure MotionValue */}
       <motion.div
         className="absolute w-[60vw] h-[60vw] md:w-[30vw] md:h-[30vw] rounded-full mix-blend-screen pointer-events-none z-0"
         style={{
@@ -60,7 +61,7 @@ export default function Hero() {
           <motion.p 
             initial={{ y: "100%" }}
             animate={{ y: "0%" }}
-            transition={{ delay: 2.2, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+            transition={{ delay: 1.6, duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
             className="font-mono text-sm md:text-lg text-white/50 uppercase tracking-widest"
           >
             Creative Developer
@@ -71,16 +72,16 @@ export default function Hero() {
           style={{ skewY, scaleY, transformOrigin: "bottom" }}
           className="text-[11vw] sm:text-[12vw] leading-[0.85] font-black tracking-tighter text-white mb-8 uppercase origin-bottom"
         >
-          <RevealText delay={2.4} text={personal.name.split(" ")[0]} />
+          <RevealText delay={1.8} text={personal.name.split(" ")[0]} />
           <span className="text-white/30 block ml-6 md:ml-[10vw]">
-            <RevealText delay={2.6} text={personal.name.split(" ")[1]} />
+            <RevealText delay={2.0} text={personal.name.split(" ")[1]} />
           </span>
         </motion.h1>
 
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-10 mt-20">
           <div className="max-w-xl">
             <RevealText 
-              delay={2.8} 
+              delay={2.2} 
               className="text-xl md:text-3xl text-white/70 leading-tight font-medium tracking-tight"
               text={personal.tagline} 
             />
@@ -92,7 +93,7 @@ export default function Hero() {
                 href={personal.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white transition-colors duration-300"
+                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-500"
               >
                 <GithubIcon size={24} />
               </a>
@@ -101,10 +102,10 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold transition-colors duration-300 uppercase tracking-widest text-sm group"
+                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-all duration-500 uppercase tracking-widest text-sm group"
               >
                 <ScrambleText text="Explore" />
-                <ArrowDown size={18} className="group-hover:animate-bounce" />
+                <ArrowDown size={18} className="group-hover:translate-y-1 transition-transform duration-300" />
               </a>
             </Magnetic>
           </div>

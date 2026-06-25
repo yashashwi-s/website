@@ -22,9 +22,9 @@ function ExperienceCard({ exp, i, progress, total }) {
           opacity: i === total - 1 ? 1 : opacity,
           top: `calc(${i * 20}px)` 
         }} 
-        className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-[30px] md:rounded-[40px] p-6 md:p-14 shadow-2xl flex flex-col origin-top overflow-hidden max-h-full"
+        className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-[30px] md:rounded-[40px] p-6 md:p-14 shadow-[0_30px_80px_rgba(0,0,0,0.8)] flex flex-col origin-top overflow-hidden max-h-full group"
       >
-        <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/[0.03] blur-[80px] md:blur-[120px] rounded-full pointer-events-none transform translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute top-0 right-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-white/[0.03] blur-[80px] md:blur-[120px] rounded-full pointer-events-none transform translate-x-1/3 -translate-y-1/3 group-hover:bg-white/[0.06] transition-all duration-700" />
 
         <div className="relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-8 md:mb-12 border-b border-white/5 pb-6 md:pb-8">

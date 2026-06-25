@@ -9,24 +9,20 @@ import { ExternalLink } from "lucide-react";
 const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    ref.current.style.setProperty("--mouse-x", `${x}px`);
+    ref.current.style.setProperty("--mouse-y", `${y}px`);
   };
 
   return (
     <motion.div 
       ref={ref}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       style={{ skewX: skewVelocity }}
       className="w-full h-[70%] relative overflow-hidden mb-6 bg-[#111] border border-white/10 group"
     >
@@ -42,18 +38,16 @@ const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
       </motion.div>
 
       {/* Holographic Glare */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none z-20 mix-blend-overlay opacity-0 transition-opacity duration-300"
-        animate={{ opacity: isHovered ? 0.4 : 0 }}
+      <div
+        className="absolute inset-0 pointer-events-none z-20 mix-blend-overlay opacity-0 group-hover:opacity-40 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(circle 400px at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.8), transparent 40%)`
+          background: `radial-gradient(circle 400px at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255,255,255,0.8), transparent 40%)`
         }}
       />
 
       {/* CRT Scanlines on Hover */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none z-20 opacity-0 transition-opacity duration-300"
-        animate={{ opacity: isHovered ? 0.15 : 0 }}
+      <div
+        className="absolute inset-0 pointer-events-none z-20 opacity-0 group-hover:opacity-[0.15] transition-opacity duration-300"
         style={{
           backgroundImage: "linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))",
           backgroundSize: "100% 4px, 3px 100%"

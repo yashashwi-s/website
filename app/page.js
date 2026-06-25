@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
 import Preloader from "@/components/Preloader";
 import ScrollIndicator from "@/components/ScrollIndicator";
-import NoiseOverlay from "@/components/NoiseOverlay";
 import HorizontalGallery from "@/components/HorizontalGallery";
 import VelocityMarquee from "@/components/VelocityMarquee";
 import ExperienceSection from "@/components/ExperienceSection";
@@ -16,7 +15,6 @@ export default function Home() {
   return (
     <>
       <Preloader />
-      <NoiseOverlay />
       <ScrollIndicator />
       <CustomCursor />
       <Navbar />

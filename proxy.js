@@ -19,24 +19,20 @@ export default function proxy(req) {
   const hostname = req.headers.get('host') || '';
 
   // Extract the current host (removing the root domain)
-  // For local testing: cv.localhost:3001 -> 'cv'
+  // For local testing: cv.localhost:3000 -> 'cv'
   // For production: cv.yashashwi.me -> 'cv'
   const currentHost = hostname
     .replace(`.yashashwi.me`, '')
-    .replace(`.localhost:3001`, '');
+    .replace(`.localhost:3000`, '');
 
   // Subdomain routing
   if (currentHost === 'cv') {
-    // Rewrite cv.yashashwi.me/foo to yashashwi.me/cv/foo
-    url.pathname = `/cv${url.pathname}`;
-    return NextResponse.rewrite(url);
+    // Prevent double-rewriting if Next.js directly requests a /cv asset (like /cv/icon)
+    if (!url.pathname.startsWith('/cv')) {
+      url.pathname = `/cv${url.pathname}`;
+      return NextResponse.rewrite(url);
+    }
   }
-
-  // Future subdomains like 'blogs' can be added here
-  // if (currentHost === 'blogs') {
-  //   url.pathname = `/blogs${url.pathname}`;
-  //   return NextResponse.rewrite(url);
-  // }
 
   return NextResponse.next();
 }
