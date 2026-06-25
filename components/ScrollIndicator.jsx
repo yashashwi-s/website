@@ -22,14 +22,14 @@ export default function ScrollIndicator() {
     <div className="fixed right-4 md:right-8 top-[20vh] bottom-[20vh] w-12 z-50 pointer-events-none hidden md:flex flex-col items-center">
       <div className="flex-1 w-[2px] bg-white/10 relative rounded-full overflow-hidden">
         <motion.div
-          className="absolute top-0 left-0 w-full bg-[var(--chalk-mint)] origin-top shadow-[0_0_10px_var(--chalk-mint)]"
+          className="absolute top-0 left-0 w-full bg-white origin-top shadow-[0_0_10px_rgba(255,255,255,0.8)]"
           style={{ scaleY, height: "100%" }}
         />
       </div>
       
       {/* Little chalk star at the bottom that fills based on scroll */}
       <motion.div 
-        className="mt-4 text-[var(--chalk-mint)]"
+        className="mt-4 text-white"
         style={{
           rotate: starRotate,
         }}

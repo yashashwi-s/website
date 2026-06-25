@@ -14,16 +14,14 @@ function AchievementRow({ item, index }) {
       transition={{ duration: 0.6, delay: index * 0.05 }}
       className="relative group border-b border-white/10"
     >
-      <a
-        href={item.link || "#"}
-        target={item.link ? "_blank" : undefined}
-        className={`block relative py-12 px-4 md:px-8 overflow-hidden ${!item.link ? "cursor-default" : ""}`}
-      >
+      <div className="block relative overflow-hidden cursor-default">
         {/* Sweep background */}
         <div className="absolute inset-0 bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-[0.22,1,0.36,1] z-0 pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 mix-blend-difference text-white pointer-events-none">
-          <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-16">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-stretch justify-between mix-blend-difference text-white">
+          
+          {/* Left Side */}
+          <div className="flex-1 py-12 px-4 md:px-8 flex flex-col md:flex-row md:items-baseline gap-2 md:gap-16 pointer-events-none">
             <span className="font-black text-5xl md:text-7xl transform group-hover:translate-x-4 transition-transform duration-700 ease-[0.22,1,0.36,1] md:w-80 shrink-0">
               {item.stat}
             </span>
@@ -32,13 +30,29 @@ function AchievementRow({ item, index }) {
             </span>
           </div>
           
+          {/* Right Side (Link or Text) */}
           {item.detail && (
-            <span className="font-mono text-xs md:text-sm uppercase tracking-widest lg:text-right max-w-xs">
-              {item.detail}
-            </span>
+            item.link ? (
+              <a 
+                href={item.link}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center lg:justify-end px-4 md:px-8 py-8 lg:py-0 cursor-pointer pointer-events-auto"
+              >
+                <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-left lg:text-right">
+                  {item.detail} <span className="ml-2">↗</span>
+                </span>
+              </a>
+            ) : (
+              <div className="flex items-center lg:justify-end px-4 md:px-8 py-8 lg:py-0 pointer-events-none">
+                <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-left lg:text-right">
+                  {item.detail}
+                </span>
+              </div>
+            )
           )}
         </div>
-      </a>
+      </div>
     </motion.div>
   );
 }

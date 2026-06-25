@@ -69,10 +69,10 @@ export default function Hero() {
 
         <motion.h1 
           style={{ skewY, scaleY, transformOrigin: "bottom" }}
-          className="text-[12vw] leading-[0.85] font-black tracking-tighter text-white mb-8 uppercase origin-bottom"
+          className="text-[11vw] sm:text-[12vw] leading-[0.85] font-black tracking-tighter text-white mb-8 uppercase origin-bottom"
         >
           <RevealText delay={2.4} text={personal.name.split(" ")[0]} />
-          <span className="text-white/30 block ml-[10vw]">
+          <span className="text-white/30 block ml-6 md:ml-[10vw]">
             <RevealText delay={2.6} text={personal.name.split(" ")[1]} />
           </span>
         </motion.h1>
