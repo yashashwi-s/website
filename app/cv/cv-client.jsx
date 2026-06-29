@@ -337,9 +337,12 @@ function Row({ left, right, bold, italic, muted }) {
 }
 
 function BulletList({ items }) {
+  const validItems = items.filter((item) => item && item.trim() !== "");
+  if (validItems.length === 0) return null;
+
   return (
     <ul className="space-y-2 text-white/75 text-sm list-disc list-outside ml-4 mt-2">
-      {items.map((item, i) => (
+      {validItems.map((item, i) => (
         <li key={i} className="leading-relaxed">
           <Md>{item}</Md>
         </li>

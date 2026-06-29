@@ -45,14 +45,7 @@ const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
         }}
       />
 
-      {/* CRT Scanlines on Hover */}
-      <div
-        className="absolute inset-0 pointer-events-none z-20 opacity-0 group-hover:opacity-[0.15] transition-opacity duration-300"
-        style={{
-          backgroundImage: "linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))",
-          backgroundSize: "100% 4px, 3px 100%"
-        }}
-      />
+
       
       {/* The Diagonal Slash Overlay */}
       <motion.div
