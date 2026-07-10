@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { signLicense } from "@/lib/fadeo-license";
 import { sendLicenseEmail } from "@/lib/send-license-email";
+import { claimOnce } from "@/lib/redis";
 
 // Gumroad's Ping (Settings -> Advanced -> Ping URL) posts form-encoded data on every
 // sale, with no cryptographic signature -- unlike Stripe, anyone who guesses this URL
@@ -17,6 +18,16 @@ export async function POST(request) {
   const saleId = form.get("sale_id");
   if (!saleId || typeof saleId !== "string") {
     return NextResponse.json({ error: "Missing sale_id" }, { status: 400 });
+  }
+
+  // Webhooks are "at least once", not "exactly once" -- Gumroad can and does retry a
+  // ping if our response is slow (verifying the sale, then sending an email over SMTP,
+  // both take real time). Claim this sale_id before doing any of that slow work so a
+  // retry that arrives mid-flight also backs off immediately, instead of both retries
+  // racing to send a duplicate email.
+  const firstTime = await claimOnce(`gumroad:sale:${saleId}`);
+  if (!firstTime) {
+    return NextResponse.json({ received: true, skipped: "already_processed" });
   }
 
   const verifyRes = await fetch(

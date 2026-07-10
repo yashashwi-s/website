@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { signLicense } from "@/lib/fadeo-license";
 import { sendLicenseEmail } from "@/lib/send-license-email";
+import { claimOnce } from "@/lib/redis";
 
 // Fires on every completed Stripe Checkout session for the Fadeo Payment Link. Mints a
 // real Ed25519-signed license (same signer as the giveaway and the offline generator
@@ -31,7 +32,11 @@ export async function POST(request) {
     const email = session.customer_details?.email;
     const amount = session.amount_total != null ? (session.amount_total / 100).toFixed(2) : null;
 
-    if (email) {
+    // Stripe retries on a slow/failed response same as Gumroad; claim the event id
+    // before doing anything so a retry is a safe no-op instead of a duplicate email.
+    const firstTime = await claimOnce(`stripe:event:${event.id}`);
+
+    if (email && firstTime) {
       try {
         const { key } = signLicense({ note: `stripe-${session.id}` });
         await sendLicenseEmail({ to: email, key, amount });
