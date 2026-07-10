@@ -60,29 +60,30 @@ function AppRow({ app, release }) {
   return (
     <section className="py-12 first:pt-0 border-b border-white/8 last:border-b-0">
       <div className="flex flex-col sm:flex-row gap-8 sm:gap-10">
-        <a href={app.page} className="group flex items-start gap-5 sm:flex-col sm:items-start sm:w-40 shrink-0" data-cursor="snap">
+        <div className="flex items-start gap-5 sm:flex-col sm:items-start sm:w-40 shrink-0">
           <Image
             src={app.icon}
             alt={`${app.name} icon`}
             width={80}
             height={80}
-            className="rounded-[20px] shrink-0 transition-transform duration-300 group-hover:scale-[1.04] group-hover:-translate-y-0.5"
+            className="rounded-[20px] shrink-0"
           />
           <div className="sm:mt-1">
-            <div className="flex items-center gap-1.5">
-              <h2 className="text-2xl font-semibold tracking-tight group-hover:text-white/80 transition-colors">
+            <a href={app.page} className="group inline-flex items-center gap-1.5" data-cursor="snap">
+              <h2 className="text-2xl font-semibold tracking-tight group-hover:text-white/70 transition-colors">
                 {app.name}
               </h2>
               <ArrowUpRight
                 size={16}
-                className="text-white/30 -translate-x-0.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+                style={{ color: app.accent }}
+                className="-translate-x-0.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
               />
-            </div>
+            </a>
             <p className="text-[13px] mt-0.5" style={{ color: app.accent }}>
               {app.price}
             </p>
           </div>
-        </a>
+        </div>
 
         <div className="flex-1 min-w-0">
           <p className="text-white/70 text-[16px] leading-relaxed max-w-lg">{app.description}</p>

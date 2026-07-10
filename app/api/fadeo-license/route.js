@@ -2,8 +2,20 @@ import { NextResponse } from "next/server";
 import { signLicense } from "@/lib/fadeo-license";
 import { promoState, redis, kvConfigured, PROMO_MAX_CLAIMS, PROMO_END, KV_COUNT_KEY } from "@/lib/fadeo-promo";
 
-export async function GET() {
+export async function GET(request) {
   const state = await promoState();
+  const debug = new URL(request.url).searchParams.get("debug");
+  if (debug === "1") {
+    // Boolean-only presence check, no values, to pin down env var naming mismatches
+    // without exposing anything sensitive.
+    state.env = {
+      UPSTASH_REDIS_REST_URL: Boolean(process.env.UPSTASH_REDIS_REST_URL),
+      UPSTASH_REDIS_REST_TOKEN: Boolean(process.env.UPSTASH_REDIS_REST_TOKEN),
+      KV_REST_API_URL: Boolean(process.env.KV_REST_API_URL),
+      KV_REST_API_TOKEN: Boolean(process.env.KV_REST_API_TOKEN),
+      FADEO_LICENSE_PRIVATE_KEY: Boolean(process.env.FADEO_LICENSE_PRIVATE_KEY),
+    };
+  }
   return NextResponse.json(state);
 }
 
