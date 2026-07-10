@@ -197,9 +197,11 @@ function GiveawayCard({ initialPromo }) {
   );
 }
 
-export default function FadeoClient({ release, initialPromo }) {
+export default function FadeoClient({ release, initialPromo, paymentLink }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
   const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
+  const checkoutUrl = paymentLink || "mailto:yashashwisinghania@gmail.com?subject=Fadeo%20license";
+  const checkoutLabel = paymentLink ? "Get a license" : "Get a license (email)";
 
   return (
     <div id="puremac-page" className="cursor-auto min-h-screen bg-[#050505] text-white" style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
@@ -327,17 +329,19 @@ export default function FadeoClient({ release, initialPromo }) {
                 fork it, build it yourself for free.
               </p>
               <a
-                href="mailto:yashashwisinghania@gmail.com?subject=Fadeo%20license"
+                href={checkoutUrl}
                 className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85 self-start"
                 style={{ backgroundColor: ACCENT }}
                 data-cursor="snap"
               >
-                Get a license
+                {checkoutLabel}
               </a>
-              <p className="text-[12px] text-white/35 mt-2.5">
-                Checkout is coming soon. For now this opens an email, reply with what you'd
-                like to pay and I'll send a key back.
-              </p>
+              {!paymentLink && (
+                <p className="text-[12px] text-white/35 mt-2.5">
+                  Checkout is coming soon. For now this opens an email, reply with what you'd
+                  like to pay and I'll send a key back.
+                </p>
+              )}
               <a
                 href="https://github.com/yashashwi-s/Fadeo"
                 className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white/75 transition-colors"
