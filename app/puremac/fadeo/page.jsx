@@ -19,7 +19,9 @@ export const metadata = {
 
 export default async function FadeoPage() {
   const [release, promo] = await Promise.all([latestRelease("Fadeo"), promoState()]);
-  // Real checkout once set; falls back to a mailto stopgap in the client otherwise.
-  const paymentLink = process.env.STRIPE_PAYMENT_LINK || null;
+  // Real checkout once either is set; falls back to a mailto stopgap in the client
+  // otherwise. Gumroad checked first since it's the active provider; Stripe stays wired
+  // for whenever/if that becomes available.
+  const paymentLink = process.env.GUMROAD_PRODUCT_URL || process.env.STRIPE_PAYMENT_LINK || null;
   return <FadeoClient release={release} initialPromo={promo} paymentLink={paymentLink} />;
 }
