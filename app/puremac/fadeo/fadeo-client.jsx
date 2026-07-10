@@ -200,7 +200,7 @@ function GiveawayCard({ initialPromo }) {
 export default function FadeoClient({ release, initialPromo, paymentLink }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
   const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
-  const checkoutUrl = paymentLink || "mailto:yashashwisinghania@gmail.com?subject=Fadeo%20license";
+  const checkoutUrl = paymentLink || "mailto:fadeo.puremac@gmail.com?subject=Fadeo%20license";
   const checkoutLabel = paymentLink ? "Get a license" : "Get a license (email)";
 
   return (
@@ -342,6 +342,10 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
                   like to pay and I'll send a key back.
                 </p>
               )}
+              <p className="text-[12px] text-white/35 mt-2.5">
+                Your license key arrives by email within a few minutes of purchase. If it
+                doesn't show up, check your spam folder first.
+              </p>
               <a
                 href="https://github.com/yashashwi-s/Fadeo"
                 className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white/75 transition-colors"
