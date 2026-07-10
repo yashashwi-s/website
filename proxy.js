@@ -37,6 +37,16 @@ export default function proxy(req) {
       url.pathname = `/cv${url.pathname}`;
       return NextResponse.rewrite(url);
     }
+  } else if (currentHost === 'puremac') {
+    if (url.pathname === '/favicon.ico') {
+      url.pathname = '/puremac/icon';
+      return NextResponse.rewrite(url);
+    }
+
+    if (!url.pathname.startsWith('/puremac')) {
+      url.pathname = `/puremac${url.pathname}`;
+      return NextResponse.rewrite(url);
+    }
   } else {
     // Main domain favicon fallback
     if (url.pathname === '/favicon.ico') {
