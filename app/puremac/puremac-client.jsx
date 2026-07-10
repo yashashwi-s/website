@@ -1,7 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { Download, Code2, ArrowUpRight, ArrowLeft } from "lucide-react";
+import {
+  Download,
+  Code2,
+  ArrowUpRight,
+  ArrowLeft,
+  Gauge,
+  Layers,
+  ShieldCheck,
+  Crop,
+  MousePointerClick,
+} from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 
 const APPS = [
@@ -12,16 +22,14 @@ const APPS = [
     tagline: "The right sound for what you're doing, automatically.",
     description:
       "Fadeo watches your workflow: the app in front, the desktop you're on, whether you're in a meeting. It plays, fades, or switches audio to match. Every rule is yours to define, down to the second.",
-    features: [
-      "Per-app and per-workspace audio rules, down to fade timing",
-      "Ambient noise synthesized on-device, no shipped audio files",
-      "Meeting-aware, Focus-mode-aware, zero steady-state polling",
-      "Idle CPU near 0%, single-digit MB resident",
+    stats: [
+      { icon: Gauge, label: "near 0% idle CPU" },
+      { icon: Layers, label: "no steady-state polling" },
+      { icon: ShieldCheck, label: "never touches system volume" },
     ],
     accent: "#67e4d2",
     license: "Open source · GPLv3",
-    price: "$2 lifetime license",
-    priceNote: "Fully functional either way. The license just removes a small reminder.",
+    price: "$2 lifetime",
     repo: "Fadeo",
     page: "/fadeo",
   },
@@ -32,109 +40,93 @@ const APPS = [
     tagline: "Any photo, perfectly fitted on your desktop.",
     description:
       "Tableau places photos directly on your desktop as borderless, always-on overlays that match each image's real aspect ratio: no cropping, no black bars, no forced grid sizes.",
-    features: [
-      "Any aspect ratio, exactly as shot",
-      "Floating mode: click-through, stays above windows",
-      "Folder rotation with custom intervals",
-      "~20MB RAM, zero CPU at idle",
+    stats: [
+      { icon: Crop, label: "any aspect ratio, exactly as shot" },
+      { icon: MousePointerClick, label: "click-through floating mode" },
+      { icon: Gauge, label: "~20MB RAM, zero CPU idle" },
     ],
     accent: "#f2b06d",
     license: "Open source · MIT",
     price: "Free",
-    priceNote: null,
     repo: "Tableau",
+    page: "/tableau",
   },
 ];
 
-function AppCard({ app, release }) {
+function AppRow({ app, release }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
   const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
 
   return (
-    <section
-      className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 sm:p-10 flex flex-col gap-6"
-      style={{ "--accent": app.accent }}
-    >
-      <div className="flex items-start gap-5">
-        <Image
-          src={app.icon}
-          alt={`${app.name} icon`}
-          width={72}
-          height={72}
-          className="rounded-[18px] shrink-0"
-        />
-        <div className="min-w-0">
-          <div className="flex items-center gap-2.5">
-            <h2 className="text-2xl font-semibold tracking-tight">{app.name}</h2>
-            {app.page && (
+    <section className="py-12 first:pt-0 border-b border-white/8 last:border-b-0">
+      <div className="flex flex-col sm:flex-row gap-8 sm:gap-10">
+        <a href={app.page} className="group flex items-start gap-5 sm:flex-col sm:items-start sm:w-40 shrink-0" data-cursor="snap">
+          <Image
+            src={app.icon}
+            alt={`${app.name} icon`}
+            width={80}
+            height={80}
+            className="rounded-[20px] shrink-0 transition-transform duration-300 group-hover:scale-[1.04] group-hover:-translate-y-0.5"
+          />
+          <div className="sm:mt-1">
+            <div className="flex items-center gap-1.5">
+              <h2 className="text-2xl font-semibold tracking-tight group-hover:text-white/80 transition-colors">
+                {app.name}
+              </h2>
+              <ArrowUpRight
+                size={16}
+                className="text-white/30 -translate-x-0.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
+              />
+            </div>
+            <p className="text-[13px] mt-0.5" style={{ color: app.accent }}>
+              {app.price}
+            </p>
+          </div>
+        </a>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-white/70 text-[16px] leading-relaxed max-w-lg">{app.description}</p>
+
+          <div className="flex flex-wrap gap-x-6 gap-y-2.5 mt-5">
+            {app.stats.map((s) => (
+              <div key={s.label} className="flex items-center gap-2 text-[13px] text-white/45">
+                <s.icon size={14} className="shrink-0" />
+                {s.label}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-4 mt-6">
+            {downloadUrl ? (
               <a
-                href={app.page}
-                className="text-[11.5px] font-medium px-2.5 py-1 rounded-full bg-white/10 text-white/70 hover:bg-white/15 hover:text-white transition-colors"
+                href={downloadUrl}
+                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85"
+                style={{ backgroundColor: app.accent }}
                 data-cursor="snap"
               >
-                Learn more
+                <Download size={15} strokeWidth={2.25} />
+                {downloadLabel}
+                {release?.tag && <span className="opacity-60 font-normal">{release.tag}</span>}
+              </a>
+            ) : (
+              <a
+                href={`https://github.com/yashashwi-s/${app.repo}`}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[13.5px] font-medium text-white/80 transition-colors hover:border-white/30"
+                data-cursor="snap"
+              >
+                Build from source
+                <ArrowUpRight size={14} />
               </a>
             )}
-          </div>
-          <p className="text-white/60 mt-1 text-[15px] leading-snug">{app.tagline}</p>
-        </div>
-      </div>
-
-      <p className="text-white/70 text-[15px] leading-relaxed">{app.description}</p>
-
-      <ul className="flex flex-col gap-2">
-        {app.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-white/55">
-            <span
-              className="mt-[7px] h-1 w-1 rounded-full shrink-0"
-              style={{ backgroundColor: app.accent }}
-            />
-            {f}
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-auto pt-2 flex flex-col gap-3">
-        <div className="flex items-center justify-between text-[13px]">
-          <span className="text-white/45">{app.license}</span>
-          <span className="font-medium" style={{ color: app.accent }}>
-            {app.price}
-          </span>
-        </div>
-        {app.priceNote && (
-          <p className="text-[12px] text-white/35 leading-snug -mt-1">{app.priceNote}</p>
-        )}
-
-        <div className="flex items-center gap-3 pt-1">
-          {downloadUrl ? (
-            <a
-              href={downloadUrl}
-              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85"
-              style={{ backgroundColor: app.accent }}
-              data-cursor="snap"
-            >
-              <Download size={15} strokeWidth={2.25} />
-              {downloadLabel}
-              {release?.tag && <span className="opacity-60 font-normal">{release.tag}</span>}
-            </a>
-          ) : (
             <a
               href={`https://github.com/yashashwi-s/${app.repo}`}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[13.5px] font-medium text-white/80 transition-colors hover:border-white/30"
+              className="inline-flex items-center gap-1.5 text-[13px] text-white/45 hover:text-white/75 transition-colors"
               data-cursor="snap"
             >
-              Build from source
-              <ArrowUpRight size={14} />
+              <Code2 size={14} />
+              Source
             </a>
-          )}
-          <a
-            href={`https://github.com/yashashwi-s/${app.repo}`}
-            className="inline-flex items-center gap-1.5 text-[13px] text-white/45 hover:text-white/75 transition-colors"
-            data-cursor="snap"
-          >
-            <Code2 size={14} />
-            Source
-          </a>
+          </div>
         </div>
       </div>
     </section>
@@ -166,7 +158,7 @@ export default function PureMacClient({ fadeo, tableau }) {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 sm:px-8 pt-16 pb-24">
-        <div className="mb-16">
+        <div className="mb-14">
           <div className="flex items-center gap-2 mb-5">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#67e4d2" }} />
             <span className="text-[13px] tracking-wide text-white/45 uppercase">PureMac</span>
@@ -180,9 +172,9 @@ export default function PureMacClient({ fadeo, tableau }) {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div>
           {APPS.map((app) => (
-            <AppCard key={app.id} app={app} release={releases[app.id]} />
+            <AppRow key={app.id} app={app} release={releases[app.id]} />
           ))}
         </div>
       </main>
