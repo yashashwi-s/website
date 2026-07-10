@@ -157,7 +157,7 @@ function GiveawayCard({ initialPromo }) {
         <div>
           <p className="text-white/60 text-[15px] leading-relaxed max-w-md">
             The first 100 people who ask get a lifetime license free, no card, no email. When they're
-            gone or the window closes, this card disappears and it's back to $2.
+            gone or the window closes, this card disappears and it's back to paying what you want.
           </p>
 
           {promo == null || !promo.active ? (
@@ -318,16 +318,29 @@ export default function FadeoClient({ release, initialPromo }) {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 sm:p-10 flex flex-col">
               <p className="text-[13px] tracking-wide uppercase text-white/40 mb-3">Pricing</p>
-              <p className="text-3xl font-semibold tracking-tight mb-1">$2</p>
-              <p className="text-white/50 text-[14px] mb-6">lifetime, one time</p>
+              <p className="text-3xl font-semibold tracking-tight mb-1">Pay what you want</p>
+              <p className="text-white/50 text-[14px] mb-6">$2 minimum, lifetime, one time</p>
               <p className="text-white/60 text-[14.5px] leading-relaxed">
-                Fadeo is fully functional without a license, forever. The license removes a
-                small, occasional reminder and says thanks for the two dollars. Source is
-                GPLv3; read it, fork it, build it yourself for free.
+                Fadeo is fully functional without a license, forever. The license just removes
+                a small, occasional reminder. Pay $2 if that's what you can spare, or more if
+                you use it daily and it feels worth it, you decide. Source is GPLv3; read it,
+                fork it, build it yourself for free.
+              </p>
+              <a
+                href="mailto:yashashwisinghania@gmail.com?subject=Fadeo%20license"
+                className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85 self-start"
+                style={{ backgroundColor: ACCENT }}
+                data-cursor="snap"
+              >
+                Get a license
+              </a>
+              <p className="text-[12px] text-white/35 mt-2.5">
+                Checkout is coming soon. For now this opens an email, reply with what you'd
+                like to pay and I'll send a key back.
               </p>
               <a
                 href="https://github.com/yashashwi-s/Fadeo"
-                className="mt-auto pt-6 inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white/75 transition-colors"
+                className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white/75 transition-colors"
                 data-cursor="snap"
               >
                 <Code2 size={14} />

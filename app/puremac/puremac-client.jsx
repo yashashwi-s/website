@@ -29,7 +29,7 @@ const APPS = [
     ],
     accent: "#67e4d2",
     license: "Open source · GPLv3",
-    price: "$2 lifetime",
+    price: "pay what you want",
     repo: "Fadeo",
     page: "/fadeo",
   },
