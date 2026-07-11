@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { signLicense } from "@/lib/fadeo-license";
+import { sendLicenseEmail } from "@/lib/send-license-email";
 import { promoState, claimSlot, releaseSlot, setClaimedCount, kvConfigured, PROMO_MAX_CLAIMS, PROMO_END } from "@/lib/fadeo-promo";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ACTIVATE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 
 function isAuthorizedAdmin(request) {
   const secret = process.env.ADMIN_SECRET;
@@ -28,12 +32,24 @@ export async function GET(request) {
   return NextResponse.json(state);
 }
 
-export async function POST() {
+export async function POST(request) {
   if (!kvConfigured() || !process.env.FADEO_LICENSE_PRIVATE_KEY) {
     return NextResponse.json({ error: "Giveaway isn't live yet." }, { status: 503 });
   }
   if (Date.now() >= PROMO_END.getTime()) {
     return NextResponse.json({ error: "This giveaway has ended." }, { status: 410 });
+  }
+
+  // Optional: emailing a copy is a convenience on top of the on-screen key, never a
+  // requirement to claim (the giveaway's whole pitch is "no card, no email").
+  let email = null;
+  try {
+    const body = await request.json();
+    if (typeof body?.email === "string" && EMAIL_RE.test(body.email.trim())) {
+      email = body.email.trim();
+    }
+  } catch {
+    // No body (or not JSON) is the normal case for the plain "claim" click -- fine.
   }
 
   // Atomic increment: reserves a slot before signing, so concurrent requests near the cap
@@ -44,8 +60,19 @@ export async function POST() {
   }
 
   try {
-    const { key } = signLicense({ note: `promo-${claimNumber}` });
-    return NextResponse.json({ key, claimNumber, max: PROMO_MAX_CLAIMS });
+    const mustActivateBy = new Date(Date.now() + ACTIVATE_WINDOW_MS);
+    const { key } = signLicense({ note: `promo-${claimNumber}`, mustActivateBy });
+    let emailed = false;
+    if (email) {
+      try {
+        await sendLicenseEmail({ to: email, key, mustActivateBy });
+        emailed = true;
+      } catch {
+        // Key is already reserved and valid on-screen; a mail-send failure shouldn't
+        // fail the claim itself, just silently skip the "we also emailed it" confirmation.
+      }
+    }
+    return NextResponse.json({ key, claimNumber, max: PROMO_MAX_CLAIMS, mustActivateBy: mustActivateBy.toISOString(), emailed });
   } catch {
     await releaseSlot(); // signing failed, give the slot back
     return NextResponse.json({ error: "Something went wrong. Try again in a moment." }, { status: 500 });

@@ -90,12 +90,19 @@ function GiveawayCard({ initialPromo }) {
   const [claimNumber, setClaimNumber] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState("");
+  const [mustActivateBy, setMustActivateBy] = useState(null);
+  const [emailed, setEmailed] = useState(false);
 
   async function claim() {
     setState("claiming");
     setError(null);
     try {
-      const res = await fetch("/api/fadeo-license", { method: "POST" });
+      const res = await fetch("/api/fadeo-license", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() || undefined }),
+      });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Something went wrong.");
@@ -104,6 +111,8 @@ function GiveawayCard({ initialPromo }) {
       }
       setLicenseKey(data.key);
       setClaimNumber(data.claimNumber);
+      setMustActivateBy(data.mustActivateBy);
+      setEmailed(Boolean(data.emailed));
       localStorage.setItem("fadeo-promo-key", data.key);
       setState("claimed");
       setPromo((p) => ({ ...p, claimed: data.claimNumber }));
@@ -151,13 +160,20 @@ function GiveawayCard({ initialPromo }) {
           </div>
           <p className="text-white/40 text-[12.5px] mt-3 leading-relaxed">
             Open Fadeo, About, Enter License Key. Save this somewhere; it won't be shown again.
+            {emailed && " We also emailed you a copy."}
           </p>
+          {mustActivateBy && (
+            <p className="text-white/40 text-[12.5px] mt-1.5 leading-relaxed">
+              Activate it by {new Date(mustActivateBy).toDateString()} (7 days) -- an unused code expires after
+              that. Once activated, it's yours for good.
+            </p>
+          )}
         </div>
       ) : (
         <div>
           <p className="text-white/60 text-[15px] leading-relaxed max-w-md">
-            The first 100 people who ask get a lifetime license free, no card, no email. When they're
-            gone or the window closes, this card disappears and it's back to paying what you want.
+            The first 100 people who ask get a lifetime license free, no card required. When they're gone or the
+            window closes, this card disappears and it's back to paying what you want.
           </p>
 
           {promo == null || !promo.active ? (
@@ -179,15 +195,25 @@ function GiveawayCard({ initialPromo }) {
                   <p className="text-white/40 text-[12.5px] mt-2">{remaining} of {promo.max} left</p>
                 </div>
               )}
-              <button
-                onClick={claim}
-                disabled={state === "claiming"}
-                className="mt-1 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
-                style={{ backgroundColor: ACCENT }}
-                data-cursor="snap"
-              >
-                {state === "claiming" ? "Claiming…" : "Claim a free license"}
-              </button>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email me a copy too (optional)"
+                className="w-full max-w-xs rounded-xl border border-white/10 bg-black/30 px-3.5 py-2 text-[13px] text-white/80 placeholder:text-white/30 outline-none focus:border-white/30 mb-3"
+              />
+              <div>
+                <button
+                  onClick={claim}
+                  disabled={state === "claiming"}
+                  className="mt-1 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
+                  style={{ backgroundColor: ACCENT }}
+                  data-cursor="snap"
+                >
+                  {state === "claiming" ? "Claiming…" : "Claim a free license"}
+                </button>
+              </div>
+              <p className="text-white/35 text-[12px] mt-3">Must be activated within 7 days, or the code expires.</p>
               {error && <p className="text-red-400/80 text-[12.5px] mt-3">{error}</p>}
             </>
           )}
