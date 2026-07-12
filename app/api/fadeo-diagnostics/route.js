@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { diagnosticsConfigured, submitSummary, allSummaries, aggregate } from "@/lib/fadeo-diagnostics";
 
 function isAuthorizedAdmin(request) {
-  const secret = process.env.ADMIN_SECRET;
+  const secret = process.env.ADMIN_KEY;
   const provided = request.headers.get("x-admin-secret");
   if (!secret || !provided) return false;
   const a = Buffer.from(secret);
@@ -32,7 +32,7 @@ export async function POST(request) {
   return NextResponse.json({ ok: true });
 }
 
-// Admin-only: the dashboard's data source. Requires x-admin-secret to match ADMIN_SECRET.
+// Admin-only: the dashboard's data source. Requires x-admin-secret to match ADMIN_KEY.
 export async function GET(request) {
   if (!isAuthorizedAdmin(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

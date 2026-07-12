@@ -8,7 +8,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ACTIVATE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
 
 function isAuthorizedAdmin(request) {
-  const secret = process.env.ADMIN_SECRET;
+  const secret = process.env.ADMIN_KEY;
   const provided = request.headers.get("x-admin-secret");
   if (!secret || !provided) return false;
   const a = Buffer.from(secret);
@@ -80,7 +80,7 @@ export async function POST(request) {
 }
 
 // Admin-only: force the claimed count to an exact value, e.g. undoing test claims made
-// while setting things up. Requires x-admin-secret to match ADMIN_SECRET, compared in
+// while setting things up. Requires x-admin-secret to match ADMIN_KEY, compared in
 // constant time so timing can't leak how much of a guess matched.
 export async function DELETE(request) {
   if (!isAuthorizedAdmin(request)) {
