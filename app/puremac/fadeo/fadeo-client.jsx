@@ -1,15 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   Download,
   Code2,
+  Globe,
+  Video,
+  Terminal,
+  Volume2,
+  VolumeX,
   ArrowUpRight,
   ArrowLeft,
+  ArrowRight,
   Check,
   Copy,
   Gift,
+  Mail,
   Layers,
   Gauge,
   ShieldCheck,
@@ -65,6 +72,371 @@ const STATS = [
   { icon: ShieldCheck, label: "System volume touched", value: "never" },
 ];
 
+// The interactive centerpiece. Each tile stands for an app being frontmost; clicking it
+// runs the exact same four-band decision the real app runs and switches the ambient sound
+// to match. Textures are synthesized live in the browser (Web Audio) so a visitor can hear
+// the crossfade, not just watch it. `texture: "silence"` is the Meetings override pausing
+// everything, which is the whole point of band 01.
+const CONTEXTS = [
+  {
+    id: "xcode",
+    app: "Xcode",
+    Icon: Code2,
+    workspace: "Deep Work",
+    color: "#67E4D2",
+    texture: "brown",
+    sound: "brown noise",
+    why: "Xcode is frontmost on Desktop 1. Deep Work wins on specificity.",
+  },
+  {
+    id: "safari",
+    app: "Safari",
+    Icon: Globe,
+    workspace: "Reading",
+    color: "#8AB4F8",
+    texture: "rain",
+    sound: "light rain",
+    why: "Safari is frontmost. Reading is the only candidate that matches.",
+  },
+  {
+    id: "zoom",
+    app: "Zoom",
+    Icon: Video,
+    workspace: "Meetings",
+    color: "#F2A65A",
+    texture: "silence",
+    sound: "paused",
+    why: "Camera and mic are live. The Meetings override pre-empts everything, audio pauses.",
+  },
+  {
+    id: "terminal",
+    app: "Terminal",
+    Icon: Terminal,
+    workspace: "Terminal, Desktop 2",
+    color: "#5AD1B4",
+    texture: "ocean",
+    sound: "ocean",
+    why: "Terminal on Desktop 2. Lowest priority, but nothing outranks it here.",
+  },
+];
+
+const MASTER = 0.22;
+const TEXTURES = {
+  brown: { type: "lowpass", freq: 380, Q: 0.7, gain: 0.95, swell: 0 },
+  rain: { type: "highpass", freq: 1200, Q: 0.5, gain: 0.5, swell: 0 },
+  ocean: { type: "lowpass", freq: 300, Q: 0.9, gain: 0.85, swell: 0.45 },
+  silence: null,
+};
+
+function makeNoiseBuffer(ctx, seconds) {
+  const len = Math.floor(ctx.sampleRate * seconds);
+  const buffer = ctx.createBuffer(1, len, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+  return buffer;
+}
+
+function ContextDemo() {
+  const [activeId, setActiveId] = useState("xcode");
+  const [soundOn, setSoundOn] = useState(false);
+  const audioRef = useRef(null);
+  const barsRef = useRef([]);
+  const activeRef = useRef(CONTEXTS[0]);
+  const soundOnRef = useRef(false);
+  const fadeTimerRef = useRef(null);
+
+  const active = CONTEXTS.find((c) => c.id === activeId) || CONTEXTS[0];
+  activeRef.current = active;
+
+  // One noise source through a reconfigurable filter -> swell (LFO-modulated for ocean)
+  // -> master (fades) -> analyser -> out. Built lazily on the first user gesture so nothing
+  // ever autoplays.
+  function initAudio() {
+    if (audioRef.current) return audioRef.current;
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    const ctx = new Ctx();
+    const src = ctx.createBufferSource();
+    src.buffer = makeNoiseBuffer(ctx, 2);
+    src.loop = true;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 380;
+    const swell = ctx.createGain();
+    swell.gain.value = 1;
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 0.12;
+    const lfoDepth = ctx.createGain();
+    lfoDepth.gain.value = 0;
+    lfo.connect(lfoDepth).connect(swell.gain);
+    const master = ctx.createGain();
+    master.gain.value = 0;
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 128;
+    src.connect(filter).connect(swell).connect(master).connect(analyser).connect(ctx.destination);
+    src.start();
+    lfo.start();
+    audioRef.current = { ctx, filter, lfoDepth, master, analyser, data: new Uint8Array(analyser.frequencyBinCount) };
+    return audioRef.current;
+  }
+
+  // Fade the current texture out, swap the filter, fade the new one in. Reads as a crossfade
+  // at this timescale and honestly mirrors the app's "fade or switch" behavior.
+  function applyTexture(textureKey) {
+    const a = audioRef.current;
+    if (!a) return;
+    const now = a.ctx.currentTime;
+    a.master.gain.cancelScheduledValues(now);
+    a.master.gain.setValueAtTime(a.master.gain.value, now);
+    a.master.gain.linearRampToValueAtTime(0, now + 0.25);
+    if (fadeTimerRef.current) window.clearTimeout(fadeTimerRef.current);
+    fadeTimerRef.current = window.setTimeout(() => {
+      const a2 = audioRef.current;
+      if (!a2 || !soundOnRef.current) return;
+      const tex = TEXTURES[textureKey];
+      if (!tex) return; // silence: leave master at 0
+      const t = a2.ctx.currentTime;
+      a2.filter.type = tex.type;
+      a2.filter.frequency.setValueAtTime(tex.freq, t);
+      a2.filter.Q.setValueAtTime(tex.Q, t);
+      a2.lfoDepth.gain.setValueAtTime(tex.swell, t);
+      a2.master.gain.setValueAtTime(0, t);
+      a2.master.gain.linearRampToValueAtTime(MASTER * tex.gain, t + 0.5);
+    }, 280);
+  }
+
+  function selectContext(ctx) {
+    setActiveId(ctx.id);
+    if (soundOnRef.current) applyTexture(ctx.texture);
+  }
+
+  async function toggleSound() {
+    if (soundOnRef.current) {
+      const a = audioRef.current;
+      if (a) {
+        const now = a.ctx.currentTime;
+        a.master.gain.cancelScheduledValues(now);
+        a.master.gain.setValueAtTime(a.master.gain.value, now);
+        a.master.gain.linearRampToValueAtTime(0, now + 0.3);
+      }
+      soundOnRef.current = false;
+      setSoundOn(false);
+      return;
+    }
+    const a = initAudio();
+    if (!a) return;
+    if (a.ctx.state === "suspended") await a.ctx.resume();
+    soundOnRef.current = true;
+    setSoundOn(true);
+    applyTexture(activeRef.current.texture);
+  }
+
+  // Visualizer: real frequency data when sound is on, a gentle synthetic sway otherwise, and
+  // nearly flat for a paused (silence) context. Bars are mutated directly so this never
+  // re-renders React each frame.
+  useEffect(() => {
+    let raf;
+    const loop = () => {
+      const bars = barsRef.current;
+      const a = audioRef.current;
+      const isSilence = activeRef.current.texture === "silence";
+      if (a && soundOnRef.current && !isSilence) {
+        a.analyser.getByteFrequencyData(a.data);
+        for (let i = 0; i < bars.length; i++) {
+          const el = bars[i];
+          if (!el) continue;
+          const v = a.data[(i * 2) % a.data.length] / 255;
+          el.style.transform = `scaleY(${(0.06 + v * 0.98).toFixed(3)})`;
+        }
+      } else {
+        const time = performance.now() / 1000;
+        const amp = isSilence ? 0.03 : 0.16;
+        for (let i = 0; i < bars.length; i++) {
+          const el = bars[i];
+          if (!el) continue;
+          const v = 0.06 + amp * (0.5 + 0.5 * Math.sin(time * 1.6 + i * 0.55));
+          el.style.transform = `scaleY(${v.toFixed(3)})`;
+        }
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (fadeTimerRef.current) window.clearTimeout(fadeTimerRef.current);
+      const a = audioRef.current;
+      if (a) a.ctx.close();
+    };
+  }, []);
+
+  return (
+    <div className="relative">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-x-16 -inset-y-10 opacity-60 blur-3xl"
+        style={{ background: `radial-gradient(50% 60% at 50% 40%, ${active.color}22, transparent 70%)`, transition: "background 600ms" }}
+      />
+      <div className="relative rounded-[26px] border border-white/12 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-4 sm:p-5 shadow-2xl shadow-black/50">
+        {/* Faux menu-bar strip: the apps you can be "in" */}
+        <div className="flex items-center justify-between rounded-2xl bg-black/40 border border-white/8 px-3 py-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {CONTEXTS.map((c) => {
+              const on = c.id === activeId;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => selectContext(c)}
+                  data-cursor="snap"
+                  className="group relative flex flex-col items-center gap-1 rounded-xl px-2.5 sm:px-3.5 py-2 transition-colors"
+                  style={{ backgroundColor: on ? `${c.color}1f` : "transparent" }}
+                >
+                  <span
+                    className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-[10px] border transition-colors"
+                    style={{
+                      borderColor: on ? `${c.color}80` : "rgba(255,255,255,0.12)",
+                      color: on ? c.color : "rgba(255,255,255,0.55)",
+                      backgroundColor: on ? `${c.color}14` : "rgba(255,255,255,0.03)",
+                    }}
+                  >
+                    <c.Icon size={17} strokeWidth={2} />
+                  </span>
+                  <span className="text-[10.5px] sm:text-[11px]" style={{ color: on ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)" }}>
+                    {c.app}
+                  </span>
+                  <span
+                    className="absolute -top-1 h-1 w-1 rounded-full transition-opacity"
+                    style={{ backgroundColor: c.color, opacity: on ? 1 : 0 }}
+                  />
+                </button>
+              );
+            })}
+          </div>
+          <button
+            onClick={toggleSound}
+            data-cursor="snap"
+            aria-label={soundOn ? "Mute" : "Turn on sound"}
+            className="shrink-0 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] transition-colors"
+            style={{
+              borderColor: soundOn ? `${ACCENT}66` : "rgba(255,255,255,0.15)",
+              color: soundOn ? ACCENT : "rgba(255,255,255,0.55)",
+            }}
+          >
+            {soundOn ? <Volume2 size={14} /> : <VolumeX size={14} />}
+            <span className="hidden sm:inline">{soundOn ? "Sound on" : "Hear it"}</span>
+          </button>
+        </div>
+
+        {/* Now playing: workspace, texture, live visualizer, and the reasoning trace */}
+        <div className="mt-4 px-2 sm:px-3 pb-2">
+          <div className="flex items-center gap-2.5">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: active.color, transition: "background 500ms" }} />
+            <span className="text-[15px] font-medium">{active.workspace}</span>
+            <span className="text-white/30">·</span>
+            <span className="text-[13.5px] text-white/50">{active.sound}</span>
+          </div>
+
+          <div className="mt-4 flex items-end gap-[3px] h-14">
+            {Array.from({ length: 32 }).map((_, i) => (
+              <span
+                key={i}
+                ref={(el) => { barsRef.current[i] = el; }}
+                className="flex-1 rounded-full origin-bottom"
+                style={{ height: "100%", backgroundColor: active.color, opacity: 0.85, transition: "background-color 500ms", transform: "scaleY(0.06)" }}
+              />
+            ))}
+          </div>
+
+          <div className="mt-4 flex items-start gap-2 rounded-xl bg-black/30 border border-white/6 px-3.5 py-2.5">
+            <span className="mt-[1px] text-[11px] font-mono shrink-0" style={{ color: active.color }}>why</span>
+            <p className="text-[13px] text-white/65 leading-relaxed">{active.why}</p>
+          </div>
+        </div>
+      </div>
+      <p className="text-center text-[12.5px] text-white/35 mt-4">
+        Click an app to switch context. Turn on sound to hear Fadeo fade between them.
+      </p>
+    </div>
+  );
+}
+
+function SubscribeBand() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState("idle"); // idle | sending | done | error
+  const [error, setError] = useState(null);
+
+  async function submit(e) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setState("sending");
+    setError(null);
+    try {
+      const res = await fetch("/api/fadeo-subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), source: "fadeo-page" }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Something went wrong.");
+        setState("error");
+        return;
+      }
+      setState("done");
+    } catch {
+      setError("Couldn't reach the server. Try again.");
+      setState("error");
+    }
+  }
+
+  return (
+    <section className="py-20 border-t border-white/8">
+      <div className="mx-auto max-w-xl text-center">
+        <div className="inline-flex items-center gap-2 mb-4 text-white/40">
+          <Mail size={15} />
+          <span className="text-[13px] tracking-wide uppercase">Stay in the loop</span>
+        </div>
+        <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight">Hear when Fadeo gets better.</h3>
+        <p className="text-white/55 text-[15px] mt-3 leading-relaxed">
+          An occasional note when there's a real new release worth your time. No spam, no more than a
+          handful a year, and one reply unsubscribes you.
+        </p>
+
+        {state === "done" ? (
+          <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[14px] text-white/80">
+            <Check size={16} style={{ color: ACCENT }} />
+            You're on the list. Thanks.
+          </div>
+        ) : (
+          <form onSubmit={submit} className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full flex-1 rounded-full border border-white/12 bg-black/30 px-5 py-3 text-[14px] text-white/85 placeholder:text-white/30 outline-none focus:border-white/35 transition-colors"
+            />
+            <button
+              type="submit"
+              disabled={state === "sending"}
+              className="shrink-0 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
+              style={{ backgroundColor: ACCENT }}
+              data-cursor="snap"
+            >
+              {state === "sending" ? "Adding…" : "Notify me"}
+              {state !== "sending" && <ArrowRight size={15} />}
+            </button>
+          </form>
+        )}
+        {state === "error" && <p className="text-red-400/80 text-[13px] mt-3">{error}</p>}
+      </div>
+    </section>
+  );
+}
+
 function Screenshot({ shot, reverse }) {
   return (
     <div className={`grid md:grid-cols-2 gap-8 md:gap-14 items-center ${reverse ? "md:[direction:rtl]" : ""}`}>
@@ -81,18 +453,25 @@ function Screenshot({ shot, reverse }) {
 
 function GiveawayCard({ initialPromo }) {
   const [promo, setPromo] = useState(initialPromo);
-  const [state, setState] = useState(() =>
-    typeof window !== "undefined" && localStorage.getItem("fadeo-promo-key") ? "claimed" : "idle"
-  );
-  const [licenseKey, setLicenseKey] = useState(() =>
-    typeof window !== "undefined" ? localStorage.getItem("fadeo-promo-key") : null
-  );
+  const [state, setState] = useState("idle");
+  const [licenseKey, setLicenseKey] = useState(null);
   const [claimNumber, setClaimNumber] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
   const [email, setEmail] = useState("");
   const [mustActivateBy, setMustActivateBy] = useState(null);
   const [emailed, setEmailed] = useState(false);
+
+  // Restore a previously claimed key after mount, never during render: this component is
+  // server-rendered too, and reading localStorage in a useState initializer causes a
+  // hydration mismatch for anyone who already claimed.
+  useEffect(() => {
+    const saved = localStorage.getItem("fadeo-promo-key");
+    if (saved) {
+      setLicenseKey(saved);
+      setState("claimed");
+    }
+  }, []);
 
   async function claim() {
     setState("claiming");
@@ -129,7 +508,6 @@ function GiveawayCard({ initialPromo }) {
   }
 
   const remaining = promo?.max != null && promo?.claimed != null ? Math.max(0, promo.max - promo.claimed) : null;
-  const isLive = promo?.active && state !== "claimed";
 
   return (
     <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-8 sm:p-10">
@@ -159,13 +537,14 @@ function GiveawayCard({ initialPromo }) {
             </button>
           </div>
           <p className="text-white/40 text-[12.5px] mt-3 leading-relaxed">
-            Open Fadeo, About, Enter License Key. Save this somewhere; it won't be shown again.
+            Open Fadeo, About, Enter License Key. Your key also stays saved in this browser, so it
+            will still be here if you come back on this device. Copy it somewhere safe anyway.
             {emailed && " We also emailed you a copy."}
           </p>
           {mustActivateBy && (
             <p className="text-white/40 text-[12.5px] mt-1.5 leading-relaxed">
-              Activate it by {new Date(mustActivateBy).toDateString()} (7 days) -- an unused code expires after
-              that. Once activated, it's yours for good.
+              Activate it by {new Date(mustActivateBy).toDateString()} (7 days). An unused code expires after
+              that and returns to the pool. Once activated, it's yours for good.
             </p>
           )}
         </div>
@@ -248,7 +627,7 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
 
       <main className="max-w-4xl mx-auto px-6 sm:px-8">
         {/* Hero */}
-        <section className="pt-20 pb-24">
+        <section className="pt-20 pb-12">
           <div className="flex items-center gap-5 mb-8">
             <Image
               src="/puremac/fadeo-icon.png"
@@ -303,8 +682,15 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
               View source
             </a>
           </div>
+        </section>
 
-          <div className="grid grid-cols-3 gap-4 mt-14 max-w-xl">
+        {/* Interactive centerpiece: play with the decision live */}
+        <section className="pb-16">
+          <ContextDemo />
+        </section>
+
+        <section className="pb-20">
+          <div className="grid grid-cols-3 gap-4 max-w-xl">
             {STATS.map((s) => (
               <div key={s.label}>
                 <s.icon size={16} className="text-white/40 mb-2" />
@@ -385,6 +771,9 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
             <GiveawayCard initialPromo={initialPromo} />
           </div>
         </section>
+
+        {/* Email capture */}
+        <SubscribeBand />
       </main>
 
       <footer className="max-w-4xl mx-auto px-6 sm:px-8 pb-14 pt-6 border-t border-white/8 flex items-center justify-between text-[12.5px] text-white/30">

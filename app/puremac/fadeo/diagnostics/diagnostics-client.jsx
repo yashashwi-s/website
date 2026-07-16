@@ -19,6 +19,7 @@ export default function DiagnosticsClient() {
   const [entered, setEntered] = useState(false);
   const [data, setData] = useState(null);
   const [feedback, setFeedback] = useState([]);
+  const [subscribers, setSubscribers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -42,11 +43,13 @@ export default function DiagnosticsClient() {
         return r.json();
       }),
       fetch("/api/fadeo-feedback", { headers }).then((r) => (r.ok ? r.json() : { feedback: [] })),
+      fetch("/api/fadeo-subscribe", { headers }).then((r) => (r.ok ? r.json() : { subscribers: [] })),
     ])
-      .then(([diag, fb]) => {
+      .then(([diag, fb, subs]) => {
         if (cancelled) return;
         setData(diag);
         setFeedback(fb.feedback || []);
+        setSubscribers(subs.subscribers || []);
         sessionStorage.setItem(STORAGE_KEY, secret);
       })
       .catch((e) => {
@@ -104,7 +107,7 @@ export default function DiagnosticsClient() {
           <>
             {loading && <p className="text-white/45 text-[14px]">Loading…</p>}
             {error && <p className="text-red-400/80 text-[14px]">{error}</p>}
-            {data && <Dashboard data={data} feedback={feedback} />}
+            {data && <Dashboard data={data} feedback={feedback} subscribers={subscribers} />}
           </>
         )}
       </main>
@@ -112,7 +115,7 @@ export default function DiagnosticsClient() {
   );
 }
 
-function Dashboard({ data, feedback }) {
+function Dashboard({ data, feedback, subscribers }) {
   const s = data.summary;
   return (
     <>
@@ -154,6 +157,8 @@ function Dashboard({ data, feedback }) {
         </ul>
       </section>
 
+      <Subscribers subscribers={subscribers} />
+
       <section>
         <SectionTitle>Installs ({data.installs.length})</SectionTitle>
         <div className="overflow-x-auto">
@@ -183,6 +188,46 @@ function Dashboard({ data, feedback }) {
         </div>
       </section>
     </>
+  );
+}
+
+function Subscribers({ subscribers }) {
+  const [copied, setCopied] = useState(false);
+  function copyAll() {
+    navigator.clipboard.writeText(subscribers.map((s) => s.email).join(", "));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  }
+  return (
+    <section className="mb-12">
+      <div className="flex items-center gap-4 mb-4">
+        <h2 className="text-[12.5px] uppercase tracking-wide text-white/40">Subscribers ({subscribers.length})</h2>
+        {subscribers.length > 0 && (
+          <button
+            onClick={copyAll}
+            className="rounded-full border border-white/10 px-3 py-1 text-[12px] text-white/50 hover:text-white/80 transition-colors"
+            data-cursor="snap"
+          >
+            {copied ? "Copied" : "Copy all emails"}
+          </button>
+        )}
+      </div>
+      {subscribers.length === 0 ? (
+        <p className="text-white/35 text-[14px]">No subscribers yet.</p>
+      ) : (
+        <ul className="space-y-1.5">
+          {subscribers.map((s) => (
+            <li key={s.email} className="flex items-baseline gap-3 text-[13px]">
+              <span className="text-white/75">{s.email}</span>
+              {s.subscribedAt && (
+                <span className="text-[12px] text-white/30">{new Date(s.subscribedAt).toLocaleDateString()}</span>
+              )}
+              {s.source && <span className="text-[11.5px] text-white/25">{s.source}</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 
