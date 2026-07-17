@@ -475,15 +475,31 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
         <SubscribeBand />
       </main>
 
-      <footer className="max-w-4xl mx-auto px-6 sm:px-8 pb-14 pt-6 border-t border-white/8 flex items-center justify-between text-[12.5px] text-white/30">
+      <footer className="max-w-4xl mx-auto px-6 sm:px-8 pb-14 pt-6 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-[12.5px] text-white/30">
         <span>Ad-hoc signed. Gatekeeper will ask once, which is expected for indie apps outside the App Store.</span>
-        <a
-          href="https://github.com/yashashwi-s/Fadeo"
-          className="hover:text-white/60 transition-colors shrink-0 ml-4"
-          data-cursor="snap"
-        >
-          github.com/yashashwi-s/Fadeo
-        </a>
+        <div className="flex items-center gap-4 shrink-0">
+          <a
+            href="/puremac/fadeo/privacy"
+            className="hover:text-white/60 transition-colors"
+            data-cursor="snap"
+          >
+            Privacy
+          </a>
+          <a
+            href="/puremac/fadeo/terms"
+            className="hover:text-white/60 transition-colors"
+            data-cursor="snap"
+          >
+            Terms
+          </a>
+          <a
+            href="https://github.com/yashashwi-s/Fadeo"
+            className="hover:text-white/60 transition-colors"
+            data-cursor="snap"
+          >
+            GitHub
+          </a>
+        </div>
       </footer>
     </div>
   );
