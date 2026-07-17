@@ -136,6 +136,17 @@ function makeNoiseBuffer(ctx, seconds) {
   return buffer;
 }
 
+// A still, gentle waveform for when motion is reduced or the demo is idle: a fixed shape,
+// flatter for a paused (silence) context.
+function paintStaticBars(bars, isSilence) {
+  for (let i = 0; i < bars.length; i++) {
+    const el = bars[i];
+    if (!el) continue;
+    const v = isSilence ? 0.07 : 0.1 + 0.34 * (0.5 + 0.5 * Math.sin(i * 0.5));
+    el.style.transform = `scaleY(${v.toFixed(3)})`;
+  }
+}
+
 function ContextDemo() {
   const [activeId, setActiveId] = useState("xcode");
   const [soundOn, setSoundOn] = useState(false);
@@ -144,6 +155,7 @@ function ContextDemo() {
   const activeRef = useRef(CONTEXTS[0]);
   const soundOnRef = useRef(false);
   const fadeTimerRef = useRef(null);
+  const reduceRef = useRef(false);
 
   const active = CONTEXTS.find((c) => c.id === activeId) || CONTEXTS[0];
   activeRef.current = active;
@@ -233,8 +245,15 @@ function ContextDemo() {
 
   // Visualizer: real frequency data when sound is on, a gentle synthetic sway otherwise, and
   // nearly flat for a paused (silence) context. Bars are mutated directly so this never
-  // re-renders React each frame.
+  // re-renders React each frame. When the visitor prefers reduced motion, hold a still shape
+  // instead of animating.
   useEffect(() => {
+    const mq = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+    reduceRef.current = Boolean(mq && mq.matches);
+    if (reduceRef.current) {
+      paintStaticBars(barsRef.current, activeRef.current.texture === "silence");
+      return;
+    }
     let raf;
     const loop = () => {
       const bars = barsRef.current;
@@ -264,6 +283,11 @@ function ContextDemo() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // Under reduced motion the loop is off, so repaint the still shape when the context changes.
+  useEffect(() => {
+    if (reduceRef.current) paintStaticBars(barsRef.current, active.texture === "silence");
+  }, [activeId, soundOn, active.texture]);
+
   useEffect(() => {
     return () => {
       if (fadeTimerRef.current) window.clearTimeout(fadeTimerRef.current);
@@ -281,7 +305,7 @@ function ContextDemo() {
       />
       <div className="relative rounded-[26px] border border-white/12 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-4 sm:p-5 shadow-2xl shadow-black/50">
         {/* Faux menu-bar strip: the apps you can be "in" */}
-        <div className="flex items-center justify-between rounded-2xl bg-black/40 border border-white/8 px-3 py-2.5">
+        <div className="flex items-center justify-between gap-2 flex-wrap rounded-2xl bg-black/40 border border-white/8 px-3 py-2.5">
           <div className="flex items-center gap-1.5 sm:gap-2">
             {CONTEXTS.map((c) => {
               const on = c.id === activeId;
@@ -414,6 +438,7 @@ function SubscribeBand() {
             <input
               type="email"
               required
+              aria-label="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
@@ -441,7 +466,7 @@ function Screenshot({ shot, reverse }) {
   return (
     <div className={`grid md:grid-cols-2 gap-8 md:gap-14 items-center ${reverse ? "md:[direction:rtl]" : ""}`}>
       <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40" style={{ direction: "ltr" }}>
-        <Image src={shot.src} alt={`${shot.title} screenshot`} width={1800} height={1514} className="w-full h-auto" />
+        <Image src={shot.src} alt={`${shot.title} screenshot`} width={1800} height={1264} className="w-full h-auto" />
       </div>
       <div style={{ direction: "ltr" }}>
         <h3 className="text-xl font-semibold tracking-tight mb-3">{shot.title}</h3>
@@ -576,6 +601,7 @@ function GiveawayCard({ initialPromo }) {
               )}
               <input
                 type="email"
+                aria-label="Email address (optional)"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email me a copy too (optional)"
@@ -609,7 +635,7 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
   const checkoutLabel = paymentLink ? "Get a license" : "Get a license (email)";
 
   return (
-    <div id="puremac-page" className="cursor-auto min-h-screen bg-[#050505] text-white" style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
+    <div id="puremac-page" className="cursor-auto min-h-screen overflow-x-clip bg-[#050505] text-white" style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
       <style>{`body:has(#puremac-page) .noise-bg { display: none; }`}</style>
       <CustomCursor />
 
@@ -626,32 +652,31 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
       </header>
 
       <main className="max-w-4xl mx-auto px-6 sm:px-8">
-        {/* Hero */}
-        <section className="pt-20 pb-12">
-          <div className="flex items-center gap-5 mb-8">
+        {/* Hero: the interactive demo is the centerpiece, everything else frames it */}
+        <section className="pt-14 sm:pt-20 pb-16 text-center">
+          <div className="flex items-center justify-center gap-2.5 mb-8">
             <Image
               src="/puremac/fadeo-icon.png"
               alt="Fadeo icon"
-              width={72}
-              height={72}
-              className="rounded-[18px]"
+              width={30}
+              height={30}
+              className="rounded-[8px]"
             />
-            <div>
-              <h1 className="text-3xl font-semibold tracking-tight">Fadeo</h1>
-              <p className="text-white/55 text-[15px] mt-0.5">for macOS 14 and later</p>
-            </div>
+            <span className="text-[14px] text-white/70 font-medium">Fadeo</span>
+            <span className="text-white/20">·</span>
+            <span className="text-[14px] text-white/40">macOS 14 and later</span>
           </div>
 
-          <h2 className="text-4xl sm:text-[3.2rem] font-semibold tracking-tight leading-[1.08] max-w-2xl">
+          <h1 className="mx-auto max-w-3xl text-4xl sm:text-6xl font-semibold tracking-tight leading-[1.04]">
             The right sound for what you're doing, automatically.
-          </h2>
-          <p className="text-white/55 text-[16.5px] mt-5 max-w-lg leading-relaxed">
+          </h1>
+          <p className="mx-auto max-w-xl text-white/55 text-[16.5px] mt-6 leading-relaxed">
             Fadeo watches the app in front of you, the desktop you're on, whether you're in a
-            meeting or heads-down. It plays, fades, or switches audio to match, on rules you
-            define down to the second.
+            meeting or heads-down, and plays, fades, or switches audio to match. Rules you define,
+            down to the second.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 mt-9">
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-9">
             {downloadUrl ? (
               <a
                 href={downloadUrl}
@@ -682,17 +707,15 @@ export default function FadeoClient({ release, initialPromo, paymentLink }) {
               View source
             </a>
           </div>
-        </section>
 
-        {/* Interactive centerpiece: play with the decision live */}
-        <section className="pb-16">
-          <ContextDemo />
-        </section>
+          {/* The artifact you can play with, front and center */}
+          <div className="mx-auto max-w-2xl mt-16 sm:mt-20 text-left">
+            <ContextDemo />
+          </div>
 
-        <section className="pb-20">
-          <div className="grid grid-cols-3 gap-4 max-w-xl">
+          <div className="mx-auto max-w-lg grid grid-cols-3 gap-4 mt-16">
             {STATS.map((s) => (
-              <div key={s.label}>
+              <div key={s.label} className="flex flex-col items-center text-center">
                 <s.icon size={16} className="text-white/40 mb-2" />
                 <p className="text-[13.5px] font-medium">{s.value}</p>
                 <p className="text-[12px] text-white/40 mt-0.5">{s.label}</p>

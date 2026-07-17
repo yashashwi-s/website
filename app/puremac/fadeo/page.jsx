@@ -10,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: "Fadeo: the right sound for what you're doing",
     description: "Automatic, fully customizable workflow audio for macOS. Native, open source, pay what you want.",
-    url: "https://puremac.yashashwi.me/fadeo",
+    url: "https://puremac.yashashwi.me/puremac/fadeo",
     siteName: "PureMac",
     locale: "en_US",
     type: "website",

@@ -2,10 +2,30 @@ import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { signLicense } from "@/lib/fadeo-license";
 import { sendLicenseEmail } from "@/lib/send-license-email";
-import { promoState, claimSlot, releaseSlot, setClaimedCount, kvConfigured, PROMO_MAX_CLAIMS, PROMO_END } from "@/lib/fadeo-promo";
+import { promoState, claimSlot, releaseSlot, setClaimedCount, recordIssued, kvConfigured, PROMO_MAX_CLAIMS, PROMO_END } from "@/lib/fadeo-promo";
+import { withRedis } from "@/lib/redis";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ACTIVATE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+// Cheap friction so a single client can't script the whole 100-key pool away. Generous
+// enough that a real person (and a couple of retries, or a small shared office IP) never
+// hits it. Fails OPEN: any Redis hiccup skips the check rather than blocking a claim.
+const PROMO_IP_DAILY_CAP = 5;
+
+async function overIpCap(request) {
+  try {
+    const ip = (request.headers.get("x-forwarded-for") || "").split(",")[0].trim();
+    if (!ip) return false; // can't identify the caller, don't block
+    return await withRedis(async (r) => {
+      const key = `fadeo:promo:ip:${ip}`;
+      const n = await r.incr(key);
+      if (n === 1) await r.expire(key, 24 * 60 * 60);
+      return n > PROMO_IP_DAILY_CAP;
+    });
+  } catch {
+    return false;
+  }
+}
 
 function isAuthorizedAdmin(request) {
   const secret = process.env.ADMIN_KEY;
@@ -52,6 +72,13 @@ export async function POST(request) {
     // No body (or not JSON) is the normal case for the plain "claim" click -- fine.
   }
 
+  if (await overIpCap(request)) {
+    return NextResponse.json(
+      { error: "You've claimed a few already today. If you need another, email fadeo.puremac@gmail.com." },
+      { status: 429 }
+    );
+  }
+
   // Atomic increment: reserves a slot before signing, so concurrent requests near the cap
   // can't both succeed. If we overshoot, back off immediately and don't mint a key.
   const claimNumber = await claimSlot();
@@ -61,7 +88,10 @@ export async function POST(request) {
 
   try {
     const mustActivateBy = new Date(Date.now() + ACTIVATE_WINDOW_MS);
-    const { key } = signLicense({ note: `promo-${claimNumber}`, mustActivateBy });
+    const { key, id } = signLicense({ note: `promo-${claimNumber}`, mustActivateBy });
+    // Track the issued key so the reclaim sweep can free this slot if it's never activated.
+    // Best-effort: a bookkeeping failure must not fail an otherwise-valid claim.
+    try { await recordIssued({ id, claimNumber, mustActivateBy }); } catch { /* non-fatal */ }
     let emailed = false;
     if (email) {
       try {
