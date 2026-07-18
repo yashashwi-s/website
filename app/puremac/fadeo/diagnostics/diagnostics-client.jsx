@@ -120,6 +120,8 @@ function Dashboard({ data, feedback, subscribers }) {
   return (
     <>
       <div className="flex flex-wrap gap-x-8 gap-y-3 mb-10 pb-8 border-b border-white/8">
+        <Stat label="Downloads" value={data.downloads ? data.downloads.total.toLocaleString() : "—"} />
+        <Stat label="Free keys claimed" value={data.promo && data.promo.claimed != null ? `${data.promo.claimed} / ${data.promo.max}` : "—"} />
         <Stat label="Installs" value={s.totalInstalls.toLocaleString()} />
         <Stat label="Active 7d" value={s.activeLast7d.toLocaleString()} />
         <Stat label="Licensed" value={`${s.licensedCount} (${pct(s.conversionRate)})`} />
@@ -131,6 +133,7 @@ function Dashboard({ data, feedback, subscribers }) {
       </div>
 
       <div className="grid sm:grid-cols-2 gap-x-12 gap-y-10 mb-12">
+        <Bars title="Downloads by release" counts={data.downloads?.byRelease} total={data.downloads?.total} />
         <Bars title="Sources used (installs)" counts={s.sourceAdoption} total={s.totalInstalls} />
         <Bars title="Triggers used (installs)" counts={s.triggerAdoption} total={s.totalInstalls} />
         <Bars title="Ambient presets (installs)" counts={s.presetAdoption} total={s.totalInstalls} />

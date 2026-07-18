@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { diagnosticsConfigured, submitSummary, allSummaries, aggregate } from "@/lib/fadeo-diagnostics";
+import { totalDownloads } from "@/lib/github-release";
+import { promoState } from "@/lib/fadeo-promo";
 
 function isAuthorizedAdmin(request) {
   const secret = process.env.ADMIN_KEY;
@@ -40,7 +42,14 @@ export async function GET(request) {
   if (!diagnosticsConfigured()) {
     return NextResponse.json({ error: "Not configured." }, { status: 503 });
   }
-  const rows = await allSummaries();
+  // Downloads (GitHub) and promo claims (Redis) are independent of the install summaries
+  // and of each other, so fetch all three in parallel. Both extras fail soft to null: a
+  // GitHub hiccup or an unconfigured giveaway must not take down the whole dashboard.
+  const [rows, downloads, promo] = await Promise.all([
+    allSummaries(),
+    totalDownloads("Fadeo"),
+    promoState().catch(() => null),
+  ]);
   rows.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
-  return NextResponse.json({ summary: aggregate(rows), installs: rows });
+  return NextResponse.json({ summary: aggregate(rows), installs: rows, downloads, promo });
 }
