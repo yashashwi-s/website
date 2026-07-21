@@ -8,12 +8,15 @@ export default function CustomCursor() {
   const hoverStateRef = useRef("default");
   const hasPositioned = useRef(false);
 
-  // Use springs for ultra-smooth physical cursor movement
+  // Position tracks the mouse continuously, so a looser spring reads as smooth follow.
   const cursorX = useSpring(-100, { damping: 25, stiffness: 300, mass: 0.5 });
   const cursorY = useSpring(-100, { damping: 25, stiffness: 300, mass: 0.5 });
-  const cursorWidth = useSpring(16, { damping: 25, stiffness: 300, mass: 0.5 });
-  const cursorHeight = useSpring(16, { damping: 25, stiffness: 300, mass: 0.5 });
-  const cursorRadius = useSpring(8, { damping: 25, stiffness: 300, mass: 0.5 });
+  // Shape snaps between a 16px dot and a full button's size in one jump, so it needs a
+  // much stiffer/tighter spring — the looser config above took ~700ms to settle here,
+  // which read as the cursor being "dragged" into the target instead of snapping onto it.
+  const cursorWidth = useSpring(16, { damping: 34, stiffness: 700, mass: 0.4 });
+  const cursorHeight = useSpring(16, { damping: 34, stiffness: 700, mass: 0.4 });
+  const cursorRadius = useSpring(8, { damping: 34, stiffness: 700, mass: 0.4 });
   const textOpacity = useSpring(0, { damping: 25, stiffness: 300 });
 
   const updateCursorShape = useCallback((mx, my) => {

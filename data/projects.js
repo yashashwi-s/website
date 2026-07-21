@@ -1,5 +1,19 @@
 export const projects = [
   {
+    title: "Fadeo",
+    description:
+      "A macOS menu bar app that watches your workflow — the app in front, the desktop you're on, whether you're in a meeting — and plays, fades, or switches audio to match. Every rule is yours to define, down to the second.",
+    tags: ["Swift", "SwiftUI", "macOS", "Audio"],
+    github: "https://github.com/yashashwi-s/Fadeo",
+    live: "https://puremac.yashashwi.me/fadeo",
+    type: "personal",
+    featured: true,
+    emoji: "🔊",
+    color: "#67e4d2", // Fadeo's own accent teal
+    image: "/puremac/fadeo/screenshot-workspaces.png",
+    order: 5,
+  },
+  {
     title: "Tableau",
     description:
       "A macOS menu bar app that places photos on your desktop as borderless, always-on-desktop overlays — perfectly matching each image's native aspect ratio. No cropping, no black bars.",

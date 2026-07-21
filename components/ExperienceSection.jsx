@@ -104,14 +104,16 @@ export default function ExperienceSection() {
       {/* Cards Container */}
       <div className="-mt-[100svh] relative z-10">
         {experience.map((exp, i) => (
-          <ExperienceCard 
-            key={i} 
-            exp={exp} 
-            i={i} 
-            progress={scrollYProgress} 
-            total={experience.length} 
+          <ExperienceCard
+            key={i}
+            exp={exp}
+            i={i}
+            progress={scrollYProgress}
+            total={experience.length}
           />
         ))}
+        {/* Without this, the last card's sticky "budget" within this shared container hits 0 and it never dwells pinned before releasing. */}
+        <div className="h-[100svh]" aria-hidden="true" />
       </div>
     </section>
   );
