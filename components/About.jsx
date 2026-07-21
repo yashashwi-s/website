@@ -34,7 +34,15 @@ export default function About() {
   });
 
   const words = personal.bio.split(" ");
-  
+
+  // Reveal completes by 70% scroll progress, leaving room to breathe before
+  // the right column and links take over. Each word's fade window is widened
+  // well past its own 1/N slice so several neighboring words are always
+  // fading in at once — a soft wave instead of a hard word-by-word snap.
+  const REVEAL_END = 0.7;
+  const perWord = REVEAL_END / words.length;
+  const fadeWindow = Math.max(perWord * 6, 0.035);
+
   // Visual clue opacity (fade out as they scroll)
   const visualClueOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
 
@@ -77,9 +85,8 @@ export default function About() {
 
             <p className="text-xl md:text-3xl leading-[1.5] md:leading-[1.5] font-medium tracking-tight flex flex-wrap gap-x-2.5 gap-y-1.5 md:gap-x-3.5 md:gap-y-2">
               {words.map((word, i) => {
-                const start = i / words.length;
-                const end = start + (1 / words.length);
-                const range = [start * 0.7, end * 0.7];
+                const start = i * perWord;
+                const range = [start, Math.min(start + fadeWindow, 1)];
                 return <Word key={i} progress={scrollYProgress} range={range}>{word}</Word>;
               })}
             </p>
@@ -95,9 +102,9 @@ export default function About() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-colors duration-300 uppercase tracking-widest text-xs group"
+                    className="inline-flex items-center gap-2.5 px-6 py-4 rounded-full border border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-colors duration-300 uppercase tracking-widest text-xs group"
                   >
-                    <link.icon size={14} />
+                    <link.icon size={14} className="transition-transform duration-300 group-hover:scale-110" />
                     <ScrambleText text={link.label} />
                   </a>
                 </Magnetic>
@@ -106,11 +113,13 @@ export default function About() {
           </div>
 
           {/* Right Column — Quick Facts & Interests */}
-          <motion.div 
-            style={{ 
-              opacity: infoOpacity, 
+          <motion.div
+            style={{
+              opacity: infoOpacity,
               y: infoY,
-              pointerEvents: useTransform(scrollYProgress, [0.4, 0.41], ["none", "auto"])
+              // Content fades in across 0.4 - 0.6; only becomes clickable once
+              // it's ~75% legible (0.55) instead of the moment it starts appearing.
+              pointerEvents: useTransform(scrollYProgress, [0.55, 0.56], ["none", "auto"])
             }}
             className="lg:col-span-5 flex flex-col gap-10"
           >
@@ -155,8 +164,8 @@ export default function About() {
                 className="border border-white/10 rounded-2xl p-6 bg-white/[0.02] group hover:border-white/20 transition-colors"
               >
                 <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30 mb-3">Competitive Programming</div>
-                <div className="text-3xl font-black text-white tracking-tight mb-1">1720</div>
-                <div className="text-sm text-white/40">Codeforces Rating • hackerman15</div>
+                <div className="text-3xl font-black text-white tracking-tight mb-1">{personal.codeforcesRating}</div>
+                <div className="text-sm text-white/40">Codeforces Rating • {personal.codeforcesHandle}</div>
               </a>
             )}
           </motion.div>

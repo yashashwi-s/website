@@ -31,8 +31,11 @@ const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
       className="w-full h-[70%] relative overflow-hidden mb-6 bg-[#111] border border-white/10 group"
     >
       <motion.div
-        style={{ x: imageX, scale: 1.1 }}
-        className="relative w-full h-full transform transition-transform duration-700 ease-out group-hover:scale-100"
+        style={{ x: imageX }}
+        initial={{ scale: 1.1 }}
+        whileHover={{ scale: 1 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full h-full"
       >
         <Image
           src={project.image || FALLBACK_IMAGE}
@@ -71,7 +74,10 @@ export default function HorizontalGallery() {
     target: targetRef,
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-85%"]); // Adjust based on number of items
+  // Tuned for 5 cards (40vw intro + 5x60vw cards + 20vw trailing spacer).
+  // -85% overshot the actual scrollable distance, leaving a stretch of dead
+  // scroll (empty background) at the very end of the section.
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
   const imageX = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   // Kinetic Skew for Desktop
@@ -84,13 +90,25 @@ export default function HorizontalGallery() {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
-    if (carouselRef.current) {
-      setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
-    }
+    const updateWidth = () => {
+      if (carouselRef.current) {
+        setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  // Sort projects like before
-  const sortedProjects = [...projects].sort((a, b) => (a.order || 99) - (b.order || 99)).slice(0, 5); // Take top 5 for gallery
+  // Featured projects take priority; ties (and the rest) fall back to `order`.
+  // This keeps WIP/fork entries with a low `order` from bumping actual
+  // featured work out of the "Selected Works" gallery.
+  const sortedProjects = [...projects]
+    .sort((a, b) => {
+      if (!!a.featured !== !!b.featured) return a.featured ? -1 : 1;
+      return (a.order || 99) - (b.order || 99);
+    })
+    .slice(0, 5); // Take top 5 for gallery
 
   return (
     <section id="projects" ref={targetRef} className="relative md:h-[400vh] bg-[#050505]">
@@ -134,7 +152,7 @@ export default function HorizontalGallery() {
       </div>
 
       {/* Mobile Drag Carousel View */}
-      <div className="md:hidden flex flex-col py-20 overflow-hidden" ref={carouselRef}>
+      <div className="md:hidden flex flex-col py-20 overflow-hidden">
         <div className="px-6 mb-10">
           <h2 className="text-5xl font-black uppercase tracking-tighter text-white">
             Selected <br /> Works
@@ -142,9 +160,11 @@ export default function HorizontalGallery() {
           <div className="h-1 w-16 bg-white mt-6" />
         </div>
 
-        <motion.div 
-          drag="x" 
+        <motion.div
+          ref={carouselRef}
+          drag="x"
           dragConstraints={{ right: 0, left: -width }}
+          dragElastic={0.08}
           className="flex gap-6 px-6 cursor-grab active:cursor-grabbing"
         >
           {sortedProjects.map((project, idx) => (

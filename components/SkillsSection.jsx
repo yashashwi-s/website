@@ -57,7 +57,7 @@ function SkillCard({ group, index }) {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       className="relative rounded-3xl bg-[#0a0a0a] border border-white/5 p-8 md:p-10 group cursor-default"
     >
       {/* Spotlight Glow */}
@@ -91,7 +91,7 @@ function SkillCard({ group, index }) {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.05 + index * 0.1 }}
+                transition={{ duration: 0.4, delay: i * 0.035 + index * 0.07 }}
                 className="px-4 py-2 md:px-5 md:py-2.5 rounded-full border border-white/5 bg-white/[0.03] text-white/70 font-medium text-sm md:text-base hover:bg-white hover:text-black hover:border-white transition-colors duration-300 select-none"
               >
                 {skill}

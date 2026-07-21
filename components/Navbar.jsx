@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { personal } from "@/data/personal";
 import { Menu, X } from "lucide-react";
 import Magnetic from "@/components/Magnetic";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 const navLinks = [
   { label: "Projects", href: "#projects" },
@@ -20,6 +20,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const shouldReduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -71,9 +72,9 @@ export default function Navbar() {
     <>
       {/* Desktop Floating Dock */}
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
+        initial={shouldReduceMotion ? false : { y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.3 }}
+        transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: shouldReduceMotion ? 0 : 0.3 }}
         className={`hidden md:flex fixed top-8 left-1/2 -translate-x-1/2 z-50 items-center px-2 py-2 rounded-full transition-all duration-500 border ${
           scrolled
             ? "bg-[#0a0a0a]/80 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.8)]"
@@ -132,6 +133,8 @@ export default function Navbar() {
           </a>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
             className="p-2 -mr-2 text-white/70 hover:text-white transition-colors relative z-50"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -156,9 +159,9 @@ export default function Navbar() {
                   href={link.href}
                   {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: shouldReduceMotion ? 0 : i * 0.07, ease: [0.22, 1, 0.36, 1] }}
                   className="text-3xl font-black text-white/70 hover:text-white uppercase tracking-tighter transition-colors"
                 >
                   {link.label}

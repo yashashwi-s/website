@@ -33,11 +33,11 @@ function AchievementRow({ item, index }) {
           {/* Right Side (Link or Text) */}
           {item.detail && (
             item.link ? (
-              <a 
+              <a
                 href={item.link}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center lg:justify-end px-4 md:px-8 py-8 lg:py-0 cursor-pointer pointer-events-auto"
+                className="flex items-center lg:justify-end lg:self-center px-4 md:px-8 py-8 lg:py-0 cursor-pointer pointer-events-auto"
               >
                 <span className="font-mono text-xs md:text-sm uppercase tracking-widest text-left lg:text-right">
                   {item.detail} <span className="ml-2">↗</span>
@@ -123,7 +123,7 @@ export default function AchievementsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden border border-white/10 rounded-3xl p-10 md:p-14 group hover:border-white/30 transition-colors bg-gradient-to-br from-white/[0.02] to-transparent"
+                className="relative overflow-hidden border border-white/10 rounded-3xl p-10 md:p-14 group hover:border-white/20 transition-colors bg-gradient-to-br from-white/[0.02] to-transparent"
               >
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                   <div className="w-24 h-24 rounded-full border border-white flex items-center justify-center">

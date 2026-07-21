@@ -13,4 +13,6 @@ export const personal = {
   linkedin: "https://linkedin.com/in/yashashwi-singhania-b500bb2a9",
   twitter: null,
   codeforces: "https://codeforces.com/profile/hackerman15",
+  codeforcesHandle: "hackerman15",
+  codeforcesRating: "1720",
 };

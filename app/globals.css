@@ -53,6 +53,16 @@
       cursor: none !important;
     }
   }
+
+  /* Keyboard focus indicator. The site hides the native cursor and relies
+     entirely on CustomCursor for pointer feedback, so keyboard users get no
+     equivalent unless we draw one explicitly — this is that indicator,
+     rendered only for keyboard focus (not mouse clicks). */
+  :focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
 }
 
 /* Custom interactive classes */
@@ -127,4 +137,14 @@
 
 .animate-slide {
   animation: slide 1.5s ease-in-out infinite;
+}
+
+/* Respect reduced-motion for the site's always-on CSS loops. framer-motion
+   entrance/scroll animations are handled per-component via useReducedMotion;
+   these two are plain CSS keyframes that run indefinitely and slip past that. */
+@media (prefers-reduced-motion: reduce) {
+  .noise-bg,
+  .animate-slide {
+    animation: none;
+  }
 }

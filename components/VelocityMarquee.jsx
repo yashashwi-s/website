@@ -16,7 +16,7 @@ const wrap = (min, max, v) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-export default function VelocityMarquee({ text, baseVelocity = 100 }) {
+export default function VelocityMarquee({ text, baseVelocity = 3 }) {
   const baseX = useMotionValue(0);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
