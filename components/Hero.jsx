@@ -93,7 +93,7 @@ export default function Hero() {
                 href={personal.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-500"
+                className="group relative inline-flex items-center gap-2 p-6 rounded-full border border-white/20 text-white hover:border-white hover:bg-white/10 transition-all duration-500"
               >
                 <GithubIcon size={24} />
               </a>
@@ -102,7 +102,7 @@ export default function Hero() {
             <Magnetic>
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold hover:bg-white hover:text-black transition-all duration-500 uppercase tracking-widest text-sm group"
+                className="inline-flex items-center gap-2 px-8 py-6 rounded-full border border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-all duration-500 uppercase tracking-widest text-sm group"
               >
                 <ScrambleText text="Explore" />
                 <ArrowDown size={18} className="group-hover:translate-y-1 transition-transform duration-300" />

@@ -95,7 +95,7 @@ export default function About() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-white/20 text-white font-bold hover:bg-white hover:text-black hover:border-white transition-colors duration-300 uppercase tracking-widest text-xs group"
+                    className="inline-flex items-center gap-2 px-6 py-4 rounded-full border border-white/20 text-white font-bold hover:border-white hover:bg-white/10 transition-colors duration-300 uppercase tracking-widest text-xs group"
                   >
                     <link.icon size={14} />
                     <ScrambleText text={link.label} />
