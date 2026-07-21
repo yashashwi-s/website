@@ -39,7 +39,13 @@ export default function Preloader() {
       }
     }, intervalTime);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Guard against the preloader unmounting before the interval's own
+      // setTimeout restores scroll (fast refresh, future route changes, etc.)
+      // — never leave body scroll permanently locked.
+      document.body.style.overflow = "";
+    };
   }, []);
 
   return (

@@ -1,11 +1,24 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+
+const SPRING_CONFIG = { type: "spring", stiffness: 350, damping: 15, mass: 0.5 };
 
 export default function Magnetic({ children, className = "" }) {
   const ref = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0, rotateX: 0, rotateY: 0, scale: 1 });
+
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const rawRotateX = useMotionValue(0);
+  const rawRotateY = useMotionValue(0);
+  const rawScale = useMotionValue(1);
+
+  const x = useSpring(rawX, SPRING_CONFIG);
+  const y = useSpring(rawY, SPRING_CONFIG);
+  const rotateX = useSpring(rawRotateX, SPRING_CONFIG);
+  const rotateY = useSpring(rawRotateY, SPRING_CONFIG);
+  const scale = useSpring(rawScale, SPRING_CONFIG);
 
   const handleMouse = (e) => {
     const { clientX, clientY } = e;
@@ -17,28 +30,27 @@ export default function Magnetic({ children, className = "" }) {
     const maxPull = 50;
 
     // Apply a subtle pull towards the mouse, with rotation and scale stretch
-    setPosition({ 
-      x: middleX * 0.3, 
-      y: middleY * 0.3,
-      rotateX: -(middleY * 0.1),
-      rotateY: (middleX * 0.1),
-      scale: 1 + (Math.min(distance, maxPull) * 0.002) // Stretch slightly
-    });
+    rawX.set(middleX * 0.3);
+    rawY.set(middleY * 0.3);
+    rawRotateX.set(-(middleY * 0.1));
+    rawRotateY.set(middleX * 0.1);
+    rawScale.set(1 + Math.min(distance, maxPull) * 0.002); // Stretch slightly
   };
 
   const reset = () => {
-    setPosition({ x: 0, y: 0, rotateX: 0, rotateY: 0, scale: 1 });
+    rawX.set(0);
+    rawY.set(0);
+    rawRotateX.set(0);
+    rawRotateY.set(0);
+    rawScale.set(1);
   };
-
-  const { x, y, rotateX, rotateY, scale } = position;
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={handleMouse}
       onMouseLeave={reset}
-      animate={{ x, y, rotateX, rotateY, scale }}
-      transition={{ type: "spring", stiffness: 350, damping: 15, mass: 0.5 }}
+      style={{ x, y, rotateX, rotateY, scale }}
       className={`inline-block ${className}`}
     >
       {children}

@@ -2,9 +2,13 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useVelocity, useSpring, useInView } from "framer-motion";
+import Image from "next/image";
 import { projects } from "@/data/projects";
 import { GithubIcon } from "./icons/GithubIcon";
 import { ExternalLink } from "lucide-react";
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop";
 
 const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
   const ref = useRef(null);
@@ -26,14 +30,16 @@ const DiagonalSlashImage = ({ project, imageX, skewVelocity }) => {
       style={{ skewX: skewVelocity }}
       className="w-full h-[70%] relative overflow-hidden mb-6 bg-[#111] border border-white/10 group"
     >
-      <motion.div 
-        style={{ x: imageX, scale: 1.1 }} 
-        className="w-full h-full transform transition-transform duration-700 ease-out group-hover:scale-100"
+      <motion.div
+        style={{ x: imageX, scale: 1.1 }}
+        className="relative w-full h-full transform transition-transform duration-700 ease-out group-hover:scale-100"
       >
-        <img 
-          src={project.image || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop"} 
+        <Image
+          src={project.image || FALLBACK_IMAGE}
           alt={project.title}
-          className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+          fill
+          sizes="60vw"
+          className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
         />
       </motion.div>
 
@@ -144,10 +150,12 @@ export default function HorizontalGallery() {
           {sortedProjects.map((project, idx) => (
             <div key={idx} className="flex flex-col group min-w-[85vw]">
               <div className="w-full h-[50vh] relative overflow-hidden mb-4 bg-[#111] border border-white/10 rounded-xl pointer-events-none">
-                <img 
-                  src={project.image || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000&auto=format&fit=crop"} 
+                <Image
+                  src={project.image || FALLBACK_IMAGE}
                   alt={project.title}
-                  className="w-full h-full object-cover opacity-80"
+                  fill
+                  sizes="85vw"
+                  className="object-cover opacity-80"
                 />
               </div>
               
