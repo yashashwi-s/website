@@ -14,19 +14,12 @@ function ExperienceCard({ exp, i, progress, total }) {
   const scale = useTransform(progress, range, [1, targetScale]);
   const opacity = useTransform(progress, range, [1, 0.5]);
 
-  // The last card never shrinks/dims (nothing stacks on top of it), but it still
-  // releases from `sticky` at the very end of the section — without its own fade,
-  // it stays at full opacity while scrolling away, overlapping visually with About
-  // already entering from below. Fade it out over the section's final stretch instead.
-  const isLast = i === total - 1;
-  const exitOpacity = useTransform(progress, [0.8, 1], [1, 0]);
-
   return (
     <div className="h-[100svh] w-full flex items-center justify-center sticky top-0 px-6 md:pr-12 md:pl-64 pt-[5vh] pb-[5vh]">
-      <motion.div
+      <motion.div 
         style={{
-          scale: isLast ? 1 : scale,
-          opacity: isLast ? exitOpacity : opacity,
+          scale: i === total - 1 ? 1 : scale,
+          opacity: i === total - 1 ? 1 : opacity,
         }}
         className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-[30px] md:rounded-[40px] p-6 md:p-14 shadow-[0_30px_80px_rgba(0,0,0,0.8)] flex flex-col origin-top overflow-hidden max-h-full group"
       >
@@ -89,29 +82,23 @@ export default function ExperienceSection() {
     offset: ["start start", "end end"]
   });
 
-  // Matches the last card's exit fade so the title clears out in step with it
-  // instead of lingering at full opacity while About enters from below.
-  const titleExitOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]);
-
   return (
     <section ref={containerRef} id="experience" className="relative bg-[#050505]">
       {/* Sticky Vertical Sidebar Title */}
       <div className="sticky top-0 h-[100svh] w-full pointer-events-none z-0 overflow-hidden">
-        <motion.div style={{ opacity: titleExitOpacity }}>
-          <ScrollReveal>
-            <div className="hidden md:flex absolute top-0 bottom-0 left-4 xl:left-12 items-center justify-center">
-              <h2
-                className="text-[8vh] xl:text-[12vh] font-black text-white/10 uppercase tracking-tighter whitespace-nowrap"
-                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-              >
-                Experience
-              </h2>
-            </div>
-            <h2 className="md:hidden absolute top-20 left-6 text-5xl font-black text-white/10 uppercase tracking-tighter whitespace-nowrap">
+        <ScrollReveal>
+          <div className="hidden md:flex absolute top-0 bottom-0 left-4 xl:left-12 items-center justify-center">
+            <h2 
+              className="text-[8vh] xl:text-[12vh] font-black text-white/10 uppercase tracking-tighter whitespace-nowrap"
+              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+            >
               Experience
             </h2>
-          </ScrollReveal>
-        </motion.div>
+          </div>
+          <h2 className="md:hidden absolute top-20 left-6 text-5xl font-black text-white/10 uppercase tracking-tighter whitespace-nowrap">
+            Experience
+          </h2>
+        </ScrollReveal>
       </div>
 
       {/* Cards Container */}
