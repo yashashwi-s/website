@@ -122,7 +122,10 @@ function Dashboard({ data, feedback, subscribers }) {
       <div className="flex flex-wrap gap-x-8 gap-y-3 mb-10 pb-8 border-b border-white/8">
         <Stat label="Downloads" value={data.downloads ? data.downloads.total.toLocaleString() : "—"} />
         <Stat label="Free keys claimed" value={data.promo && data.promo.claimed != null ? `${data.promo.claimed} / ${data.promo.max}` : "—"} />
-        <Stat label="Installs" value={s.totalInstalls.toLocaleString()} />
+        {/* Activations are the real "someone installed and ran it" signal: a claim is just a
+            web form + an email. Installs below counts only opt-in diagnostics senders. */}
+        <Stat label="Keys activated" value={data.promo && data.promo.activated != null ? `${data.promo.activated} / ${data.promo.issued ?? "?"}` : "—"} />
+        <Stat label="Installs (opt-in)" value={s.totalInstalls.toLocaleString()} />
         <Stat label="Active 7d" value={s.activeLast7d.toLocaleString()} />
         <Stat label="Licensed" value={`${s.licensedCount} (${pct(s.conversionRate)})`} />
         <Stat label="Avg rating" value={s.ratedCount ? `${s.avgRating.toFixed(1)}★ (${s.ratedCount})` : "—"} />
