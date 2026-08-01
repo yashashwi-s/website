@@ -14,7 +14,7 @@ export const projects = [
     order: 5,
   },
   {
-    title: "Tableau",
+    title: "Arras",
     description:
       "A macOS menu bar app that places photos on your desktop as borderless, always-on-desktop overlays — perfectly matching each image's native aspect ratio. No cropping, no black bars.",
     tags: ["Swift", "SwiftUI", "AppKit", "Core Animation"],
