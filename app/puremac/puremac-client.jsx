@@ -34,12 +34,12 @@ const APPS = [
     page: "/fadeo",
   },
   {
-    id: "tableau",
-    name: "Tableau",
+    id: "arras",
+    name: "Arras",
     icon: "/puremac/tableau-icon.png",
     tagline: "Any photo, perfectly fitted on your desktop.",
     description:
-      "Tableau places photos directly on your desktop as borderless, always-on overlays that match each image's real aspect ratio: no cropping, no black bars, no forced grid sizes.",
+      "Arras places photos directly on your desktop as borderless, always-on overlays that match each image's real aspect ratio: no cropping, no black bars, no forced grid sizes.",
     stats: [
       { icon: Crop, label: "any aspect ratio, exactly as shot" },
       { icon: MousePointerClick, label: "click-through floating mode" },
@@ -49,7 +49,7 @@ const APPS = [
     license: "Open source · MIT",
     price: "Free",
     repo: "Tableau",
-    page: "/tableau",
+    page: "/arras",
   },
 ];
 
@@ -134,8 +134,8 @@ function AppRow({ app, release }) {
   );
 }
 
-export default function PureMacClient({ fadeo, tableau }) {
-  const releases = { fadeo, tableau };
+export default function PureMacClient({ fadeo, arras }) {
+  const releases = { fadeo, arras };
 
   return (
     <div id="puremac-page" className="cursor-auto min-h-screen bg-[#050505] text-white" style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>

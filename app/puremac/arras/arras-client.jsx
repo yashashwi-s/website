@@ -51,7 +51,7 @@ const FEATURES = [
   },
 ];
 
-export default function TableauClient({ release }) {
+export default function ArrasClient({ release }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
   const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
 
@@ -78,13 +78,13 @@ export default function TableauClient({ release }) {
           <div className="flex items-center gap-5 mb-8">
             <Image
               src="/puremac/tableau-icon.png"
-              alt="Tableau icon"
+              alt="Arras icon"
               width={72}
               height={72}
               className="rounded-[18px]"
             />
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight">Tableau</h1>
+              <h1 className="text-3xl font-semibold tracking-tight">Arras</h1>
               <p className="text-white/55 text-[15px] mt-0.5">for macOS 14 and later, formerly Photo Widget OSX</p>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function TableauClient({ release }) {
             Any photo, perfectly fitted on your desktop.
           </h2>
           <p className="text-white/55 text-[16.5px] mt-5 max-w-lg leading-relaxed">
-            Tableau places photos directly on your desktop as borderless, always-on overlays
+            Arras places photos directly on your desktop as borderless, always-on overlays
             that match each image's real aspect ratio. Unlike Apple's built-in widgets, nothing
             gets locked to a fixed size or cropped to fit.
           </p>
@@ -171,7 +171,7 @@ export default function TableauClient({ release }) {
               <p className="text-[13px] tracking-wide uppercase text-white/40 mb-3">Pricing</p>
               <p className="text-3xl font-semibold tracking-tight mb-2">Free</p>
               <p className="text-white/60 text-[14.5px] leading-relaxed max-w-md">
-                Tableau is free, always. Source is MIT; read it, fork it, ship your own build.
+                Arras is free, always. Source is MIT; read it, fork it, ship your own build.
               </p>
             </div>
             <div className="flex items-center gap-2 text-[13px] text-white/40">
