@@ -11,6 +11,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        // /latest was where this design lived before it replaced the homepage.
+        source: '/latest',
+        destination: '/',
+        permanent: true,
+      },
+      {
         // Tableau was renamed to Arras in v2.3.1; old links must keep resolving.
         // Both shapes: the path under the main site, and the bare path as served
         // on puremac.yashashwi.me.

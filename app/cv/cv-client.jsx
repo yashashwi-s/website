@@ -1,36 +1,44 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import {
-  Share2,
-  Download,
-  Mail,
-  MessageCircle,
-  Check,
-} from "lucide-react";
+import { useCallback, useState } from "react";
+import { Check, Download, Mail, MessageCircle, Share2 } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
-import { motion } from "framer-motion";
 
-// ── Premium Toast ─────────────────────────────────────────
+/* The CV is the paper one.
+ *
+ * Everything else in the family is dark — the homepage is acid on near-black,
+ * Arras and Fadeo likewise. A CV is a document, not a landing page, so it gets
+ * ink on paper: serif headings, a real measure, generous margins. That is also
+ * the only version of this page that prints correctly, which is the one thing a
+ * CV genuinely has to do.
+ *
+ * The parsed shape from lib/parse-resume is unchanged: section.type is one of
+ * subheadings | projects | items | skills | raw.
+ */
+const INK = "#14131a";
+const PAPER = "#f5f2ea";
+
+// ── Toast ─────────────────────────────────────────────────
 
 function Toast({ show, message }) {
   return (
     <div
-      className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 ease-[0.22,1,0.36,1] ${
-        show
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-4 pointer-events-none"
+      className={`fixed bottom-8 left-1/2 z-[100] -translate-x-1/2 transition-all duration-500 ease-[0.22,1,0.36,1] print:hidden ${
+        show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >
-      <div className="flex items-center gap-3 bg-white text-black px-6 py-3 rounded-full font-mono text-sm tracking-wide shadow-[0_8px_40px_rgba(255,255,255,0.15)]">
-        <Check className="w-4 h-4" />
+      <div
+        className="flex items-center gap-3 rounded-full px-6 py-3 font-mono text-[13px] tracking-wide text-[#f5f2ea] shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
+        style={{ backgroundColor: INK }}
+      >
+        <Check className="h-4 w-4" />
         <span>{message}</span>
       </div>
     </div>
   );
 }
 
-// ── Markdown Renderer (**bold** and [text](url)) ──────────
+// ── Markdown renderer (**bold** and [text](url)) ──────────
 
 function Md({ children }) {
   if (typeof children !== "string") return children;
@@ -69,21 +77,12 @@ function Md({ children }) {
         tokens.push({ type: "text", value: remaining.slice(firstIdx) });
         break;
       }
-      tokens.push({
-        type: "bold",
-        value: remaining.slice(firstIdx + 2, endBold),
-      });
+      tokens.push({ type: "bold", value: remaining.slice(firstIdx + 2, endBold) });
       remaining = remaining.slice(endBold + 2);
     } else {
-      const linkMatch = remaining
-        .slice(firstIdx)
-        .match(/^\[([^\]]+)\]\(([^)]+)\)/);
+      const linkMatch = remaining.slice(firstIdx).match(/^\[([^\]]+)\]\(([^)]+)\)/);
       if (linkMatch) {
-        tokens.push({
-          type: "link",
-          label: linkMatch[1],
-          url: linkMatch[2],
-        });
+        tokens.push({ type: "link", label: linkMatch[1], url: linkMatch[2] });
         remaining = remaining.slice(firstIdx + linkMatch[0].length);
       } else {
         tokens.push({ type: "text", value: "[" });
@@ -97,7 +96,7 @@ function Md({ children }) {
       {tokens.map((t, i) => {
         if (t.type === "bold")
           return (
-            <strong key={i} className="font-bold text-white">
+            <strong key={i} className="font-semibold" style={{ color: INK }}>
               {t.value}
             </strong>
           );
@@ -108,7 +107,8 @@ function Md({ children }) {
               href={t.url}
               target="_blank"
               rel="noreferrer"
-              className="text-white/60 hover:text-white underline decoration-white/20 hover:decoration-white/60 underline-offset-4 transition-colors"
+              className="underline decoration-black/25 underline-offset-[3px] transition-colors hover:decoration-black/70"
+              style={{ color: INK }}
             >
               {t.label}
             </a>
@@ -119,9 +119,9 @@ function Md({ children }) {
   );
 }
 
-// ── Main CV Client ────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────
 
-export default function CVClient({ data }) {
+export default function CVClient({ data, fontClass = "" }) {
   const [toast, setToast] = useState({ show: false, message: "" });
 
   const showToast = useCallback((msg) => {
@@ -133,7 +133,7 @@ export default function CVClient({ data }) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${data.name} \u2014 Resume`,
+          title: `${data.name} — Resume`,
           text: `Check out ${data.name}'s resume`,
           url: "https://cv.yashashwi.me",
         });
@@ -146,124 +146,135 @@ export default function CVClient({ data }) {
     }
   };
 
-  const waLink = data.phone
-    ? `https://wa.me/${data.phone.replace(/[^0-9]/g, "")}`
-    : null;
+  const waLink = data.phone ? `https://wa.me/${data.phone.replace(/[^0-9]/g, "")}` : null;
 
   return (
-    <>
+    <div
+      id="cv-page"
+      className={`${fontClass} min-h-screen`}
+      style={{ backgroundColor: "#e8e4da", color: INK, fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}
+    >
+      <style>{`
+        body:has(#cv-page) .noise-bg { display: none; }
+        #cv-page h1, #cv-page h2, #cv-page h3, #cv-page .display {
+          font-family: var(--font-cv), ui-serif, Georgia, serif;
+          font-weight: 400;
+        }
+        #cv-page ::selection { background: ${INK}; color: ${PAPER}; }
+        /* A CV has one job it must not fail at. The sheet becomes the page,
+           the dock and the desk background go away, and links stop being blue. */
+        @media print {
+          #cv-page { background: #fff !important; }
+          #cv-page .sheet {
+            box-shadow: none !important;
+            margin: 0 !important;
+            max-width: none !important;
+            padding: 0 !important;
+            background: #fff !important;
+          }
+          #cv-page a { text-decoration: none !important; color: ${INK} !important; }
+          @page { margin: 14mm; }
+        }
+      `}</style>
+
       <CustomCursor />
       <Toast show={toast.show} message={toast.message} />
 
-      <div className="min-h-screen bg-[#050505] text-white selection:bg-white selection:text-black font-sans relative">
-        {/* ── Floating Action Dock ───────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed top-1/2 right-4 md:right-8 -translate-y-1/2 flex flex-col gap-3 z-50 print:hidden"
-        >
+      {/* ── Action dock ─────────────────────────────────── */}
+      <div className="fixed right-4 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-2.5 print:hidden md:right-8">
+        <ActionBtn
+          as="a"
+          href="https://yashashwi.me/Yashashwi_Singhania_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          download="Yashashwi_Singhania_Resume.pdf"
+          title="Download PDF"
+          icon={<Download className="h-[18px] w-[18px]" />}
+        />
+        <ActionBtn as="button" onClick={handleShare} title="Share" icon={<Share2 className="h-[18px] w-[18px]" />} />
+        <ActionBtn
+          as="a"
+          href={`mailto:${data.email}`}
+          title="Email"
+          icon={<Mail className="h-[18px] w-[18px]" />}
+        />
+        {waLink && (
           <ActionBtn
             as="a"
-            href="https://yashashwi.me/Yashashwi_Singhania_Resume.pdf"
+            href={waLink}
             target="_blank"
             rel="noreferrer"
-            download="Yashashwi_Singhania_Resume.pdf"
-            title="Download PDF"
-            icon={<Download className="w-5 h-5" />}
+            title="WhatsApp"
+            icon={<MessageCircle className="h-[18px] w-[18px]" />}
           />
-          <ActionBtn
-            as="button"
-            onClick={handleShare}
-            title="Share"
-            icon={<Share2 className="w-5 h-5" />}
-          />
-          <ActionBtn
-            as="a"
-            href={`mailto:${data.email}`}
-            title="Email"
-            icon={<Mail className="w-5 h-5" />}
-          />
-          {waLink && (
-            <ActionBtn
-              as="a"
-              href={waLink}
-              target="_blank"
-              rel="noreferrer"
-              title="WhatsApp"
-              icon={<MessageCircle className="w-5 h-5" />}
-            />
-          )}
-        </motion.div>
+        )}
+      </div>
 
-        {/* ── CV Document ────────────────────────────── */}
-        <div className="max-w-[900px] mx-auto py-24 px-8 md:px-16 bg-[#0a0a0a] min-h-screen border-x border-white/5">
-          {/* Header */}
-          <motion.header
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-8 text-center"
-          >
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-widest mb-6">
+      {/* ── The sheet ───────────────────────────────────── */}
+      <div className="px-4 py-8 sm:px-6 sm:py-14">
+        <article
+          className="sheet mx-auto max-w-[860px] px-7 py-12 shadow-[0_2px_4px_rgba(0,0,0,0.06),0_24px_60px_-24px_rgba(0,0,0,0.28)] sm:px-16 sm:py-16"
+          style={{ backgroundColor: PAPER }}
+        >
+          <header className="border-b border-black/15 pb-7">
+            <h1 className="text-[clamp(2.4rem,7vw,3.9rem)] leading-[0.95] tracking-[-0.015em]">
               {data.name}
             </h1>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 font-mono text-xs md:text-sm text-white/50">
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11.5px] tracking-[0.04em] text-black/55">
               {data.phone && <span>{data.phone}</span>}
               {data.email && (
-                <>
-                  <Sep />
-                  <a
-                    href={`mailto:${data.email}`}
-                    className="hover:text-white transition-colors underline decoration-white/15 underline-offset-4"
-                  >
-                    {data.email}
-                  </a>
-                </>
+                <a
+                  href={`mailto:${data.email}`}
+                  className="underline decoration-black/20 underline-offset-[3px] transition-colors hover:text-black hover:decoration-black/60"
+                >
+                  {data.email}
+                </a>
               )}
               {data.links?.map((link) => (
-                <span key={link.label} className="contents">
-                  <Sep />
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-white transition-colors underline decoration-white/15 underline-offset-4"
-                  >
-                    {link.label}
-                  </a>
-                </span>
+                <a
+                  key={link.label}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline decoration-black/20 underline-offset-[3px] transition-colors hover:text-black hover:decoration-black/60"
+                >
+                  {link.label}
+                </a>
               ))}
             </div>
-          </motion.header>
+          </header>
 
-          {/* Dynamic Sections */}
           {data.sections?.map((section, si) => (
-            <SectionBlock key={si} section={section} isLast={si === data.sections.length - 1} />
+            <SectionBlock key={si} section={section} />
           ))}
-        </div>
+        </article>
+
+        <p className="mx-auto mt-6 max-w-[860px] px-1 font-mono text-[10.5px] uppercase tracking-[0.16em] text-black/30 print:hidden">
+          Generated from resume.tex ·{" "}
+          <a href="https://yashashwi.me" className="underline underline-offset-2 transition-colors hover:text-black">
+            yashashwi.me
+          </a>
+        </p>
       </div>
-    </>
+    </div>
   );
 }
 
-// ── Section Renderer ──────────────────────────────────────
+// ── Sections ──────────────────────────────────────────────
 
-function SectionBlock({ section, isLast }) {
+function SectionBlock({ section }) {
   return (
-    <section className={isLast ? "" : "mb-10"}>
-      <h2 className="text-xl font-bold uppercase tracking-[0.2em] mb-6 pb-2 text-white/90">
+    <section className="mt-10 break-inside-avoid">
+      <h2 className="mb-5 border-b border-black/12 pb-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-black/45">
         {section.title}
       </h2>
 
       {section.type === "subheadings" && (
-        <div className="space-y-8">
+        <div className="space-y-7">
           {section.entries.map((e, i) => (
-            <div key={i}>
-              <Row left={e.line1Left} right={e.line1Right} bold />
-              {(e.line2Left || e.line2Right) && (
-                <Row left={e.line2Left} right={e.line2Right} italic muted />
-              )}
+            <div key={i} className="break-inside-avoid">
+              <Row left={e.line1Left} right={e.line1Right} lead />
+              {(e.line2Left || e.line2Right) && <Row left={e.line2Left} right={e.line2Right} muted />}
               {e.bullets.length > 0 && <BulletList items={e.bullets} />}
             </div>
           ))}
@@ -273,17 +284,15 @@ function SectionBlock({ section, isLast }) {
       {section.type === "projects" && (
         <div className="space-y-6">
           {section.entries.map((e, i) => (
-            <div key={i}>
-              <div className="flex flex-col md:flex-row md:justify-between items-baseline mb-1">
-                <h3 className="text-lg font-bold">
+            <div key={i} className="break-inside-avoid">
+              <div className="mb-1 flex flex-col items-baseline justify-between gap-x-4 sm:flex-row">
+                <h3 className="text-[19px] leading-tight">
                   {e.name}
-                  <span className="font-normal italic text-white/60 text-base ml-2">
-                    — {e.tech}
-                  </span>
+                  {e.tech && <span className="text-[15px] text-black/45"> — {e.tech}</span>}
                 </h3>
-                <span className="font-mono text-sm text-white/50 shrink-0">
-                  {e.date}
-                </span>
+                {e.date && (
+                  <span className="shrink-0 font-mono text-[11.5px] text-black/45">{e.date}</span>
+                )}
               </div>
               {e.bullets.length > 0 && <BulletList items={e.bullets} />}
             </div>
@@ -294,20 +303,20 @@ function SectionBlock({ section, isLast }) {
       {section.type === "items" && <BulletList items={section.entries} />}
 
       {section.type === "skills" && (
-        <ul className="space-y-2 text-white/80 text-sm">
+        <dl className="space-y-2.5">
           {section.entries.map((s) => (
-            <li key={s.category}>
-              <strong className="font-bold text-white">
-                {s.category}:
-              </strong>{" "}
-              {s.items}
-            </li>
+            <div key={s.category} className="grid gap-x-5 sm:grid-cols-[10rem_1fr]">
+              <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-black/45">
+                {s.category}
+              </dt>
+              <dd className="text-[14.5px] leading-[1.6] text-black/75">{s.items}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       )}
 
       {section.type === "raw" && (
-        <p className="text-white/70 text-sm leading-relaxed">
+        <p className="max-w-[62ch] text-[14.5px] leading-[1.7] text-black/70">
           <Md>{section.content}</Md>
         </p>
       )}
@@ -317,18 +326,17 @@ function SectionBlock({ section, isLast }) {
 
 // ── Primitives ────────────────────────────────────────────
 
-function Row({ left, right, bold, italic, muted }) {
+function Row({ left, right, lead, muted }) {
   return (
-    <div className="flex flex-col md:flex-row md:justify-between items-baseline mb-1">
+    <div className="mb-0.5 flex flex-col items-baseline justify-between gap-x-4 sm:flex-row">
       <span
-        className={`${bold ? "text-lg font-bold" : ""} ${
-          italic ? "italic text-sm" : ""
-        } ${muted ? "text-white/60" : ""}`}
+        className={lead ? "text-[19px] leading-tight" : "text-[14.5px] italic text-black/55"}
+        style={lead ? { fontFamily: "var(--font-cv), ui-serif, Georgia, serif" } : undefined}
       >
         <Md>{left}</Md>
       </span>
       {right && (
-        <span className="font-mono text-sm text-white/50 shrink-0">
+        <span className={`shrink-0 font-mono text-[11.5px] ${muted ? "text-black/40" : "text-black/50"}`}>
           {right}
         </span>
       )}
@@ -337,29 +345,29 @@ function Row({ left, right, bold, italic, muted }) {
 }
 
 function BulletList({ items }) {
-  const validItems = items.filter((item) => item && item.trim() !== "");
-  if (validItems.length === 0) return null;
+  const valid = items.filter((item) => item && item.trim() !== "");
+  if (valid.length === 0) return null;
 
   return (
-    <ul className="space-y-2 text-white/75 text-sm list-disc list-outside ml-4 mt-2">
-      {validItems.map((item, i) => (
-        <li key={i} className="leading-relaxed">
-          <Md>{item}</Md>
+    <ul className="mt-2.5 space-y-1.5">
+      {valid.map((item, i) => (
+        <li key={i} className="flex max-w-[68ch] gap-3 text-[14.5px] leading-[1.65] text-black/70">
+          <span className="mt-[0.62em] h-[4px] w-[4px] shrink-0 rounded-full bg-black/30" />
+          <span>
+            <Md>{item}</Md>
+          </span>
         </li>
       ))}
     </ul>
   );
 }
 
-function Sep() {
-  return <span className="text-white/15">|</span>;
-}
-
 function ActionBtn({ as: Tag = "button", icon, ...props }) {
   return (
     <Tag
       {...props}
-      className="w-12 h-12 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-white/30 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-md text-white/50 hover:text-white"
+      data-cursor="snap"
+      className="flex h-11 w-11 items-center justify-center rounded-full border border-black/12 bg-[#f5f2ea] text-black/45 shadow-[0_2px_10px_rgba(0,0,0,0.08)] transition-all duration-300 hover:border-black/35 hover:text-black"
     >
       {icon}
     </Tag>

@@ -17,7 +17,7 @@ import { ArrowUpRight } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 import Magnetic from "@/components/Magnetic";
 import ScrambleText from "@/components/ScrambleText";
-import { GRAIN } from "../puremac/grain";
+import { GRAIN } from "./puremac/grain";
 
 /* Fourth identity in the family.
  *
@@ -36,9 +36,36 @@ const ACCENTS = ["#ccff2e", "#ff9e5e", "#67e4d2", "#c8a2ff"];
 const STATS = [
   { value: 1720, label: "Codeforces", sub: "hackerman15", href: "https://codeforces.com/profile/hackerman15" },
   { value: 8.74, label: "CGPA", sub: "IIT (BHU)", decimals: 2 },
-  { value: 13, label: "AIR", sub: "AMS Derive 2026", prefix: "#" },
+  { value: 13, label: "AMS Derive 2026", sub: "All India Rank", suffix: "th" },
   { value: 3000, label: "Participants", sub: "Byte the Bits", suffix: "+" },
 ];
+
+/* Ranks read as positions here rather than "AIR 13" / "SR 20" — the acronym is
+   the least interesting part of the number, and it forced the stat column wider
+   than any of them needed. What the rank actually is moves to the detail line
+   underneath, so nothing is lost. Applied at render rather than in
+   data/achievements.js, since that file is shared with other renderers. */
+function ordinal(n) {
+  const num = Number(n);
+  if (!Number.isFinite(num)) return null;
+  const tens = num % 100;
+  if (tens >= 11 && tens <= 13) return `${num}th`;
+  return `${num}${["th", "st", "nd", "rd"][num % 10] || "th"}`;
+}
+
+const RANK_KINDS = { AIR: "All India Rank", SR: "State Rank" };
+
+function asPosition(item) {
+  const match = /^(AIR|SR)\s+(\d+)$/.exec(item.stat.trim());
+  if (!match) return item;
+  const position = ordinal(match[2]);
+  if (!position) return item;
+  return {
+    ...item,
+    stat: position,
+    detail: item.detail ? `${RANK_KINDS[match[1]]} · ${item.detail}` : RANK_KINDS[match[1]],
+  };
+}
 
 /* Time-aware, because the bio already claims 3AM segfaults. Resolved after mount
    so the server and client agree on first paint. */
@@ -248,7 +275,7 @@ function usePointerWash(glow, colour) {
   return bg;
 }
 
-export default function LatestClient({ personal, projects, experience, achievements, skills, fontClass = "" }) {
+export default function HomeClient({ personal, projects, experience, achievements, skills, fontClass = "" }) {
   const [accentIdx, setAccentIdx] = useState(0);
   const accent = ACCENTS[accentIdx];
 
@@ -519,7 +546,7 @@ export default function LatestClient({ personal, projects, experience, achieveme
                   {group.category}
                 </p>
                 <ul className="mt-6 space-y-6">
-                  {group.items.map((it) => {
+                  {group.items.map(asPosition).map((it) => {
                     const Row = it.link ? "a" : "div";
                     return (
                       <li key={it.label}>

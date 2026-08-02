@@ -1,8 +1,11 @@
 "use client";
 
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { animate, motion, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import Magnetic from "@/components/Magnetic";
 import { GRAIN } from "./grain";
 
 /* The index is the one light page in the set.
@@ -49,24 +52,99 @@ const APPS = [
   },
 ];
 
-function AppEntry({ app, release }) {
+/* Counts the real GitHub download total up once, when the row scrolls in.
+   Seeded with the final figure so a missed observer or reduced motion leaves the
+   true number rather than a zero. */
+function Count({ value }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const reduce = useReducedMotion();
+  const [shown, setShown] = useState(value);
+
+  useEffect(() => {
+    if (!inView || reduce) return;
+    const controls = animate(0, value, {
+      duration: 0.9,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => setShown(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, reduce, value]);
+
+  return <span ref={ref}>{shown.toLocaleString()}</span>;
+}
+
+function AppEntry({ app, release, downloads }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
 
+  /* The row warms toward the app's own colour under the pointer. On paper this
+     has to stay faint — the index is the calm page in the set, so it is a tint
+     that follows the cursor rather than a fill that switches on. */
+  const mx = useMotionValue(50);
+  const my = useMotionValue(50);
+  const sx = useSpring(mx, { stiffness: 180, damping: 28 });
+  const sy = useSpring(my, { stiffness: 180, damping: 28 });
+  const [wash, setWash] = useState("transparent");
+  const [lift, setLift] = useState(false);
+
+  useEffect(() => {
+    const paint = () =>
+      setWash(
+        `radial-gradient(38% 90% at ${sx.get().toFixed(1)}% ${sy.get().toFixed(1)}%, ${app.accent}26, transparent 72%)`
+      );
+    const a = sx.on("change", paint);
+    const b = sy.on("change", paint);
+    return () => {
+      a();
+      b();
+    };
+  }, [sx, sy, app.accent]);
+
+  const onMove = useCallback(
+    (e) => {
+      const r = e.currentTarget.getBoundingClientRect();
+      mx.set(((e.clientX - r.left) / r.width) * 100);
+      my.set(((e.clientY - r.top) / r.height) * 100);
+    },
+    [mx, my]
+  );
+
   return (
-    <article className="group border-t border-black/12 py-12 sm:py-16">
-      <div className="grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-start lg:gap-12">
+    <article
+      onMouseMove={onMove}
+      onMouseEnter={() => setLift(true)}
+      onMouseLeave={() => setLift(false)}
+      className="group relative border-t border-black/12 py-12 sm:py-16"
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{ background: wash }}
+      />
+      <div className="relative grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-start lg:gap-12">
         {/* index + icon */}
         <div className="flex items-center gap-5 lg:w-[132px] lg:flex-col lg:items-start lg:gap-6">
-          <span className="font-mono text-[11px] tracking-[0.2em] text-black/30">{app.index}</span>
-          <Image src={app.icon} alt="" width={72} height={72} className="rounded-[18px]" />
+          <span
+            className="font-mono text-[11px] tracking-[0.2em] transition-colors duration-300"
+            style={{ color: lift ? app.accent : "rgba(0,0,0,0.3)" }}
+          >
+            {app.index}
+          </span>
+          <motion.div
+            animate={lift ? { y: -6, rotate: -3, scale: 1.04 } : { y: 0, rotate: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            style={{ filter: lift ? `drop-shadow(0 14px 22px ${app.accent}55)` : "none" }}
+          >
+            <Image src={app.icon} alt="" width={72} height={72} className="rounded-[18px]" />
+          </motion.div>
         </div>
 
         {/* body */}
         <div className="min-w-0">
           <a href={app.page} data-cursor="snap" className="inline-flex items-baseline gap-2">
             <h2
-              className="display text-[clamp(2.4rem,6vw,4rem)] font-normal leading-[0.95] tracking-[-0.02em] transition-opacity group-hover:opacity-60"
-              style={{ color: INK }}
+              className="display text-[clamp(2.4rem,6vw,4rem)] font-normal leading-[0.95] tracking-[-0.02em] transition-colors duration-300"
+              style={{ color: lift ? app.accent : INK }}
             >
               {app.name}
             </h2>
@@ -86,14 +164,16 @@ function AppEntry({ app, release }) {
           </ul>
 
           <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <a
-              href={app.page}
-              data-cursor="snap"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]"
-              style={{ backgroundColor: INK }}
-            >
-              Open {app.name}
-            </a>
+            <Magnetic>
+              <a
+                href={app.page}
+                data-cursor="snap"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-semibold text-white"
+                style={{ backgroundColor: INK }}
+              >
+                Open {app.name}
+              </a>
+            </Magnetic>
             {downloadUrl && (
               <a
                 href={downloadUrl}
@@ -114,7 +194,20 @@ function AppEntry({ app, release }) {
         </div>
 
         {/* spec column */}
-        <dl className="grid grid-cols-2 gap-x-8 gap-y-4 border-t border-black/10 pt-5 lg:w-[150px] lg:grid-cols-1 lg:border-t-0 lg:border-l lg:border-black/10 lg:pl-7 lg:pt-0">
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-4 border-t border-black/10 pt-5 lg:w-[158px] lg:grid-cols-1 lg:border-t-0 lg:border-l lg:border-black/10 lg:pl-7 lg:pt-0">
+          {downloads?.total > 0 && (
+            <div>
+              <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-black/30">
+                downloads
+              </dt>
+              <dd className="mt-1 text-[14px] font-medium" style={{ color: INK }}>
+                <Count value={downloads.total} />
+                {downloads.releaseCount > 0 && (
+                  <span className="text-black/35"> · {downloads.releaseCount} releases</span>
+                )}
+              </dd>
+            </div>
+          )}
           {[
             ["price", app.price],
             ["license", app.license],
@@ -133,7 +226,7 @@ function AppEntry({ app, release }) {
   );
 }
 
-export default function PureMacClient({ fadeo, arras, fontClass = "" }) {
+export default function PureMacClient({ fadeo, arras, downloads = {}, fontClass = "" }) {
   const releases = { fadeo, arras };
 
   return (
@@ -200,7 +293,12 @@ export default function PureMacClient({ fadeo, arras, fontClass = "" }) {
 
         <main className="pb-12">
           {APPS.map((app) => (
-            <AppEntry key={app.id} app={app} release={releases[app.id]} />
+            <AppEntry
+              key={app.id}
+              app={app}
+              release={releases[app.id]}
+              downloads={downloads[app.id]}
+            />
           ))}
         </main>
 
