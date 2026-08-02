@@ -96,8 +96,10 @@ const SPECS = [
   ["idle cpu", "~0%"],
   ["download", "2.4 MB"],
   ["requires", "macOS 14+"],
+  // The release build is thin arm64. Worth stating plainly: an Intel user who
+  // downloads it gets an app that cannot launch.
+  ["silicon", "Apple only"],
   ["license", "MIT"],
-  ["price", "free"],
 ];
 
 /* Photo Widget OSX -> Tableau -> Arras. Two renames is a slightly absurd
@@ -240,7 +242,7 @@ export default function ArrasClient({ release, fontClass = "" }) {
                 would otherwise be dead space at desktop widths. */}
             <dl className="grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-white/8 pt-6 sm:max-w-sm sm:justify-self-end">
               {[
-                ["works on", "macOS 14+"],
+                ["works on", "macOS 14+, Apple Silicon"],
                 ["costs", "nothing, ever"],
                 ["weighs", "2.4 MB"],
                 ["sends home", "nothing"],
@@ -424,13 +426,15 @@ export default function ArrasClient({ release, fontClass = "" }) {
                 </span>
               </div>
               <p className="mt-3 max-w-md text-[14.5px] leading-[1.7] text-white/50">
-                <code className="font-mono text-[13px] text-white/70">--no-quarantine</code> is the
-                part that matters. Homebrew tells macOS the download is trusted, so the app opens
-                straight away.
+                Homebrew 6 removed the <code className="font-mono text-[13px] text-white/70">--no-quarantine</code>{" "}
+                flag and shipped no replacement, so casks are quarantined
+                unconditionally. The third line clears the flag and Arras opens
+                without the dialog.
               </p>
               <div className="mt-5 space-y-2">
                 <CopyLine text="brew tap yashashwi-s/tap" />
-                <CopyLine text="brew install --cask --no-quarantine arras" />
+                <CopyLine text="brew install --cask arras" />
+                <CopyLine text="xattr -dr com.apple.quarantine /Applications/Arras.app" />
               </div>
             </div>
 
