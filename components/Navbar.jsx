@@ -13,6 +13,11 @@ const navLinks = [
   { label: "Capabilities", href: "#skills" },
   { label: "Milestones", href: "#achievements" },
   {
+    label: "PureMac",
+    href: "https://puremac.yashashwi.me",
+    external: true,
+  },
+  {
     label: "Resume",
     href: personal.resume,
     external: true,

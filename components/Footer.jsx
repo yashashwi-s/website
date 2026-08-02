@@ -52,6 +52,9 @@ export default function Footer() {
               <Magnetic>
                 <a href={personal.linkedin} target="_blank" rel="noreferrer" className="text-lg uppercase text-white/60 hover:text-white transition-colors">LinkedIn</a>
               </Magnetic>
+              <Magnetic>
+                <a href="https://puremac.yashashwi.me" target="_blank" rel="noreferrer" className="text-lg uppercase text-white/60 hover:text-white transition-colors">PureMac</a>
+              </Magnetic>
             </div>
             <p className="text-white/30 text-sm mt-4 md:mt-0">© {new Date().getFullYear()} {personal.name}</p>
           </div>
