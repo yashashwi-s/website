@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Check, Copy, Download } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import { GRAIN } from "../grain";
 
 /* Palette sampled off the demo footage itself — the wallpaper in the video sits
    around #181830/#303060, and the warm sunset print is the only hot thing on
@@ -153,6 +154,13 @@ export default function ArrasClient({ release, fontClass = "" }) {
       // SF Pro is what the app itself is set in.
       style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}
     >
+      {/* The root layout renders a global film-grain overlay that animates in
+          steps(1), so it strobes about eleven times a second. Suppressed here and
+          replaced with the same texture held still — the grain was doing useful
+          work against the flat background, the movement was not. */}
+      <style>{`body:has(#arras-page) .noise-bg { display: none; }`}</style>
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 opacity-[0.045]" style={{ backgroundImage: GRAIN }} />
+
       {/* The indigo the footage sits in, bled behind the whole page so the video
           never looks pasted onto a flat black rectangle. */}
       <div

@@ -3,22 +3,30 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
-  Download,
-  Code2,
-  ArrowUpRight,
   ArrowLeft,
-  ArrowRight,
+  ArrowUpRight,
   Check,
+  Code2,
   Copy,
+  Download,
   Gift,
   Mail,
-  Layers,
-  Gauge,
-  ShieldCheck,
 } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import { GRAIN } from "../grain";
 
-const ACCENT = "#67e4d2";
+/* Fadeo is an audio app that decides things, so the page is built like a signal
+   chain: one column, top to bottom, every stage numbered and metered. Teal on
+   near-black is the oscilloscope reading it borrows from. Deliberately nothing
+   like Arras next door — that page is a gallery wall, this one is a rack unit. */
+const TEAL = "#67e4d2";
+const DIM = "#2b6f66";
+
+const STATS = [
+  { k: "idle cpu", v: "~0%" },
+  { k: "polling", v: "none" },
+  { k: "system volume", v: "untouched" },
+];
 
 const BANDS = [
   {
@@ -61,11 +69,36 @@ const SCREENSHOTS = [
   },
 ];
 
-const STATS = [
-  { icon: Gauge, label: "Idle CPU", value: "near 0%" },
-  { icon: Layers, label: "Steady-state polling", value: "none, all OS push" },
-  { icon: ShieldCheck, label: "System volume touched", value: "never" },
-];
+/* A static level-meter strip. Purely decorative, but it is the page's one motif
+   and it carries the "audio" idea without an animation loop running forever. */
+function Meter({ bars = 34, className = "" }) {
+  return (
+    <div className={`flex items-end gap-[3px] ${className}`} aria-hidden>
+      {Array.from({ length: bars }).map((_, i) => {
+        // A fixed pseudo-random envelope: deterministic, so server and client
+        // render the same thing and hydration stays quiet.
+        const h = 6 + ((i * 37) % 23) + (i % 5 === 0 ? 10 : 0);
+        const hot = i > bars - 7;
+        return (
+          <span
+            key={i}
+            className="w-[3px] rounded-full"
+            style={{ height: h, backgroundColor: hot ? TEAL : DIM, opacity: hot ? 0.9 : 0.5 }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function Rule({ label }) {
+  return (
+    <div className="flex items-center gap-4 py-1">
+      <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/25">{label}</span>
+      <span className="h-px flex-1 bg-white/10" />
+    </div>
+  );
+}
 
 function SubscribeBand() {
   const [email, setEmail] = useState("");
@@ -97,63 +130,53 @@ function SubscribeBand() {
   }
 
   return (
-    <section className="py-20 border-t border-white/8">
-      <div className="mx-auto max-w-xl text-center">
-        <div className="inline-flex items-center gap-2 mb-4 text-white/40">
-          <Mail size={15} />
-          <span className="text-[13px] tracking-wide uppercase">Stay in the loop</span>
+    <section className="py-20">
+      <Rule label="mailing list" />
+      <div className="mt-8 grid gap-8 md:grid-cols-[1fr_1fr] md:items-end">
+        <div>
+          <h3 className="display text-[clamp(1.6rem,3.4vw,2.4rem)] font-bold leading-[1.05] tracking-[-0.03em]">
+            Hear when Fadeo
+            <br />
+            gets better.
+          </h3>
+          <p className="mt-4 max-w-sm text-[14.5px] leading-[1.7] text-white/45">
+            An occasional note when there is a real release worth your time. No more
+            than a handful a year, and one reply unsubscribes you.
+          </p>
         </div>
-        <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight">Hear when Fadeo gets better.</h3>
-        <p className="text-white/55 text-[15px] mt-3 leading-relaxed">
-          An occasional note when there's a real new release worth your time. No spam, no more than a
-          handful a year, and one reply unsubscribes you.
-        </p>
 
         {state === "done" ? (
-          <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[14px] text-white/80">
-            <Check size={16} style={{ color: ACCENT }} />
-            You're on the list. Thanks.
+          <div className="flex items-center gap-2 border border-white/12 px-5 py-3.5 text-[14px] text-white/75">
+            <Check size={16} style={{ color: TEAL }} />
+            You&apos;re on the list. Thanks.
           </div>
         ) : (
-          <form onSubmit={submit} className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              required
-              aria-label="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full flex-1 rounded-full border border-white/12 bg-black/30 px-5 py-3 text-[14px] text-white/85 placeholder:text-white/30 outline-none focus:border-white/35 transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={state === "sending"}
-              className="shrink-0 inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
-              style={{ backgroundColor: ACCENT }}
-              data-cursor="snap"
-            >
-              {state === "sending" ? "Adding…" : "Notify me"}
-              {state !== "sending" && <ArrowRight size={15} />}
-            </button>
+          <form onSubmit={submit}>
+            <div className="flex items-stretch border border-white/12 focus-within:border-white/30">
+              <input
+                type="email"
+                required
+                aria-label="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="min-w-0 flex-1 bg-transparent px-4 py-3.5 font-mono text-[13px] text-white/85 outline-none placeholder:text-white/25"
+              />
+              <button
+                type="submit"
+                disabled={state === "sending"}
+                data-cursor="snap"
+                className="shrink-0 px-5 font-mono text-[11px] uppercase tracking-[0.16em] text-black transition-opacity hover:opacity-85 disabled:opacity-50"
+                style={{ backgroundColor: TEAL }}
+              >
+                {state === "sending" ? "…" : "Subscribe"}
+              </button>
+            </div>
+            {error && <p className="mt-2.5 text-[12.5px] text-red-400/80">{error}</p>}
           </form>
         )}
-        {state === "error" && <p className="text-red-400/80 text-[13px] mt-3">{error}</p>}
       </div>
     </section>
-  );
-}
-
-function Screenshot({ shot, reverse }) {
-  return (
-    <div className={`grid md:grid-cols-2 gap-8 md:gap-14 items-center ${reverse ? "md:[direction:rtl]" : ""}`}>
-      <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40" style={{ direction: "ltr" }}>
-        <Image src={shot.src} alt={`${shot.title} screenshot`} width={1800} height={1264} className="w-full h-auto" />
-      </div>
-      <div style={{ direction: "ltr" }}>
-        <h3 className="text-xl font-semibold tracking-tight mb-3">{shot.title}</h3>
-        <p className="text-white/60 text-[15px] leading-relaxed max-w-md">{shot.body}</p>
-      </div>
-    </div>
   );
 }
 
@@ -216,53 +239,54 @@ function GiveawayCard({ initialPromo }) {
   const remaining = promo?.max != null && promo?.claimed != null ? Math.max(0, promo.max - promo.claimed) : null;
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-8 sm:p-10">
-      <div className="flex items-center gap-2 mb-4">
-        <Gift size={16} style={{ color: ACCENT }} />
-        <span className="text-[13px] tracking-wide uppercase font-medium" style={{ color: ACCENT }}>
+    <div className="border border-white/12 p-7 sm:p-8" style={{ backgroundColor: "rgba(103,228,210,0.03)" }}>
+      <div className="mb-5 flex items-center gap-2">
+        <Gift size={14} style={{ color: TEAL }} />
+        <span className="font-mono text-[10.5px] uppercase tracking-[0.2em]" style={{ color: TEAL }}>
           First 100, free
         </span>
       </div>
 
       {state === "claimed" ? (
         <div>
-          <p className="text-white/85 text-[15px] mb-1">
-            {claimNumber ? `You're #${claimNumber}. ` : ""}Here's your license key:
+          <p className="text-[15px] text-white/85">
+            {claimNumber ? `You're #${claimNumber}. ` : ""}Here&apos;s your license key:
           </p>
-          <div className="mt-3 flex items-stretch gap-2">
-            <code className="flex-1 min-w-0 truncate rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-[12.5px] text-white/80 font-mono">
+          <div className="mt-4 flex items-stretch gap-2">
+            <code className="min-w-0 flex-1 truncate border border-white/10 bg-black/40 px-4 py-3 font-mono text-[12.5px] text-white/80">
               {licenseKey}
             </code>
             <button
               onClick={copyKey}
-              className="shrink-0 rounded-xl border border-white/15 px-4 flex items-center gap-2 text-[13px] text-white/70 hover:border-white/30 transition-colors"
+              className="flex shrink-0 items-center gap-2 border border-white/15 px-4 text-[13px] text-white/70 transition-colors hover:border-white/30"
               data-cursor="snap"
             >
               {copied ? <Check size={14} /> : <Copy size={14} />}
               {copied ? "Copied" : "Copy"}
             </button>
           </div>
-          <p className="text-white/40 text-[12.5px] mt-3 leading-relaxed">
+          <p className="mt-4 text-[12.5px] leading-relaxed text-white/40">
             Open Fadeo, About, Enter License Key. Your key also stays saved in this browser, so it
             will still be here if you come back on this device. Copy it somewhere safe anyway.
             {emailed && " We also emailed you a copy."}
           </p>
           {mustActivateBy && (
-            <p className="text-white/40 text-[12.5px] mt-1.5 leading-relaxed">
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-white/40">
               Activate it by {new Date(mustActivateBy).toDateString()} (7 days). An unused code expires after
-              that and returns to the pool. Once activated, it's yours for good.
+              that and returns to the pool. Once activated, it&apos;s yours for good.
             </p>
           )}
         </div>
       ) : (
         <div>
-          <p className="text-white/60 text-[15px] leading-relaxed max-w-md">
-            The first 100 people who ask get a lifetime license free, no card required. When they're gone or the
-            window closes, this card disappears and it's back to paying what you want.
+          <p className="max-w-md text-[14.5px] leading-[1.7] text-white/55">
+            The first 100 people who ask get a lifetime license free, no card required. When
+            they&apos;re gone or the window closes, this card disappears and it&apos;s back to
+            paying what you want.
           </p>
 
           {promo == null || !promo.active ? (
-            <p className="text-white/35 text-[13px] mt-5">
+            <p className="mt-5 text-[13px] text-white/35">
               {promo?.claimed != null && promo.max != null && promo.claimed >= promo.max
                 ? "All 100 have been claimed. Thank you."
                 : "Not live right now, check back soon."}
@@ -270,14 +294,16 @@ function GiveawayCard({ initialPromo }) {
           ) : (
             <>
               {remaining != null && (
-                <div className="mt-5 mb-4">
-                  <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div className="mt-6 mb-5">
+                  <div className="h-[3px] overflow-hidden bg-white/10">
                     <div
-                      className="h-full rounded-full transition-all"
-                      style={{ width: `${((promo.max - remaining) / promo.max) * 100}%`, backgroundColor: ACCENT }}
+                      className="h-full transition-all"
+                      style={{ width: `${((promo.max - remaining) / promo.max) * 100}%`, backgroundColor: TEAL }}
                     />
                   </div>
-                  <p className="text-white/40 text-[12.5px] mt-2">{remaining} of {promo.max} left</p>
+                  <p className="mt-2 font-mono text-[11px] tracking-[0.1em] text-white/40">
+                    {remaining} of {promo.max} left
+                  </p>
                 </div>
               )}
               <input
@@ -286,21 +312,21 @@ function GiveawayCard({ initialPromo }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email me a copy too (optional)"
-                className="w-full max-w-xs rounded-xl border border-white/10 bg-black/30 px-3.5 py-2 text-[13px] text-white/80 placeholder:text-white/30 outline-none focus:border-white/30 mb-3"
+                className="mb-3 w-full max-w-xs border border-white/10 bg-black/30 px-3.5 py-2.5 font-mono text-[12.5px] text-white/80 outline-none placeholder:text-white/25 focus:border-white/30"
               />
               <div>
                 <button
                   onClick={claim}
                   disabled={state === "claiming"}
-                  className="mt-1 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85 disabled:opacity-50"
-                  style={{ backgroundColor: ACCENT }}
+                  className="mt-1 inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-black transition-opacity hover:opacity-85 disabled:opacity-50"
+                  style={{ backgroundColor: TEAL }}
                   data-cursor="snap"
                 >
                   {state === "claiming" ? "Claiming…" : "Claim a free license"}
                 </button>
               </div>
-              <p className="text-white/35 text-[12px] mt-3">Must be activated within 7 days, or the code expires.</p>
-              {error && <p className="text-red-400/80 text-[12.5px] mt-3">{error}</p>}
+              <p className="mt-3 text-[12px] text-white/35">Must be activated within 7 days, or the code expires.</p>
+              {error && <p className="mt-3 text-[12.5px] text-red-400/80">{error}</p>}
             </>
           )}
         </div>
@@ -309,198 +335,247 @@ function GiveawayCard({ initialPromo }) {
   );
 }
 
-export default function FadeoClient({ release, initialPromo, paymentLink }) {
+export default function FadeoClient({ release, initialPromo, paymentLink, fontClass = "" }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
   const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
   const checkoutUrl = paymentLink || "mailto:fadeo.puremac@gmail.com?subject=Fadeo%20license";
   const checkoutLabel = paymentLink ? "Get a license" : "Get a license (email)";
 
   return (
-    <div id="puremac-page" className="cursor-auto min-h-screen overflow-x-clip bg-[#050505] text-white" style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
-      <style>{`body:has(#puremac-page) .noise-bg { display: none; }`}</style>
+    <div
+      id="fadeo-page"
+      className={`${fontClass} min-h-screen overflow-x-clip bg-[#050807] text-white selection:bg-[#67e4d2] selection:text-black`}
+      style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}
+    >
+      {/* The root layout's grain overlay strobes (steps(1), eleven frames in 0.8s).
+          Suppressed and replaced with the same texture held still. */}
+      <style>{`
+        body:has(#fadeo-page) .noise-bg { display: none; }
+        #fadeo-page h1, #fadeo-page h2, #fadeo-page h3, #fadeo-page .display {
+          font-family: var(--font-fadeo), ui-sans-serif, system-ui, sans-serif;
+        }
+      `}</style>
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: GRAIN }} />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(90% 55% at 12% 0%, rgba(103,228,210,0.13) 0%, transparent 62%)",
+        }}
+      />
+
       <CustomCursor />
 
-      <header className="max-w-4xl mx-auto px-6 sm:px-8 pt-10 pb-2 flex items-center justify-between">
-        <a
-          href="/"
-          className="inline-flex items-center gap-1.5 text-[13px] text-white/40 hover:text-white/70 transition-colors"
-          data-cursor="snap"
-        >
-          <ArrowLeft size={13} />
-          PureMac
-        </a>
-        <span className="text-[13px] text-white/30">by Yashashwi Singhania</span>
-      </header>
+      <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">
+        {/* ------------------------------------------------------------------ nav */}
+        <header className="flex items-center justify-between py-7">
+          <a
+            href="/"
+            data-cursor="snap"
+            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/80"
+          >
+            <ArrowLeft size={12} />
+            PureMac
+          </a>
+          <a
+            href="https://github.com/yashashwi-s/Fadeo"
+            data-cursor="snap"
+            className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/80"
+          >
+            Source
+            <ArrowUpRight size={12} />
+          </a>
+        </header>
 
-      <main className="max-w-4xl mx-auto px-6 sm:px-8">
-        {/* Hero: the interactive demo is the centerpiece, everything else frames it */}
-        <section className="pt-14 sm:pt-20 pb-16 text-center">
-          <div className="flex items-center justify-center gap-2.5 mb-8">
-            <Image
-              src="/puremac/fadeo-icon.png"
-              alt="Fadeo icon"
-              width={30}
-              height={30}
-              className="rounded-[8px]"
-            />
-            <span className="text-[14px] text-white/70 font-medium">Fadeo</span>
-            <span className="text-white/20">·</span>
-            <span className="text-[14px] text-white/40">macOS 14 and later</span>
-          </div>
-
-          <h1 className="mx-auto max-w-3xl text-4xl sm:text-6xl font-semibold tracking-tight leading-[1.04]">
-            The right sound for what you're doing, automatically.
-          </h1>
-          <p className="mx-auto max-w-xl text-white/55 text-[16.5px] mt-6 leading-relaxed">
-            Fadeo watches the app in front of you, the desktop you're on, whether you're in a
-            meeting or heads-down, and plays, fades, or switches audio to match. Rules you define,
-            down to the second.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-9">
-            {downloadUrl ? (
-              <a
-                href={downloadUrl}
-                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-medium text-black transition-opacity hover:opacity-85"
-                style={{ backgroundColor: ACCENT }}
-                data-cursor="snap"
-              >
-                <Download size={16} strokeWidth={2.25} />
-                {downloadLabel}
-                {release?.tag && <span className="opacity-60 font-normal">{release.tag}</span>}
-              </a>
-            ) : (
-              <a
-                href="https://github.com/yashashwi-s/Fadeo"
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-[14px] font-medium text-white/80 transition-colors hover:border-white/30"
-                data-cursor="snap"
-              >
-                Build from source
-                <ArrowUpRight size={15} />
-              </a>
+        {/* ----------------------------------------------------------------- hero */}
+        <section className="pt-12 sm:pt-20">
+          <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white/35">
+            <Image src="/puremac/fadeo-icon.png" alt="" width={24} height={24} className="rounded-[6px]" />
+            <span style={{ color: TEAL }}>Fadeo</span>
+            <span className="text-white/15">/</span>
+            <span>macOS 14+</span>
+            {release?.tag && (
+              <>
+                <span className="text-white/15">/</span>
+                <span>{release.tag}</span>
+              </>
             )}
-            <a
-              href="https://github.com/yashashwi-s/Fadeo"
-              className="inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white/75 transition-colors"
-              data-cursor="snap"
-            >
-              <Code2 size={15} />
-              View source
-            </a>
           </div>
 
-          <div className="mx-auto max-w-lg grid grid-cols-3 gap-4 mt-16">
-            {STATS.map((s) => (
-              <div key={s.label} className="flex flex-col items-center text-center">
-                <s.icon size={16} className="text-white/40 mb-2" />
-                <p className="text-[13.5px] font-medium">{s.value}</p>
-                <p className="text-[12px] text-white/40 mt-0.5">{s.label}</p>
+          <h1 className="mt-8 max-w-4xl text-[clamp(2.6rem,7.4vw,5.4rem)] font-bold leading-[0.95] tracking-[-0.045em]">
+            The right sound
+            <br />
+            for what you&apos;re doing,{" "}
+            <span style={{ color: TEAL }}>automatically.</span>
+          </h1>
+
+          <div className="mt-10 grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-end">
+            <div>
+              <p className="max-w-lg text-[16px] leading-[1.68] text-white/55">
+                Fadeo watches the app in front of you, the desktop you&apos;re on, and whether
+                you&apos;re in a meeting or heads-down — then plays, fades or switches audio to
+                match. Rules you define, down to the second.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <a
+                  href={downloadUrl || "https://github.com/yashashwi-s/Fadeo"}
+                  data-cursor="snap"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 text-[14px] font-semibold text-black transition-transform hover:scale-[1.03]"
+                  style={{ backgroundColor: TEAL }}
+                >
+                  <Download size={16} strokeWidth={2.4} />
+                  {downloadLabel || "Build from source"}
+                </a>
+                <a
+                  href="https://github.com/yashashwi-s/Fadeo"
+                  data-cursor="snap"
+                  className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white/80"
+                >
+                  <Code2 size={13} />
+                  Read the source
+                </a>
               </div>
-            ))}
+            </div>
+
+            <div className="md:justify-self-end">
+              <Meter className="mb-6 h-10" />
+              <dl className="grid grid-cols-3 gap-x-5 border-t border-white/10 pt-5">
+                {STATS.map(({ k, v }) => (
+                  <div key={k}>
+                    <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30">{k}</dt>
+                    <dd className="mt-1 font-mono text-[14px] text-white/80">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </section>
 
-        {/* How it thinks */}
-        <section className="py-20 border-t border-white/8">
-          <p className="text-[13px] tracking-wide uppercase text-white/40 mb-3">How it decides</p>
-          <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight max-w-lg mb-12">
-            Four ordered bands, every time, no surprises.
-          </h3>
-          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-10">
+        {/* -------------------------------------------------------- signal chain */}
+        <section className="py-24 sm:py-32">
+          <Rule label="how it decides" />
+          <h2 className="mt-8 max-w-2xl text-[clamp(1.9rem,4.6vw,3.1rem)] font-bold leading-[1.02] tracking-[-0.035em]">
+            Four ordered bands, every time,
+            <span className="text-white/30"> no surprises.</span>
+          </h2>
+
+          {/* The chain drawn as a chain. Fadeo's whole pitch is that the decision
+              is deterministic and inspectable, so the section reads top to bottom
+              with the signal line running through it. */}
+          <ol className="mt-14 relative">
+            <span
+              aria-hidden
+              className="absolute left-[13px] top-3 bottom-3 w-px"
+              style={{ background: `linear-gradient(${TEAL}, ${DIM} 55%, transparent)` }}
+            />
             {BANDS.map((b) => (
-              <div key={b.n}>
-                <div className="flex items-baseline gap-3 mb-2">
-                  <span className="text-[13px] font-mono" style={{ color: ACCENT }}>{b.n}</span>
-                  <h4 className="text-[16px] font-medium">{b.title}</h4>
+              <li key={b.n} className="relative flex gap-6 pb-10 last:pb-0 sm:gap-9">
+                <span
+                  className="relative z-10 mt-1 grid h-[27px] w-[27px] shrink-0 place-items-center rounded-full border font-mono text-[10px]"
+                  style={{ borderColor: DIM, backgroundColor: "#050807", color: TEAL }}
+                >
+                  {b.n}
+                </span>
+                <div className="pt-0.5">
+                  <h3 className="text-[19px] font-bold tracking-[-0.02em] sm:text-[21px]">{b.title}</h3>
+                  <p className="mt-2 max-w-xl text-[14.5px] leading-[1.72] text-white/50">{b.body}</p>
                 </div>
-                <p className="text-white/55 text-[14.5px] leading-relaxed">{b.body}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* ---------------------------------------------------------- screenshots */}
+        <section className="pb-24 sm:pb-32">
+          <Rule label="the app" />
+          <div className="mt-12 flex flex-col gap-20">
+            {SCREENSHOTS.map((shot, i) => (
+              <div
+                key={shot.title}
+                className={`grid items-center gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-14 ${
+                  i % 2 === 1 ? "lg:[&>figure]:order-2" : ""
+                }`}
+              >
+                <figure className="overflow-hidden border border-white/10 bg-black/40">
+                  <Image
+                    src={shot.src}
+                    alt={`${shot.title} screenshot`}
+                    width={1800}
+                    height={1264}
+                    className="block h-auto w-full"
+                  />
+                </figure>
+                <div>
+                  <h3 className="text-[22px] font-bold tracking-[-0.025em]">{shot.title}</h3>
+                  <p className="mt-3 max-w-md text-[14.5px] leading-[1.72] text-white/50">{shot.body}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Screenshots */}
-        <section className="py-20 border-t border-white/8 flex flex-col gap-20">
-          {SCREENSHOTS.map((shot, i) => (
-            <Screenshot key={shot.title} shot={shot} reverse={i % 2 === 1} />
-          ))}
-        </section>
-
-        {/* Pricing + giveaway */}
-        <section className="py-20 border-t border-white/8">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 sm:p-10 flex flex-col">
-              <p className="text-[13px] tracking-wide uppercase text-white/40 mb-3">Pricing</p>
-              <p className="text-3xl font-semibold tracking-tight mb-1">Pay what you want</p>
-              <p className="text-white/50 text-[14px] mb-6">$2 minimum, lifetime, one time</p>
-              <p className="text-white/60 text-[14.5px] leading-relaxed">
-                Fadeo is fully functional without a license, forever. The license just removes
-                a small, occasional reminder. Pay $2 if that's what you can spare, or more if
-                you use it daily and it feels worth it, you decide. Source is GPLv3; read it,
-                fork it, build it yourself for free.
+        {/* -------------------------------------------------------------- pricing */}
+        <section className="pb-24 sm:pb-32">
+          <Rule label="pricing" />
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <div className="flex flex-col border border-white/12 p-7 sm:p-8">
+              <p className="display text-[clamp(1.7rem,3.6vw,2.5rem)] font-bold leading-none tracking-[-0.035em]">
+                Pay what you want
+              </p>
+              <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.16em]" style={{ color: TEAL }}>
+                $2 minimum · lifetime · one time
+              </p>
+              <p className="mt-6 text-[14.5px] leading-[1.72] text-white/55">
+                Fadeo is fully functional without a license, forever. The license just removes a
+                small, occasional reminder. Pay $2 if that&apos;s what you can spare, or more if you
+                use it daily and it feels worth it. Source is GPLv3 — read it, fork it, build it
+                yourself for free.
               </p>
               <a
                 href={checkoutUrl}
-                className="mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85 self-start"
-                style={{ backgroundColor: ACCENT }}
                 data-cursor="snap"
+                className="mt-7 inline-flex self-start items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-black transition-opacity hover:opacity-85"
+                style={{ backgroundColor: TEAL }}
               >
                 {checkoutLabel}
               </a>
               {!paymentLink && (
-                <p className="text-[12px] text-white/35 mt-2.5">
-                  Checkout is coming soon. For now this opens an email, reply with what you'd
-                  like to pay and I'll send a key back.
+                <p className="mt-3 text-[12px] text-white/35">
+                  Checkout is coming soon. For now this opens an email — reply with what
+                  you&apos;d like to pay and I&apos;ll send a key back.
                 </p>
               )}
-              <p className="text-[12px] text-white/35 mt-2.5">
+              <p className="mt-3 text-[12px] text-white/35">
                 Your license key arrives by email within a few minutes of purchase. If it
-                doesn't show up, check your spam folder first.
+                doesn&apos;t show up, check your spam folder first.
               </p>
-              <a
-                href="https://github.com/yashashwi-s/Fadeo"
-                className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white/75 transition-colors"
-                data-cursor="snap"
-              >
-                <Code2 size={14} />
-                Read the source
-              </a>
             </div>
 
             <GiveawayCard initialPromo={initialPromo} />
           </div>
         </section>
 
-        {/* Email capture */}
         <SubscribeBand />
-      </main>
 
-      <footer className="max-w-4xl mx-auto px-6 sm:px-8 pb-14 pt-6 border-t border-white/8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-[12.5px] text-white/30">
-        <span>Ad-hoc signed. Gatekeeper will ask once, which is expected for indie apps outside the App Store.</span>
-        <div className="flex items-center gap-4 shrink-0">
-          <a
-            href="/puremac/fadeo/privacy"
-            className="hover:text-white/60 transition-colors"
-            data-cursor="snap"
-          >
-            Privacy
-          </a>
-          <a
-            href="/puremac/fadeo/terms"
-            className="hover:text-white/60 transition-colors"
-            data-cursor="snap"
-          >
-            Terms
-          </a>
-          <a
-            href="https://github.com/yashashwi-s/Fadeo"
-            className="hover:text-white/60 transition-colors"
-            data-cursor="snap"
-          >
-            GitHub
-          </a>
-        </div>
-      </footer>
+        {/* --------------------------------------------------------------- footer */}
+        <footer className="flex flex-col gap-4 border-t border-white/10 py-10 sm:flex-row sm:items-center sm:justify-between">
+          <span className="max-w-md font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/25">
+            Ad-hoc signed. Gatekeeper asks once, which is expected outside the App Store.
+          </span>
+          <div className="flex shrink-0 items-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-white/30">
+            <a href="/puremac/fadeo/privacy" data-cursor="snap" className="transition-colors hover:text-white/70">
+              Privacy
+            </a>
+            <a href="/puremac/fadeo/terms" data-cursor="snap" className="transition-colors hover:text-white/70">
+              Terms
+            </a>
+            <a href="https://github.com/yashashwi-s/Fadeo" data-cursor="snap" className="transition-colors hover:text-white/70">
+              GitHub
+            </a>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

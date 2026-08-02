@@ -1,6 +1,18 @@
+import { Space_Grotesk } from "next/font/google";
 import FadeoClient from "./fadeo-client";
 import { latestRelease } from "@/lib/github-release";
 import { promoState } from "@/lib/fadeo-promo";
+
+/* Each PureMac page gets its own face so the three read as separate products
+   rather than one template. Arras uses Bricolage Grotesque, the index uses
+   Instrument Serif, and Fadeo gets Space Grotesk — squarer and more instrument-
+   panel, which suits an app that is mostly rules and numbers. */
+const fadeoDisplay = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-fadeo",
+  display: "swap",
+  weight: ["500", "600", "700"],
+});
 
 export const metadata = {
   title: "Fadeo: the right sound for what you're doing",
@@ -23,5 +35,12 @@ export default async function FadeoPage() {
   // otherwise. Gumroad checked first since it's the active provider; Stripe stays wired
   // for whenever/if that becomes available.
   const paymentLink = process.env.GUMROAD_PRODUCT_URL || process.env.STRIPE_PAYMENT_LINK || null;
-  return <FadeoClient release={release} initialPromo={promo} paymentLink={paymentLink} />;
+  return (
+    <FadeoClient
+      release={release}
+      initialPromo={promo}
+      paymentLink={paymentLink}
+      fontClass={fadeoDisplay.variable}
+    />
+  );
 }

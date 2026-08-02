@@ -1,196 +1,222 @@
 "use client";
 
 import Image from "next/image";
-import {
-  Download,
-  Code2,
-  ArrowUpRight,
-  ArrowLeft,
-  Gauge,
-  Layers,
-  ShieldCheck,
-  Crop,
-} from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import { GRAIN } from "./grain";
+
+/* The index is the one light page in the set.
+ *
+ * Both product pages are dark and saturated — Arras indigo/amber, Fadeo
+ * teal-on-black. If the index were dark too, the three would read as one long
+ * site. Paper white with heavy black type makes it a catalogue instead, and
+ * opening either app feels like stepping into that app rather than scrolling
+ * further down the same page. Each app's accent appears here only as a small
+ * chip, so the colour belongs to the product, not to the index.
+ */
+const INK = "#111014";
 
 const APPS = [
   {
-    id: "fadeo",
-    name: "Fadeo",
-    icon: "/puremac/fadeo-icon.png",
-    tagline: "The right sound for what you're doing, automatically.",
-    description:
-      "Fadeo watches your workflow: the app in front, the desktop you're on, whether you're in a meeting. It plays, fades, or switches audio to match. Every rule is yours to define, down to the second.",
-    stats: [
-      { icon: Gauge, label: "near 0% idle CPU" },
-      { icon: Layers, label: "no steady-state polling" },
-      { icon: ShieldCheck, label: "never touches system volume" },
-    ],
-    accent: "#67e4d2",
-    license: "Open source · GPLv3",
-    price: "pay what you want",
-    repo: "Fadeo",
-    page: "/fadeo",
-  },
-  {
     id: "arras",
+    index: "01",
     name: "Arras",
     icon: "/puremac/arras-icon.png",
     tagline: "Any photo, perfectly fitted on your desktop.",
     description:
-      "Arras places photos directly on your desktop as borderless, always-on overlays that match each image's real aspect ratio: no cropping, no black bars, no forced grid sizes.",
-    stats: [
-      { icon: Crop, label: "any aspect ratio, exactly as shot" },
-      // Was "click-through floating mode" -- that was removed from the app in
-      // 2.0.2 and had been advertised here ever since.
-      { icon: Layers, label: "layer it anywhere in the stack" },
-      { icon: Gauge, label: "~20MB RAM, zero CPU idle" },
-    ],
+      "macOS gives desktop widgets four fixed sizes and crops whatever you put in them. Arras gives every photo its own window at its own proportions — no cropping, no black bars, no forced grid.",
+    facts: ["any aspect ratio", "layer it anywhere in the stack", "~20MB RAM, no idle CPU"],
     accent: "#ff9e5e",
-    license: "Open source · MIT",
     price: "Free",
+    license: "MIT",
     repo: "Arras",
     page: "/arras",
   },
+  {
+    id: "fadeo",
+    index: "02",
+    name: "Fadeo",
+    icon: "/puremac/fadeo-icon.png",
+    tagline: "The right sound for what you're doing, automatically.",
+    description:
+      "Fadeo watches the app in front of you, the desktop you're on, and whether you're in a meeting — then plays, fades or switches audio to match. Every rule is yours to define.",
+    facts: ["four ordered decision bands", "no polling, all OS push", "never touches system volume"],
+    accent: "#67e4d2",
+    price: "Pay what you want",
+    license: "GPLv3",
+    repo: "Fadeo",
+    page: "/fadeo",
+  },
 ];
 
-function AppRow({ app, release }) {
+function AppEntry({ app, release }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
-  const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
 
   return (
-    <section className="py-12 first:pt-0 border-b border-white/8 last:border-b-0">
-      <div className="flex flex-col sm:flex-row gap-8 sm:gap-10">
-        <div className="flex items-start gap-5 sm:flex-col sm:items-start sm:w-40 shrink-0">
-          <Image
-            src={app.icon}
-            alt={`${app.name} icon`}
-            width={80}
-            height={80}
-            className="rounded-[20px] shrink-0"
-          />
-          <div className="sm:mt-1">
-            <a href={app.page} className="group inline-flex items-center gap-1.5" data-cursor="snap">
-              <h2 className="text-2xl font-semibold tracking-tight group-hover:text-white/70 transition-colors">
-                {app.name}
-              </h2>
-              <ArrowUpRight
-                size={16}
-                style={{ color: app.accent }}
-                className="-translate-x-0.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200"
-              />
-            </a>
-            <p className="text-[13px] mt-0.5" style={{ color: app.accent }}>
-              {app.price}
-            </p>
-          </div>
+    <article className="group border-t border-black/12 py-12 sm:py-16">
+      <div className="grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-start lg:gap-12">
+        {/* index + icon */}
+        <div className="flex items-center gap-5 lg:w-[132px] lg:flex-col lg:items-start lg:gap-6">
+          <span className="font-mono text-[11px] tracking-[0.2em] text-black/30">{app.index}</span>
+          <Image src={app.icon} alt="" width={72} height={72} className="rounded-[18px]" />
         </div>
 
-        <div className="flex-1 min-w-0">
-          <p className="text-white/70 text-[16px] leading-relaxed max-w-lg">{app.description}</p>
+        {/* body */}
+        <div className="min-w-0">
+          <a href={app.page} data-cursor="snap" className="inline-flex items-baseline gap-2">
+            <h2
+              className="display text-[clamp(2.4rem,6vw,4rem)] font-normal leading-[0.95] tracking-[-0.02em] transition-opacity group-hover:opacity-60"
+              style={{ color: INK }}
+            >
+              {app.name}
+            </h2>
+            <ArrowUpRight size={20} className="translate-y-[-0.35em] text-black/25 transition-transform group-hover:translate-x-1 group-hover:translate-y-[-0.5em]" />
+          </a>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2.5 mt-5">
-            {app.stats.map((s) => (
-              <div key={s.label} className="flex items-center gap-2 text-[13px] text-white/45">
-                <s.icon size={14} className="shrink-0" />
-                {s.label}
-              </div>
+          <p className="mt-2 max-w-lg text-[17px] leading-snug text-black/60">{app.tagline}</p>
+          <p className="mt-5 max-w-xl text-[15px] leading-[1.7] text-black/50">{app.description}</p>
+
+          <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+            {app.facts.map((f) => (
+              <li key={f} className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-black/40">
+                <span className="h-[5px] w-[5px] rounded-full" style={{ backgroundColor: app.accent }} />
+                {f}
+              </li>
             ))}
-          </div>
+          </ul>
 
-          <div className="flex items-center gap-4 mt-6">
-            {downloadUrl ? (
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a
+              href={app.page}
+              data-cursor="snap"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[14px] font-semibold text-white transition-transform hover:scale-[1.03]"
+              style={{ backgroundColor: INK }}
+            >
+              Open {app.name}
+            </a>
+            {downloadUrl && (
               <a
                 href={downloadUrl}
-                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-black transition-opacity hover:opacity-85"
-                style={{ backgroundColor: app.accent }}
                 data-cursor="snap"
+                className="font-mono text-[11px] uppercase tracking-[0.16em] text-black/45 underline-offset-4 transition-colors hover:text-black hover:underline"
               >
-                <Download size={15} strokeWidth={2.25} />
-                {downloadLabel}
-                {release?.tag && <span className="opacity-60 font-normal">{release.tag}</span>}
-              </a>
-            ) : (
-              <a
-                href={`https://github.com/yashashwi-s/${app.repo}`}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[13.5px] font-medium text-white/80 transition-colors hover:border-white/30"
-                data-cursor="snap"
-              >
-                Build from source
-                <ArrowUpRight size={14} />
+                Download {release?.tag ?? "latest"}
               </a>
             )}
             <a
               href={`https://github.com/yashashwi-s/${app.repo}`}
-              className="inline-flex items-center gap-1.5 text-[13px] text-white/45 hover:text-white/75 transition-colors"
               data-cursor="snap"
+              className="font-mono text-[11px] uppercase tracking-[0.16em] text-black/45 underline-offset-4 transition-colors hover:text-black hover:underline"
             >
-              <Code2 size={14} />
               Source
             </a>
           </div>
         </div>
+
+        {/* spec column */}
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-4 border-t border-black/10 pt-5 lg:w-[150px] lg:grid-cols-1 lg:border-t-0 lg:border-l lg:border-black/10 lg:pl-7 lg:pt-0">
+          {[
+            ["price", app.price],
+            ["license", app.license],
+            ["requires", "macOS 14+"],
+          ].map(([k, v]) => (
+            <div key={k}>
+              <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-black/30">{k}</dt>
+              <dd className="mt-1 text-[14px] font-medium" style={{ color: INK }}>
+                {v}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
-    </section>
+    </article>
   );
 }
 
-export default function PureMacClient({ fadeo, arras }) {
+export default function PureMacClient({ fadeo, arras, fontClass = "" }) {
   const releases = { fadeo, arras };
 
   return (
-    <div id="puremac-page" className="cursor-auto min-h-screen bg-[#050505] text-white" style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}>
-      {/* The portfolio's root layout renders a global film-grain/static overlay
-          (.noise-bg) as a sibling of this tree. It fits the main site's look but not
-          PureMac's. Root layout is shared and off-limits, so suppress it scoped to this
-          page only, via a selector that requires #puremac-page to be present. */}
-      <style>{`body:has(#puremac-page) .noise-bg { display: none; }`}</style>
+    <div
+      id="puremac-index"
+      className={`${fontClass} min-h-screen bg-[#f4f1ea] selection:bg-[#111014] selection:text-[#f4f1ea]`}
+      style={{ color: INK, fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif" }}
+    >
+      {/* The root layout's grain overlay is white-on-dark and animated in steps(1),
+          so on a light page it both strobes and inverts wrong. Suppressed, and
+          replaced with the same texture held still at a much lower opacity. */}
+      <style>{`
+        body:has(#puremac-index) .noise-bg { display: none; }
+        #puremac-index h1, #puremac-index h2, #puremac-index .display {
+          font-family: var(--font-index), ui-serif, Georgia, serif;
+          font-weight: 400;
+        }
+      `}</style>
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.035] mix-blend-multiply"
+        style={{ backgroundImage: GRAIN }}
+      />
+
       <CustomCursor />
 
-      <header className="max-w-4xl mx-auto px-6 sm:px-8 pt-10 pb-2 flex items-center justify-between">
-        <a
-          href="https://yashashwi.me"
-          className="inline-flex items-center gap-1.5 text-[13px] text-white/40 hover:text-white/70 transition-colors"
-          data-cursor="snap"
-        >
-          <ArrowLeft size={13} />
-          yashashwi.me
-        </a>
-        <span className="text-[13px] text-white/30">by Yashashwi Singhania</span>
-      </header>
+      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
+        <header className="flex items-center justify-between py-7">
+          <a
+            href="https://yashashwi.me"
+            data-cursor="snap"
+            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.2em] text-black/40 transition-colors hover:text-black"
+          >
+            <ArrowLeft size={12} />
+            yashashwi.me
+          </a>
+          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-black/30">
+            Yashashwi Singhania
+          </span>
+        </header>
 
-      <main className="max-w-4xl mx-auto px-6 sm:px-8 pt-16 pb-24">
-        <div className="mb-14">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#67e4d2" }} />
-            <span className="text-[13px] tracking-wide text-white/45 uppercase">PureMac</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.1] max-w-xl">
-            Small, native macOS apps.
+        <section className="pt-20 pb-16 sm:pt-32 sm:pb-24">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-black/40">PureMac</p>
+          <h1 className="mt-7 max-w-4xl text-[clamp(3rem,10vw,7.5rem)] leading-[0.88] tracking-[-0.03em]">
+            Small, native
+            <br />
+            macOS apps.
           </h1>
-          <p className="text-white/55 text-[16px] mt-4 max-w-lg leading-relaxed">
-            No Electron, no subscriptions, no telemetry you didn't ask for. Built for macOS,
-            signed ad-hoc, fully open source. Audit every line or build it yourself.
-          </p>
-        </div>
+          <div className="mt-10 grid gap-8 sm:grid-cols-[1.1fr_0.9fr] sm:items-end">
+            <p className="max-w-md text-[16.5px] leading-[1.65] text-black/55">
+              No Electron, no subscriptions, no telemetry you didn&apos;t ask for. Each one does a
+              single thing, natively, and gets out of the way. Read every line or build it
+              yourself.
+            </p>
+            <p className="font-mono text-[11px] uppercase leading-[2] tracking-[0.16em] text-black/35 sm:justify-self-end sm:text-right">
+              Two apps
+              <br />
+              Both open source
+              <br />
+              Both free to run
+            </p>
+          </div>
+        </section>
 
-        <div>
+        <main className="pb-12">
           {APPS.map((app) => (
-            <AppRow key={app.id} app={app} release={releases[app.id]} />
+            <AppEntry key={app.id} app={app} release={releases[app.id]} />
           ))}
-        </div>
-      </main>
+        </main>
 
-      <footer className="max-w-4xl mx-auto px-6 sm:px-8 pb-14 flex items-center justify-between text-[12.5px] text-white/30">
-        <span>Ad-hoc signed. Gatekeeper will ask once, which is expected for indie apps outside the App Store.</span>
-        <a
-          href="https://github.com/yashashwi-s"
-          className="hover:text-white/60 transition-colors shrink-0 ml-4"
-          data-cursor="snap"
-        >
-          github.com/yashashwi-s
-        </a>
-      </footer>
+        <footer className="flex flex-col gap-4 border-t border-black/12 py-10 sm:flex-row sm:items-center sm:justify-between">
+          <span className="max-w-md font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-black/35">
+            Ad-hoc signed. Gatekeeper asks once, which is expected outside the App Store.
+          </span>
+          <a
+            href="https://github.com/yashashwi-s"
+            data-cursor="snap"
+            className="shrink-0 font-mono text-[10.5px] uppercase tracking-[0.16em] text-black/35 transition-colors hover:text-black"
+          >
+            github.com/yashashwi-s
+          </a>
+        </footer>
+      </div>
     </div>
   );
 }

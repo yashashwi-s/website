@@ -1,5 +1,16 @@
+import { Instrument_Serif } from "next/font/google";
 import PureMacClient from "./puremac-client";
 import { latestRelease } from "@/lib/github-release";
+
+/* The index is the only page in the set set in a serif, and the only light one.
+   Both product pages are dark grotesques, so this keeps the catalogue distinct
+   from the things it catalogues. */
+const indexDisplay = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-index",
+  display: "swap",
+  weight: "400",
+});
 
 export const metadata = {
   title: "PureMac: small, native macOS apps",
@@ -22,5 +33,5 @@ export default async function PureMacPage() {
     latestRelease("Arras"),
   ]);
 
-  return <PureMacClient fadeo={fadeo} arras={arras} />;
+  return <PureMacClient fadeo={fadeo} arras={arras} fontClass={indexDisplay.variable} />;
 }
