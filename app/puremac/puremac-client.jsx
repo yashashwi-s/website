@@ -10,7 +10,6 @@ import {
   Layers,
   ShieldCheck,
   Crop,
-  MousePointerClick,
 } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 
@@ -36,19 +35,21 @@ const APPS = [
   {
     id: "arras",
     name: "Arras",
-    icon: "/puremac/tableau-icon.png",
+    icon: "/puremac/arras-icon.png",
     tagline: "Any photo, perfectly fitted on your desktop.",
     description:
       "Arras places photos directly on your desktop as borderless, always-on overlays that match each image's real aspect ratio: no cropping, no black bars, no forced grid sizes.",
     stats: [
       { icon: Crop, label: "any aspect ratio, exactly as shot" },
-      { icon: MousePointerClick, label: "click-through floating mode" },
+      // Was "click-through floating mode" -- that was removed from the app in
+      // 2.0.2 and had been advertised here ever since.
+      { icon: Layers, label: "layer it anywhere in the stack" },
       { icon: Gauge, label: "~20MB RAM, zero CPU idle" },
     ],
-    accent: "#f2b06d",
+    accent: "#ff9e5e",
     license: "Open source · MIT",
     price: "Free",
-    repo: "Tableau",
+    repo: "Arras",
     page: "/arras",
   },
 ];

@@ -19,7 +19,7 @@ export const metadata = {
 export default async function PureMacPage() {
   const [fadeo, arras] = await Promise.all([
     latestRelease("Fadeo"),
-    latestRelease("Tableau"),
+    latestRelease("Arras"),
   ]);
 
   return <PureMacClient fadeo={fadeo} arras={arras} />;
