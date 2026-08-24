@@ -29,6 +29,19 @@ Run on the first Monday of each month:
 6. Update content only when a source, user question, release, or observable result warrants it.
 7. Rebuild, rerun the audit, and deploy only validated changes.
 
+### GitHub handoff
+
+The repository owns the long-term schedule, so this process does not depend on a Codex, ChatGPT, Claude, or Gemini subscription:
+
+1. Beginning October 4, 2026, GitHub Actions checks the calendar at 10:00 Asia/Kolkata and creates an assigned `arras-aeo` issue one day before the first Monday review.
+2. The issue contains a complete prompt for any browsing-capable LLM. Paste that prompt into the service available to you.
+3. Paste its JSON response into the issue as a comment beginning with `/submit-aeo-review`.
+4. GitHub accepts the command only on the scheduled Arras issue and only from an owner, member, or collaborator. It validates all fields and source domains before treating the result as data.
+5. A valid response updates the ten Arras FAQs, archives the evidence under `data/arras-aeo-reviews/`, refreshes the verification date, builds the site, runs the rendered AEO audit, commits to `main`, and closes the issue. The normal hosting integration then deploys the commit.
+6. A blocked, malformed, stale, or failed response leaves production unchanged and links the failed workflow run from the issue.
+
+GitHub email delivery depends on the repository owner's notification settings. Assignment still creates a GitHub notification; enable email for participating or assigned issue activity when an email copy is wanted.
+
 Core query set:
 
 - macOS desktop photo widget

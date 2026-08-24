@@ -1,0 +1,60 @@
+name: Arras monthly AEO prompt
+
+on:
+  schedule:
+    # 10:00 Asia/Kolkata. The calendar script proceeds only when tomorrow is
+    # the first Monday, including months whose notification falls in the prior month.
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: arras-aeo-prompt
+  cancel-in-progress: false
+
+jobs:
+  create-review-issue:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AEO_FIRST_NOTIFICATION_DATE: "2026-10-04"
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Check the review calendar
+        id: calendar
+        run: node scripts/arras-aeo-calendar.mjs
+
+      - name: Create and assign the review issue
+        if: steps.calendar.outputs.should_create == 'true'
+        env:
+          REVIEW_DATE: ${{ steps.calendar.outputs.review_date }}
+          REVIEW_MONTH: ${{ steps.calendar.outputs.review_month }}
+          ISSUE_KEY: ${{ steps.calendar.outputs.issue_key }}
+          QUARTERLY: ${{ steps.calendar.outputs.quarterly }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          gh label create "arras-aeo" --color "FF9E5E" --description "Monthly Arras evidence review" --force
+
+          existing_issue="$(gh issue list --state all --label "arras-aeo" --search "[Arras AEO] ${ISSUE_KEY} in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "$existing_issue" ]; then
+            echo "Review issue #${existing_issue} already exists."
+            exit 0
+          fi
+
+          issue_body="$RUNNER_TEMP/arras-aeo-prompt.md"
+          node scripts/render-arras-aeo-prompt.mjs \
+            --review-date "$REVIEW_DATE" \
+            --review-month "$REVIEW_MONTH" \
+            --quarterly "$QUARTERLY" > "$issue_body"
+
+          gh issue create \
+            --title "[Arras AEO] ${ISSUE_KEY} review prompt" \
+            --body-file "$issue_body" \
+            --label "arras-aeo" \
+            --assignee "$REPOSITORY_OWNER"

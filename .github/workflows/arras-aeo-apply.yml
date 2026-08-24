@@ -1,0 +1,115 @@
+name: Apply Arras AEO review
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: arras-aeo-apply
+  cancel-in-progress: false
+
+jobs:
+  validate-build-and-apply:
+    if: >-
+      ${{
+        !github.event.issue.pull_request &&
+        startsWith(github.event.issue.title, '[Arras AEO]') &&
+        contains(github.event.issue.labels.*.name, 'arras-aeo') &&
+        startsWith(github.event.comment.body, '/submit-aeo-review') &&
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+      }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Read the submitted comment safely
+        env:
+          COMMENT_FILE: ${{ runner.temp }}/arras-aeo-comment.txt
+        run: |
+          node -e 'const fs = require("node:fs"); const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, "utf8")); fs.writeFileSync(process.env.COMMENT_FILE, event.comment.body);'
+
+      - name: Validate and import the review
+        id: import
+        env:
+          COMMENT_FILE: ${{ runner.temp }}/arras-aeo-comment.txt
+        run: node scripts/import-arras-aeo-review.mjs --input "$COMMENT_FILE" --github-output "$GITHUB_OUTPUT"
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Build the production site
+        run: npm run build
+
+      - name: Run the rendered AEO audit
+        run: |
+          server_log="$RUNNER_TEMP/arras-aeo-server.log"
+          PORT=3000 npm start > "$server_log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:3000/puremac/arras > /dev/null; then
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat "$server_log"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          curl --fail --silent http://127.0.0.1:3000/puremac/arras > /dev/null
+          PUREMAC_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac npm run check:aeo
+
+      - name: Commit and push the validated update
+        env:
+          ARCHIVE_PATH: ${{ steps.import.outputs.archive_path }}
+          REVIEWED_AT: ${{ steps.import.outputs.reviewed_at }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            app/puremac/arras-faqs.json \
+            app/puremac/arras/page.jsx \
+            app/puremac/sitemap.js \
+            "$ARCHIVE_PATH"
+
+          if git diff --cached --quiet; then
+            echo "The validated review produced no repository changes."
+          else
+            git commit -m "content: apply Arras AEO review ${REVIEWED_AT}"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Confirm success and close the issue
+        env:
+          REVIEWED_AT: ${{ steps.import.outputs.reviewed_at }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "Applied the validated Arras AEO review dated ${REVIEWED_AT}. The production build and rendered AEO audit passed; the update was pushed to main for deployment."
+          gh issue close "$ISSUE_NUMBER" --reason completed
+
+      - name: Link the failed run without changing production
+        if: failure()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --body "The submitted review was not applied. Production is unchanged. Inspect the validation or build error: ${RUN_URL}"
