@@ -17,7 +17,7 @@ const display = Bricolage_Grotesque({
 
 const SITE_URL = "https://puremac.yashashwi.me";
 const ARRAS_URL = `${SITE_URL}/arras`;
-const CONTENT_UPDATED_AT = "2026-08-24T00:00:00+05:30";
+const CONTENT_UPDATED_AT = "2026-08-24";
 const TITLE = "macOS Desktop Photo Widget: Arras, Free Native App";
 const DESCRIPTION =
   "macOS desktop photo widget Arras preserves every image's true aspect ratio. Free, native, open source, about 20 MB, and near-zero idle CPU.";
