@@ -28,7 +28,7 @@ const APPS = [
     icon: "/puremac/arras-icon.png",
     tagline: "Any photo, perfectly fitted on your desktop.",
     description:
-      "macOS gives desktop widgets four fixed sizes and crops whatever you put in them. Arras gives every photo its own window at its own proportions — no cropping, no black bars, no forced grid.",
+      "The built-in Photos widget fits images into supported widget frames. Arras gives every photo its own window at its own proportions — no cropping, no black bars, no forced grid.",
     facts: ["any aspect ratio", "layer it anywhere in the stack", "~20MB RAM, no idle CPU"],
     accent: "#ff9e5e",
     price: "Free",

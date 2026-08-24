@@ -104,6 +104,14 @@ const SPECS = [
   ["license", "MIT"],
 ];
 
+const COMPARISON = [
+  ["Photo shape", "Fixed widget formats", "Original aspect ratio"],
+  ["Choose an exact image", "Depends on Photos widget controls", "Paste, drag, Photos, or capture"],
+  ["Window placement", "Desktop or Notification Center", "Below icons through above apps"],
+  ["Rotation control", "Managed by the Photos widget", "Click, 30 seconds, hourly, or custom"],
+  ["Source and price", "Included with macOS", "MIT licensed and free"],
+];
+
 /* Photo Widget OSX -> Tableau -> Arras. Two renames is a slightly absurd
    history and hiding it just makes old links look like a different product. */
 const LINEAGE = [
@@ -134,9 +142,24 @@ function CopyLine({ text }) {
   );
 }
 
-export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
+export default function ArrasClient({
+  release,
+  downloads,
+  dateModified,
+  faqs = [],
+  fontClass = "",
+}) {
   const downloadUrl = release?.dmg ?? release?.zip ?? "https://github.com/yashashwi-s/Arras/releases/latest";
   const tag = release?.tag ?? "v2.4.4";
+  const verifiedDate = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  }).format(new Date(dateModified));
+  const downloadCount = downloads?.total
+    ? new Intl.NumberFormat("en-US").format(downloads.total)
+    : null;
 
   const videoWrap = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -218,13 +241,37 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
             <span className="block text-white/25">Not squares.</span>
           </h1>
 
-          <div className="mt-10 grid gap-10 sm:grid-cols-[1.1fr_0.9fr] sm:gap-14">
+          <aside
+            aria-label="Arras summary"
+            className="mt-10 max-w-3xl border-l-2 py-1 pl-5 sm:pl-6"
+            style={{ borderColor: AMBER }}
+          >
+            <p className="text-[16px] font-medium leading-[1.7] text-white/72 sm:text-[17px]">
+              Arras is a free, native macOS desktop photo widget that keeps every image at
+              its true aspect ratio. It places each photo in an independent window, so a
+              panorama stays panoramic and a portrait stays vertical instead of being
+              cropped into a fixed widget frame.
+            </p>
+            <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/32">
+              <time dateTime={dateModified}>Verified {verifiedDate}</time>
+              <span aria-hidden>·</span>
+              <a
+                href="https://github.com/yashashwi-s/Arras"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/65"
+              >
+                Source and technical documentation
+              </a>
+            </p>
+          </aside>
+
+          <div className="mt-9 grid gap-10 sm:grid-cols-[1.1fr_0.9fr] sm:gap-14">
             <div>
               <p className="max-w-md text-[16px] leading-[1.65] text-white/60">
-                macOS gives desktop widgets four fixed sizes and crops whatever
-                you put in them. Arras gives every photo its own window at its
-                own proportions, and then gets out of the way — around 20 MB of
-                memory and effectively no CPU while it sits there.
+                The current build is about 2.4 MB, uses around 20 MB of memory,
+                and is designed for effectively zero idle CPU. It needs macOS 14
+                or later on Apple Silicon and sends no telemetry.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
@@ -254,7 +301,9 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
                 ["works on", "macOS 14+, Apple Silicon"],
                 ["costs", "nothing, ever"],
                 ["weighs", "2.4 MB"],
-                ["sends home", "nothing"],
+                downloadCount
+                  ? ["GitHub downloads", downloadCount]
+                  : ["sends home", "nothing"],
               ].map(([k, v]) => (
                 <div key={k}>
                   <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30">
@@ -315,9 +364,13 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
             The whole idea
           </p>
           <h2 className="mt-5 max-w-2xl text-[clamp(2rem,5.4vw,3.6rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-            A shape is information.
-            <span className="text-white/30"> Cropping deletes it.</span>
+            Why preserve every photo&apos;s shape?
           </h2>
+          <p className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-white/52">
+            Aspect ratio is part of a photograph&apos;s composition. Arras renders each
+            source image in a window with matching proportions, so it does not need
+            to crop meaningful edges or add black bars to satisfy a preset frame.
+          </p>
 
           <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
             {RATIOS.map((r, i) => (
@@ -343,7 +396,69 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
 
           <p className="mt-10 max-w-lg font-mono text-[12px] leading-[1.9] text-white/35">
             Four windows, four shapes, drawn here at the ratios they claim. The
-            built-in widget would return all four as the same rectangle.
+            built-in Photos widget would fit each image into one of its supported
+            widget frames.
+          </p>
+        </section>
+
+        {/* --------------------------------------------------------- comparison */}
+        <section className="mx-auto max-w-6xl border-t border-white/8 px-5 py-24 sm:px-8 sm:py-32">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
+            Direct comparison
+          </p>
+          <h2 className="mt-5 max-w-3xl text-[clamp(2rem,4.8vw,3.3rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
+            How is Arras different from the macOS Photos widget?
+          </h2>
+          <p className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-white/52">
+            Apple&apos;s widget system is the easiest route to a standard desktop widget.
+            Arras is for direct image choice, unrestricted proportions, custom rotation,
+            and window-level placement that a normal WidgetKit frame does not provide.
+          </p>
+
+          <div className="mt-12 overflow-x-auto border-y border-white/10">
+            <table className="w-full min-w-[660px] border-collapse text-left">
+              <caption className="sr-only">
+                Arras compared with the built-in macOS Photos widget
+              </caption>
+              <thead>
+                <tr className="border-b border-white/10 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/35">
+                  <th scope="col" className="px-4 py-4 font-normal sm:px-6">Capability</th>
+                  <th scope="col" className="px-4 py-4 font-normal sm:px-6">macOS Photos widget</th>
+                  <th scope="col" className="px-4 py-4 font-normal sm:px-6" style={{ color: AMBER }}>Arras</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARISON.map(([capability, macOS, arras]) => (
+                  <tr key={capability} className="border-b border-white/8 last:border-b-0">
+                    <th scope="row" className="px-4 py-5 text-[14px] font-semibold text-white/72 sm:px-6">
+                      {capability}
+                    </th>
+                    <td className="px-4 py-5 text-[14px] leading-[1.6] text-white/42 sm:px-6">{macOS}</td>
+                    <td className="px-4 py-5 text-[14px] leading-[1.6] text-white/68 sm:px-6">{arras}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-white/30">
+            <span>Sources</span>
+            <a
+              href="https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/65"
+            >
+              Apple widget guide
+            </a>
+            <a
+              href="https://github.com/yashashwi-s/Arras"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/65"
+            >
+              Arras documentation
+            </a>
           </p>
         </section>
 
@@ -355,13 +470,12 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
                 What it does
               </p>
               <h2 className="mt-5 text-[clamp(2rem,4.6vw,3.2rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-                Seven things,
-                <br />
-                done properly.
+                What can Arras do?
               </h2>
               <p className="mt-6 max-w-xs text-[14.5px] leading-[1.7] text-white/45">
-                No feature here exists because a competitor had it. Most of them
-                exist because someone filed an issue.
+                Arras handles the full desktop-photo workflow: import, preserve,
+                position, style, rotate, and remove images without taking focus
+                from the app you are actually using.
               </p>
             </div>
 
@@ -420,8 +534,13 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
             Install
           </p>
           <h2 className="mt-5 max-w-xl text-[clamp(2rem,4.6vw,3.2rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-            Two routes. Both take a minute.
+            How do I install Arras?
           </h2>
+          <p className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-white/50">
+            Use the three Homebrew commands below for the fastest route, or download
+            the DMG and approve the ad-hoc signed app once in Privacy &amp; Security.
+            Both methods install the same free, open-source build.
+          </p>
 
           <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
             <div>
@@ -493,6 +612,14 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
             It has had three names
           </p>
+          <h2 className="mt-5 max-w-2xl text-[clamp(2rem,4.6vw,3.2rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
+            Why was Tableau renamed Arras?
+          </h2>
+          <p className="mt-6 max-w-2xl text-[14.5px] leading-[1.7] text-white/45">
+            The name changed to avoid confusion with Tableau&apos;s data-visualization
+            product. Arras kept the same bundle identifier, settings, saved photos,
+            and in-place update path, so the rename did not create a separate app.
+          </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-4">
             {LINEAGE.map((l, i) => (
               <div key={l.name} className="flex items-center gap-4">
@@ -515,10 +642,8 @@ export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
           </div>
           <p className="mt-8 max-w-xl text-[14.5px] leading-[1.7] text-white/45">
             Photo Widget OSX described the file type. Tableau collided with a
-            data-visualization giant and lost every search. Arras is a woven wall
-            hanging, which is closer to the point. Nothing about the app moved:
-            same bundle identifier, same settings, same photos, and it updates in
-            place.
+            data-visualization brand. Arras is a woven wall hanging, which is
+            closer to the point of arranging pictures on a surface.
           </p>
         </section>
 

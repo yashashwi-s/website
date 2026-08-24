@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check:aeo": "node scripts/check-puremac-aeo.mjs"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.1",

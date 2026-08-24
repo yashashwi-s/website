@@ -7,7 +7,7 @@ export function FaqJsonLd({ faqs }) {
       name: question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: answer,
+        text: Array.isArray(answer) ? answer.join("\n\n") : answer,
       },
     })),
   };
@@ -58,34 +58,61 @@ export default function FaqSection({
         </div>
 
         <div>
-          {faqs.map(({ question: prompt, answer }, index) => (
-            <details key={prompt} className={`group border-t ${border} first:border-t-0`}>
-              <summary
-                data-cursor="snap"
-                className={`flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-[16px] font-semibold leading-snug marker:content-none sm:text-[17px] ${question}`}
-              >
-                <span className="flex gap-4">
-                  <span
-                    className="mt-0.5 shrink-0 font-mono text-[10px] font-normal tracking-[0.12em] opacity-70"
-                    style={{ color: accent }}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {prompt}
-                </span>
-                <span
-                  aria-hidden
-                  className="shrink-0 text-xl font-light leading-none transition-transform duration-200 group-open:rotate-45"
-                  style={{ color: accent }}
+          {faqs.map(({ question: prompt, answer, sources = [] }, index) => {
+            const paragraphs = Array.isArray(answer) ? answer : [answer];
+
+            return (
+              <details key={prompt} className={`group border-t ${border} first:border-t-0`}>
+                <summary
+                  data-cursor="snap"
+                  className="cursor-pointer list-none marker:content-none"
                 >
-                  +
-                </span>
-              </summary>
-              <p className={`max-w-2xl pb-6 pl-10 text-[14.5px] leading-[1.75] ${muted}`}>
-                {answer}
-              </p>
-            </details>
-          ))}
+                  <h3
+                    className={`flex items-start justify-between gap-6 py-5 text-[16px] font-semibold leading-snug sm:text-[17px] ${question}`}
+                  >
+                    <span className="flex gap-4">
+                      <span
+                        className="mt-0.5 shrink-0 font-mono text-[10px] font-normal tracking-[0.12em] opacity-70"
+                        style={{ color: accent }}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      {prompt}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="shrink-0 text-xl font-light leading-none transition-transform duration-200 group-open:rotate-45"
+                      style={{ color: accent }}
+                    >
+                      +
+                    </span>
+                  </h3>
+                </summary>
+                <div className={`max-w-2xl space-y-3 pb-6 pl-10 text-[14.5px] leading-[1.75] ${muted}`}>
+                  {paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                  {sources.length > 0 && (
+                    <p className="flex flex-wrap gap-x-3 gap-y-1 pt-1 font-mono text-[10.5px] leading-relaxed uppercase tracking-[0.1em]">
+                      <span className="opacity-60">Sources</span>
+                      {sources.map((source) => (
+                        <a
+                          key={source.href}
+                          href={source.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline decoration-current/30 underline-offset-4 transition-opacity hover:opacity-70"
+                          style={{ color: accent }}
+                        >
+                          {source.label}
+                        </a>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              </details>
+            );
+          })}
         </div>
       </div>
     </section>
