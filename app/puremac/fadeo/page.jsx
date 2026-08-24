@@ -1,5 +1,7 @@
 import { Space_Grotesk } from "next/font/google";
 import FadeoClient from "./fadeo-client";
+import { FaqJsonLd } from "../faq-section";
+import { fadeoFaqs } from "../faq-data";
 import { latestRelease } from "@/lib/github-release";
 import { promoState } from "@/lib/fadeo-promo";
 
@@ -19,10 +21,11 @@ export const metadata = {
   description:
     "Fadeo watches your workflow (the app in front, your desktop, whether you're in a meeting) and plays, fades, or switches audio automatically. Every rule is yours to define. Native macOS, open source, pay what you want ($2 minimum).",
   metadataBase: new URL("https://puremac.yashashwi.me"),
+  alternates: { canonical: "/fadeo" },
   openGraph: {
     title: "Fadeo: the right sound for what you're doing",
     description: "Automatic, fully customizable workflow audio for macOS. Native, open source, pay what you want.",
-    url: "https://puremac.yashashwi.me/puremac/fadeo",
+    url: "https://puremac.yashashwi.me/fadeo",
     siteName: "PureMac",
     locale: "en_US",
     type: "website",
@@ -36,11 +39,15 @@ export default async function FadeoPage() {
   // for whenever/if that becomes available.
   const paymentLink = process.env.GUMROAD_PRODUCT_URL || process.env.STRIPE_PAYMENT_LINK || null;
   return (
-    <FadeoClient
-      release={release}
-      initialPromo={promo}
-      paymentLink={paymentLink}
-      fontClass={fadeoDisplay.variable}
-    />
+    <>
+      <FaqJsonLd faqs={fadeoFaqs} />
+      <FadeoClient
+        release={release}
+        initialPromo={promo}
+        paymentLink={paymentLink}
+        faqs={fadeoFaqs}
+        fontClass={fadeoDisplay.variable}
+      />
+    </>
   );
 }

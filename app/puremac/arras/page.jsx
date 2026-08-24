@@ -1,5 +1,7 @@
 import { Bricolage_Grotesque } from "next/font/google";
 import ArrasClient from "./arras-client";
+import { FaqJsonLd } from "../faq-section";
+import { arrasFaqs } from "../faq-data";
 import { latestRelease } from "@/lib/github-release";
 
 /* The site-wide face is Nunito, which is rounded and friendly and reads as
@@ -53,5 +55,10 @@ export default async function ArrasPage() {
   // Renamed from Tableau in v2.3.1. GitHub redirects the old API path, but
   // asking for the current name keeps this working if that ever stops.
   const release = await latestRelease("Arras");
-  return <ArrasClient release={release} fontClass={display.variable} />;
+  return (
+    <>
+      <FaqJsonLd faqs={arrasFaqs} />
+      <ArrasClient release={release} faqs={arrasFaqs} fontClass={display.variable} />
+    </>
+  );
 }

@@ -5,7 +5,7 @@ export const metadata = {
   description:
     "How Fadeo processes local context, diagnostics, feedback, licensing and website data.",
   alternates: {
-    canonical: "https://puremac.yashashwi.me/puremac/fadeo/privacy",
+    canonical: "https://puremac.yashashwi.me/fadeo/privacy",
   },
 };
 

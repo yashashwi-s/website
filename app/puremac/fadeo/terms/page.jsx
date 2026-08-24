@@ -5,7 +5,7 @@ export const metadata = {
   description:
     "Terms governing downloads, licenses, promotions and use of Fadeo.",
   alternates: {
-    canonical: "https://puremac.yashashwi.me/puremac/fadeo/terms",
+    canonical: "https://puremac.yashashwi.me/fadeo/terms",
   },
 };
 

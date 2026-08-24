@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 import Magnetic from "@/components/Magnetic";
 import { GRAIN } from "./grain";
+import FaqSection from "./faq-section";
 
 /* The index is the one light page in the set.
  *
@@ -226,7 +227,7 @@ function AppEntry({ app, release, downloads }) {
   );
 }
 
-export default function PureMacClient({ fadeo, arras, downloads = {}, fontClass = "" }) {
+export default function PureMacClient({ fadeo, arras, downloads = {}, faqs = [], fontClass = "" }) {
   const releases = { fadeo, arras };
 
   return (
@@ -301,6 +302,13 @@ export default function PureMacClient({ fadeo, arras, downloads = {}, fontClass 
             />
           ))}
         </main>
+
+        <FaqSection
+          faqs={faqs}
+          accent="#a64e20"
+          light
+          title="Before you download."
+        />
 
         <footer className="flex flex-col gap-4 border-t border-black/12 py-10 sm:flex-row sm:items-center sm:justify-between">
           <span className="max-w-md font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-black/35">

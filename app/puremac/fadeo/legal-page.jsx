@@ -30,7 +30,7 @@ export default function LegalPage({
 
       <header className="mx-auto flex max-w-4xl items-center justify-between px-6 pb-2 pt-10 sm:px-8">
         <a
-          href="/puremac/fadeo"
+          href="/fadeo"
           className="text-[13px] text-white/45 transition-colors hover:text-white/80"
         >
           ← Fadeo
@@ -38,13 +38,13 @@ export default function LegalPage({
 
         <nav className="flex items-center gap-5 text-[13px] text-white/40">
           <a
-            href="/puremac/fadeo/privacy"
+            href="/fadeo/privacy"
             className="transition-colors hover:text-white/75"
           >
             Privacy
           </a>
           <a
-            href="/puremac/fadeo/terms"
+            href="/fadeo/terms"
             className="transition-colors hover:text-white/75"
           >
             Terms

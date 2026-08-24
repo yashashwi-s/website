@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Check, Copy, Download } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 import { GRAIN } from "../grain";
+import FaqSection from "../faq-section";
 
 /* Palette sampled off the demo footage itself — the wallpaper in the video sits
    around #181830/#303060, and the warm sunset print is the only hot thing on
@@ -133,7 +134,7 @@ function CopyLine({ text }) {
   );
 }
 
-export default function ArrasClient({ release, fontClass = "" }) {
+export default function ArrasClient({ release, faqs = [], fontClass = "" }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? "https://github.com/yashashwi-s/Arras/releases/latest";
   const tag = release?.tag ?? "v2.4.4";
 
@@ -520,6 +521,13 @@ export default function ArrasClient({ release, fontClass = "" }) {
             place.
           </p>
         </section>
+
+        <FaqSection
+          faqs={faqs}
+          accent={AMBER}
+          className="mx-auto max-w-6xl px-5 sm:px-8"
+          title="Arras, in plain terms."
+        />
 
         {/* -------------------------------------------------------------- footer */}
         <footer className="mx-auto max-w-6xl border-t border-white/8 px-5 py-12 sm:px-8">

@@ -71,7 +71,7 @@ export default function DiagnosticsClient() {
       <CustomCursor />
 
       <header className="max-w-4xl mx-auto px-6 sm:px-8 pt-10 pb-2 flex items-center justify-between">
-        <a href="/puremac/fadeo" className="inline-flex items-center gap-1.5 text-[13px] text-white/40 hover:text-white/70 transition-colors" data-cursor="snap">
+        <a href="/fadeo" className="inline-flex items-center gap-1.5 text-[13px] text-white/40 hover:text-white/70 transition-colors" data-cursor="snap">
           <ArrowLeft size={13} /> Fadeo
         </a>
         <span className="text-[13px] text-white/30">by Yashashwi Singhania</span>

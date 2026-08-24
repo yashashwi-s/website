@@ -1,5 +1,7 @@
 import { Instrument_Serif } from "next/font/google";
 import PureMacClient from "./puremac-client";
+import { FaqJsonLd } from "./faq-section";
+import { pureMacFaqs } from "./faq-data";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
 /* The index is the only page in the set set in a serif, and the only light one.
@@ -17,6 +19,7 @@ export const metadata = {
   description:
     "PureMac is Yashashwi Singhania's home for small, native macOS apps: Fadeo (automatic workflow audio) and Arras (photo widgets for your desktop). No subscriptions, open source.",
   metadataBase: new URL("https://puremac.yashashwi.me"),
+  alternates: { canonical: "/" },
   openGraph: {
     title: "PureMac: small, native macOS apps",
     description: "Fadeo and Arras: native, open-source macOS apps. No subscriptions.",
@@ -40,11 +43,15 @@ export default async function PureMacPage() {
   ]);
 
   return (
-    <PureMacClient
-      fadeo={fadeo}
-      arras={arras}
-      downloads={{ fadeo: fadeoDl, arras: arrasDl }}
-      fontClass={indexDisplay.variable}
-    />
+    <>
+      <FaqJsonLd faqs={pureMacFaqs} />
+      <PureMacClient
+        fadeo={fadeo}
+        arras={arras}
+        downloads={{ fadeo: fadeoDl, arras: arrasDl }}
+        faqs={pureMacFaqs}
+        fontClass={indexDisplay.variable}
+      />
+    </>
   );
 }

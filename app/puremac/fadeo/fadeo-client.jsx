@@ -13,6 +13,7 @@ import {
   Mail,
 } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import FaqSection from "../faq-section";
 import { GRAIN } from "../grain";
 
 /* Fadeo is an audio app that decides things, so the page is built like a signal
@@ -335,7 +336,7 @@ function GiveawayCard({ initialPromo }) {
   );
 }
 
-export default function FadeoClient({ release, initialPromo, paymentLink, fontClass = "" }) {
+export default function FadeoClient({ release, initialPromo, paymentLink, faqs = [], fontClass = "" }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? null;
   const downloadLabel = release?.dmg ? "Download .dmg" : release?.zip ? "Download .zip" : null;
   const checkoutUrl = paymentLink || "mailto:fadeo.puremac@gmail.com?subject=Fadeo%20license";
@@ -558,16 +559,22 @@ export default function FadeoClient({ release, initialPromo, paymentLink, fontCl
 
         <SubscribeBand />
 
+        <FaqSection
+          faqs={faqs}
+          accent={TEAL}
+          title="How Fadeo fits your Mac."
+        />
+
         {/* --------------------------------------------------------------- footer */}
         <footer className="flex flex-col gap-4 border-t border-white/10 py-10 sm:flex-row sm:items-center sm:justify-between">
           <span className="max-w-md font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/25">
             Ad-hoc signed. Gatekeeper asks once, which is expected outside the App Store.
           </span>
           <div className="flex shrink-0 items-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-white/30">
-            <a href="/puremac/fadeo/privacy" data-cursor="snap" className="transition-colors hover:text-white/70">
+            <a href="/fadeo/privacy" data-cursor="snap" className="transition-colors hover:text-white/70">
               Privacy
             </a>
-            <a href="/puremac/fadeo/terms" data-cursor="snap" className="transition-colors hover:text-white/70">
+            <a href="/fadeo/terms" data-cursor="snap" className="transition-colors hover:text-white/70">
               Terms
             </a>
             <a href="https://github.com/yashashwi-s/Fadeo" data-cursor="snap" className="transition-colors hover:text-white/70">
