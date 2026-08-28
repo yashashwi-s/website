@@ -3,7 +3,7 @@ name: Arras monthly AEO prompt
 on:
   schedule:
     # 10:00 Asia/Kolkata. The calendar script proceeds only when tomorrow is
-    # the first Monday, including months whose notification falls in the prior month.
+    # a configured review: the early September round or a first Monday.
     - cron: "30 4 * * *"
   workflow_dispatch:
 
@@ -20,7 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      AEO_FIRST_NOTIFICATION_DATE: "2026-10-04"
+      AEO_EARLY_NOTIFICATION_DATE: "2026-09-17"
+      AEO_EARLY_LAST_NOTIFICATION_DATE: "2026-09-20"
+      AEO_EARLY_REVIEW_DATE: "2026-09-18"
+      AEO_REGULAR_FIRST_NOTIFICATION_DATE: "2026-10-04"
 
     steps:
       - name: Check out the repository

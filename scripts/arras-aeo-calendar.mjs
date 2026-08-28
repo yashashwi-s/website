@@ -1,7 +1,10 @@
 import { appendFileSync } from "node:fs";
 
 const TIME_ZONE = "Asia/Kolkata";
-const FIRST_NOTIFICATION_DATE = process.env.AEO_FIRST_NOTIFICATION_DATE || "2026-10-04";
+const EARLY_NOTIFICATION_DATE = process.env.AEO_EARLY_NOTIFICATION_DATE || "2026-09-17";
+const EARLY_LAST_NOTIFICATION_DATE = process.env.AEO_EARLY_LAST_NOTIFICATION_DATE || "2026-09-20";
+const EARLY_REVIEW_DATE = process.env.AEO_EARLY_REVIEW_DATE || "2026-09-18";
+const REGULAR_FIRST_NOTIFICATION_DATE = process.env.AEO_REGULAR_FIRST_NOTIFICATION_DATE || "2026-10-04";
 const now = process.env.AEO_NOW ? new Date(process.env.AEO_NOW) : new Date();
 const forced = process.env.GITHUB_EVENT_NAME === "workflow_dispatch" || process.argv.includes("--force");
 
@@ -44,9 +47,22 @@ function nextFirstMonday(onOrAfter) {
 const localToday = utcDate(partsInIndia(now));
 const tomorrow = new Date(localToday);
 tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-const scheduledReviewDate = forced ? nextFirstMonday(localToday) : tomorrow;
 const todayIso = isoDate(localToday);
-const shouldCreate = forced || (todayIso >= FIRST_NOTIFICATION_DATE && isFirstMonday(tomorrow));
+const earlyReviewDate = new Date(`${EARLY_REVIEW_DATE}T00:00:00.000Z`);
+const regularStartDate = new Date(`${REGULAR_FIRST_NOTIFICATION_DATE}T00:00:00.000Z`);
+const isEarlyReviewWindow =
+  todayIso >= EARLY_NOTIFICATION_DATE && todayIso <= EARLY_LAST_NOTIFICATION_DATE;
+const scheduledReviewDate = forced
+  ? localToday < regularStartDate
+    ? earlyReviewDate
+    : nextFirstMonday(localToday)
+  : isEarlyReviewWindow
+    ? earlyReviewDate
+    : tomorrow;
+const shouldCreate =
+  forced ||
+  isEarlyReviewWindow ||
+  (todayIso >= REGULAR_FIRST_NOTIFICATION_DATE && isFirstMonday(tomorrow));
 const reviewDate = isoDate(scheduledReviewDate);
 const reviewMonth = new Intl.DateTimeFormat("en-US", {
   month: "long",
