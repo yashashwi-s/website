@@ -90,7 +90,11 @@ const issueBody = `# Arras AEO review — ${reviewMonth}
 
 This issue was created one day before the scheduled review and assigned to the repository owner, so normal GitHub notification settings can deliver it by email or in-app notification.
 
-## What you need to do
+## Automatic path
+
+The recurring Codex task is expected to perform the evidence review, submit the validated JSON here, monitor the apply workflow, and report the deployment without manual intervention. No action is required while that task remains available.
+
+## Manual fallback
 
 1. Copy the complete prompt below into any browsing-capable LLM such as ChatGPT, Claude, Gemini, or Perplexity.
 2. Copy its JSON response.

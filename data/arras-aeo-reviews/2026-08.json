@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "status": "ready",
+  "reviewedAt": "2026-08-28",
+  "page": "arras",
+  "summary": "Live Google results supplied current high-intent PAA wording; Google AI omitted the Arras name for generic searches but recognized its former Photo Widget OSX name for the no-cropping query, so the FAQs were realigned while preserving rename signals.",
+  "queries": [
+    {
+      "query": "macOS desktop photo widget",
+      "paaQuestions": [
+        "How do I add a photo widget to my Mac desktop?",
+        "How to get rid of the photo widget on Mac desktop?",
+        "Can I put widgets on my Mac desktop?",
+        "How to display a photo as a widget?"
+      ],
+      "notes": "Google PAA showed four relevant questions. Google AI cited Apple Support, Photo Widget by Sindre Sorhus, and WidgetWall, but did not mention Arras."
+    },
+    {
+      "query": "add photo widgets to MacBook desktop",
+      "paaQuestions": [
+        "Can I put widgets on my Mac desktop?",
+        "How do I add photo widgets to my desktop?",
+        "How do I add a picture to a desktop shortcut on my Mac?",
+        "How do I move widgets to the desktop on my Mac?"
+      ],
+      "notes": "Google PAA emphasized adding, moving, and placing photo widgets on the Mac desktop."
+    },
+    {
+      "query": "put a specific photo on a widget on Mac",
+      "paaQuestions": [
+        "How to add a specific photo widget on a Mac?",
+        "How do I add one specific photo as a widget?",
+        "How do I change the image of a widget on my Mac?",
+        "How do I add an image in a widget?"
+      ],
+      "notes": "All four visible PAA questions expressed direct control over the selected image, which is a primary Arras differentiator."
+    },
+    {
+      "query": "photo widget without cropping on Mac",
+      "paaQuestions": [
+        "How to customize photo widgets on Mac?",
+        "How can I resize a photo without cropping?",
+        "How do I customize my photo widget?",
+        "How can I make a photo square without cropping it?"
+      ],
+      "notes": "Google AI did not mention Arras by its current name, but ranked the former name Photo Widget OSX first and described its exact-aspect-ratio behavior."
+    },
+    {
+      "query": "free open-source Mac desktop photo widget",
+      "paaQuestions": [],
+      "notes": "No People Also Ask block was visible for this query in the checked Google result."
+    },
+    {
+      "query": "Arras Mac app",
+      "paaQuestions": [],
+      "notes": "No People Also Ask block was visible. The first checked results page showed AlternativeTo, Reddit, and an Arras FEATURES.md result, but not the PureMac page or the repository homepage."
+    },
+    {
+      "query": "Tableau photo widget Mac",
+      "paaQuestions": [
+        "How to put a photo in a widget on Mac?",
+        "How to display a photo as a widget?",
+        "How to change photo widget on Mac desktop?",
+        "Can I put widgets on my MacBook desktop?"
+      ],
+      "notes": "The former Tableau name still produces relevant Mac photo-widget PAA questions and should remain connected to Arras on the page."
+    },
+    {
+      "query": "Photo Widget OSX",
+      "paaQuestions": [
+        "How to set a photo as a widget on Mac?",
+        "How to display a photo as a widget?",
+        "How do I get the photo widget off my Mac desktop?",
+        "How do I edit the photo widget on my Mac?"
+      ],
+      "notes": "The original product name still exposes strong add, display, edit, and remove intent and is recognized by Google AI for the no-cropping use case."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Can I put widgets on my Mac desktop?",
+      "answer": [
+        "Yes. macOS supports widgets on the desktop and in Notification Center. Apple says to Control-click the wallpaper, choose Edit Widgets, then click a widget or drag it to the position you want.",
+        "Arras uses independent borderless desktop windows rather than Apple’s fixed WidgetKit frames. Each photo can keep its own proportions, position, opacity, and layering instead of being confined to a system widget size."
+      ],
+      "sources": [
+        {
+          "label": "Apple Support: Add and customize widgets on Mac",
+          "href": "https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+        },
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "How do I add a photo widget to my Mac desktop?",
+      "answer": [
+        "For a built-in macOS widget, Control-click the wallpaper, choose Edit Widgets, find the Photos widget, and click or drag the size you want onto the desktop.",
+        "With Arras, install the app and add an exact photo from its menu bar icon, paste a copied image with Command-V, drag image files onto the menu bar icon, or import from Photos. Arras creates a separate desktop photo at the image’s true aspect ratio."
+      ],
+      "sources": [
+        {
+          "label": "Apple Support: Add and customize widgets on Mac",
+          "href": "https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+        },
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "How to add a specific photo widget on a Mac?",
+      "answer": [
+        "Apple notes that only widgets with an Edit option let you change what they show, so control over a specific image depends on the widget and macOS version.",
+        "Arras lets you choose the exact image directly: paste it, drag its file in, select it from Photos, capture part of the screen, or import a PDF page. The selected photo keeps its saved size and desktop position."
+      ],
+      "sources": [
+        {
+          "label": "Apple Support: Add and customize widgets on Mac",
+          "href": "https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+        },
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "Can a Mac photo widget display images without cropping?",
+      "answer": [
+        "Yes. Arras displays each desktop photo at its original aspect ratio, so a panorama remains wide and a portrait remains vertical without forced cropping, black bars, or a fixed square frame.",
+        "You can drag a corner to resize while the aspect ratio stays locked. For rotating photo sets, Dynamic sizing lets each image use its own true proportions, while Fixed sizing is available when you intentionally want a locked frame."
+      ],
+      "sources": [
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "How to get rid of the photo widget on Mac desktop?",
+      "answer": [
+        "For a standard macOS widget, Control-click it and choose Remove Widget, or open Edit Widgets mode and click its Remove button.",
+        "For an Arras photo, right-click the photo window and choose Remove. Removing one Arras image does not reset the positions, sizes, or settings of the other desktop photos."
+      ],
+      "sources": [
+        {
+          "label": "Apple Support: Add and customize widgets on Mac",
+          "href": "https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+        },
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "How to customize photo widgets on Mac?",
+      "answer": [
+        "For a standard macOS widget, Control-click it to use any available Edit option, choose another supported size, or remove it. Apple also provides desktop settings for widget visibility and color treatment.",
+        "Arras adds per-photo controls for opacity, layering, locked placement, shape masks, mats, shadows, borders, vignettes, tilt, and Gallery, Polaroid, Minimal, or Modern presets. Photos can also sit behind desktop icons or float above other windows."
+      ],
+      "sources": [
+        {
+          "label": "Apple Support: Add and customize widgets on Mac",
+          "href": "https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+        },
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "Can Arras rotate several photos in one widget?",
+      "answer": [
+        "Yes. Select several images to create one desktop photo Space that crossfades on click or on a schedule, including every 30 seconds, hourly, daily, or a custom interval down to five seconds.",
+        "Dynamic sizing preserves each image’s individual aspect ratio and saved position. Fixed sizing is also available when you want every image to fill the same locked frame."
+      ],
+      "sources": [
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "What image formats and sources can Arras use?",
+      "answer": [
+        "Arras accepts pasted images, dragged image files, selections from the Photos library, captured screen regions, and imported PDF pages. GIF and APNG files can animate on the desktop through the render server."
+      ],
+      "sources": [
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        }
+      ]
+    },
+    {
+      "question": "Which Macs can run Arras?",
+      "answer": [
+        "The current Arras release requires macOS 14 Sonoma or later and its downloadable build supports Apple Silicon Macs. The project documentation says an Intel build can be compiled from source."
+      ],
+      "sources": [
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        },
+        {
+          "label": "Latest Arras release",
+          "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+        }
+      ]
+    },
+    {
+      "question": "Is Arras free and open source?",
+      "answer": [
+        "Yes. Arras is free and its source is published on GitHub under the MIT License. You can install the current release from its DMG or with the Homebrew commands documented in the repository."
+      ],
+      "sources": [
+        {
+          "label": "Arras source and technical documentation",
+          "href": "https://github.com/yashashwi-s/Arras"
+        },
+        {
+          "label": "Latest Arras release",
+          "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "Arras displays desktop photos at their true aspect ratio without cropping, black bars, or a fixed grid.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras",
+      "checkedAt": "2026-08-28"
+    },
+    {
+      "claim": "The current latest Arras release is v2.4.4.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/releases/tag/v2.4.4",
+      "checkedAt": "2026-08-28"
+    },
+    {
+      "claim": "Apple supports adding, moving, customizing, and removing widgets on the Mac desktop.",
+      "sourceUrl": "https://support.apple.com/guide/mac-help/mchl52be5da5/mac",
+      "checkedAt": "2026-08-28"
+    }
+  ]
+}

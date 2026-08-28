@@ -19,7 +19,7 @@ This plan converts the public AEO playbook into work that is relevant and suppor
 
 ## Monthly review
 
-Run on the first Monday of each month:
+Run once per month. The automatic Codex evidence pass runs on the 17th; the GitHub issue calendar remains a durable prompt and notification fallback:
 
 1. Run `npm run check:aeo` against production.
 2. Verify current Google People Also Ask questions for the core Arras query set.
@@ -33,12 +33,13 @@ Run on the first Monday of each month:
 
 The repository owns the long-term schedule, so this process does not depend on a Codex, ChatGPT, Claude, or Gemini subscription:
 
-1. The initial evidence round is accelerated to fit the available LLM subscription window: GitHub creates the prompt issue on September 17, 2026, for review on September 18. Beginning October 4, it returns to the regular pattern of creating an issue one day before each first-Monday review.
-2. The issue contains a complete prompt for any browsing-capable LLM. Paste that prompt into the service available to you.
-3. Paste its JSON response into the issue as a comment beginning with `/submit-aeo-review`.
-4. GitHub accepts the command only on the scheduled Arras issue and only from an owner, member, or collaborator. It validates all fields and source domains before treating the result as data.
-5. A valid response updates the ten Arras FAQs, archives the evidence under `data/arras-aeo-reviews/`, refreshes the verification date, builds the site, runs the rendered AEO audit, commits to `main`, and closes the issue. The normal hosting integration then deploys the commit.
-6. A blocked, malformed, stale, or failed response leaves production unchanged and links the failed workflow run from the issue.
+1. The first full evidence round was run, validated, and deployed on August 28, 2026.
+2. On September 17, the recurring Codex task performs the same live evidence review again and submits the result automatically. It then continues on the 17th of each month while local scheduled tasks remain available.
+3. GitHub also creates an assigned `arras-aeo` issue containing the complete prompt. The issue is an audit trail and fallback; no manual paste is required when the Codex task completes normally.
+4. Codex posts the JSON response to that issue as a comment beginning with `/submit-aeo-review` after locally validating the response contract.
+5. GitHub accepts the command only on the scheduled Arras issue and only from an owner, member, or collaborator. It validates all fields and source domains before treating the result as data.
+6. A valid response updates the ten Arras FAQs, archives the evidence under `data/arras-aeo-reviews/`, refreshes the verification date, builds the site, runs the rendered AEO audit, commits to `main`, and closes the issue. The normal hosting integration then deploys the commit.
+7. A blocked, malformed, stale, or failed response leaves production unchanged and links the failed workflow run from the issue.
 
 GitHub email delivery depends on the repository owner's notification settings. Assignment still creates a GitHub notification; enable email for participating or assigned issue activity when an email copy is wanted.
 
