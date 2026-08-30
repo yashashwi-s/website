@@ -37,6 +37,19 @@ export default function proxy(req) {
       url.pathname = `/cv${url.pathname}`;
       return NextResponse.rewrite(url);
     }
+  } else if (currentHost === 'arras') {
+    if (url.pathname === '/favicon.ico') {
+      url.pathname = '/puremac/arras-icon.png';
+      return NextResponse.rewrite(url);
+    }
+
+    // arras.yashashwi.me is a focused product site. Keep the implementation in
+    // its existing route group while exposing it at the subdomain root.
+    if (!url.pathname.startsWith('/puremac/arras')) {
+      const suffix = url.pathname === '/' ? '' : url.pathname;
+      url.pathname = `/puremac/arras${suffix}`;
+      return NextResponse.rewrite(url);
+    }
   } else if (currentHost === 'puremac') {
     if (url.pathname === '/favicon.ico') {
       url.pathname = '/puremac/icon';

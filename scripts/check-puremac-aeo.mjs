@@ -1,5 +1,7 @@
 const baseUrl = (process.env.PUREMAC_BASE_URL || "https://puremac.yashashwi.me").replace(/\/$/, "");
 const requestBaseUrl = (process.env.PUREMAC_REQUEST_BASE_URL || baseUrl).replace(/\/$/, "");
+const arrasBaseUrl = (process.env.ARRAS_BASE_URL || "https://arras.yashashwi.me").replace(/\/$/, "");
+const arrasRequestBaseUrl = (process.env.ARRAS_REQUEST_BASE_URL || arrasBaseUrl).replace(/\/$/, "");
 
 const paths = ["/", "/arras", "/fadeo", "/robots.txt", "/sitemap.xml", "/llms.txt"];
 const responses = await Promise.all(
@@ -13,6 +15,17 @@ const responses = await Promise.all(
   })
 );
 const pages = Object.fromEntries(responses);
+const arrasResponses = await Promise.all(
+  ["/", "/robots.txt", "/sitemap.xml"].map(async (path) => {
+    const response = await fetch(`${arrasRequestBaseUrl}${path}`, {
+      headers: { "User-Agent": "PureMac-AEO-Check/1.0" },
+      redirect: "follow",
+    });
+    const body = await response.text();
+    return [path, { response, body }];
+  })
+);
+const arrasPages = Object.fromEntries(arrasResponses);
 const failures = [];
 
 function check(condition, message) {
@@ -32,8 +45,11 @@ function decodeHtml(value) {
 for (const [path, { response }] of Object.entries(pages)) {
   check(response.ok, `${path} returned ${response.status}`);
 }
+for (const [path, { response }] of Object.entries(arrasPages)) {
+  check(response.ok, `Arras ${path} returned ${response.status}`);
+}
 
-const arrasHtml = pages["/arras"].body;
+const arrasHtml = arrasPages["/"].body;
 const title = arrasHtml.match(/<title>([^<]+)<\/title>/i)?.[1] ?? "";
 const description = decodeHtml(
   arrasHtml.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i)?.[1] ??
@@ -61,9 +77,9 @@ const graphTypes = new Set(
 );
 const faq = jsonLdBlocks.find((block) => block["@type"] === "FAQPage");
 
-check(title.length >= 50 && title.length <= 53, `/arras title is ${title.length} characters, expected 50-53`);
+check(title.length >= 45 && title.length <= 60, `Arras title is ${title.length} characters, expected 45-60`);
 check(description.length >= 130 && description.length <= 160, `/arras description is ${description.length} characters`);
-check(canonicals.includes(`${baseUrl}/arras`), "/arras canonical URL is missing or incorrect");
+check(canonicals.includes(arrasBaseUrl), "Arras canonical URL is missing or incorrect");
 check((arrasHtml.match(/<h1(?:\s|>)/gi) ?? []).length === 1, "/arras must render exactly one H1");
 check(faq?.mainEntity?.length === 10, "/arras must expose exactly 10 FAQ schema questions");
 for (const type of ["SoftwareApplication", "HowTo", "BreadcrumbList", "Organization", "Person", "WebPage"]) {
@@ -88,10 +104,17 @@ check(robots.includes("Disallow: /api/"), "/robots.txt must exclude API endpoint
 check(robots.includes(`Sitemap: ${baseUrl}/sitemap.xml`), "/robots.txt sitemap URL is incorrect");
 
 const sitemap = pages["/sitemap.xml"].body;
-for (const path of ["", "/arras", "/fadeo"]) {
+for (const path of ["", "/fadeo"]) {
   check(sitemap.includes(`<loc>${baseUrl}${path}</loc>`), `/sitemap.xml is missing ${path || "/"}`);
 }
 check(sitemap.includes("<lastmod>"), "/sitemap.xml is missing freshness timestamps");
+
+const arrasRobots = arrasPages["/robots.txt"].body;
+check(arrasRobots.includes("User-agent: *"), "Arras /robots.txt is missing its crawler rule");
+check(arrasRobots.includes(`Sitemap: ${arrasBaseUrl}/sitemap.xml`), "Arras /robots.txt sitemap URL is incorrect");
+const arrasSitemap = arrasPages["/sitemap.xml"].body;
+check(arrasSitemap.includes(`<loc>${arrasBaseUrl}</loc>`), "Arras /sitemap.xml is missing the canonical root");
+check(arrasSitemap.includes("<lastmod>"), "Arras /sitemap.xml is missing a freshness timestamp");
 
 const llms = pages["/llms.txt"].body;
 check(llms.startsWith("# PureMac"), "/llms.txt must start with the site identity");

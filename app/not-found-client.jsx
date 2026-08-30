@@ -16,7 +16,7 @@ const ACCENT = "#ccff2e";
 const ELSEWHERE = [
   { label: "Home", href: "/", note: "the work, the receipts" },
   { label: "PureMac", href: "https://puremac.yashashwi.me", note: "two native macOS apps" },
-  { label: "Arras", href: "https://puremac.yashashwi.me/arras", note: "photos on your desktop" },
+  { label: "Arras", href: "https://arras.yashashwi.me", note: "photos on your desktop" },
   { label: "Fadeo", href: "https://puremac.yashashwi.me/fadeo", note: "audio that follows your work" },
   { label: "CV", href: "https://cv.yashashwi.me", note: "one page, print-ready" },
   { label: "GitHub", href: "https://github.com/yashashwi-s", note: "everything, unedited" },

@@ -111,11 +111,16 @@
     ]
   },
   {
-    "question": "What image formats and sources can Arras use?",
+    "question": "Why does macOS say it cannot verify Arras?",
     "answer": [
-      "Arras accepts pasted images, dragged image files, selections from the Photos library, captured screen regions, and imported PDF pages. GIF and APNG files can animate on the desktop through the render server."
+      "The current Arras build is distributed outside the Mac App Store and is not notarized, so macOS may pause the first launch. This is a Gatekeeper check on the distribution method.",
+      "After trying to open Arras once, go to System Settings, Privacy & Security, and click Open Anyway. You only need to approve that installed copy once. The source and release files are public on GitHub."
     ],
     "sources": [
+      {
+        "label": "Apple Support: Safely open apps on your Mac",
+        "href": "https://support.apple.com/102445"
+      },
       {
         "label": "Arras source and technical documentation",
         "href": "https://github.com/yashashwi-s/Arras"

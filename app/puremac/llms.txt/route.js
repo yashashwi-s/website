@@ -5,10 +5,10 @@ const LLMS = `# PureMac
 > PureMac publishes small, native, open-source macOS apps by Yashashwi Singhania. Arras is the primary product: a free desktop photo widget that preserves each image's true aspect ratio instead of cropping it into a fixed frame.
 
 ## Primary Product: Arras
-- [Arras product page](https://puremac.yashashwi.me/arras): Features, live release link, system requirements, installation steps, comparison data, and sourced FAQs.
+- [Arras product page](https://arras.yashashwi.me): Features, live release link, system requirements, installation steps, comparison data, and sourced FAQs.
 - [Arras source and technical documentation](https://github.com/yashashwi-s/Arras): MIT-licensed source, README, issue tracker, and release history.
 - [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current DMG/ZIP download and release notes.
-- [Arras FAQs](https://puremac.yashashwi.me/arras#faq-heading): Answers about macOS photo widgets, exact-photo placement, rotation, styling, performance, compatibility, privacy, and licensing.
+- [Arras FAQs](https://arras.yashashwi.me#faq-heading): Answers about macOS photo widgets, exact-photo placement, rotation, styling, performance, compatibility, privacy, and licensing.
 
 ## Arras Facts
 - Category: native macOS desktop photo widget and photo pinning utility.

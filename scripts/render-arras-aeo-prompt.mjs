@@ -66,7 +66,7 @@ const quarterlyInstruction = quarterly
 const prompt = `You are performing the ${reviewMonth} evidence review for Arras, a free native macOS desktop photo widget.
 
 Browse and inspect these pages before answering:
-- https://puremac.yashashwi.me/arras
+- https://arras.yashashwi.me
 - https://github.com/yashashwi-s/Arras
 - https://github.com/yashashwi-s/Arras/releases/latest
 - https://support.apple.com/guide/mac-help/mchl52be5da5/mac

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Check, Copy, Download } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
+import { GithubIcon } from "@/components/icons/GithubIcon";
 import { GRAIN } from "../grain";
 import FaqSection from "../faq-section";
 
@@ -13,7 +14,6 @@ import FaqSection from "../faq-section";
    screen. Amber on indigo is why that frame reads, so the page borrows it
    rather than inventing a scheme that fights the product shots. */
 const AMBER = "#ff9e5e";
-const VIOLET = "#8b7bf7";
 
 const MARQUEE = [
   "no crop",
@@ -24,84 +24,50 @@ const MARQUEE = [
   "no telemetry",
 ];
 
-/* Deliberately the real ratios, drawn at the real ratios. The section argues
-   that shape is the point, so the section is made of shapes. */
-const RATIOS = [
-  // Each fill echoes one of the widgets actually on screen in the demo — the
-  // aurora, the sunset print, the blue gradient, the mountain wallpaper.
-  {
-    label: "21:9",
-    css: "21 / 9",
-    name: "panorama",
-    fill: "linear-gradient(135deg,#123b3a,#2f7d6b 45%,#7fd6b0)",
-  },
-  {
-    label: "16:9",
-    css: "16 / 9",
-    name: "landscape",
-    fill: "linear-gradient(135deg,#1a1338,#5b3a86 55%,#c98bd6)",
-  },
-  {
-    label: "1:1",
-    css: "1 / 1",
-    name: "square",
-    fill: "linear-gradient(135deg,#12294d,#2f6fb0 50%,#7fc4f2)",
-  },
-  {
-    label: "3:4",
-    css: "3 / 4",
-    name: "portrait",
-    fill: "linear-gradient(160deg,#f6c98a,#e8834f 45%,#4a2b52 92%)",
-  },
-];
-
-const FEATURES = [
+const BENEFITS = [
   {
     n: "01",
-    title: "Sized to the photo, not to a template",
-    body: "Every widget is its own window with its own dimensions. A panorama stays a panorama. Nothing is cropped, letterboxed or padded to fit a grid that was never yours.",
+    title: "No cropping",
+    body: "Arras keeps the full image visible. No trimmed edges, filler, or black bars.",
   },
   {
     n: "02",
-    title: "Anywhere in the stack",
-    body: "Right-click and send a photo behind your desktop icons, above them, over macOS's own widgets, or floating above every app you have open. Keep clicking and it walks the whole stack.",
+    title: "Any aspect ratio",
+    body: "Panoramas stay wide. Portraits stay tall. Each widget matches its photo.",
   },
   {
     n: "03",
-    title: "Spaces rotate",
-    body: "Pick several images and they become one widget that crossfades between them — on click, every 30 seconds, hourly, or an interval you set. Each image keeps its own size and position.",
+    title: "Place it anywhere",
+    body: "Put a photo behind desktop icons, above them, or over your other windows.",
   },
   {
     n: "04",
-    title: "Snapping that actually snaps",
-    body: "Photos align to screen edges, to each other, and to other apps' windows, with guides while you drag. It snaps the visible edge, not the invisible window frame. No permissions needed.",
-  },
-  {
-    n: "05",
-    title: "Four ways in, all fast",
-    body: "⌘V pastes a copied image straight onto the desktop. Drag files onto the menu bar icon. Pull up to 20 from your Photos library. Or drag a rectangle to grab part of your screen and pin it.",
-  },
-  {
-    n: "06",
-    title: "Styled, not decorated",
-    body: "Gallery, Polaroid, Minimal and Modern in one click — or set your own shape mask, photo mat, two-layer shadow, border, vignette and a few degrees of tilt so a cluster looks scattered.",
-  },
-  {
-    n: "07",
-    title: "It never takes your focus",
-    body: "The widgets are non-activating panels. Click one, drag it, resize it — the menu bar stays with whatever you were actually working in. GIFs animate on the render server, so they cost no CPU.",
+    title: "Multiple and animated photos",
+    body: "Rotate a set of images in one widget, or keep GIFs and APNGs moving.",
   },
 ];
 
-const SPECS = [
-  ["memory", "~20 MB"],
-  ["idle cpu", "~0%"],
-  ["download", "2.4 MB"],
-  ["requires", "macOS 14+"],
-  // The release build is thin arm64. Worth stating plainly: an Intel user who
-  // downloads it gets an app that cannot launch.
-  ["silicon", "Apple only"],
-  ["license", "MIT"],
+const ADVANCED_FEATURES = [
+  {
+    n: "01",
+    title: "Visible-edge snapping",
+    body: "Photos align to screen edges, each other, and app windows. Guides show the exact alignment while you drag.",
+  },
+  {
+    n: "02",
+    title: "Paste, drag, import, or capture",
+    body: "Press ⌘V, drop image files on the menu bar icon, choose from Photos, or pin part of your screen.",
+  },
+  {
+    n: "03",
+    title: "Per-photo styling",
+    body: "Choose a preset or set the mask, mat, shadow, border, vignette, opacity, and tilt yourself.",
+  },
+  {
+    n: "04",
+    title: "Does not steal focus",
+    body: "Move or resize a widget while the app you are working in stays active.",
+  },
 ];
 
 const COMPARISON = [
@@ -115,7 +81,7 @@ const COMPARISON = [
 /* Photo Widget OSX -> Tableau -> Arras. Two renames is a slightly absurd
    history and hiding it just makes old links look like a different product. */
 const LINEAGE = [
-  { name: "Photo Widget OSX", note: "2025" },
+  { name: "Photo Widget OSX", note: "2026" },
   { name: "Tableau", note: "→ v2.3.0" },
   { name: "Arras", note: "v2.3.1 →", current: true },
 ];
@@ -150,7 +116,7 @@ export default function ArrasClient({
   fontClass = "",
 }) {
   const downloadUrl = release?.dmg ?? release?.zip ?? "https://github.com/yashashwi-s/Arras/releases/latest";
-  const tag = release?.tag ?? "v2.4.4";
+  const tag = release?.tag ?? null;
   const verifiedDate = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -202,7 +168,7 @@ export default function ArrasClient({
         {/* ---------------------------------------------------------------- nav */}
         <header className="mx-auto flex max-w-6xl items-center justify-between px-5 pt-7 sm:px-8">
           <a
-            href="/"
+            href="https://puremac.yashashwi.me"
             data-cursor="snap"
             className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white/80"
           >
@@ -214,97 +180,88 @@ export default function ArrasClient({
             data-cursor="snap"
             className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 transition-colors hover:text-white/80"
           >
-            Source
+            GitHub
             <ArrowUpRight size={12} />
           </a>
         </header>
 
         {/* --------------------------------------------------------------- hero */}
-        <section className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-24">
-          <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
+        <section className="mx-auto max-w-6xl px-5 pt-14 sm:px-8 sm:pt-24">
+          <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
             <Image
               src="/puremac/arras-icon.png"
-              alt=""
+              alt="Arras app icon"
               width={26}
               height={26}
               className="rounded-[7px]"
             />
-            <span style={{ color: AMBER }}>{tag}</span>
+            <span className="text-white/75">Arras</span>
+            {tag && (
+              <>
+                <span className="text-white/15">/</span>
+                <a
+                  href={release?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-white"
+                  style={{ color: AMBER }}
+                >
+                  {tag}
+                </a>
+              </>
+            )}
             <span className="text-white/15">/</span>
             <span>macOS 14+</span>
-            <span className="text-white/15">/</span>
-            <span>MIT</span>
           </div>
 
-          <h1 className="mt-7 text-[clamp(3.4rem,13vw,10.5rem)] font-extrabold leading-[0.82] tracking-[-0.055em]">
-            <span className="block">Your photos.</span>
-            <span className="block text-white/25">Not squares.</span>
+          <h1 className="mt-7 max-w-6xl text-[clamp(3rem,10.6vw,8.1rem)] font-extrabold leading-[0.88] tracking-[-0.055em]">
+            A photo widget for Mac that never crops.
           </h1>
 
-          <aside
-            aria-label="Arras summary"
-            className="mt-10 max-w-3xl border-l-2 py-1 pl-5 sm:pl-6"
-            style={{ borderColor: AMBER }}
-          >
-            <p className="text-[16px] font-medium leading-[1.7] text-white/72 sm:text-[17px]">
-              Arras is a free, native macOS desktop photo widget that keeps every image at
-              its true aspect ratio. It places each photo in an independent window, so a
-              panorama stays panoramic and a portrait stays vertical instead of being
-              cropped into a fixed widget frame.
-            </p>
-            <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/32">
-              <time dateTime={dateModified}>Verified {verifiedDate}</time>
-              <span aria-hidden>·</span>
-              <a
-                href="https://github.com/yashashwi-s/Arras"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/65"
-              >
-                Source and technical documentation
-              </a>
-            </p>
-          </aside>
+          <p className="display mt-6 text-[clamp(1.45rem,3.3vw,2.4rem)] font-bold tracking-[-0.035em] text-white/28">
+            Your photos. Not squares.
+          </p>
 
-          <div className="mt-9 grid gap-10 sm:grid-cols-[1.1fr_0.9fr] sm:gap-14">
+          <div className="mt-9 grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-14">
             <div>
-              <p className="max-w-md text-[16px] leading-[1.65] text-white/60">
-                The current build is about 2.4 MB, uses around 20 MB of memory,
-                and is designed for effectively zero idle CPU. It needs macOS 14
-                or later on Apple Silicon and sends no telemetry.
+              <p className="max-w-xl text-[16px] leading-[1.65] text-white/65 sm:text-[17px]">
+                Put any photo on your desktop at its original shape. Resize it,
+                layer it, or rotate several photos in the same spot.
+              </p>
+              <p className="mt-4 font-mono text-[10.5px] uppercase leading-[1.8] tracking-[0.13em] text-white/42">
+                Free · Open source · Native · No telemetry
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
                 <a
                   href={downloadUrl}
                   data-cursor="snap"
-                  className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[14px] font-semibold text-black transition-transform hover:scale-[1.03]"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[14px] font-semibold text-black transition-transform hover:scale-[1.03]"
                   style={{ backgroundColor: AMBER }}
                 >
                   <Download size={16} strokeWidth={2.4} />
                   Download for Mac
                 </a>
                 <a
-                  href="#install"
+                  href="https://github.com/yashashwi-s/Arras"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   data-cursor="snap"
-                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/40 underline-offset-4 transition-colors hover:text-white/80 hover:underline"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/16 px-6 py-3.5 text-[14px] font-semibold text-white/75 transition-colors hover:border-white/35 hover:text-white"
                 >
-                  or install with brew
+                  <GithubIcon size={16} />
+                  GitHub
                 </a>
               </div>
             </div>
 
-            {/* A spec sheet rather than a second paragraph — the right column
-                would otherwise be dead space at desktop widths. */}
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-white/8 pt-6 sm:max-w-sm sm:justify-self-end">
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-white/8 pt-6 md:max-w-sm md:justify-self-end">
               {[
-                ["works on", "macOS 14+, Apple Silicon"],
-                ["costs", "nothing, ever"],
-                ["weighs", "2.4 MB"],
-                downloadCount
-                  ? ["GitHub downloads", downloadCount]
-                  : ["sends home", "nothing"],
-              ].map(([k, v]) => (
+                tag ? ["latest release", tag] : null,
+                downloadCount ? ["GitHub downloads", downloadCount] : null,
+                ["requires", "macOS 14+, Apple Silicon"],
+                ["license", "MIT"],
+              ].filter(Boolean).map(([k, v]) => (
                 <div key={k}>
                   <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30">
                     {k}
@@ -314,10 +271,21 @@ export default function ArrasClient({
               ))}
             </dl>
           </div>
+
+          <p className="mt-8 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/30">
+            <time dateTime={dateModified}>Page checked {verifiedDate}</time>
+            <span aria-hidden>·</span>
+            <a
+              href="#install"
+              className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/65"
+            >
+              Install notes
+            </a>
+          </p>
         </section>
 
         {/* -------------------------------------------------------------- video */}
-        <section ref={videoWrap} className="mx-auto max-w-6xl px-5 pt-14 sm:px-8 sm:pt-20">
+        <figure ref={videoWrap} className="mx-auto max-w-6xl px-5 pt-12 sm:px-8 sm:pt-16">
           <motion.div
             style={{ y: videoY }}
             className="relative overflow-hidden rounded-[20px] border border-white/10 bg-black shadow-[0_40px_120px_-30px_rgba(80,60,180,0.5)]"
@@ -331,9 +299,13 @@ export default function ArrasClient({
               muted
               playsInline
               preload="metadata"
+              aria-label="Arras photo widgets arranged at different shapes and sizes on a Mac desktop"
             />
           </motion.div>
-        </section>
+          <figcaption className="mt-4 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/30">
+            Arras running on macOS. Every photo keeps its own proportions.
+          </figcaption>
+        </figure>
 
         {/* ------------------------------------------------------------ marquee */}
         <section className="relative mt-20 overflow-hidden border-y border-white/8 py-5 sm:mt-28">
@@ -358,47 +330,37 @@ export default function ArrasClient({
           </div>
         </section>
 
-        {/* --------------------------------------------------------- the thesis */}
-        <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+        {/* ------------------------------------------------------ main benefits */}
+        <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
-            The whole idea
+            The useful part
           </p>
           <h2 className="mt-5 max-w-2xl text-[clamp(2rem,5.4vw,3.6rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-            Why preserve every photo&apos;s shape?
+            Four things Arras does.
           </h2>
-          <p className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-white/52">
-            Aspect ratio is part of a photograph&apos;s composition. Arras renders each
-            source image in a window with matching proportions, so it does not need
-            to crop meaningful edges or add black bars to satisfy a preset frame.
-          </p>
 
-          <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
-            {RATIOS.map((r, i) => (
-              <motion.div
-                key={r.label}
-                initial={{ opacity: 0, y: 22 }}
+          <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2">
+            {BENEFITS.map((benefit, i) => (
+              <motion.article
+                key={benefit.n}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.55, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className="self-end"
+                transition={{ duration: 0.45, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-[#0d0b15] p-6 sm:p-8"
               >
-                <div
-                  className="w-full rounded-lg shadow-[0_18px_50px_-18px_rgba(0,0,0,0.9)] ring-1 ring-white/10"
-                  style={{ aspectRatio: r.css, background: r.fill }}
-                />
-                <div className="mt-3 flex items-baseline justify-between font-mono text-[11px] tracking-[0.1em] text-white/40">
-                  <span style={{ color: AMBER }}>{r.label}</span>
-                  <span className="uppercase">{r.name}</span>
-                </div>
-              </motion.div>
+                <span className="font-mono text-[11px] tracking-[0.12em]" style={{ color: AMBER }}>
+                  {benefit.n}
+                </span>
+                <h3 className="mt-7 text-[22px] font-bold tracking-[-0.025em] sm:text-[26px]">
+                  {benefit.title}
+                </h3>
+                <p className="mt-3 max-w-md text-[14.5px] leading-[1.7] text-white/50">
+                  {benefit.body}
+                </p>
+              </motion.article>
             ))}
           </div>
-
-          <p className="mt-10 max-w-lg font-mono text-[12px] leading-[1.9] text-white/35">
-            Four windows, four shapes, drawn here at the ratios they claim. The
-            built-in Photos widget would fit each image into one of its supported
-            widget frames.
-          </p>
         </section>
 
         {/* --------------------------------------------------------- comparison */}
@@ -410,10 +372,47 @@ export default function ArrasClient({
             How is Arras different from the macOS Photos widget?
           </h2>
           <p className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-white/52">
-            Apple&apos;s widget system is the easiest route to a standard desktop widget.
-            Arras is for direct image choice, unrestricted proportions, custom rotation,
-            and window-level placement that a normal WidgetKit frame does not provide.
+            The Photos widget fits images into Apple&apos;s supported widget sizes. Arras
+            gives the window the same proportions as the source image.
           </p>
+
+          <div className="mt-12 grid items-end gap-8 sm:grid-cols-2 sm:gap-10">
+            <figure>
+              <div className="relative mx-auto aspect-square w-full max-w-[440px] overflow-hidden rounded-[20px] border border-white/10 bg-black">
+                <Image
+                  src="/puremac/arras/demo-poster.jpg"
+                  alt="Arras desktop screenshot clipped to a square fixed widget frame"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="mt-4 flex items-baseline justify-between gap-4">
+                <span className="text-[15px] font-semibold text-white/72">Apple Photos widget</span>
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/32">
+                  fixed frame crops
+                </span>
+              </figcaption>
+            </figure>
+
+            <figure>
+              <div className="relative aspect-[1470/956] w-full overflow-hidden rounded-[20px] border bg-black" style={{ borderColor: AMBER }}>
+                <Image
+                  src="/puremac/arras/demo-poster.jpg"
+                  alt="Full Arras desktop screenshot shown at its original landscape aspect ratio"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-contain"
+                />
+              </div>
+              <figcaption className="mt-4 flex items-baseline justify-between gap-4">
+                <span className="text-[15px] font-semibold" style={{ color: AMBER }}>Arras</span>
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/42">
+                  original shape stays
+                </span>
+              </figcaption>
+            </figure>
+          </div>
 
           <div className="mt-12 overflow-x-auto border-y border-white/10">
             <table className="w-full min-w-[660px] border-collapse text-left">
@@ -467,20 +466,19 @@ export default function ArrasClient({
           <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
             <div className="lg:sticky lg:top-20 lg:self-start">
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
-                What it does
+                More control
               </p>
               <h2 className="mt-5 text-[clamp(2rem,4.6vw,3.2rem)] font-extrabold leading-[0.98] tracking-[-0.04em]">
-                What can Arras do?
+                The details live down here.
               </h2>
               <p className="mt-6 max-w-xs text-[14.5px] leading-[1.7] text-white/45">
-                Arras handles the full desktop-photo workflow: import, preserve,
-                position, style, rotate, and remove images without taking focus
-                from the app you are actually using.
+                These are useful once the photos are on your desktop. You do not
+                need to configure them before you start.
               </p>
             </div>
 
             <ul className="space-y-0">
-              {FEATURES.map((f, i) => (
+              {ADVANCED_FEATURES.map((f, i) => (
                 <motion.li
                   key={f.n}
                   initial={{ opacity: 0, y: 16 }}
@@ -514,7 +512,14 @@ export default function ArrasClient({
         {/* --------------------------------------------------------------- specs */}
         <section className="border-y border-white/8">
           <div className="mx-auto grid max-w-6xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
-            {SPECS.map(([k, v]) => (
+            {[
+              ["memory", "~20 MB"],
+              ["idle cpu", "~0%"],
+              ["requires", "macOS 14+"],
+              ["silicon", "Apple only"],
+              ["license", "MIT"],
+              ["telemetry", "none"],
+            ].map(([k, v]) => (
               <div
                 key={k}
                 className="border-b border-r border-white/8 px-5 py-7 last:border-r-0 sm:px-6 lg:border-b-0"
@@ -537,9 +542,9 @@ export default function ArrasClient({
             How do I install Arras?
           </h2>
           <p className="mt-6 max-w-2xl text-[15px] leading-[1.75] text-white/50">
-            Use the three Homebrew commands below for the fastest route, or download
-            the DMG and approve the ad-hoc signed app once in Privacy &amp; Security.
-            Both methods install the same free, open-source build.
+            Arras is distributed outside the Mac App Store and is not notarized.
+            macOS may ask for one approval before the first launch. Both methods
+            below install the same public release from GitHub.
           </p>
 
           <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -550,14 +555,12 @@ export default function ArrasClient({
                 </span>
                 <h3 className="text-[19px] font-bold tracking-[-0.02em]">Homebrew</h3>
                 <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/30">
-                  no warning
+                  three commands
                 </span>
               </div>
               <p className="mt-3 max-w-md text-[14.5px] leading-[1.7] text-white/50">
-                Homebrew 6 removed the <code className="font-mono text-[13px] text-white/70">--no-quarantine</code>{" "}
-                flag and shipped no replacement, so casks are quarantined
-                unconditionally. The third line clears the flag and Arras opens
-                without the dialog.
+                The first two commands install Arras. The last command removes the
+                downloaded-file quarantine flag from Arras only, so macOS can open it.
               </p>
               <div className="mt-5 space-y-2">
                 <CopyLine text="brew tap yashashwi-s/tap" />
@@ -573,17 +576,17 @@ export default function ArrasClient({
                 </span>
                 <h3 className="text-[19px] font-bold tracking-[-0.02em]">Direct download</h3>
                 <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/30">
-                  one prompt
+                  one approval
                 </span>
               </div>
               <p className="mt-3 max-w-md text-[14.5px] leading-[1.7] text-white/50">
-                Arras is ad-hoc signed, not notarized — that needs Apple&apos;s $99/year
-                certificate and this app is free. So macOS warns you once, and once only.
+                macOS may stop the first launch because the current build is not
+                notarized. Approve Arras once in Privacy &amp; Security, then open it normally.
               </p>
               <ol className="mt-5 space-y-3">
                 {[
                   "Open the .dmg and drag Arras onto Applications",
-                  "Launch it. macOS says it can't verify the app — click Done",
+                  "Launch it. If macOS says it cannot verify the app, click Done",
                   "System Settings → Privacy & Security → Open Anyway",
                 ].map((step, i) => (
                   <li key={step} className="flex gap-4 text-[14px] leading-[1.6] text-white/55">
@@ -600,7 +603,7 @@ export default function ArrasClient({
                 className="mt-6 inline-flex items-center gap-2 border-b border-white/20 pb-1 text-[14px] font-semibold transition-colors hover:border-[color:var(--amber)]"
                 style={{ "--amber": AMBER }}
               >
-                Download {tag}
+                Download for Mac
                 <ArrowUpRight size={15} />
               </a>
             </div>
@@ -659,9 +662,9 @@ export default function ArrasClient({
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
               <p className="display text-[clamp(1.8rem,5vw,3rem)] font-extrabold leading-[0.9] tracking-[-0.045em]">
-                Free. Forever.
+                Free and open source.
                 <br />
-                <span className="text-white/25">Read the source.</span>
+                <span className="text-white/25">No account. No telemetry.</span>
               </p>
               <a
                 href="https://github.com/yashashwi-s/Arras"

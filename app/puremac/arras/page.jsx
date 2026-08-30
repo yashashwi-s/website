@@ -15,19 +15,20 @@ const display = Bricolage_Grotesque({
   weight: ["600", "700", "800"],
 });
 
-const SITE_URL = "https://puremac.yashashwi.me";
-const ARRAS_URL = `${SITE_URL}/arras`;
-const CONTENT_UPDATED_AT = "2026-08-28";
-const TITLE = "macOS Desktop Photo Widget: Arras, Free Native App";
+const SITE_URL = "https://arras.yashashwi.me";
+const PUREMAC_URL = "https://puremac.yashashwi.me";
+const ARRAS_URL = SITE_URL;
+const CONTENT_UPDATED_AT = "2026-08-30";
+const TITLE = "Arras: A Photo Widget for Mac That Never Crops";
 const DESCRIPTION =
-  "macOS desktop photo widget Arras preserves every image's true aspect ratio. Free, native, open source, about 20 MB, and near-zero idle CPU.";
+  "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
 const OG_IMAGE = "/puremac/arras/demo-poster.jpg";
 
 export const metadata = {
   title: TITLE,
   description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
-  alternates: { canonical: "/arras" },
+  alternates: { canonical: "/" },
   // Two renames deep, so the old names stay searchable.
   keywords: [
     "Arras",
@@ -41,7 +42,7 @@ export const metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: ARRAS_URL,
-    siteName: "PureMac",
+    siteName: "Arras",
     locale: "en_US",
     type: "website",
     images: [{ url: OG_IMAGE, width: 1470, height: 956, alt: "Arras widgets on a macOS desktop" }],
@@ -72,14 +73,14 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
-      name: "PureMac",
-      publisher: { "@id": `${SITE_URL}/#publisher` },
+      name: "Arras",
+      publisher: { "@id": `${PUREMAC_URL}/#publisher` },
     },
     {
       "@type": "Organization",
-      "@id": `${SITE_URL}/#publisher`,
+      "@id": `${PUREMAC_URL}/#publisher`,
       name: "PureMac",
-      url: `${SITE_URL}/`,
+      url: `${PUREMAC_URL}/`,
       founder: { "@id": "https://yashashwi.me/#person" },
       sameAs: ["https://github.com/yashashwi-s"],
     },
@@ -104,7 +105,6 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       applicationCategory: "MultimediaApplication",
       applicationSubCategory: "macOS desktop photo widget",
       operatingSystem: "macOS 14 or later on Apple Silicon",
-      fileSize: "2.4 MB",
       memoryRequirements: "Approximately 20 MB while idle",
       isAccessibleForFree: true,
       license: "https://github.com/yashashwi-s/Arras/blob/main/LICENSE",
@@ -112,7 +112,7 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       screenshot: `${SITE_URL}${OG_IMAGE}`,
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
-      publisher: { "@id": `${SITE_URL}/#publisher` },
+      publisher: { "@id": `${PUREMAC_URL}/#publisher` },
       offers: {
         "@type": "Offer",
         price: "0",
@@ -141,7 +141,7 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@type": "HowTo",
       "@id": `${ARRAS_URL}#install-howto`,
       name: "How to install Arras on a Mac with Homebrew",
-      description: "Install the free Arras desktop photo widget and clear macOS quarantine for its ad-hoc signed build.",
+      description: "Install the free Arras desktop photo widget with Homebrew and allow the current public build to open on macOS.",
       totalTime: "PT2M",
       supply: [{ "@type": "HowToSupply", name: "Apple Silicon Mac running macOS 14 or later" }],
       tool: [{ "@type": "HowToTool", name: "Homebrew" }],
@@ -177,7 +177,7 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
           "@type": "ListItem",
           position: 1,
           name: "PureMac",
-          item: `${SITE_URL}/`,
+          item: `${PUREMAC_URL}/`,
         },
         {
           "@type": "ListItem",

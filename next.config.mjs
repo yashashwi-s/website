@@ -11,6 +11,41 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        // Arras now has its own canonical host. Match the old PureMac URL by
+        // host so the same /arras pathname can still be served elsewhere.
+        source: '/arras',
+        has: [
+          {
+            type: 'host',
+            value: 'puremac.yashashwi.me',
+          },
+        ],
+        destination: 'https://arras.yashashwi.me',
+        permanent: true,
+      },
+      {
+        source: '/puremac/arras',
+        has: [
+          {
+            type: 'host',
+            value: 'puremac.yashashwi.me',
+          },
+        ],
+        destination: 'https://arras.yashashwi.me',
+        permanent: true,
+      },
+      {
+        source: '/arras',
+        has: [
+          {
+            type: 'host',
+            value: 'arras.yashashwi.me',
+          },
+        ],
+        destination: 'https://arras.yashashwi.me',
+        permanent: true,
+      },
+      {
         // /latest was where this design lived before it replaced the homepage.
         source: '/latest',
         destination: '/',

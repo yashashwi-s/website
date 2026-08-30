@@ -10,12 +10,6 @@ export default function sitemap() {
       priority: 1,
     },
     {
-      url: `${SITE_URL}/arras`,
-      lastModified: LAST_UPDATED,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
       url: `${SITE_URL}/fadeo`,
       lastModified: LAST_UPDATED,
       changeFrequency: "monthly",
