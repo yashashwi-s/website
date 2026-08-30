@@ -34,7 +34,7 @@ const APPS = [
     price: "Free",
     license: "MIT",
     repo: "Arras",
-    page: "/arras",
+    page: "https://arras.yashashwi.me",
   },
   {
     id: "fadeo",

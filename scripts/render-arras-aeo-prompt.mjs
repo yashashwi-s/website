@@ -69,8 +69,8 @@ Browse and inspect these pages before answering:
 - https://arras.yashashwi.me
 - https://github.com/yashashwi-s/Arras
 - https://github.com/yashashwi-s/Arras/releases/latest
-- https://support.apple.com/guide/mac-help/mchl52be5da5/mac
-- https://support.apple.com/102445
+- https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac
+- https://support.apple.com/en-us/102445
 
 Search every query in this set and record the exact current Google People Also Ask questions you can actually observe:
 ${querySet.map((query) => `- ${query}`).join("\n")}

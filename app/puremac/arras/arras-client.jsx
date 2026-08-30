@@ -443,7 +443,7 @@ export default function ArrasClient({
           <p className="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-white/30">
             <span>Sources</span>
             <a
-              href="https://support.apple.com/guide/mac-help/mchl52be5da5/mac"
+              href="https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
               target="_blank"
               rel="noopener noreferrer"
               className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/65"

@@ -29,6 +29,17 @@ export const metadata = {
   description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   // Two renames deep, so the old names stay searchable.
   keywords: [
     "Arras",

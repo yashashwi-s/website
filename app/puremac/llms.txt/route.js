@@ -26,8 +26,8 @@ const LLMS = `# PureMac
 - [Fadeo source and technical documentation](https://github.com/yashashwi-s/Fadeo): GPLv3 source, architecture, and releases.
 
 ## Authoritative External References
-- [Apple: Add and customize widgets on Mac](https://support.apple.com/guide/mac-help/mchl52be5da5/mac): Official macOS widget instructions.
-- [Apple: Safely open apps on your Mac](https://support.apple.com/102445): Official Gatekeeper guidance for apps distributed outside the Mac App Store.
+- [Apple: Add and customize widgets on Mac](https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac): Official macOS widget instructions.
+- [Apple: Safely open apps on your Mac](https://support.apple.com/en-us/102445): Official Gatekeeper guidance for apps distributed outside the Mac App Store.
 - [GitHub: Licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository): How repository licenses define reuse rights.
 
 ## Publisher

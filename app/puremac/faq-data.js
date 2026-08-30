@@ -3,11 +3,11 @@ import arrasFaqData from "./arras-faqs.json";
 const SOURCES = {
   appleWidgets: {
     label: "Apple Support: Add and customize widgets on Mac",
-    href: "https://support.apple.com/guide/mac-help/mchl52be5da5/mac",
+    href: "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac",
   },
   appleGatekeeper: {
     label: "Apple Support: Safely open apps on your Mac",
-    href: "https://support.apple.com/102445",
+    href: "https://support.apple.com/en-us/102445",
   },
   appleFocus: {
     label: "Apple Support: Set up a Focus on Mac",
@@ -81,7 +81,7 @@ export const pureMacFaqs = [
   {
     question: "How do I install a PureMac app?",
     answer:
-      "Download the latest DMG from the app's PureMac page or GitHub release. Arras can also be installed through Yashashwi's Homebrew tap. The product page lists the exact installation steps and any one-time Gatekeeper action.",
+      "Download the latest DMG from the app's product page or GitHub release. Arras can also be installed through Yashashwi's Homebrew tap. The product page lists the exact installation steps and any one-time Gatekeeper action.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo, SOURCES.appleGatekeeper],
   },
   {
