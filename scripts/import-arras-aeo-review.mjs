@@ -206,7 +206,7 @@ if (!args.get("--validate-only")) {
   writeFileSync(join(repositoryRoot, "app", "puremac", "arras-faqs.json"), `${JSON.stringify(review.faqs, null, 2)}\n`);
   writeFileSync(absoluteArchivePath, `${JSON.stringify(review, null, 2)}\n`);
   replaceDateConstant(join(repositoryRoot, "app", "puremac", "arras", "page.jsx"), "CONTENT_UPDATED_AT", review.reviewedAt);
-  replaceDateConstant(join(repositoryRoot, "app", "puremac", "sitemap.js"), "LAST_UPDATED", review.reviewedAt);
+  replaceDateConstant(join(repositoryRoot, "app", "puremac", "arras", "sitemap.js"), "LAST_UPDATED", review.reviewedAt);
 }
 
 const outputs = {

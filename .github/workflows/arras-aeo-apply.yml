@@ -77,7 +77,7 @@ jobs:
           done
 
           curl --fail --silent http://127.0.0.1:3000/puremac/arras > /dev/null
-          PUREMAC_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac npm run check:aeo
+          PUREMAC_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac ARRAS_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac/arras npm run check:aeo
 
       - name: Commit and push the validated update
         env:
@@ -89,7 +89,7 @@ jobs:
           git add \
             app/puremac/arras-faqs.json \
             app/puremac/arras/page.jsx \
-            app/puremac/sitemap.js \
+            app/puremac/arras/sitemap.js \
             "$ARCHIVE_PATH"
 
           if git diff --cached --quiet; then

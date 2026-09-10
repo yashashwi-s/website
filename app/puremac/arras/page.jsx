@@ -1,24 +1,12 @@
-import { Bricolage_Grotesque } from "next/font/google";
 import ArrasClient from "./arras-client";
 import { FaqJsonLd } from "../faq-section";
 import { arrasFaqs } from "../faq-data";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
-/* The site-wide face is Nunito, which is rounded and friendly and reads as
-   soft at display sizes. This page is carried almost entirely by very large
-   type, so it gets a grotesque with actual edges. Scoped to this route only —
-   the rest of the portfolio is untouched. */
-const display = Bricolage_Grotesque({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-  weight: ["600", "700", "800"],
-});
-
 const SITE_URL = "https://arras.yashashwi.me";
 const PUREMAC_URL = "https://puremac.yashashwi.me";
 const ARRAS_URL = SITE_URL;
-const CONTENT_UPDATED_AT = "2026-08-30";
+const CONTENT_UPDATED_AT = "2026-09-10";
 const TITLE = "Arras: A Photo Widget for Mac That Never Crops";
 const DESCRIPTION =
   "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
@@ -233,7 +221,6 @@ export default async function ArrasPage() {
         downloads={downloads}
         dateModified={dateModified}
         faqs={arrasFaqs}
-        fontClass={display.variable}
       />
     </>
   );

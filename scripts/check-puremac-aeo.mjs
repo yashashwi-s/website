@@ -125,7 +125,7 @@ check(faq?.mainEntity?.length === 10, "/arras must expose exactly 10 FAQ schema 
 for (const type of ["SoftwareApplication", "HowTo", "BreadcrumbList", "Organization", "Person", "WebPage"]) {
   check(graphTypes.has(type), `/arras JSON-LD is missing ${type}`);
 }
-check(arrasHtml.includes("How is Arras different from the macOS Photos widget?"), "/arras comparison answer is missing");
+check(arrasHtml.replace(/<[^>]*>/g, "").includes("How is Arras different from the macOS Photos widget?"), "/arras comparison answer is missing");
 check(
   arrasHtml.includes("support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"),
   "/arras canonical Apple source link is missing"

@@ -14,11 +14,13 @@ const nextConfig = {
         // Arras now has its own canonical host. Keep every legacy path as a
         // direct permanent redirect so crawlers never see duplicate content.
         source: '/arras/:path*',
+        has: [{ type: 'host', value: '(.*\\.)?yashashwi.me' }],
         destination: 'https://arras.yashashwi.me/:path*',
         permanent: true,
       },
       {
         source: '/puremac/arras/:path*',
+        has: [{ type: 'host', value: '(.*\\.)?yashashwi.me' }],
         destination: 'https://arras.yashashwi.me/:path*',
         permanent: true,
       },

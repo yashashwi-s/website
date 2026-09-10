@@ -1,5 +1,5 @@
 const SITE_URL = "https://arras.yashashwi.me";
-const LAST_UPDATED = "2026-08-30";
+const LAST_UPDATED = "2026-09-10";
 
 export default function sitemap() {
   return [
