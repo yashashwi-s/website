@@ -23,7 +23,8 @@ function arrasRequestUrl(path) {
   return `${arrasRequestBaseUrl}${path}`;
 }
 
-const paths = ["/", "/arras", "/fadeo", "/robots.txt", "/sitemap.xml", "/llms.txt"];
+const arrasOnly = process.argv.includes("--arras-only");
+const paths = arrasOnly ? [] : ["/", "/arras", "/fadeo", "/robots.txt", "/sitemap.xml", "/llms.txt"];
 const responses = await Promise.all(
   paths.map(async (path) => {
     const response = await fetch(`${requestBaseUrl}${path}`, {
@@ -132,16 +133,17 @@ check(
 );
 check(arrasHtml.includes("github.com/yashashwi-s/Arras"), "/arras project source link is missing");
 
-const robots = pages["/robots.txt"].body;
-for (const crawler of [
-  "OAI-SearchBot",
-  "GPTBot",
-  "ClaudeBot",
-  "Claude-SearchBot",
-  "PerplexityBot",
-  "Google-Extended",
-]) {
-  check(robots.includes(`User-agent: ${crawler}`), `/robots.txt is missing ${crawler}`);
+if (!arrasOnly) {
+  const robots = pages["/robots.txt"].body;
+  for (const crawler of [
+    "OAI-SearchBot",
+    "GPTBot",
+    "ClaudeBot",
+    "Claude-SearchBot",
+    "PerplexityBot",
+    "Google-Extended",
+  ]) {
+    check(robots.includes(`User-agent: ${crawler}`), `/robots.txt is missing ${crawler}`);
 }
 check(robots.includes("Disallow: /api/"), "/robots.txt must exclude API endpoints");
 check(robots.includes(`Sitemap: ${baseUrl}/sitemap.xml`), "/robots.txt sitemap URL is incorrect");
@@ -151,6 +153,7 @@ for (const path of ["", "/fadeo"]) {
   check(sitemap.includes(`<loc>${baseUrl}${path}</loc>`), `/sitemap.xml is missing ${path || "/"}`);
 }
 check(sitemap.includes("<lastmod>"), "/sitemap.xml is missing freshness timestamps");
+}
 
 const arrasRobots = arrasPages["/robots.txt"].body;
 check(arrasRobots.includes("User-agent: *"), "Arras /robots.txt is missing its crawler rule");
@@ -175,17 +178,34 @@ check(
   "Arras Open Graph image must return an image"
 );
 
-const llms = pages["/llms.txt"].body;
-check(llms.startsWith("# PureMac"), "/llms.txt must start with the site identity");
-check(llms.includes("## Primary Product: Arras"), "/llms.txt must prioritize Arras");
-check(llms.includes("## Authoritative External References"), "/llms.txt must include source guidance");
+if (!arrasOnly) {
+  const llms = pages["/llms.txt"].body;
+  check(llms.startsWith("# PureMac"), "/llms.txt must start with the site identity");
+  check(llms.includes("## Primary Product: Arras"), "/llms.txt must prioritize Arras");
+  check(llms.includes("## Authoritative External References"), "/llms.txt must include source guidance");
+}
+
+// Validate first-party landing targets without disguising this audit as a real
+// OpenAI crawler request. This checks accessibility, not indexing or ranking.
+const nodes = jsonLdBlocks.flatMap(block => block["@graph"] ?? [block]);
+const software = nodes.find(node => node["@type"] === "SoftwareApplication");
+check(software?.url === arrasBaseUrl, "Arras SoftwareApplication must identify its official website");
+check(software?.offers?.url === `${arrasBaseUrl}/#install`, "Arras offer must lead to the official installation section");
+check(arrasHtml.includes('id="how-to-use"'), "Arras first-party usage guide is missing");
+check(arrasHtml.includes('id="install"'), "Arras first-party installation section is missing");
+const iconHref = arrasHtml.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1];
+check(Boolean(iconHref), "Arras must advertise a favicon");
+if (iconHref) {
+  const icon = await fetch(arrasRequestUrl(decodeHtml(iconHref)), { headers: arrasRequestHeaders });
+  check(icon.ok && icon.headers.get("content-type")?.startsWith("image/"), "Arras advertised favicon must resolve to an image");
+}
 
 if (failures.length) {
-  console.error(`PureMac AEO checks failed against ${requestBaseUrl}:`);
+  console.error(`AEO checks failed against ${arrasOnly ? arrasRequestBaseUrl : requestBaseUrl}:`);
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log(`PureMac AEO checks passed against ${requestBaseUrl}.`);
+console.log(`AEO checks passed against ${arrasOnly ? arrasRequestBaseUrl : requestBaseUrl}.`);
 console.log(`Arras metadata: ${title.length}-character title, ${description.length}-character description.`);
 console.log(`Arras structured data: ${faq.mainEntity.length} FAQs plus ${[...graphTypes].filter(Boolean).join(", ")}.`);

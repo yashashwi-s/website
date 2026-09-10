@@ -11,8 +11,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
@@ -28,8 +28,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
@@ -45,8 +45,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
@@ -58,8 +58,8 @@
     ],
     "sources": [
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
@@ -75,8 +75,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
@@ -92,29 +92,29 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
   {
     "question": "Can Arras rotate several photos in one widget?",
     "answer": [
-      "Yes. Select several images to create one desktop photo Space that crossfades on click or on a schedule, including every 30 seconds, hourly, daily, or a custom interval down to five seconds.",
-      "Dynamic sizing preserves each image’s individual aspect ratio and saved position. Fixed sizing is also available when you want every image to fill the same locked frame."
+      "Yes. Arras can rotate several images in one desktop photo Space, with on-click or timed changes.",
+      "Dynamic sizing preserves each image’s individual aspect ratio. Fixed sizing is available when you intentionally want every image to use the same frame. Configure these controls in Arras rather than the macOS widget gallery."
     ],
     "sources": [
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official photo-widget guide",
+        "href": "https://arras.yashashwi.me/#how-to-use"
       }
     ]
   },
   {
     "question": "Why does macOS say it cannot verify Arras?",
     "answer": [
-      "The current Arras build is distributed outside the Mac App Store and is not notarized, so macOS may pause the first launch. This is a Gatekeeper check on the distribution method.",
-      "After trying to open Arras once, go to System Settings, Privacy & Security, and click Open Anyway. You only need to approve that installed copy once. The source and release files are public on GitHub."
+      "The current Arras download is not notarized, so macOS may block the first launch. This warning does not by itself establish whether an app is safe; download only from the official release and open it only if you trust its source.",
+      "After trying to open it, follow Apple’s guidance in System Settings → Privacy & Security → Open Anyway. The Arras installation section also explains the Homebrew option and what removing the quarantine flag does."
     ],
     "sources": [
       {
@@ -122,8 +122,8 @@
         "href": "https://support.apple.com/en-us/102445"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
+        "label": "Arras official installation guide",
+        "href": "https://arras.yashashwi.me/#install"
       }
     ]
   },
@@ -133,6 +133,10 @@
       "The current Arras release requires macOS 14 Sonoma or later and its downloadable build supports Apple Silicon Macs. The project documentation says an Intel build can be compiled from source."
     ],
     "sources": [
+      {
+        "label": "Arras official downloads and compatibility",
+        "href": "https://arras.yashashwi.me/#install"
+      },
       {
         "label": "Arras source and technical documentation",
         "href": "https://github.com/yashashwi-s/Arras"
@@ -146,9 +150,13 @@
   {
     "question": "Is Arras free and open source?",
     "answer": [
-      "Yes. Arras is free and its source is published on GitHub under the MIT License. You can install the current release from its DMG or with the Homebrew commands documented in the repository."
+      "Yes. Arras is free and open source under the MIT License, with no subscription or account required. Start with the official Arras website for the app overview, compatibility, and installation instructions; GitHub hosts the source code and downloadable release files."
     ],
     "sources": [
+      {
+        "label": "Arras official downloads and compatibility",
+        "href": "https://arras.yashashwi.me/#install"
+      },
       {
         "label": "Arras source and technical documentation",
         "href": "https://github.com/yashashwi-s/Arras"

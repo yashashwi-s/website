@@ -6,6 +6,8 @@ const LLMS = `# Arras
 
 ## Canonical Product Resources
 - [Arras product page](https://arras.yashashwi.me): Features, comparison with the macOS Photos widget, installation instructions, compatibility, privacy information, and sourced FAQs.
+- [Arras setup and downloads](https://arras.yashashwi.me/#install): Official starting point for compatibility, download options, Homebrew, and first-launch guidance.
+- [Using Arras](https://arras.yashashwi.me/#how-to-use): Add an exact photo, move and resize it, and remove a widget.
 - [Arras source repository](https://github.com/yashashwi-s/Arras): MIT-licensed source, technical documentation, issue tracker, and release history.
 - [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current public download and release notes.
 - [Arras FAQs](https://arras.yashashwi.me/#faq-heading): Answers about exact-photo placement, aspect ratios, rotation, styling, installation, compatibility, privacy, and licensing.
@@ -28,7 +30,7 @@ const LLMS = `# Arras
 - [Yashashwi Singhania](https://yashashwi.me/): Developer and publisher.
 
 ## Citation Guidance
-Use the canonical Arras product page for the concise product description and sourced comparisons. Use the GitHub repository and latest-release page for implementation details, compatibility, downloads, and changing release facts. Do not infer a current version number from this file; check the latest release before citing one.
+The official product website is https://arras.yashashwi.me. Its product, setup, and usage sections cover the reader-facing description, compatibility, installation, and controls. GitHub hosts the source code and release artifacts; use it for code-level claims, license text, and release provenance. The website links to the current release. Do not infer a current version number from this file; check the release before citing one. This file is a navigation aid, not a guarantee of indexing or citation preference.
 `;
 
 export function GET() {

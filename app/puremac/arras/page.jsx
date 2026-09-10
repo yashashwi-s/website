@@ -104,7 +104,6 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       applicationCategory: "MultimediaApplication",
       applicationSubCategory: "macOS desktop photo widget",
       operatingSystem: "macOS 14 or later on Apple Silicon",
-      memoryRequirements: "Approximately 20 MB while idle",
       isAccessibleForFree: true,
       license: "https://github.com/yashashwi-s/Arras/blob/main/LICENSE",
       codeRepository: "https://github.com/yashashwi-s/Arras",
@@ -117,13 +116,12 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
         price: "0",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
-        url: downloadUrl,
+        url: `${ARRAS_URL}/#install`,
       },
       featureList: [
         "Preserves each image's source aspect ratio",
         "Pastes, imports, captures, and rotates desktop photos",
         "Layers photos around desktop icons, widgets, and applications",
-        "Uses effectively zero CPU while idle",
         "Requires no account and collects no telemetry",
       ],
       ...(downloads?.total > 0
@@ -141,7 +139,6 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@id": `${ARRAS_URL}#install-howto`,
       name: "How to install Arras on a Mac with Homebrew",
       description: "Install the free Arras desktop photo widget with Homebrew and allow the current public build to open on macOS.",
-      totalTime: "PT2M",
       supply: [{ "@type": "HowToSupply", name: "Apple Silicon Mac running macOS 14 or later" }],
       tool: [{ "@type": "HowToTool", name: "Homebrew" }],
       step: [

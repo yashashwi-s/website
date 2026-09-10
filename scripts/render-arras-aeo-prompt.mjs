@@ -44,8 +44,8 @@ const responseShape = {
       ],
       sources: [
         {
-          label: "Arras source and technical documentation",
-          href: "https://github.com/yashashwi-s/Arras",
+          label: "Arras official product and setup guide",
+          href: "https://arras.yashashwi.me/#install",
         },
       ],
     },
@@ -65,6 +65,8 @@ const quarterlyInstruction = quarterly
 
 const prompt = `You are performing the ${reviewMonth} evidence review for Arras, a free native macOS desktop photo widget.
 
+The review target and primary reader destination is https://arras.yashashwi.me, not its GitHub repository. Browse the website first. Use GitHub to verify implementation and release facts, not as a substitute for useful first-party product documentation. Do not claim that running this review triggers OpenAI's crawlers or controls citation selection.
+
 Browse and inspect these pages before answering:
 - https://arras.yashashwi.me
 - https://github.com/yashashwi-s/Arras
@@ -79,7 +81,7 @@ Test whether current ChatGPT, Claude, Perplexity, Gemini, and Google AI answers 
 
 Create exactly 10 useful Arras FAQs. Prefer exact current People Also Ask wording for the highest-value questions. Preserve an existing FAQ when it remains accurate; change it only when current search evidence, the Arras repository, a release, or official Apple documentation warrants a change. Each answer must lead with a direct answer and may contain one to three short paragraphs. Every FAQ must include one to four authoritative sources placed outside the answer text.
 
-Allowed answer-source domains are support.apple.com, developer.apple.com, github.com, and docs.github.com. Use the Arras repository for product facts and Apple documentation for macOS behavior. Do not use SEOengine.ai claims, keyword-density targets, fabricated statistics, invented testimonials, or unsupported performance claims.
+Allowed answer-source domains are arras.yashashwi.me, support.apple.com, developer.apple.com, github.com, and docs.github.com. Link readers to a relevant Arras website section for documented product behavior and setup. Independently verify new claims with release/source evidence; do not use circular self-citations as evidence for an unsupported claim. Keep Apple citations for macOS behavior and GitHub citations where implementation, license, or release artifacts are the actual topic. Do not use SEOengine.ai claims, keyword-density targets, fabricated statistics, invented testimonials, or unsupported performance claims. If Google People Also Ask or an answer-engine interface is unavailable, record that limitation and leave unobserved questions/citations empty.
 
 Return one JSON object only—no Markdown fences and no commentary. It must follow this structure, except the faqs array must contain exactly 10 complete FAQ objects and queries should cover the full query set:
 ${JSON.stringify(responseShape, null, 2)}

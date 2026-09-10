@@ -3,6 +3,7 @@ import { dirname, join, relative, resolve } from "node:path";
 
 const SUBMISSION_COMMAND = "/submit-aeo-review";
 const ALLOWED_SOURCE_HOSTS = [
+  "arras.yashashwi.me",
   "support.apple.com",
   "developer.apple.com",
   "github.com",
@@ -88,7 +89,7 @@ function validateSource(source, field) {
   const hostname = url.hostname.toLocaleLowerCase("en-US");
   assert(
     ALLOWED_SOURCE_HOSTS.some((allowed) => hostname === allowed || hostname.endsWith(`.${allowed}`)),
-    `${field}.href must use an approved Apple or GitHub documentation domain`
+    `${field}.href must use the official Arras site or an approved Apple or GitHub documentation domain`
   );
   return { label, href: url.href };
 }
