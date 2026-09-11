@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import FaqSection from "../faq-section";
 import "./arras.css";
 
@@ -12,6 +13,8 @@ const features = [
 ];
 
 export default function ArrasClient({ release, downloads, faqs, dateModified }) {
+  const demoRef = useRef(null);
+  const [demoPlaying, setDemoPlaying] = useState(false);
   const download = release?.dmg ?? release?.zip ?? `${SOURCE}/releases/latest`;
   return (
     <main id="arras-page">
@@ -26,8 +29,13 @@ export default function ArrasClient({ release, downloads, faqs, dateModified }) 
       </header>
 
       <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
-        <video controls playsInline preload="none" poster="/puremac/arras/demo-poster.jpg" aria-label="Watch Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
-        <div className="ar-caption"><span>01 / A desktop, made yours.</span><span>Real app. Real desktop. Press play.</span></div>
+        <video id="arras-demo" ref={demoRef} autoPlay muted loop playsInline preload="auto" onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} poster="/puremac/arras/demo-poster.jpg" aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
+        <div className="ar-caption"><span>01 / A desktop, made yours.</span><button type="button" aria-controls="arras-demo" onClick={async () => {
+          const demo = demoRef.current;
+          if (!demo) return;
+          if (!demo.paused) demo.pause();
+          else { try { await demo.play(); } catch { setDemoPlaying(false); } }
+        }}>{demoPlaying ? "Pause demo" : "Play demo"}</button></div>
       </section>
 
       <section className="ar-wrap ar-section" id="details">
