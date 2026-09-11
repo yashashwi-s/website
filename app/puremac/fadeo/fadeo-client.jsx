@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
 import FaqSection from "../faq-section";
+import ReleaseHighlight from "../release-highlight";
+import { releaseHighlights } from "@/data/mac-products";
 import { GRAIN } from "../grain";
 
 /* Fadeo is an audio app that decides things, so the page is built like a signal
@@ -558,6 +560,7 @@ export default function FadeoClient({ release, initialPromo, paymentLink, faqs =
         </section>
 
         <SubscribeBand />
+        <ReleaseHighlight entry={releaseHighlights.fadeo} />
 
         <FaqSection
           faqs={faqs}

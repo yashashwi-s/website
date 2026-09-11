@@ -1,3 +1,4 @@
+import { macProducts } from "@/data/mac-products";
 export const dynamic = "force-static";
 
 const LLMS = `# Arras
@@ -19,7 +20,7 @@ const LLMS = `# Arras
 - Inputs: paste an image, drag image files, import from Photos, capture a screen region, or import a PDF page.
 - Placement: photos can sit behind desktop icons, above icons, or over other application windows.
 - Rotation: multiple images can crossfade on click or on a configurable schedule.
-- Compatibility: the public build requires macOS 14 or later and Apple Silicon; the project documents source builds for Intel Macs.
+- Compatibility: ${macProducts.arras.operatingSystem}; the project documents source builds for Intel Macs.
 - Price and license: free, no subscription or account, MIT License.
 - Privacy: no telemetry.
 - Historical names: Photo Widget OSX, then Tableau, then Arras. The product retained its bundle identity and saved settings through the renames.

@@ -15,6 +15,11 @@ for (const [url, name, canonical] of [[puremac, "PureMac", "https://puremac.yash
   assert(canonicals.length === 1 && canonicals[0][1].replace(/\/$/, "") === canonical, `${name}: canonical mismatch`);
   assert(html.match(/<meta[^>]*name="twitter:title"[^>]*content="([^"]+)"/)?.[1].startsWith(name), `${name}: inherited or absent social title`);
   assert((html.match(/<h1(?:\s|>)/g) || []).length === 1, `${name}: expected one primary heading`);
+  if (name !== "PureMac") assert(html.includes('id="release-highlights"'), `${name}: missing reviewed release highlight`);
+  if (name === "Fadeo") {
+    assert(html.includes('"@type":"SoftwareApplication"'), "Fadeo: missing software identity");
+    assert(html.includes('name="twitter:image" content="https://puremac.yashashwi.me/puremac/fadeo/screenshot-workspaces.png"'), "Fadeo: missing product screenshot preview");
+  }
   if (name === "Arras") {
     for (const id of ["controls-and-limits", "photo-rotation", "keyboard-controls", "shortcuts-and-imports", "sharing-privacy", "layout-backups"]) assert(html.includes(`id="${id}"`), `Arras: missing ${id}`);
     assert(!html.includes("That Never Crops"), "Arras: absolute cropping claim returned");
@@ -28,6 +33,12 @@ for (const [url, name, canonical] of [[puremac, "PureMac", "https://puremac.yash
 const icon = await get(`${puremac}/favicon.ico`);
 assert(icon.response.headers.get("content-type")?.startsWith("image/"), "PureMac fallback favicon is not an image");
 const summary = await get(`${puremac}/llms.txt`);
+for (const origin of [puremac, arras]) {
+  const key = await get(`${origin}/7515130a027efb4813a91ff4482c0886.txt`);
+  assert(key.html.trim() === "7515130a027efb4813a91ff4482c0886", `${origin}: ownership file mismatch`);
+}
+const press = await get(`${puremac}/puremac/press.md`);
+assert(press.html.includes("https://arras.yashashwi.me/"), "Press resources should prefer the official product website");
 assert(!/about 20 MB|about 2\.4 MB/.test(summary.html), "PureMac summary contains unsupported fixed measurements");
 if (failures.length) { console.error(failures.join("\n")); process.exitCode = 1; }
 else console.log("Discovery checks passed: canonical URLs, social titles, headings, publisher identity, useful Arras answers, favicon and summary accuracy.");

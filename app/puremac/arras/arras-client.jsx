@@ -1,6 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { releaseHighlights } from "@/data/mac-products";
+import ReleaseHighlight from "../release-highlight";
 import FaqSection from "../faq-section";
 import "./arras.css";
 
@@ -15,6 +17,18 @@ const features = [
 export default function ArrasClient({ release, downloads, faqs, dateModified }) {
   const demoRef = useRef(null);
   const [demoPlaying, setDemoPlaying] = useState(false);
+  const [allowAutoplay, setAllowAutoplay] = useState(false);
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      setAllowAutoplay(!preference.matches);
+      if (preference.matches) demoRef.current?.pause();
+      else demoRef.current?.play().catch(() => {});
+    };
+    update();
+    preference.addEventListener("change", update);
+    return () => preference.removeEventListener("change", update);
+  }, []);
   const download = release?.dmg ?? release?.zip ?? `${SOURCE}/releases/latest`;
   return (
     <main id="arras-page">
@@ -29,8 +43,8 @@ export default function ArrasClient({ release, downloads, faqs, dateModified }) 
       </header>
 
       <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
-        <video id="arras-demo" ref={demoRef} autoPlay muted loop playsInline preload="auto" onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} poster="/puremac/arras/demo-poster.jpg" aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
-        <div className="ar-caption"><span>01 / A desktop, made yours.</span><button type="button" aria-controls="arras-demo" onClick={async () => {
+        <video id="arras-demo" ref={demoRef} autoPlay={allowAutoplay} muted loop playsInline preload="metadata" onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} poster="/puremac/arras/demo-poster.jpg" aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
+        <div className="ar-caption"><a href="#how-to-use">Read the setup instructions ↓</a><button type="button" aria-controls="arras-demo" onClick={async () => {
           const demo = demoRef.current;
           if (!demo) return;
           if (!demo.paused) demo.pause();
@@ -64,6 +78,7 @@ export default function ArrasClient({ release, downloads, faqs, dateModified }) 
           <h3 id="layout-backups">Can I back up my desktop arrangement?</h3><p>Export an .arras layout archive to keep widgets and their stored media together. These archives contain Arras’s stored or re-encoded images, not archival originals. Keep your original photos separately; automatic layout history is not part of v2.4.6.</p>
         </div></div>
       </section>
+      <ReleaseHighlight entry={releaseHighlights.arras} light />
       <section className="ar-wrap ar-faq"><FaqSection faqs={faqs} light accent="#ad583c" title="A few useful answers." /></section>
       <section className="ar-wrap ar-lineage"><p className="ar-label">Same project. Its own name.</p><h2>Photo Widget OSX → Tableau → Arras</h2><p>If you found an older name in a post or a download, you’re in the right place. Arras is the continuation of that project.</p></section>
       <footer className="ar-wrap ar-footer"><div className="ar-brand"><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />Arras</div><p>Small by intention. Yours by design.</p><div><a href="https://yashashwi.me">Made by Yashashwi ↗</a><a href={SOURCE}>GitHub ↗</a><a href="https://puremac.yashashwi.me">PureMac ↗</a></div></footer>

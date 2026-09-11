@@ -1,5 +1,5 @@
 const SITE_URL = "https://puremac.yashashwi.me";
-const LAST_UPDATED = "2026-08-28";
+const LAST_UPDATED = "2026-09-11";
 
 export default function sitemap() {
   return [

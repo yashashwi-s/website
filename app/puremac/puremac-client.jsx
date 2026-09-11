@@ -1,9 +1,10 @@
 import FaqSection from "./faq-section";
+import { macProducts } from "@/data/mac-products";
 import "./puremac.css";
 
 const apps = [
-  { id: "arras", name: "Arras", icon: "/puremac/arras-icon.png", category: "Your desktop, your composition", title: "A place for your photos.", description: "Put the exact photos you love on your desktop, at their own proportions. Arrange, frame, and layer each one your way.", page: "https://arras.yashashwi.me/", price: "Free · MIT open source", facts: "Original aspect ratios · Per-photo styling · Photo rotation" },
-  { id: "fadeo", name: "Fadeo", icon: "/puremac/fadeo-icon.png", category: "Sound that follows your workflow", title: "Less switching. More flow.", description: "Let your music follow the app, Space, or meeting you’re in. Set your own rules for when audio plays, fades, or changes.", page: "https://puremac.yashashwi.me/fadeo", price: "Free to use · Optional lifetime license", facts: "Context-based rules · Smooth fades · Local decisions" },
+  { id: "arras", name: "Arras", icon: "/puremac/arras-icon.png", category: "Your desktop, your composition", title: "A place for your photos.", description: "Put the exact photos you love on your desktop, at their own proportions. Arrange, frame, and layer each one your way.", page: "https://arras.yashashwi.me/", price: `${macProducts.arras.price} · ${macProducts.arras.license} open source`, facts: "Original aspect ratios · Per-photo styling · Photo rotation" },
+  { id: "fadeo", name: "Fadeo", icon: "/puremac/fadeo-icon.png", category: "Sound that follows your workflow", title: "Less switching. More flow.", description: "Let your music follow the app, Space, or meeting you’re in. Set your own rules for when audio plays, fades, or changes.", page: "https://puremac.yashashwi.me/fadeo", price: macProducts.fadeo.price, facts: "Context-based rules · Smooth fades · Local decisions" },
 ];
 
 export default function PureMacClient({ fadeo, arras, downloads = {}, faqs = [] }) {
@@ -19,6 +20,6 @@ export default function PureMacClient({ fadeo, arras, downloads = {}, faqs = [] 
       </article>)}</section>
       <section className="pm-note"><h2>Useful by nature.<br />Personal by design.</h2><p>No sprawling toolbox. Each app starts with a real gap and gives you control over that part of your Mac. The source is open to inspect, learn from, and build on.</p></section>
       <div className="pm-faq"><FaqSection faqs={faqs} light accent="#536e89" title="Before you download." /></div>
-    </main><footer className="pm-footer"><a className="pm-brand" href="https://puremac.yashashwi.me/"><img src="/puremac/mark.svg" width="25" height="28" alt="" />PureMac</a><p>Made with intention, by <a href="https://yashashwi.me">Yashashwi</a>.</p><a href="https://github.com/yashashwi-s">Open source ↗</a></footer>
+    </main><footer className="pm-footer"><a className="pm-brand" href="https://puremac.yashashwi.me/"><img src="/puremac/mark.svg" width="25" height="28" alt="" />PureMac</a><p>Made with intention, by <a href="https://yashashwi.me">Yashashwi</a>.</p><a href="/puremac/press.md">Press resources ↗</a><a href="https://github.com/yashashwi-s">Open source ↗</a></footer>
   </div></div>;
 }

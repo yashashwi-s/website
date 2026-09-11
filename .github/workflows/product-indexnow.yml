@@ -1,0 +1,37 @@
+name: Notify search engines after product deployment
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/puremac/**'
+      - 'public/puremac/**'
+      - 'data/mac-products.js'
+      - 'lib/github-release.js'
+      - 'app/layout.js'
+      - 'app/globals.css'
+      - 'proxy.js'
+      - 'next.config.mjs'
+permissions:
+  contents: read
+  statuses: read
+concurrency:
+  group: product-indexnow
+  cancel-in-progress: true
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Wait for successful deployment and notify changed pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INDEXNOW_BEFORE: ${{ github.event.before }}
+          INDEXNOW_AFTER: ${{ github.sha }}
+          INDEXNOW_WAIT_FOR_DEPLOY: 'true'
+        run: node scripts/notify-indexnow.mjs

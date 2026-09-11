@@ -1,4 +1,5 @@
 import ArrasClient from "./arras-client";
+import { macProducts } from "@/data/mac-products";
 import { FaqJsonLd } from "../faq-section";
 import { arrasFaqs } from "../faq-data";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
@@ -104,7 +105,7 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       dateModified,
       applicationCategory: "MultimediaApplication",
       applicationSubCategory: "macOS desktop photo widget",
-      operatingSystem: "macOS 14 or later on Apple Silicon",
+      operatingSystem: macProducts.arras.operatingSystem,
       isAccessibleForFree: true,
       license: "https://github.com/yashashwi-s/Arras/blob/main/LICENSE",
       codeRepository: "https://github.com/yashashwi-s/Arras",
