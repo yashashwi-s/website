@@ -10,6 +10,11 @@ export const metadata = {
     "PureMac is Yashashwi Singhania's home for small, native macOS apps: Fadeo (automatic workflow audio) and Arras (photo widgets for your desktop). No subscriptions, open source.",
   metadataBase: new URL("https://puremac.yashashwi.me"),
   alternates: { canonical: "/" },
+  twitter: {
+    card: "summary",
+    title: "PureMac: small, native macOS apps",
+    description: "Discover Arras photo widgets and Fadeo workflow audio. Native, open-source Mac apps without subscriptions.",
+  },
   openGraph: {
     title: "PureMac: small, native macOS apps",
     description: "Fadeo and Arras: native, open-source macOS apps. No subscriptions.",
@@ -31,6 +36,18 @@ export default async function PureMacPage() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          { "@type": "Organization", "@id": "https://puremac.yashashwi.me/#publisher", name: "PureMac", url: "https://puremac.yashashwi.me/", logo: "https://puremac.yashashwi.me/puremac/mark.svg", founder: { "@id": "https://yashashwi.me/#person" }, sameAs: ["https://github.com/yashashwi-s"] },
+          { "@type": "Person", "@id": "https://yashashwi.me/#person", name: "Yashashwi Singhania", url: "https://yashashwi.me/" },
+          { "@type": "WebSite", "@id": "https://puremac.yashashwi.me/#website", name: "PureMac", url: "https://puremac.yashashwi.me/", publisher: { "@id": "https://puremac.yashashwi.me/#publisher" } },
+          { "@type": "CollectionPage", "@id": "https://puremac.yashashwi.me/#page", name: "PureMac apps", url: "https://puremac.yashashwi.me/", isPartOf: { "@id": "https://puremac.yashashwi.me/#website" }, mainEntity: { "@type": "ItemList", itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Arras", url: "https://arras.yashashwi.me/" },
+            { "@type": "ListItem", position: 2, name: "Fadeo", url: "https://puremac.yashashwi.me/fadeo" },
+          ] } },
+        ],
+      }).replace(/</g, "\\u003c") }} />
       <FaqJsonLd faqs={pureMacFaqs} />
       <PureMacClient
         fadeo={fadeo}

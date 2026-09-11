@@ -6,8 +6,8 @@ import { latestRelease, totalDownloads } from "@/lib/github-release";
 const SITE_URL = "https://arras.yashashwi.me";
 const PUREMAC_URL = "https://puremac.yashashwi.me";
 const ARRAS_URL = SITE_URL;
-const CONTENT_UPDATED_AT = "2026-09-10";
-const TITLE = "Arras: A Photo Widget for Mac That Never Crops";
+const CONTENT_UPDATED_AT = "2026-09-11";
+const TITLE = "Arras: Free Mac Photo Widgets, Your Original Ratios";
 const DESCRIPTION =
   "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
 const OG_IMAGE = "/puremac/arras/demo-poster.jpg";
@@ -80,6 +80,7 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@id": `${PUREMAC_URL}/#publisher`,
       name: "PureMac",
       url: `${PUREMAC_URL}/`,
+      logo: `${PUREMAC_URL}/puremac/mark.svg`,
       founder: { "@id": "https://yashashwi.me/#person" },
       sameAs: ["https://github.com/yashashwi-s"],
     },
@@ -159,8 +160,8 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
         {
           "@type": "HowToStep",
           position: 3,
-          name: "Clear the quarantine attribute",
-          text: "Run xattr -dr com.apple.quarantine /Applications/Arras.app, then open Arras.",
+          name: "Review the first-launch warning",
+          text: "Open Arras. The public build is not notarized. If macOS blocks it, only proceed if you trust the official download; review the installation section for the Privacy & Security options and the implications of bypassing quarantine.",
           url: `${ARRAS_URL}#install`,
         },
       ],

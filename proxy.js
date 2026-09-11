@@ -52,7 +52,7 @@ export default function proxy(req) {
     }
   } else if (currentHost === 'puremac') {
     if (url.pathname === '/favicon.ico') {
-      url.pathname = '/puremac/icon';
+      url.pathname = '/puremac/icon.svg';
       return NextResponse.rewrite(url);
     }
 

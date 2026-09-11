@@ -5,7 +5,7 @@ export default function sitemap() {
   return [
     {
       url: SITE_URL,
-      lastModified: LAST_UPDATED,
+      lastModified: "2026-09-11",
       changeFrequency: "monthly",
       priority: 1,
     },

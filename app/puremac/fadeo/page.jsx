@@ -22,6 +22,11 @@ export const metadata = {
     "Fadeo watches your workflow (the app in front, your desktop, whether you're in a meeting) and plays, fades, or switches audio automatically. Every rule is yours to define. Native macOS, open source, pay what you want ($2 minimum).",
   metadataBase: new URL("https://puremac.yashashwi.me"),
   alternates: { canonical: "/fadeo" },
+  twitter: {
+    card: "summary",
+    title: "Fadeo: automatic workflow audio for Mac",
+    description: "Set your own rules for audio that follows your apps, Spaces, and meetings. Native macOS software, free to use with an optional lifetime license.",
+  },
   openGraph: {
     title: "Fadeo: the right sound for what you're doing",
     description: "Automatic, fully customizable workflow audio for macOS. Native, open source, pay what you want.",

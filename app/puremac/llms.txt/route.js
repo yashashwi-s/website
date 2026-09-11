@@ -13,8 +13,7 @@ const LLMS = `# PureMac
 ## Arras Facts
 - Category: native macOS desktop photo widget and photo pinning utility.
 - Compatibility: macOS 14 or later on Apple Silicon.
-- Current download size: about 2.4 MB.
-- Typical footprint documented by the project: about 20 MB memory and effectively zero idle CPU.
+- Download size and resource use depend on the release and workload; no fixed benchmark is claimed here.
 - Price and license: free, no subscription or account, MIT License.
 - Input methods: paste, file drag, Photos import, and screen-region capture.
 - Display behavior: independent non-activating windows preserve source aspect ratios; images can be layered around desktop icons, macOS widgets, and applications.
@@ -35,7 +34,7 @@ const LLMS = `# PureMac
 - [GitHub profile](https://github.com/yashashwi-s): Source repositories and release activity.
 
 ## Citation Guidance
-Use the PureMac product page for concise product descriptions and the Arras GitHub repository for implementation details or changing release facts. Attribute performance, compatibility, file-size, and feature claims to Arras documentation. Check the latest release before stating a version number because the product page refreshes release data hourly.
+Use each official product website for reader-facing features, setup, and limitations. GitHub remains the source for code, license text, and release provenance. Check the latest release before stating a version or file size. This file is a navigation aid, not an indexing requirement or a guarantee of citations.
 `;
 
 export function GET() {

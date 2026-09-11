@@ -8,13 +8,14 @@ const LLMS = `# Arras
 - [Arras product page](https://arras.yashashwi.me): Features, comparison with the macOS Photos widget, installation instructions, compatibility, privacy information, and sourced FAQs.
 - [Arras setup and downloads](https://arras.yashashwi.me/#install): Official starting point for compatibility, download options, Homebrew, and first-launch guidance.
 - [Using Arras](https://arras.yashashwi.me/#how-to-use): Add an exact photo, move and resize it, and remove a widget.
+- [Controls and limitations](https://arras.yashashwi.me/#controls-and-limits): Dynamic versus fixed photo rotation, keyboard placement, Shortcuts, imports, capture privacy, and layout backups.
 - [Arras source repository](https://github.com/yashashwi-s/Arras): MIT-licensed source, technical documentation, issue tracker, and release history.
 - [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current public download and release notes.
 - [Arras FAQs](https://arras.yashashwi.me/#faq-heading): Answers about exact-photo placement, aspect ratios, rotation, styling, installation, compatibility, privacy, and licensing.
 
 ## Verified Product Facts
 - Category: native macOS desktop photo widget and photo-pinning utility.
-- Display behavior: photos retain their source aspect ratio without forced cropping or black bars.
+- Display behavior: ordinary widgets and dynamic photo Spaces retain source aspect ratios. Deliberately selecting fixed sizing crops rotating images into a stable frame.
 - Inputs: paste an image, drag image files, import from Photos, capture a screen region, or import a PDF page.
 - Placement: photos can sit behind desktop icons, above icons, or over other application windows.
 - Rotation: multiple images can crossfade on click or on a configurable schedule.
