@@ -8,7 +8,7 @@ const SITE_URL = "https://arras.yashashwi.me";
 const PUREMAC_URL = "https://puremac.yashashwi.me";
 const ARRAS_URL = SITE_URL;
 const CONTENT_UPDATED_AT = "2026-09-11";
-const TITLE = "Arras: Free Mac Photo Widgets, Your Original Ratios";
+const TITLE = "Arras — Free Mac Photo Widgets Without Forced Cropping";
 const DESCRIPTION =
   "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
 const OG_IMAGE = "/puremac/arras/demo-poster.jpg";
@@ -51,7 +51,7 @@ export const metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: [OG_IMAGE],
+    images: [{ url: OG_IMAGE, alt: "Arras photo widgets arranged on a macOS desktop" }],
   },
 };
 
@@ -97,6 +97,12 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@id": `${ARRAS_URL}#software`,
       name: "Arras",
       alternateName: ["Tableau", "Photo Widget OSX"],
+      identifier: {
+        "@type": "PropertyValue",
+        propertyID: "macOS bundle identifier",
+        value: "com.yashashwi.tableau",
+      },
+      sameAs: ["https://github.com/yashashwi-s/Arras"],
       description: DESCRIPTION,
       url: ARRAS_URL,
       downloadUrl,

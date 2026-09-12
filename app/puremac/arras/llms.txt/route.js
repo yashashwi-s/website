@@ -15,6 +15,7 @@ const LLMS = `# Arras
 - [Arras FAQs](https://arras.yashashwi.me/#faq-heading): Answers about exact-photo placement, aspect ratios, rotation, styling, installation, compatibility, privacy, and licensing.
 
 ## Verified Product Facts
+- Bundle identifier: com.yashashwi.tableau, retained through the Photo Widget OSX → Tableau → Arras renames.
 - Category: native macOS desktop photo widget and photo-pinning utility.
 - Display behavior: ordinary widgets and dynamic photo Spaces retain source aspect ratios. Deliberately selecting fixed sizing crops rotating images into a stable frame.
 - Inputs: paste an image, drag image files, import from Photos, capture a screen region, or import a PDF page.
