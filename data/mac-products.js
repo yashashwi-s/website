@@ -1,6 +1,29 @@
+import {
+  arrasArchitectureSummary,
+  arrasOperatingSystem,
+  arrasProduct,
+} from "./arras-product";
+
 // Shared reader-facing facts, separate from live release metadata.
 export const macProducts = {
-  arras: { name: "Arras", url: "https://arras.yashashwi.me", operatingSystem: "macOS 14 or later on Apple Silicon", price: "Free", license: "MIT", licenseUrl: "https://github.com/yashashwi-s/Arras/blob/main/LICENSE", repo: "https://github.com/yashashwi-s/Arras" },
+  arras: {
+    name: arrasProduct.name,
+    url: arrasProduct.canonicalUrl,
+    repo: arrasProduct.repositoryUrl,
+    publisher: arrasProduct.publisher,
+    operatingSystem: arrasOperatingSystem,
+    architecture: arrasArchitectureSummary,
+    minimumMacOS: arrasProduct.minimumMacOS,
+    price: "Free",
+    license: arrasProduct.license.spdx,
+    licenseUrl: arrasProduct.license.url,
+    bundleIdentifier: arrasProduct.bundleIdentifier,
+    historicalNames: arrasProduct.historicalNames,
+    publicRelease: arrasProduct.publicRelease,
+    sourceBuild: arrasProduct.sourceBuild,
+    telemetry: arrasProduct.telemetry,
+    homebrew: arrasProduct.homebrew,
+  },
   fadeo: { name: "Fadeo", url: "https://puremac.yashashwi.me/fadeo", operatingSystem: "macOS 14 or later", price: "Free to use; optional pay-what-you-want lifetime license", license: "GPLv3", licenseUrl: "https://github.com/yashashwi-s/Fadeo/blob/main/LICENSE", repo: "https://github.com/yashashwi-s/Fadeo" },
 };
 // Reviewed against these published releases, never an unreleased branch.

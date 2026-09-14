@@ -1,3 +1,5 @@
+import { arrasProduct } from "./arras-product";
+
 export const projects = [
   {
     title: "Fadeo",
@@ -14,12 +16,12 @@ export const projects = [
     order: 5,
   },
   {
-    title: "Arras",
+    title: arrasProduct.name,
     description:
       "A macOS menu bar app that places photos on your desktop as borderless, always-on-desktop overlays — perfectly matching each image's native aspect ratio. No cropping, no black bars.",
     tags: ["Swift", "SwiftUI", "AppKit", "Core Animation"],
-    github: "https://github.com/yashashwi-s/Arras",
-    live: "https://arras.yashashwi.me/",
+    github: arrasProduct.repositoryUrl,
+    live: arrasProduct.canonicalUrl,
     type: "personal",
     featured: true,
     emoji: "🖼️",

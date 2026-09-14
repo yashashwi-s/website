@@ -1,0 +1,91 @@
+name: Sync released Arras product metadata
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-arras-product
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out the website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Sync from the latest stable Arras tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-arras-product.mjs
+
+      - name: Detect metadata drift
+        id: drift
+        run: |
+          if git diff --quiet -- data/arras-product.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install locked dependencies
+        if: steps.drift.outputs.changed == 'true'
+        run: npm ci
+
+      - name: Check shared Arras product facts
+        if: steps.drift.outputs.changed == 'true'
+        run: npm run check:arras-product
+
+      - name: Build the production site
+        if: steps.drift.outputs.changed == 'true'
+        run: npm run build
+
+      - name: Run the rendered Arras audit
+        if: steps.drift.outputs.changed == 'true'
+        run: |
+          server_log="$RUNNER_TEMP/arras-product-sync-server.log"
+          PORT=3000 npm start > "$server_log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:3000/puremac/arras > /dev/null; then
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat "$server_log"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          curl --fail --silent http://127.0.0.1:3000/puremac/arras > /dev/null
+          PUREMAC_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac ARRAS_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac/arras npm run check:arras
+
+      - name: Create or update the synchronization pull request
+        if: steps.drift.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/sync-arras-product
+          delete-branch: true
+          commit-message: "chore: sync released Arras product metadata"
+          title: "chore: sync released Arras product metadata"
+          body: |
+            Synchronizes stable product facts from `product-metadata.json` at the latest published Arras release tag.
+
+            The release version and download URLs continue to come from the GitHub Releases API at request time.
+          add-paths: data/arras-product.json
