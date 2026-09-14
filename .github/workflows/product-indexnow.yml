@@ -6,6 +6,8 @@ on:
       - 'app/puremac/**'
       - 'public/puremac/**'
       - 'data/mac-products.js'
+      - 'data/arras-product.js'
+      - 'data/arras-product.json'
       - 'lib/github-release.js'
       - 'app/layout.js'
       - 'app/globals.css'

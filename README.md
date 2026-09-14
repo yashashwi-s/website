@@ -1,6 +1,12 @@
-# Yashashwi Singhania - Developer Portfolio
+# Yashashwi Singhania — Portfolio and PureMac Sites
 
-A high-performance, WebGL-integrated interactive developer portfolio built with Next.js, Framer Motion, and Three.js. This project utilizes advanced Awwwards-style frontend techniques, including custom shaders, kinetic physics interactions, and horizontal scroll hijacking.
+This repository powers Yashashwi Singhania’s portfolio and the PureMac product sites. The portfolio is a high-performance, WebGL-integrated Next.js experience built with Framer Motion and Three.js, with custom shaders, kinetic interactions, and horizontal scrolling.
+
+## Sites served
+
+- [yashashwi.me](https://yashashwi.me/) — developer portfolio and selected work.
+- [puremac.yashashwi.me](https://puremac.yashashwi.me/) — the PureMac publisher site for native macOS apps.
+- [arras.yashashwi.me](https://arras.yashashwi.me/) — the Arras product site. See the [Arras source](https://github.com/yashashwi-s/Arras) and [Homebrew distribution](https://github.com/yashashwi-s/homebrew-tap).
 
 ## 🚀 Tech Stack
 
@@ -29,10 +35,10 @@ A high-performance, WebGL-integrated interactive developer portfolio built with 
 
 ## 📦 Getting Started
 
-First, install dependencies:
+First, install the locked dependencies:
 
 ```bash
-npm install
+npm ci
 ```
 
 Then, run the development server:

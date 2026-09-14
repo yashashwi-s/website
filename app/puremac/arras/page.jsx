@@ -1,11 +1,17 @@
 import ArrasClient from "./arras-client";
 import { macProducts } from "@/data/mac-products";
+import {
+  arrasCanonicalUrl,
+  arrasProduct,
+  arrasPublicArchitectures,
+  arrasPublisherUrl,
+} from "@/data/arras-product";
 import { FaqJsonLd } from "../faq-section";
 import { arrasFaqs } from "../faq-data";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
-const SITE_URL = "https://arras.yashashwi.me";
-const PUREMAC_URL = "https://puremac.yashashwi.me";
+const SITE_URL = arrasCanonicalUrl;
+const PUREMAC_URL = arrasPublisherUrl;
 const ARRAS_URL = SITE_URL;
 const CONTENT_UPDATED_AT = "2026-09-11";
 const TITLE = "Arras — Free Mac Photo Widgets Without Forced Cropping";
@@ -42,7 +48,7 @@ export const metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: ARRAS_URL,
-    siteName: "Arras",
+    siteName: arrasProduct.name,
     locale: "en_US",
     type: "website",
     images: [{ url: OG_IMAGE, width: 1470, height: 956, alt: "Arras widgets on a macOS desktop" }],
@@ -56,7 +62,7 @@ export const metadata = {
 };
 
 function ArrasJsonLd({ release, downloads, dateModified }) {
-  const downloadUrl = release?.dmg ?? release?.zip ?? "https://github.com/yashashwi-s/Arras/releases/latest";
+  const downloadUrl = release?.dmg ?? release?.zip ?? `${arrasProduct.repositoryUrl}/releases/latest`;
   const graph = [
     {
       "@type": "WebPage",
@@ -73,13 +79,13 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
-      name: "Arras",
+      name: arrasProduct.name,
       publisher: { "@id": `${PUREMAC_URL}/#publisher` },
     },
     {
       "@type": "Organization",
       "@id": `${PUREMAC_URL}/#publisher`,
-      name: "PureMac",
+      name: arrasProduct.publisher.name,
       url: `${PUREMAC_URL}/`,
       logo: `${PUREMAC_URL}/puremac/mark.svg`,
       founder: { "@id": "https://yashashwi.me/#person" },
@@ -95,26 +101,26 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
     {
       "@type": "SoftwareApplication",
       "@id": `${ARRAS_URL}#software`,
-      name: "Arras",
-      alternateName: ["Tableau", "Photo Widget OSX"],
+      name: arrasProduct.name,
+      alternateName: arrasProduct.historicalNames,
       identifier: {
         "@type": "PropertyValue",
         propertyID: "macOS bundle identifier",
-        value: "com.yashashwi.tableau",
+        value: arrasProduct.bundleIdentifier,
       },
-      sameAs: ["https://github.com/yashashwi-s/Arras"],
+      sameAs: [arrasProduct.repositoryUrl],
       description: DESCRIPTION,
       url: ARRAS_URL,
       downloadUrl,
       softwareVersion: release?.tag ?? undefined,
-      releaseNotes: release?.url ?? "https://github.com/yashashwi-s/Arras/releases",
+      releaseNotes: release?.url ?? `${arrasProduct.repositoryUrl}/releases`,
       dateModified,
       applicationCategory: "MultimediaApplication",
-      applicationSubCategory: "macOS desktop photo widget",
+      applicationSubCategory: arrasProduct.category,
       operatingSystem: macProducts.arras.operatingSystem,
       isAccessibleForFree: true,
-      license: "https://github.com/yashashwi-s/Arras/blob/main/LICENSE",
-      codeRepository: "https://github.com/yashashwi-s/Arras",
+      license: arrasProduct.license.url,
+      codeRepository: arrasProduct.repositoryUrl,
       screenshot: `${SITE_URL}${OG_IMAGE}`,
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
@@ -147,26 +153,19 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@id": `${ARRAS_URL}#install-howto`,
       name: "How to install Arras on a Mac with Homebrew",
       description: "Install the free Arras desktop photo widget with Homebrew and allow the current public build to open on macOS.",
-      supply: [{ "@type": "HowToSupply", name: "Apple Silicon Mac running macOS 14 or later" }],
+      supply: [{ "@type": "HowToSupply", name: `${arrasPublicArchitectures.join(" and ")} Mac running ${macProducts.arras.operatingSystem}` }],
       tool: [{ "@type": "HowToTool", name: "Homebrew" }],
       step: [
-        {
+        ...arrasProduct.homebrew.commands.map((command, index) => ({
           "@type": "HowToStep",
-          position: 1,
-          name: "Add the Arras Homebrew tap",
-          text: "Run brew tap yashashwi-s/tap in Terminal.",
+          position: index + 1,
+          name: ["Add the Arras Homebrew tap", "Trust the PureMac tap", "Install the Arras cask"][index],
+          text: `Run ${command} in Terminal.`,
           url: `${ARRAS_URL}#install`,
-        },
+        })),
         {
           "@type": "HowToStep",
-          position: 2,
-          name: "Install the Arras cask",
-          text: "Run brew install --cask arras in Terminal.",
-          url: `${ARRAS_URL}#install`,
-        },
-        {
-          "@type": "HowToStep",
-          position: 3,
+          position: arrasProduct.homebrew.commands.length + 1,
           name: "Review the first-launch warning",
           text: "Open Arras. The public build is not notarized. If macOS blocks it, only proceed if you trust the official download; review the installation section for the Privacy & Security options and the implications of bypassing quarantine.",
           url: `${ARRAS_URL}#install`,
@@ -180,13 +179,13 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
         {
           "@type": "ListItem",
           position: 1,
-          name: "PureMac",
+          name: arrasProduct.publisher.name,
           item: `${PUREMAC_URL}/`,
         },
         {
           "@type": "ListItem",
           position: 2,
-          name: "Arras",
+          name: arrasProduct.name,
           item: ARRAS_URL,
         },
       ],
