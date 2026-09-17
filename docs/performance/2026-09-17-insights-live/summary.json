@@ -1,0 +1,134 @@
+[
+  {
+    "name": "portfolio",
+    "url": "https://yashashwi.me",
+    "device": "mobile",
+    "measuredAt": "2026-09-17T02:54:48.322Z",
+    "performance": 97,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100,
+    "agentic": "3/3",
+    "agenticScore": 100,
+    "agenticTargetMet": true,
+    "lcpMs": 1517.341,
+    "tbtMs": 181,
+    "cls": 0.0003934644085354858,
+    "targetMet": false,
+    "agenticAudits": {
+      "agent-accessibility-tree": 1,
+      "cumulative-layout-shift": 1,
+      "llms-txt": 1
+    }
+  },
+  {
+    "name": "portfolio",
+    "url": "https://yashashwi.me",
+    "device": "desktop",
+    "measuredAt": "2026-09-17T02:55:03.409Z",
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100,
+    "agentic": "3/3",
+    "agenticScore": 100,
+    "agenticTargetMet": true,
+    "lcpMs": 398.127,
+    "tbtMs": 0,
+    "cls": 0,
+    "targetMet": true,
+    "agenticAudits": {
+      "agent-accessibility-tree": 1,
+      "cumulative-layout-shift": 1,
+      "llms-txt": 1
+    }
+  },
+  {
+    "name": "arras",
+    "url": "https://arras.yashashwi.me",
+    "device": "mobile",
+    "measuredAt": "2026-09-17T02:55:16.996Z",
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100,
+    "agentic": "3/3",
+    "agenticScore": 100,
+    "agenticTargetMet": true,
+    "lcpMs": 1055.749,
+    "tbtMs": 13.5,
+    "cls": 0,
+    "targetMet": true,
+    "agenticAudits": {
+      "agent-accessibility-tree": 1,
+      "cumulative-layout-shift": 1,
+      "llms-txt": 1
+    }
+  },
+  {
+    "name": "arras",
+    "url": "https://arras.yashashwi.me",
+    "device": "desktop",
+    "measuredAt": "2026-09-17T02:55:32.054Z",
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100,
+    "agentic": "3/3",
+    "agenticScore": 100,
+    "agenticTargetMet": true,
+    "lcpMs": 357.08,
+    "tbtMs": 0,
+    "cls": 0,
+    "targetMet": true,
+    "agenticAudits": {
+      "agent-accessibility-tree": 1,
+      "cumulative-layout-shift": 1,
+      "llms-txt": 1
+    }
+  },
+  {
+    "name": "puremac",
+    "url": "https://puremac.yashashwi.me",
+    "device": "mobile",
+    "measuredAt": "2026-09-17T02:55:46.532Z",
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100,
+    "agentic": "3/3",
+    "agenticScore": 100,
+    "agenticTargetMet": true,
+    "lcpMs": 1055.587,
+    "tbtMs": 60,
+    "cls": 0,
+    "targetMet": true,
+    "agenticAudits": {
+      "agent-accessibility-tree": 1,
+      "cumulative-layout-shift": 1,
+      "llms-txt": 1
+    }
+  },
+  {
+    "name": "puremac",
+    "url": "https://puremac.yashashwi.me",
+    "device": "desktop",
+    "measuredAt": "2026-09-17T02:56:01.798Z",
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100,
+    "agentic": "3/3",
+    "agenticScore": 100,
+    "agenticTargetMet": true,
+    "lcpMs": 370.425,
+    "tbtMs": 0,
+    "cls": 1.638297872340426e-05,
+    "targetMet": true,
+    "agenticAudits": {
+      "agent-accessibility-tree": 1,
+      "cumulative-layout-shift": 1,
+      "llms-txt": 1
+    }
+  }
+]
