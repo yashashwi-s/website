@@ -30,7 +30,7 @@ export default function FaqSection({
   title = "Questions, answered.",
 }) {
   const border = light ? "border-black/12" : "border-white/10";
-  const muted = light ? "text-black/48" : "text-white/45";
+  const muted = light ? "text-black/70" : "text-white/50";
   const question = light ? "text-black/80" : "text-white/85";
 
   return (
@@ -72,7 +72,7 @@ export default function FaqSection({
                   >
                     <span className="flex gap-4">
                       <span
-                        className="mt-0.5 shrink-0 font-mono text-[10px] font-normal tracking-[0.12em] opacity-70"
+                        className={`mt-0.5 shrink-0 font-mono text-[10px] font-normal tracking-[0.12em] ${light ? "" : "opacity-70"}`}
                         style={{ color: accent }}
                       >
                         {String(index + 1).padStart(2, "0")}
@@ -94,7 +94,7 @@ export default function FaqSection({
                   ))}
                   {sources.length > 0 && (
                     <p className="flex flex-wrap gap-x-3 gap-y-1 pt-1 font-mono text-[10.5px] leading-relaxed uppercase tracking-[0.1em]">
-                      <span className="opacity-60">Sources</span>
+                      <span className={light ? "text-black/60" : "opacity-60"}>Sources</span>
                       {sources.map((source) => (
                         <a
                           key={source.href}

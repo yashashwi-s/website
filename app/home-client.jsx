@@ -1,22 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  animate,
-  motion,
-  useAnimationFrame,
-  useInView,
-  useMotionValue,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useVelocity,
-} from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import CustomCursor from "@/components/CustomCursor";
-import Magnetic from "@/components/Magnetic";
 import ScrambleText from "@/components/ScrambleText";
+import SmoothScroll from "@/components/SmoothScroll";
 import { GRAIN } from "./puremac/grain";
 
 /* Fourth identity in the family.
@@ -54,6 +42,18 @@ function ordinal(n) {
 }
 
 const RANK_KINDS = { AIR: "All India Rank", SR: "State Rank" };
+const IST_TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Kolkata",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: false,
+});
+const IST_HOUR_FORMATTER = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Kolkata",
+  hour: "2-digit",
+  hour12: false,
+});
 
 function asPosition(item) {
   const match = /^(AIR|SR)\s+(\d+)$/.exec(item.stat.trim());
@@ -92,16 +92,8 @@ function Clock() {
   // hydration mismatch, and a blank slot for one frame is cheaper than that.
   if (!now) return <span className="opacity-0">--:--:--</span>;
 
-  const ist = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  }).format(now);
-  const hourIST = Number(
-    new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", hour12: false }).format(now)
-  );
+  const ist = IST_TIME_FORMATTER.format(now);
+  const hourIST = Number(IST_HOUR_FORMATTER.format(now));
 
   return (
     <span>
@@ -110,34 +102,93 @@ function Clock() {
   );
 }
 
+function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  return reduced;
+}
+
 /* The site already has a VelocityMarquee, but it bakes in the main page's look:
    hollow outlined type, its own border and padding. This page wants filled type
    and its own rhythm, so it gets its own — same scroll-velocity idea, drifting
    faster the harder you scroll and reversing when you scroll back. */
 function Ticker({ accent }) {
   const items = ["Reinforcement learning", "Systems", "Native macOS", "Competitive programming"];
-  const baseX = useMotionValue(0);
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smooth = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-  const factor = useTransform(smooth, [0, 1000], [0, 4], { clamp: false });
-  const direction = useRef(1);
+  const ref = useRef(null);
+  const track = useRef(null);
+  const reduceMotion = useReducedMotion();
 
-  useAnimationFrame((_, delta) => {
-    let move = direction.current * 2.4 * (delta / 1000);
-    const f = factor.get();
-    if (f < 0) direction.current = -1;
-    else if (f > 0) direction.current = 1;
-    move += direction.current * move * f;
-    // Two identical halves, so wrapping at -50% is seamless in both directions.
-    baseX.set(((baseX.get() - move) % 50) - (baseX.get() - move > 0 ? 50 : 0));
-  });
+  useEffect(() => {
+    if (reduceMotion || !ref.current || !track.current) return;
 
-  const x = useTransform(baseX, (v) => `${v}%`);
+    let frame;
+    let inView = false;
+    let visible = document.visibilityState === "visible";
+    let x = 0;
+    let lastTime = performance.now();
+    let lastScroll = window.scrollY;
+    let velocity = 0;
+
+    const onScroll = () => {
+      const nextScroll = window.scrollY;
+      velocity = nextScroll - lastScroll;
+      lastScroll = nextScroll;
+    };
+    const onVisibilityChange = () => {
+      visible = document.visibilityState === "visible";
+      lastTime = performance.now();
+      if (visible) start();
+    };
+    const tick = (now) => {
+      const elapsed = Math.min(now - lastTime, 64);
+      lastTime = now;
+      if (inView && visible) {
+        const direction = velocity < 0 ? -1 : 1;
+        const distance = direction * (2.4 + Math.min(Math.abs(velocity) * 0.15, 14)) * (elapsed / 1000);
+        x = ((x - distance) % 50 + 50) % 50;
+        track.current.style.transform = `translate3d(${-x}%, 0, 0)`;
+        velocity *= 0.9;
+      }
+      frame = undefined;
+      if (inView && visible) start();
+    };
+    const start = () => {
+      if (frame === undefined && inView && visible) frame = requestAnimationFrame(tick);
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        if (inView) start();
+        else if (frame !== undefined) {
+          cancelAnimationFrame(frame);
+          frame = undefined;
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(ref.current);
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [reduceMotion]);
 
   return (
-    <div className="mt-20 overflow-hidden border-y border-white/10 py-5 sm:mt-28">
-      <motion.div className="flex w-max gap-10" style={{ x }}>
+    <div ref={ref} className="mt-20 overflow-hidden border-y border-white/10 py-5 sm:mt-28">
+      <div ref={track} className="flex w-max gap-10 will-change-transform">
         {[0, 1].map((half) => (
           <div key={half} className="flex shrink-0 items-center gap-10" aria-hidden={half === 1}>
             {items.map((t) => (
@@ -152,29 +203,61 @@ function Ticker({ accent }) {
             ))}
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
 
 function CountUp({ value, decimals = 0, prefix = "", suffix = "" }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const reduce = useReducedMotion();
+  const reduceMotion = useReducedMotion();
   // Seeded with the real number, not zero. The count-up is decoration; if the
   // observer never fires, or JS is slow, or motion is reduced, the correct
   // figure is what stays on screen rather than a permanent 0.00.
   const [shown, setShown] = useState(value);
 
   useEffect(() => {
-    if (!inView || reduce) return;
-    const controls = animate(0, value, {
-      duration: 1.1,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: setShown,
-    });
-    return () => controls.stop();
-  }, [inView, reduce, value]);
+    if (reduceMotion || !ref.current || window.matchMedia("(pointer: coarse)").matches) return;
+
+    let frame;
+    let started = false;
+    let elapsed = 0;
+    let lastTime;
+    const tick = (now) => {
+      if (document.visibilityState !== "visible") {
+        frame = undefined;
+        return;
+      }
+      elapsed += now - lastTime;
+      lastTime = now;
+      const progress = Math.min(elapsed / 1100, 1);
+      const eased = 1 - (1 - progress) ** 4;
+      setShown(value * eased);
+      frame = progress < 1 ? requestAnimationFrame(tick) : undefined;
+    };
+    const start = () => {
+      if (started && frame === undefined && elapsed < 1100 && document.visibilityState === "visible") {
+        lastTime = performance.now();
+        frame = requestAnimationFrame(tick);
+      }
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || started || document.visibilityState !== "visible") return;
+        started = true;
+        start();
+        observer.disconnect();
+      },
+      { rootMargin: "-80px" }
+    );
+    observer.observe(ref.current);
+    document.addEventListener("visibilitychange", start);
+    return () => {
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", start);
+    };
+  }, [reduceMotion, value]);
 
   return (
     <span ref={ref}>
@@ -188,63 +271,57 @@ function CountUp({ value, decimals = 0, prefix = "", suffix = "" }) {
 /* A project row that floods with its own colour on hover, and tracks the pointer
    so the wash follows rather than just switching on. */
 function WorkRow({ project, index, accent }) {
-  const mx = useMotionValue(50);
-  const glow = useSpring(mx, { stiffness: 220, damping: 30 });
-  const [hover, setHover] = useState(false);
   const colour = project.color || accent;
-  const wash = usePointerWash(glow, colour);
 
   const onMove = useCallback(
     (e) => {
       const r = e.currentTarget.getBoundingClientRect();
-      mx.set(((e.clientX - r.left) / r.width) * 100);
+      e.currentTarget.style.setProperty("--wash-x", `${((e.clientX - r.left) / r.width) * 100}%`);
     },
-    [mx]
+    []
   );
 
   const href = project.live || project.github;
 
   return (
-    <motion.a
+    <a
       href={href}
       target="_blank"
       rel="noreferrer"
       data-cursor="snap"
       onMouseMove={onMove}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      className="group relative block border-t border-white/10 px-1 py-7 sm:py-9"
+      className="work-row group relative block border-t border-white/10 px-1 py-7 sm:py-9"
+      style={{ "--wash-x": "50%", "--work": colour }}
     >
-      <motion.span
+      <span
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: wash }}
+        style={{ background: `radial-gradient(60% 140% at var(--wash-x) 50%, ${colour}1f, transparent 70%)` }}
       />
       <div className="flex items-baseline gap-4 sm:gap-7">
-        <span className="w-8 shrink-0 font-mono text-[11px] tracking-[0.1em] text-white/25 transition-colors group-hover:text-white/70">
+        <span className="w-8 shrink-0 font-mono text-[11px] tracking-[0.1em] text-white/55 transition-colors group-hover:text-white/70">
           {String(index + 1).padStart(2, "0")}
         </span>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
             <h3
-              className="display text-[clamp(1.7rem,4.6vw,3.1rem)] leading-[0.95] tracking-[0.005em] transition-colors"
-              style={{ color: hover ? colour : "#fff" }}
+              className="work-title display text-[clamp(1.7rem,4.6vw,3.1rem)] leading-[0.95] tracking-[0.005em] transition-colors"
             >
               {project.title}
             </h3>
             {project.wip && (
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/35">
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
                 in progress
               </span>
             )}
           </div>
-          <p className="mt-2.5 max-w-xl text-[14.5px] leading-[1.65] text-white/45 transition-colors group-hover:text-white/70">
+          <p className="mt-2.5 max-w-xl text-[14.5px] leading-[1.65] text-white/55 transition-colors group-hover:text-white/70">
             {project.description}
           </p>
           <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5">
             {project.tags.map((t) => (
-              <li key={t} className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/30">
+              <li key={t} className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
                 {t}
               </li>
             ))}
@@ -257,22 +334,36 @@ function WorkRow({ project, index, accent }) {
           style={{ color: colour }}
         />
       </div>
-    </motion.a>
+    </a>
   );
 }
 
-/* The hover wash follows the pointer horizontally. Subscribed to the spring
-   rather than read during render, so a mousemove updates one string instead of
-   re-rendering the row. */
-function usePointerWash(glow, colour) {
-  const [bg, setBg] = useState(`radial-gradient(60% 140% at 50% 50%, ${colour}1f, transparent 70%)`);
-  useEffect(() => {
-    const unsub = glow.on("change", (v) => {
-      setBg(`radial-gradient(60% 140% at ${v.toFixed(1)}% 50%, ${colour}1f, transparent 70%)`);
-    });
-    return unsub;
-  }, [glow, colour]);
-  return bg;
+function MagneticLink({ children }) {
+  const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
+
+  const onMove = useCallback(
+    (event) => {
+      if (reduceMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      const element = ref.current;
+      if (!element) return;
+      const bounds = element.getBoundingClientRect();
+      const x = (event.clientX - (bounds.left + bounds.width / 2)) * 0.18;
+      const y = (event.clientY - (bounds.top + bounds.height / 2)) * 0.18;
+      element.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.03)`;
+    },
+    [reduceMotion]
+  );
+
+  const reset = useCallback(() => {
+    if (ref.current) ref.current.style.transform = "";
+  }, []);
+
+  return (
+    <span ref={ref} onMouseMove={onMove} onMouseLeave={reset} className="inline-block transition-transform duration-150 ease-out">
+      {children}
+    </span>
+  );
 }
 
 export default function HomeClient({ personal, projects, experience, achievements, skills, fontClass = "" }) {
@@ -288,6 +379,7 @@ export default function HomeClient({ personal, projects, experience, achievement
       className={`${fontClass} min-h-screen overflow-x-clip bg-[#0b0b0c] text-white`}
       style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif", "--acc": accent }}
     >
+      <SmoothScroll />
       <style>{`
         body:has(#latest-page) .noise-bg { display: none; }
         #latest-page h1, #latest-page h2, #latest-page h3, #latest-page .display {
@@ -300,6 +392,14 @@ export default function HomeClient({ personal, projects, experience, achievement
           font-style: italic;
           text-transform: none;
         }
+        /* Skip layout and paint of distant sections while retaining searchable HTML.
+           Remember each section's measured size after it has been visited. */
+        #latest-page section:not(:first-of-type) {
+          content-visibility: auto;
+          contain-intrinsic-size: auto 700px;
+        }
+        #latest-page section[id] { scroll-margin-top: 24px; }
+        #latest-page .work-row:hover .work-title { color: var(--work); }
         #latest-page ::selection { background: var(--acc); color: #000; }
       `}</style>
 
@@ -317,7 +417,7 @@ export default function HomeClient({ personal, projects, experience, achievement
           >
             <span style={{ color: accent }}>●</span> ys
           </button>
-          <nav className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
+          <nav className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
             <a href="#work" data-cursor="snap" className="transition-colors hover:text-white">
               <ScrambleText text="Work" />
             </a>
@@ -330,9 +430,10 @@ export default function HomeClient({ personal, projects, experience, achievement
           </nav>
         </header>
 
+        <main>
         {/* --------------------------------------------------------------- hero */}
         <section className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-24">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
             <span className="inline-flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
               <Clock />
@@ -354,7 +455,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                 actually keep installed.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Magnetic>
+                <MagneticLink>
                   <a
                     href="#work"
                     data-cursor="snap"
@@ -363,11 +464,11 @@ export default function HomeClient({ personal, projects, experience, achievement
                   >
                     See the work
                   </a>
-                </Magnetic>
+                </MagneticLink>
                 <a
                   href={`mailto:${personal.email}`}
                   data-cursor="snap"
-                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/45 underline-offset-4 transition-colors hover:text-white hover:underline"
+                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
                 >
                   Say hello
                 </a>
@@ -382,7 +483,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                 ["shipping", "macOS apps"],
               ].map(([k, v]) => (
                 <div key={k}>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/30">{k}</dt>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/55">{k}</dt>
                   <dd className="mt-1 text-[14.5px] text-white/75">{v}</dd>
                 </div>
               ))}
@@ -411,7 +512,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                     <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
                   </p>
                   <p className="mt-3 text-[15px] font-medium text-white/80">{s.label}</p>
-                  <p className="mt-0.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/30">
+                  <p className="mt-0.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
                     {s.sub}
                   </p>
                 </Tag>
@@ -426,9 +527,9 @@ export default function HomeClient({ personal, projects, experience, achievement
             <h2 className="text-[clamp(2.2rem,6vw,4.4rem)] leading-[0.9]">
               Selected
               <br />
-              <span className="editorial normal-case text-white/40">work</span>
+              <span className="editorial normal-case text-white/55">work</span>
             </h2>
-            <p className="hidden max-w-[15rem] text-right font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/30 sm:block">
+            <p className="hidden max-w-[15rem] text-right font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/55 sm:block">
               {projects.length} repositories
               <br />
               most of them still running
@@ -456,9 +557,9 @@ export default function HomeClient({ personal, projects, experience, achievement
             />
             <div className="relative grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end">
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">A small studio</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">A small studio</p>
                 <h2 className="mt-5 text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[0.9]">
-                  Pure<span className="text-white/35">Mac</span>
+                  Pure<span className="text-white/55">Mac</span>
                 </h2>
                 <p className="mt-5 max-w-md text-[15.5px] leading-[1.65] text-white/55">
                   Two native macOS apps, both open source, both free to run.{" "}
@@ -478,14 +579,14 @@ export default function HomeClient({ personal, projects, experience, achievement
         {/* ------------------------------------------- paper section (inverted) */}
         <section className="bg-[#f2efe6] py-24 text-[#111014] sm:py-32">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-black/40">Where I have been</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-black/60">Where I have been</p>
 
             <div className="mt-12 space-y-14">
               {experience.map((e) => (
                 <div key={e.role + e.company} className="grid gap-5 sm:grid-cols-[13rem_1fr] sm:gap-10">
                   <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-black/45">{e.period}</p>
-                    <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-black/30">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-black/60">{e.period}</p>
+                    <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-black/60">
                       {e.location}
                     </p>
                   </div>
@@ -502,7 +603,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                     </ul>
                     <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
                       {e.tags.map((t) => (
-                        <li key={t} className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-black/35">
+                        <li key={t} className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-black/60">
                           {t}
                         </li>
                       ))}
@@ -517,7 +618,7 @@ export default function HomeClient({ personal, projects, experience, achievement
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 {skills.map((group) => (
                   <div key={group.category}>
-                    <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-black/35">
+                    <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-black/60">
                       {group.category}
                     </p>
                     <ul className="mt-3 space-y-1.5">
@@ -542,7 +643,7 @@ export default function HomeClient({ personal, projects, experience, achievement
           <div className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2">
             {achievements.map((group) => (
               <div key={group.category}>
-                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/30">
+                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55">
                   {group.category}
                 </p>
                 <ul className="mt-6 space-y-6">
@@ -571,7 +672,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                             <span className="block text-[15px] text-white/80 transition-colors group-hover:text-white">
                               {it.label}
                             </span>
-                            <span className="mt-0.5 block font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/30">
+                            <span className="mt-0.5 block font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
                               {it.detail}
                             </span>
                           </span>
@@ -587,7 +688,7 @@ export default function HomeClient({ personal, projects, experience, achievement
 
         {/* --------------------------------------------------------- more work */}
         <section className="mx-auto max-w-6xl px-5 pb-24 sm:px-8 sm:pb-32">
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/30">Also built</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">Also built</p>
           <div className="mt-8 flex flex-wrap gap-2.5">
             {rest.map((p) => (
               <a
@@ -600,7 +701,7 @@ export default function HomeClient({ personal, projects, experience, achievement
               >
                 <span className="h-[6px] w-[6px] rounded-full" style={{ backgroundColor: p.color }} />
                 {p.title}
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/25">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/55">
                   {p.tags[0]}
                 </span>
               </a>
@@ -609,6 +710,7 @@ export default function HomeClient({ personal, projects, experience, achievement
         </section>
 
         {/* ------------------------------------------------------------- footer */}
+        </main>
         <footer className="border-t border-white/10">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
             <h2 className="text-[clamp(2.4rem,10vw,8rem)] leading-[0.85]">
@@ -618,7 +720,7 @@ export default function HomeClient({ personal, projects, experience, achievement
             </h2>
 
             <div className="mt-14 flex flex-wrap items-end justify-between gap-10">
-              <div className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40">
+              <div className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white/55">
                 {[
                   ["Email", `mailto:${personal.email}`],
                   ["GitHub", personal.github],
@@ -632,7 +734,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                   </a>
                 ))}
               </div>
-              <p className="font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/25">
+              <p className="font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/55">
                 Varanasi, India
                 <br />
                 Built with too many rewrites

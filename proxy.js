@@ -7,22 +7,22 @@ export const config = {
      * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
-     * - all .pdf files
+     * - all .pdf files and physical /puremac media assets
      */
-    '/((?!api|_next/static|_next/image|.*\\.pdf).*)',
+    '/((?!api|_next/static|_next/image|.*\\.pdf|puremac/.*\\.(?:png|jpg|jpeg|webp|avif|svg|gif|mp4|webm)$).*)',
   ],
 };
 
 export default function proxy(req) {
   const url = req.nextUrl;
-  const hostname = req.headers.get('host') || '';
+  const hostname = (req.headers.get('host') || '').split(':')[0];
 
   // Extract the current host (removing the root domain)
   // For local testing: cv.localhost:3000 -> 'cv'
   // For production: cv.yashashwi.me -> 'cv'
   const currentHost = hostname
-    .replace(`.yashashwi.me`, '')
-    .replace(`.localhost:3000`, '');
+    .replace(/\.yashashwi\.me$/, '')
+    .replace(/\.localhost$/, '');
 
   // Subdomain routing
   if (currentHost === 'cv') {

@@ -1,4 +1,5 @@
 import FaqSection from "./faq-section";
+import Image from "next/image";
 import { macProducts } from "@/data/mac-products";
 import "./puremac.css";
 
@@ -15,7 +16,7 @@ export default function PureMacClient({ fadeo, arras, downloads = {}, faqs = [] 
       <section className="pm-hero"><div><p className="pm-label">Independent software for Mac</p><h1>Feels at home.<br /><span>Works your way.</span></h1><p className="pm-intro">Small, native macOS apps for the things your Mac doesn’t quite do. Thoughtful defaults. Room to make them yours.</p><a className="pm-link" href="#apps">Explore the apps ↓</a></div><div className="pm-emblem" aria-hidden="true"><img src="/puremac/mark.svg" width="210" height="234" alt="" /></div></section>
       <div className="pm-principles"><span>Native to macOS</span><span>Open source</span><span>No subscriptions</span></div>
       <section id="apps" aria-label="PureMac apps" className="pm-apps">{apps.map(app => <article className={`pm-app pm-${app.id}`} key={app.id}>
-        <div className="pm-app-head"><img src={app.icon} width="84" height="84" alt="" /><div><h2>{app.name}</h2><p>{app.category}</p></div></div><h3>{app.title}</h3><p className="pm-description">{app.description}</p><p className="pm-facts">{app.facts}</p>
+        <div className="pm-app-head"><Image src={app.icon} width={84} height={84} sizes="84px" alt="" /><div><h2>{app.name}</h2><p>{app.category}</p></div></div><h3>{app.title}</h3><p className="pm-description">{app.description}</p><p className="pm-facts">{app.facts}</p>
         <div className="pm-app-bottom"><a className="pm-button" href={app.page}>Discover {app.name}<span aria-hidden="true">↗</span></a><p>{app.price}</p><div className="pm-release"><span>{releases[app.id]?.tag || "macOS 14+"}</span>{downloads[app.id]?.total > 0 && <span>{new Intl.NumberFormat("en-US").format(downloads[app.id].total)} GitHub asset downloads</span>}</div></div>
       </article>)}</section>
       <section className="pm-note"><h2>Useful by nature.<br />Personal by design.</h2><p>No sprawling toolbox. Each app starts with a real gap and gives you control over that part of your Mac. The source is open to inspect, learn from, and build on.</p></section>

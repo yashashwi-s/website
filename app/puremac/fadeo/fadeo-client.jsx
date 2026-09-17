@@ -97,7 +97,7 @@ function Meter({ bars = 34, className = "" }) {
 function Rule({ label }) {
   return (
     <div className="flex items-center gap-4 py-1">
-      <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/25">{label}</span>
+      <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/50">{label}</span>
       <span className="h-px flex-1 bg-white/10" />
     </div>
   );
@@ -142,7 +142,7 @@ function SubscribeBand() {
             <br />
             gets better.
           </h3>
-          <p className="mt-4 max-w-sm text-[14.5px] leading-[1.7] text-white/45">
+          <p className="mt-4 max-w-sm text-[14.5px] leading-[1.7] text-white/55">
             An occasional note when there is a real release worth your time. No more
             than a handful a year, and one reply unsubscribes you.
           </p>
@@ -289,7 +289,7 @@ function GiveawayCard({ initialPromo }) {
           </p>
 
           {promo == null || !promo.active ? (
-            <p className="mt-5 text-[13px] text-white/35">
+            <p className="mt-5 text-[13px] text-white/50">
               {promo?.claimed != null && promo.max != null && promo.claimed >= promo.max
                 ? "All 100 have been claimed. Thank you."
                 : "Not live right now, check back soon."}
@@ -391,6 +391,7 @@ export default function FadeoClient({ release, initialPromo, paymentLink, faqs =
           </a>
         </header>
 
+        <main>
         {/* ----------------------------------------------------------------- hero */}
         <section className="pt-12 sm:pt-20">
           <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white/35">
@@ -460,7 +461,7 @@ export default function FadeoClient({ release, initialPromo, paymentLink, faqs =
           <Rule label="how it decides" />
           <h2 className="mt-8 max-w-2xl text-[clamp(1.9rem,4.6vw,3.1rem)] font-bold leading-[1.02] tracking-[-0.035em]">
             Four ordered bands, every time,
-            <span className="text-white/30"> no surprises.</span>
+            <span className="text-white/40"> no surprises.</span>
           </h2>
 
           {/* The chain drawn as a chain. Fadeo's whole pitch is that the decision
@@ -544,12 +545,12 @@ export default function FadeoClient({ release, initialPromo, paymentLink, faqs =
                 {checkoutLabel}
               </a>
               {!paymentLink && (
-                <p className="mt-3 text-[12px] text-white/35">
+                <p className="mt-3 text-[12px] text-white/50">
                   Checkout is coming soon. For now this opens an email — reply with what
                   you&apos;d like to pay and I&apos;ll send a key back.
                 </p>
               )}
-              <p className="mt-3 text-[12px] text-white/35">
+              <p className="mt-3 text-[12px] text-white/50">
                 Your license key arrives by email within a few minutes of purchase. If it
                 doesn&apos;t show up, check your spam folder first.
               </p>
@@ -567,13 +568,14 @@ export default function FadeoClient({ release, initialPromo, paymentLink, faqs =
           accent={TEAL}
           title="How Fadeo fits your Mac."
         />
+        </main>
 
         {/* --------------------------------------------------------------- footer */}
         <footer className="flex flex-col gap-4 border-t border-white/10 py-10 sm:flex-row sm:items-center sm:justify-between">
-          <span className="max-w-md font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/25">
+          <span className="max-w-md font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/50">
             Ad-hoc signed. Gatekeeper asks once, which is expected outside the App Store.
           </span>
-          <div className="flex shrink-0 items-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-white/30">
+          <div className="flex shrink-0 items-center gap-5 font-mono text-[10.5px] uppercase tracking-[0.16em] text-white/50">
             <a href="/fadeo/privacy" data-cursor="snap" className="transition-colors hover:text-white/70">
               Privacy
             </a>

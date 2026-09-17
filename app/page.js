@@ -1,4 +1,4 @@
-import { Anton, Instrument_Serif } from "next/font/google";
+import { Anton, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import HomeClient from "./home-client";
 import { personal } from "@/data/personal";
 import { projects } from "@/data/projects";
@@ -23,6 +23,14 @@ const editorial = Instrument_Serif({
   display: "swap",
   weight: "400",
   style: "italic",
+});
+
+const mono = JetBrains_Mono({
+  weight: "400",
+  preload: false,
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 const TITLE = "Yashashwi Singhania — systems, RL, and native macOS apps";
@@ -56,7 +64,7 @@ export default function Home() {
       experience={experience}
       achievements={achievements}
       skills={skills}
-      fontClass={`${poster.variable} ${editorial.variable}`}
+      fontClass={`${poster.variable} ${editorial.variable} ${mono.variable}`}
     />
   );
 }

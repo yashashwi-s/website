@@ -20,13 +20,22 @@ export default function LegalPage({
 }) {
   return (
     <div
-      id="puremac-page"
+      id="fadeo-legal-page"
       className="min-h-screen cursor-auto overflow-x-clip bg-[#050505] text-white"
       style={{
         fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <style>{`body:has(#puremac-page) .noise-bg { display: none; }`}</style>
+      <style>{`
+        body:has(#fadeo-legal-page) .noise-bg { display: none; }
+        /* The global stylesheet hides the native cursor on fine pointers, and this
+           page renders no CustomCursor to replace it — without this, visitors get
+           an invisible pointer here. Scoped to this page's own id (not the shared
+           #puremac-page, which the diagnostics page also uses, with a cursor). */
+        @media (hover: hover) and (pointer: fine) {
+          body:has(#fadeo-legal-page) * { cursor: auto !important; }
+        }
+      `}</style>
 
       <header className="mx-auto flex max-w-4xl items-center justify-between px-6 pb-2 pt-10 sm:px-8">
         <a

@@ -1,9 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-hand: var(--font-hand), cursive;
-  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* NOTE: these intentionally do NOT reference their own var() (no
+     `var(--font-sans)` inside `--font-sans`) — a self-reference makes the custom
+     property invalid at computed-value time, and which rule wins is then decided
+     only by cascade layers: next/font's unlayered .variable class beats this
+     @layer theme block today, but any refactor that wraps the font variables in
+     a layer would flip the winner and knock the site back to system fonts.
+     The next/font variables are injected on <html> by app/layout.js. */
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", cursive;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 @layer base {

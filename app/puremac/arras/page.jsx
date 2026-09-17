@@ -1,4 +1,5 @@
 import ArrasClient from "./arras-client";
+import { getImageProps } from "next/image";
 import { macProducts } from "@/data/mac-products";
 import {
   arrasCanonicalUrl,
@@ -215,6 +216,16 @@ export default async function ArrasPage() {
   const dateModified = new Date(
     Math.max(Date.parse(CONTENT_UPDATED_AT), Date.parse(release?.publishedAt ?? "1970-01-01"))
   ).toISOString().slice(0, 10);
+  const { props: posterProps } = getImageProps({
+    src: OG_IMAGE,
+    alt: "",
+    width: 1470,
+    height: 956,
+    sizes: "(max-width: 800px) calc(100vw - 40px), (max-width: 1260px) calc(100vw - 80px), 1180px",
+    // The poster enters the initial mobile viewport and is the measured LCP.
+    loading: "eager",
+    fetchPriority: "high",
+  });
 
   return (
     <>
@@ -225,6 +236,7 @@ export default async function ArrasPage() {
         downloads={downloads}
         dateModified={dateModified}
         faqs={arrasFaqs}
+        posterProps={posterProps}
       />
     </>
   );

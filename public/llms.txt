@@ -1,0 +1,17 @@
+# Yashashwi Singhania
+
+> The official portfolio of Yashashwi Singhania, an IIT (BHU) dual-degree student building reinforcement-learning projects, systems software, and native macOS apps.
+
+## Portfolio
+- [Selected work](https://yashashwi.me/#work): Projects, source repositories, experience, and achievements.
+- [Curriculum vitae](https://cv.yashashwi.me/): Education, experience, and technical skills.
+- [GitHub](https://github.com/yashashwi-s): Public source repositories and contributions.
+
+## Native macOS Apps
+- [PureMac](https://puremac.yashashwi.me/): The official catalog of independent, open-source Mac apps.
+- [Arras](https://arras.yashashwi.me/): Desktop photo widgets that preserve each image's aspect ratio; includes downloads and installation instructions.
+- [Fadeo](https://puremac.yashashwi.me/fadeo): Rule-driven workflow audio for macOS; includes features and licensing details.
+
+## Further Documentation
+- [PureMac documentation index](https://puremac.yashashwi.me/llms.txt): App facts and authoritative documentation.
+- [Arras documentation index](https://arras.yashashwi.me/llms.txt): Product facts, sources, and installation guidance.

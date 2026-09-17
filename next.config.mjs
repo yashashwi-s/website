@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Tailwind's compact styles can arrive with HTML instead of blocking the
+  // first paint on another request, especially on high-latency mobile links.
+  experimental: { inlineCss: true },
   images: {
     remotePatterns: [
       {
@@ -7,6 +10,13 @@ const nextConfig = {
         hostname: "images.unsplash.com",
       },
     ],
+  },
+  async headers() {
+    return [{
+      // These filenames are editable: cache briefly, never mark them immutable.
+      source: '/:asset(.*\\.(?:png|jpg|jpeg|webp|avif|svg|gif|mp4|webm))',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+    }];
   },
   async redirects() {
     return [
@@ -19,7 +29,9 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/puremac/arras/:path*',
+        // Public media already lives at this path. Redirect pages only so
+        // posters and demos do not pay an extra network round trip.
+        source: '/puremac/arras/:path((?!.*\\.(?:png|jpg|jpeg|webp|avif|svg|gif|mp4|webm)$).*)?',
         has: [{ type: 'host', value: '(.*\\.)?yashashwi.me' }],
         destination: 'https://arras.yashashwi.me/:path*',
         permanent: true,

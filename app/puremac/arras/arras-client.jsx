@@ -16,21 +16,44 @@ const features = [
   ["Let it change.", "Rotate a collection of images in one widget, or bring GIFs and APNGs to your desktop."],
 ];
 
-export default function ArrasClient({ release, downloads, faqs, dateModified }) {
+export default function ArrasClient({ release, downloads, faqs, dateModified, posterProps }) {
   const demoRef = useRef(null);
+  const manuallyPaused = useRef(false);
   const [demoPlaying, setDemoPlaying] = useState(false);
+  const [demoStarted, setDemoStarted] = useState(false);
   const [allowAutoplay, setAllowAutoplay] = useState(false);
+  const [demoNearViewport, setDemoNearViewport] = useState(false);
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
-      setAllowAutoplay(!preference.matches);
+      // Keep mobile bandwidth available for the poster and page content.
+      const connection = navigator.connection;
+      setAllowAutoplay(!preference.matches && !window.matchMedia("(pointer: coarse)").matches && !connection?.saveData);
       if (preference.matches) demoRef.current?.pause();
-      else demoRef.current?.play().catch(() => {});
     };
     update();
     preference.addEventListener("change", update);
     return () => preference.removeEventListener("change", update);
   }, []);
+  useEffect(() => {
+    const demo = demoRef.current;
+    if (!demo) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setDemoNearViewport(entry.intersectionRatio >= 0.5);
+    }, { threshold: 0.5 });
+    observer.observe(demo);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    const demo = demoRef.current;
+    if (!demo) return;
+    if (!demoNearViewport) {
+      demo.pause();
+      return;
+    }
+    if (!allowAutoplay || manuallyPaused.current) return;
+    demo.play().catch(() => {});
+  }, [allowAutoplay, demoNearViewport]);
   const download = release?.dmg ?? release?.zip ?? `${SOURCE}/releases/latest`;
   return (
     <main id="arras-page">
@@ -45,12 +68,20 @@ export default function ArrasClient({ release, downloads, faqs, dateModified }) 
       </header>
 
       <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
-        <video id="arras-demo" ref={demoRef} autoPlay={allowAutoplay} muted loop playsInline preload="metadata" onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} poster="/puremac/arras/demo-poster.jpg" aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
+        <div className="ar-demo-media">
+          <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" onPlay={() => { setDemoPlaying(true); setDemoStarted(true); }} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
+          {!demoStarted && <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />}
+        </div>
         <div className="ar-caption"><a href="#how-to-use">Read the setup instructions ↓</a><button type="button" aria-controls="arras-demo" onClick={async () => {
           const demo = demoRef.current;
           if (!demo) return;
-          if (!demo.paused) demo.pause();
-          else { try { await demo.play(); } catch { setDemoPlaying(false); } }
+          if (!demo.paused) {
+            manuallyPaused.current = true;
+            demo.pause();
+          } else {
+            manuallyPaused.current = false;
+            try { await demo.play(); } catch { setDemoPlaying(false); }
+          }
         }}>{demoPlaying ? "Pause demo" : "Play demo"}</button></div>
       </section>
 
@@ -81,7 +112,7 @@ export default function ArrasClient({ release, downloads, faqs, dateModified }) 
         </div></div>
       </section>
       <ReleaseHighlight entry={releaseHighlights.arras} light />
-      <section className="ar-wrap ar-faq"><FaqSection faqs={faqs} light accent="#ad583c" title="A few useful answers." /></section>
+      <section className="ar-wrap ar-faq"><FaqSection faqs={faqs} light accent="#aa5539" title="A few useful answers." /></section>
       <section className="ar-wrap ar-lineage"><p className="ar-label">Same project. Its own name.</p><h2>Photo Widget OSX → Tableau → Arras</h2><p>If you found an older name in a post or a download, you’re in the right place. Arras is the continuation of that project.</p></section>
       <footer className="ar-wrap ar-footer"><div className="ar-brand"><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />{product.name}</div><p>Small by intention. Yours by design.</p><div><a href="https://yashashwi.me">Made by Yashashwi ↗</a><a href={SOURCE}>GitHub ↗</a><a href={product.publisher.url}>PureMac ↗</a></div></footer>
     </main>

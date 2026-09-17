@@ -1,0 +1,4 @@
+# Generated Lighthouse reports stay local; commit concise summaries.
+*.json
+!summary.json
+*.html
