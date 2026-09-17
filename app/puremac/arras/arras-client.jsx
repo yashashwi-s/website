@@ -1,10 +1,8 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { macProducts, releaseHighlights } from "@/data/mac-products";
 import { arrasFeatureContractUrl } from "@/data/arras-product";
 import ReleaseHighlight from "../release-highlight";
 import FaqSection from "../faq-section";
+import ArrasDemo from "./arras-demo";
 import "./arras.css";
 
 const product = macProducts.arras;
@@ -17,43 +15,6 @@ const features = [
 ];
 
 export default function ArrasClient({ release, downloads, faqs, dateModified, posterProps }) {
-  const demoRef = useRef(null);
-  const manuallyPaused = useRef(false);
-  const [demoPlaying, setDemoPlaying] = useState(false);
-  const [demoStarted, setDemoStarted] = useState(false);
-  const [allowAutoplay, setAllowAutoplay] = useState(false);
-  const [demoNearViewport, setDemoNearViewport] = useState(false);
-  useEffect(() => {
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      // Keep mobile bandwidth available for the poster and page content.
-      const connection = navigator.connection;
-      setAllowAutoplay(!preference.matches && !window.matchMedia("(pointer: coarse)").matches && !connection?.saveData);
-      if (preference.matches) demoRef.current?.pause();
-    };
-    update();
-    preference.addEventListener("change", update);
-    return () => preference.removeEventListener("change", update);
-  }, []);
-  useEffect(() => {
-    const demo = demoRef.current;
-    if (!demo) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      setDemoNearViewport(entry.intersectionRatio >= 0.5);
-    }, { threshold: 0.5 });
-    observer.observe(demo);
-    return () => observer.disconnect();
-  }, []);
-  useEffect(() => {
-    const demo = demoRef.current;
-    if (!demo) return;
-    if (!demoNearViewport) {
-      demo.pause();
-      return;
-    }
-    if (!allowAutoplay || manuallyPaused.current) return;
-    demo.play().catch(() => {});
-  }, [allowAutoplay, demoNearViewport]);
   const download = release?.dmg ?? release?.zip ?? `${SOURCE}/releases/latest`;
   return (
     <main id="arras-page">
@@ -67,23 +28,7 @@ export default function ArrasClient({ release, downloads, faqs, dateModified, po
         <div className="ar-hero-copy"><p>Arras is a free, native Mac photo widget that keeps each image’s original aspect ratio. Your photos, without forced cropping. Their shape, their place, your desktop.</p><a className="ar-button" href={download}>Download Arras <span>↙</span></a><p className="ar-fine">Free &amp; open source · {product.operatingSystem} · {product.architecture}</p><p className="ar-fine">Previously {product.historicalNames.join(" and ")}.</p><a className="ar-text-link" href="#install">First time installing? Read this first →</a></div>
       </header>
 
-      <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
-        <div className="ar-demo-media">
-          <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" onPlay={() => { setDemoPlaying(true); setDemoStarted(true); }} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
-          {!demoStarted && <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />}
-        </div>
-        <div className="ar-caption"><a href="#how-to-use">Read the setup instructions ↓</a><button type="button" aria-controls="arras-demo" onClick={async () => {
-          const demo = demoRef.current;
-          if (!demo) return;
-          if (!demo.paused) {
-            manuallyPaused.current = true;
-            demo.pause();
-          } else {
-            manuallyPaused.current = false;
-            try { await demo.play(); } catch { setDemoPlaying(false); }
-          }
-        }}>{demoPlaying ? "Pause demo" : "Play demo"}</button></div>
-      </section>
+      <ArrasDemo posterProps={posterProps} />
 
       <section className="ar-wrap ar-section" id="details">
         <div className="ar-split"><div><p className="ar-label">Built around the picture</p><h2>The photo decides<br />the shape.</h2></div><p className="ar-intro">Most widgets start with a box. Arras starts with your image. It’s a native macOS tool for the little things that make a desktop feel like yours—without an account, a subscription, or telemetry.</p></div>
