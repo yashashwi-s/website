@@ -17,10 +17,11 @@ const poster = Anton({
   weight: "400",
 });
 
+// Avoid late swaps changing the hero copy and navigation line wrapping.
 const editorial = Instrument_Serif({
   subsets: ["latin"],
   variable: "--font-editorial",
-  display: "swap",
+  display: "optional",
   weight: "400",
   style: "italic",
 });
@@ -30,7 +31,7 @@ const mono = JetBrains_Mono({
   preload: false,
   subsets: ["latin"],
   variable: "--font-mono",
-  display: "swap",
+  display: "optional",
 });
 
 const TITLE = "Yashashwi Singhania — systems, RL, and native macOS apps";
