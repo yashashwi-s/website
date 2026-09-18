@@ -11,8 +11,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -28,8 +28,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -45,8 +45,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -54,12 +54,12 @@
     "question": "Can a Mac photo widget display images without cropping?",
     "answer": [
       "Yes. Arras displays each desktop photo at its original aspect ratio, so a panorama remains wide and a portrait remains vertical without forced cropping, black bars, or a fixed square frame.",
-      "You can drag a corner to resize while the aspect ratio stays locked. For rotating photo sets, Dynamic sizing lets each image use its own true proportions, while Fixed sizing is available when you intentionally want a locked frame."
+      "You can drag a corner to resize while the aspect ratio stays locked. For rotating photo sets, Dynamic sizing lets each image use its own true proportions, while Fixed sizing deliberately crops images into one stable frame."
     ],
     "sources": [
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -75,8 +75,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -84,7 +84,7 @@
     "question": "How to customize photo widgets on Mac?",
     "answer": [
       "For a standard macOS widget, Control-click it to use any available Edit option, choose another supported size, or remove it. Apple also provides desktop settings for widget visibility and color treatment.",
-      "Arras adds per-photo controls for opacity, layering, locked placement, shape masks, mats, shadows, borders, vignettes, tilt, and Gallery, Polaroid, Minimal, or Modern presets. Photos can also sit behind desktop icons or float above other windows."
+      "Arras adds per-photo controls for opacity, layering, locked placement, shape masks, mats, shadows, borders, edge fade, tilt, and Gallery, Polaroid, Minimal, or Modern presets. Photos can also sit behind desktop icons or float above other windows."
     ],
     "sources": [
       {
@@ -92,8 +92,8 @@
         "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
       },
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -105,8 +105,8 @@
     ],
     "sources": [
       {
-        "label": "Arras official photo-widget guide",
-        "href": "https://arras.yashashwi.me/#how-to-use"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -122,8 +122,8 @@
         "href": "https://support.apple.com/en-us/102445"
       },
       {
-        "label": "Arras official installation guide",
-        "href": "https://arras.yashashwi.me/#install"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       }
     ]
   },
@@ -134,8 +134,8 @@
     ],
     "sources": [
       {
-        "label": "Arras official downloads and compatibility",
-        "href": "https://arras.yashashwi.me/#install"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       },
       {
         "label": "Arras source and technical documentation",
@@ -154,8 +154,8 @@
     ],
     "sources": [
       {
-        "label": "Arras official downloads and compatibility",
-        "href": "https://arras.yashashwi.me/#install"
+        "label": "Arras released feature documentation",
+        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       },
       {
         "label": "Arras source and technical documentation",

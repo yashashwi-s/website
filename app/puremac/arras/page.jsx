@@ -14,7 +14,7 @@ import { latestRelease, totalDownloads } from "@/lib/github-release";
 const SITE_URL = arrasCanonicalUrl;
 const PUREMAC_URL = arrasPublisherUrl;
 const ARRAS_URL = SITE_URL;
-const CONTENT_UPDATED_AT = "2026-09-11";
+const CONTENT_UPDATED_AT = "2026-09-18";
 const TITLE = "Arras — Free Mac Photo Widgets Without Forced Cropping";
 const DESCRIPTION =
   "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";

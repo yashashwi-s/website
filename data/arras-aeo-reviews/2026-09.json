@@ -1,81 +1,79 @@
 {
   "schemaVersion": 1,
   "status": "ready",
-  "reviewedAt": "2026-09-10",
+  "reviewedAt": "2026-09-18",
   "page": "arras",
-  "summary": "One-time website-first review: preserve ten useful FAQs, add first-party setup/usage links, allow the official site in the review policy, and distinguish technical crawl checks from answer-engine citation observations.",
+  "summary": "Reviewed production, README, v2.4.7 (icon-only release), Apple guidance and eight Google queries. Retain all 10 FAQ topics; clarify fixed-frame cropping and replace vignettes with documented edge fade. FAQ sources constrained to Apple/GitHub as required. Claude and Perplexity now recommend Arras, but inspected answers do not link its website; old names persist in Google AI. Gemini blocked by Workspace access policy and ChatGPT unavailable; not recorded as negative citations.",
   "queries": [
     {
       "query": "macOS desktop photo widget",
       "paaQuestions": [
         "How do I add a photo widget to my Mac desktop?",
-        "How to get rid of the photo widget on Mac desktop?",
-        "How to create a macOS desktop widget?",
-        "How to display a photo as a widget?",
-        "How do I add photo widgets to my desktop?",
-        "How do I put a photo on my Mac desktop?"
+        "How do I get rid of the photo widget on my Mac desktop?",
+        "How do I put a photo on my Mac desktop?",
+        "How to create a macOS desktop widget?"
       ],
-      "notes": "Google browser results observed; first question expanded and screenshot inspected. Initial AI Overview described built-in widgets with Apple/YouTube/Reddit sources. Web-search tool also surfaced the Arras GitHub repository. No first-party Arras citation was observed in the inspected overview."
+      "notes": "Google AI Overview cited Apple Support; no Arras website citation visible in the inspected excerpt."
     },
     {
       "query": "add photo widgets to MacBook desktop",
       "paaQuestions": [
-        "Can you add widgets to a MacBook desktop?",
-        "How do I add a picture widget to my desktop?",
+        "How do I add widgets to my MacBook desktop?",
+        "How do I add widgets to my Mac homepage?",
         "How do I move widgets to the desktop on my Mac?",
-        "How to edit photo widget on Mac?"
+        "How to get photo widget off Mac desktop?"
       ],
-      "notes": "Web search completed and current Google browser People Also Ask text observed after allowing the results to load. These are query ideas, not evidence for product claims or guaranteed ranking."
+      "notes": "Google AI Overview cited Apple widget guidance; no Arras website citation visible."
     },
     {
       "query": "put a specific photo on a widget on Mac",
       "paaQuestions": [
         "How do I add one specific photo as a widget?",
-        "How do I change the image of a widget on my Mac?",
-        "How do I put an image in a widget?",
-        "How to choose album for photo widget on Mac?"
+        "How do I add a photo widget to my MacBook?",
+        "How do I add an image in a widget?",
+        "How do I change the featured photo on my MacBook widget?"
       ],
-      "notes": "Web search completed and current Google browser People Also Ask text observed after allowing the results to load. These are query ideas, not evidence for product claims or guaranteed ranking."
+      "notes": "Google AI Overview discussed a single-photo album and cited Apple support/community, Threads and YouTube; no Arras website citation visible. AI text is observation, not evidence validating its claims."
     },
     {
       "query": "photo widget without cropping on Mac",
       "paaQuestions": [
-        "How to customize photo widgets on Mac?",
-        "How do I resize a photo without cropping it?",
         "How can I make a photo square without cropping it?",
-        "How do I customize my photo widget?"
+        "How to reduce widget size on Mac?",
+        "How do I resize an image in the Mac Photos app?",
+        "How to make a photo widget only show certain Photos?"
       ],
-      "notes": "Google browser results observed. AI Overview named Tableau and linked the maker's older Reddit post at https://www.reddit.com/r/MacOS/comments/1uh79nz/i_built_a_macos_desktop_photo_widget_that_doesnt/ . This is an observed Google result, not a Gemini-app or ChatGPT test."
+      "notes": "Google AI Overview recommended Tableau under the old name and cited https://www.reddit.com/r/MacOS/comments/1uh79nz/i_built_a_macos_desktop_photo_widget_that_doesnt/ . No official Arras website citation in the inspected excerpt."
     },
     {
       "query": "free open-source Mac desktop photo widget",
       "paaQuestions": [],
-      "notes": "Web-search batch included the Arras GitHub repository. Google browser results inspected; no PAA questions captured after a bounded wait. This is not proof that PAA never appears."
+      "notes": "Google AI Overview recommended ScriptWidget and Ubersicht; no PAA block or Arras website citation visible. Separate neutral web-search prompt: Claude Sonnet 5 recommended Arras and linked https://github.com/yashashwi-s/Arras; Perplexity recommended Arras but linked an incorrect github.com/yashash-s/Arras URL, using Reddit/SourceForge citations. Neither inspected answer linked the product website. Gemini redirected to a managed Workspace origin blocked by the approval policy; not bypassed. ChatGPT navigation and subsequent tab access timed out; no current ChatGPT result recorded."
     },
     {
       "query": "Arras Mac app",
       "paaQuestions": [],
-      "notes": "Web search included Arras repository/feature documentation. Google browser inspection also showed an unrelated Arras darts app, so brand-only searches are ambiguous. No PAA questions captured after a bounded wait. No independent ChatGPT, Claude, Gemini-app, or Perplexity conversation was run."
+      "notes": "Google AI Overview identified Arras but cited https://github.com/yashashwi-s/Tableau/blob/main/FEATURES.md and also discussed an unrelated darts app. No PAA block or official product website link visible in the inspected result."
     },
     {
       "query": "Tableau photo widget Mac",
       "paaQuestions": [
-        "How to set a photo as a widget on Mac?",
-        "How to display a photo as a widget?",
-        "How to edit which photos show on widget on Mac?",
-        "Does Mac OS still have widgets?"
+        "How to add pictures as a widget on Mac?",
+        "How do I add an image to my Tableau dashboard?",
+        "Can Tableau be used on Mac?",
+        "How to display a photo as a widget?"
       ],
-      "notes": "Web search completed and current Google browser People Also Ask text observed after allowing the results to load. These are query ideas, not evidence for product claims or guaranteed ranking."
+      "notes": "Google AI Overview used the old Tableau name and cited https://sourceforge.net/projects/tableau-macos/ plus Reddit. PAA mixes unrelated Tableau analytics questions; do not publish these as Arras FAQs."
     },
     {
       "query": "Photo Widget OSX",
       "paaQuestions": [
-        "How to set a photo as a widget on Mac?",
-        "Can I add a photo as a widget?",
-        "Does Mac OS still have widgets?",
-        "How to choose album for photo widget on Mac?"
+        "How to put a photo as a widget on Mac?",
+        "How do I get the photo widget off my Mac?",
+        "How do I edit what photos show on a widget on my Mac?",
+        "How do I get the photo widget back on my home screen?"
       ],
-      "notes": "Google browser PAA questions observed. Historical-name web-search batch also surfaced older maker posts and the current Arras GitHub repository."
+      "notes": "Google AI Overview described built-in Photos widgets and cited Reddit and YouTube. No official Arras website citation visible in the inspected excerpt."
     }
   ],
   "faqs": [
@@ -91,8 +89,8 @@
           "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
         },
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -108,8 +106,8 @@
           "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
         },
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -125,8 +123,8 @@
           "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
         },
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -134,12 +132,12 @@
       "question": "Can a Mac photo widget display images without cropping?",
       "answer": [
         "Yes. Arras displays each desktop photo at its original aspect ratio, so a panorama remains wide and a portrait remains vertical without forced cropping, black bars, or a fixed square frame.",
-        "You can drag a corner to resize while the aspect ratio stays locked. For rotating photo sets, Dynamic sizing lets each image use its own true proportions, while Fixed sizing is available when you intentionally want a locked frame."
+        "You can drag a corner to resize while the aspect ratio stays locked. For rotating photo sets, Dynamic sizing lets each image use its own true proportions, while Fixed sizing deliberately crops images into one stable frame."
       ],
       "sources": [
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -155,8 +153,8 @@
           "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
         },
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -164,7 +162,7 @@
       "question": "How to customize photo widgets on Mac?",
       "answer": [
         "For a standard macOS widget, Control-click it to use any available Edit option, choose another supported size, or remove it. Apple also provides desktop settings for widget visibility and color treatment.",
-        "Arras adds per-photo controls for opacity, layering, locked placement, shape masks, mats, shadows, borders, vignettes, tilt, and Gallery, Polaroid, Minimal, or Modern presets. Photos can also sit behind desktop icons or float above other windows."
+        "Arras adds per-photo controls for opacity, layering, locked placement, shape masks, mats, shadows, borders, edge fade, tilt, and Gallery, Polaroid, Minimal, or Modern presets. Photos can also sit behind desktop icons or float above other windows."
       ],
       "sources": [
         {
@@ -172,8 +170,8 @@
           "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
         },
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -185,8 +183,8 @@
       ],
       "sources": [
         {
-          "label": "Arras official photo-widget guide",
-          "href": "https://arras.yashashwi.me/#how-to-use"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -202,8 +200,8 @@
           "href": "https://support.apple.com/en-us/102445"
         },
         {
-          "label": "Arras official installation guide",
-          "href": "https://arras.yashashwi.me/#install"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         }
       ]
     },
@@ -214,8 +212,8 @@
       ],
       "sources": [
         {
-          "label": "Arras official downloads and compatibility",
-          "href": "https://arras.yashashwi.me/#install"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         },
         {
           "label": "Arras source and technical documentation",
@@ -234,8 +232,8 @@
       ],
       "sources": [
         {
-          "label": "Arras official downloads and compatibility",
-          "href": "https://arras.yashashwi.me/#install"
+          "label": "Arras released feature documentation",
+          "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
         },
         {
           "label": "Arras source and technical documentation",
@@ -250,29 +248,24 @@
   ],
   "evidence": [
     {
-      "claim": "The current public release is v2.4.6, published 2026-08-31. Verified through the GitHub latest-release API.",
-      "sourceUrl": "https://github.com/yashashwi-s/Arras/releases/tag/v2.4.6",
-      "checkedAt": "2026-09-10"
+      "claim": "Arras v2.4.7 changes the icon only, with no other feature changes.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/releases/tag/v2.4.7",
+      "checkedAt": "2026-09-18"
     },
     {
-      "claim": "Arras's published README documents macOS 14+, Apple silicon downloads, Intel source builds, original-ratio windows, and menu-bar photo controls.",
+      "claim": "Current README documents macOS 14+, Apple Silicon downloads and Intel source builds.",
       "sourceUrl": "https://github.com/yashashwi-s/Arras",
-      "checkedAt": "2026-09-10"
+      "checkedAt": "2026-09-18"
     },
     {
-      "claim": "Apple documents widget addition, editing and removal through desktop and widget controls.",
+      "claim": "Apple documents adding, editing and removing desktop widgets.",
       "sourceUrl": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac",
-      "checkedAt": "2026-09-10"
+      "checkedAt": "2026-09-18"
     },
     {
-      "claim": "Apple's Gatekeeper guidance requires considering source trust before overriding a blocked launch.",
+      "claim": "Apple describes first-launch trust checks and opening trusted blocked apps through Privacy and Security.",
       "sourceUrl": "https://support.apple.com/en-us/102445",
-      "checkedAt": "2026-09-10"
-    },
-    {
-      "claim": "The official reader-facing product destination is arras.yashashwi.me; source code and binaries remain on GitHub.",
-      "sourceUrl": "https://arras.yashashwi.me",
-      "checkedAt": "2026-09-10"
+      "checkedAt": "2026-09-18"
     }
   ]
 }
