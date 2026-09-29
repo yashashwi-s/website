@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  poweredByHeader: false,
   // Tailwind's compact styles can arrive with HTML instead of blocking the
   // first paint on another request, especially on high-latency mobile links.
   experimental: { inlineCss: true },
@@ -15,6 +16,14 @@ const nextConfig = {
   },
   async headers() {
     return [{
+      source: '/:path*',
+      has: [{ type: 'host', value: 'arras.yashashwi.me' }],
+      headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+      ],
+    }, {
       // These filenames are editable: cache briefly, never mark them immutable.
       source: '/:asset(.*\\.(?:png|jpg|jpeg|webp|avif|svg|gif|mp4|webm))',
       headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],

@@ -2,6 +2,8 @@ import { arrasProduct } from "@/data/arras-product";
 
 export function ArrasNavigation({ links, active }) {
   return (
+    <>
+    <a className="ar-skip-link" href="#arras-content">Skip to content</a>
     <nav className="ar-wrap ar-nav" aria-label="Main navigation">
       <a className="ar-brand" href={links.home}><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />Arras<span>FOR MAC</span></a>
       <div>
@@ -10,6 +12,7 @@ export function ArrasNavigation({ links, active }) {
         <a className="ar-nav-download" href={`${links.home}#install`}>Get Arras ↓</a>
       </div>
     </nav>
+    </>
   );
 }
 

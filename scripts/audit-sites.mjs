@@ -4,6 +4,7 @@ import path from 'node:path';
 
 // Normal Lighthouse presets, cold cache, sequential runs: no score overrides or
 // concurrent browsers competing for the CPU. Pin the tool for repeatability.
+const reportOnly = process.argv.includes('--report-only');
 const requireAgentic = process.argv.includes('--require-agentic');
 const requiredAgenticAudits = ['agent-accessibility-tree', 'cumulative-layout-shift', 'llms-txt'];
 const view = process.argv.includes('--view');
@@ -11,9 +12,12 @@ const local = process.argv.includes('--local');
 const devices = process.argv.includes('--mobile-only') ? ['mobile'] : ['mobile', 'desktop'];
 const output = path.resolve(process.env.AUDIT_OUTPUT || `docs/performance/${new Date().toISOString().slice(0, 10)}-${local ? 'local' : 'live'}`);
 const port = process.env.AUDIT_PORT || '3100';
-const sites = local
+const allSites = local
   ? [['portfolio', `http://localhost:${port}`], ['arras', `http://arras.localhost:${port}`], ['puremac', `http://puremac.localhost:${port}`]]
   : [['portfolio', 'https://yashashwi.me'], ['arras', 'https://arras.yashashwi.me'], ['puremac', 'https://puremac.yashashwi.me']];
+const selectedSites = process.env.AUDIT_SITE ? allSites.filter(([name]) => name === process.env.AUDIT_SITE) : allSites;
+const sites = selectedSites.flatMap(([name, url]) => name === 'arras' ? [[name, url], ['arras-faqs', `${url}/faqs`], ['arras-security', `${url}/security`]] : [[name, url]]);
+if (sites.length === 0) throw new Error(`Unknown AUDIT_SITE: ${process.env.AUDIT_SITE}`);
 const summaries = [];
 await mkdir(output, { recursive: true });
 for (const [name, url] of sites) {
@@ -43,6 +47,7 @@ for (const [name, url] of sites) {
       agentic: `${passed}/${requiredAgenticAudits.length}`,
       agenticScore: Math.round(report.categories['agentic-browsing'].score * 100),
       agenticTargetMet,
+      fcpMs: report.audits['first-contentful-paint'].numericValue,
       lcpMs: report.audits['largest-contentful-paint'].numericValue,
       tbtMs: report.audits['total-blocking-time'].numericValue,
       cls: report.audits['cumulative-layout-shift'].numericValue,
@@ -55,4 +60,4 @@ for (const [name, url] of sites) {
 console.table(summaries.map(({ name, device, performance, accessibility, seo, agentic, targetMet }) =>
   ({ name, device, performance, accessibility, seo, agentic, targetMet })));
 console.log(`Reports: ${output}`);
-if (summaries.some(result => requireAgentic ? !result.agenticTargetMet : !result.targetMet)) process.exitCode = 1;
+if (!reportOnly && summaries.some(result => requireAgentic ? !result.agenticTargetMet : !result.targetMet)) process.exitCode = 1;

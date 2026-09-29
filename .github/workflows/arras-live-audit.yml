@@ -1,0 +1,38 @@
+name: Arras live report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Compare the canonical contract and committed fallback
+        run: npm run sync:arras-product -- --check
+      - name: Check deployed Arras routes and structured data
+        env:
+          ARRAS_REQUEST_BASE_URL: https://arras.yashashwi.me
+        run: node scripts/check-puremac-aeo.mjs --arras-only
+      - name: Audit the deployed Arras site
+        env:
+          AUDIT_OUTPUT: ${{ runner.temp }}/arras-live
+          AUDIT_SITE: arras
+        run: node scripts/audit-sites.mjs --report-only
+      - name: Upload report only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: arras-live-lighthouse-${{ github.run_id }}
+          path: ${{ runner.temp }}/arras-live
+          if-no-files-found: warn

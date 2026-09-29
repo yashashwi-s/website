@@ -1,5 +1,7 @@
 # Website-first discovery: 60 applicable actions
 
+Historical audit evidence. Release-pinned feature references below describe the old review and are superseded by the current main-branch FEATURES contract and three-page Arras site.
+
 Audit date: 11 September 2026. Scope: Arras, PureMac and Fadeo; GitHub stays public and useful. This is a prioritized backlog, not a claim that all 60 items are missing or that completing them guarantees citations.
 
 ## Findings and strategy

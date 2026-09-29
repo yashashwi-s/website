@@ -1,120 +1,224 @@
 [
   {
-    "question": "Can I put widgets on my Mac desktop?",
+    "id": "exact-photo",
+    "group": "getting-started",
+    "question": "How do I put one specific photo on my desktop?",
     "answer": [
-      "Yes. macOS supports widgets on the desktop and in Notification Center. Apple says to Control-click the wallpaper, choose Edit Widgets, then click a widget or drag it to the position you want.",
-      "Arras uses independent borderless desktop windows rather than Apple’s fixed WidgetKit frames. Each photo can keep its own proportions, position, opacity, and layering instead of being confined to a system widget size."
+      "Choose Add → Add Photo in the menu bar, paste a copied image with Command-V, drag image files onto the menu bar icon, or choose Import from Photos. Arras displays the pictures you select, rather than choosing them for you.",
+      "Arras lives in the menu bar. Its ordinary photo widgets do not require Screen Recording or Accessibility permission."
     ],
     "sources": [
       {
-        "label": "Apple Support: Add and customize widgets on Mac",
-        "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "comparison",
+    "group": "getting-started",
+    "question": "How is Arras different from the macOS Photos widget?",
+    "answer": "Arras uses independent desktop windows with per-photo position, proportions, appearance, and depth. It does not use the macOS widget gallery or Apple’s fixed widget sizes.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "compatibility",
+    "group": "getting-started",
+    "question": "Which Macs can run the official download?",
+    "answer": "Download compatibility follows the official packaged executable. See the current requirements on the product page and GitHub release; source-build capability is a separate fact.",
+    "sources": [
+      {
+        "label": "Official GitHub release and downloads",
+        "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+      }
+    ]
+  },
+  {
+    "id": "free-open-source",
+    "group": "getting-started",
+    "question": "Is Arras free and open source?",
+    "answer": "Yes. Arras is free under the MIT License, with no subscription or account required. GitHub hosts its source and official release files.",
+    "sources": [
+      {
+        "label": "MIT License",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/LICENSE"
       },
       {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
+        "label": "Official GitHub release and downloads",
+        "href": "https://github.com/yashashwi-s/Arras/releases/latest"
       }
     ]
   },
   {
-    "question": "How do I add a photo widget to my Mac desktop?",
+    "id": "aspect-ratio",
+    "group": "personalize",
+    "question": "Will my photo keep its original proportions?",
+    "answer": "Ordinary widgets preserve the image’s aspect ratio when resized. A slideshow using Dynamic sizing follows each image’s proportions; Fixed sizing deliberately crops each image into one stable frame. Shape masks can also hide parts of the image.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "keyboard-controls",
+    "group": "personalize",
+    "question": "How do I move, resize, or snap a photo?",
+    "answer": "Drag an unlocked photo to move it and drag a corner to resize. Arras snaps to nearby edges and alignment guides. Hold Command to bypass snapping, or Shift to constrain movement to one axis. Photos behind desktop icons are locked; change their depth before repositioning them.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "appearance",
+    "group": "personalize",
+    "question": "What can I change about a widget’s appearance?",
+    "answer": "Settings and the Frame Inspector provide presets, shape masks, mats, corners, borders and gradients, shadows, edge fade, and tilt. Opacity and depth are per-widget controls. Photos can sit behind desktop icons, above icons, or over application windows.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "hover-reveal",
+    "group": "personalize",
+    "question": "Can a photo appear only when I hover over it?",
+    "answer": "Turn on Reveal on hover for a widget. It becomes transparent until you move the pointer into its area, then returns to its chosen opacity. Its window still occupies that area; this does not make it click-through. Behind Icons prevents hover input, so a widget at that depth keeps its normal opacity. The setting is saved per widget.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "photo-rotation",
+    "group": "personalize",
+    "question": "Can one widget show a slideshow?",
     "answer": [
-      "For a built-in macOS widget, Control-click the wallpaper, choose Edit Widgets, find the Photos widget, and click or drag the size you want onto the desktop.",
-      "With Arras, install the app and add an exact photo from its menu bar icon, paste a copied image with Command-V, drag image files onto the menu bar icon, or import from Photos. Arras creates a separate desktop photo at the image’s true aspect ratio."
+      "Yes. Choose Create Slideshow in the menu bar; Settings and some controls call the same photo collection a Space. This is separate from macOS desktop Spaces.",
+      "Choose on-click rotation (double-click the widget) or a timed interval, previous/next controls, and Dynamic or Fixed sizing. Changes crossfade unless Reduce Motion is enabled. The images, current selection, and per-image appearance are saved."
     ],
     "sources": [
       {
-        "label": "Apple Support: Add and customize widgets on Mac",
-        "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "media-inputs",
+    "group": "controls-and-limits",
+    "question": "Which media and import methods are supported?",
+    "answer": "Arras imports JPEG, PNG, HEIC, TIFF, BMP, WebP, GIF, and APNG images from files, drag-and-drop, clipboard, or the Photos picker. Optional menu commands import a PDF page or capture a screen region. GIF and APNG animations play on the desktop. Video files are not part of the shipped image import feature.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "transparent-png",
+    "group": "controls-and-limits",
+    "question": "Do transparent PNGs keep their transparent background?",
+    "answer": "Yes. Transparent still images retain their alpha channel. Supported images within the size limit can keep their original bytes; when a still must be resized or re-encoded, transparency selects PNG instead of opaque JPEG. Animated GIF/APNG sources retain their animation. Keep your originals separately: a widget backup contains Arras’s stored copies.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "layout-backups",
+    "group": "controls-and-limits",
+    "question": "Can I back up my desktop arrangement?",
+    "answer": "Export an .arras layout archive to keep widgets and their stored media together. Imports can merge or replace a layout; importing preferences is optional. Archives contain Arras’s managed image copies, not archival originals. Automatic layout history is not shipped.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "updates",
+    "group": "controls-and-limits",
+    "question": "How do update checks and installation work?",
+    "answer": [
+      "Automatic installation is enabled by default, with Daily checks. The selected frequency applies to both automatic installation and notification-only mode. Never stops scheduled checks; Check Now remains available.",
+      "Arras rechecks whether an update is due after wake or activation and retries failed automatic checks with a 15-minute minimum between attempts. Last checked records a successful check. Downloads are checksum-checked and validated before installation, with rollback if replacement fails."
+    ],
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
       },
       {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
+        "label": "Arras security and privacy policy",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md"
       }
     ]
   },
   {
-    "question": "How to add a specific photo widget on a Mac?",
-    "answer": [
-      "Apple notes that only widgets with an Edit option let you change what they show, so control over a specific image depends on the widget and macOS version.",
-      "Arras lets you choose the exact image directly: paste it, drag its file in, select it from Photos, capture part of the screen, or import a PDF page. The selected photo keeps its saved size and desktop position."
-    ],
+    "id": "sharing-privacy",
+    "group": "controls-and-limits",
+    "question": "Will my photos stay hidden when I share my screen?",
+    "answer": "The optional capture-exclusion setting asks macOS to exclude photo windows from screenshots and recordings. It does not cover AirPlay or HDMI mirroring. App-based hiding checks whether known conferencing or recording apps are running; it does not detect active calls or browser meetings. Check your actual sharing preview before showing sensitive photos.",
     "sources": [
       {
-        "label": "Apple Support: Add and customize widgets on Mac",
-        "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
+        "label": "Arras security and privacy policy",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md"
+      }
+    ]
+  },
+  {
+    "id": "shortcuts",
+    "group": "controls-and-limits",
+    "question": "Can I control Arras with the keyboard or Shortcuts?",
+    "answer": "An optional global shortcut toggles all widgets. Seven Shortcuts actions cover adding a photo, toggling or setting visibility, changing opacity, and advancing or reversing a photo Space. Settings and widget controls also have keyboard and VoiceOver support.",
+    "sources": [
+      {
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+      }
+    ]
+  },
+  {
+    "id": "uninstall",
+    "group": "controls-and-limits",
+    "question": "How do I uninstall Arras or remove a widget?",
+    "answer": "Remove an individual widget from its right-click menu or Settings. To uninstall, quit Arras and move the app to the Trash. This does not remove saved media. If you also want to delete your layouts and managed photo copies, remove ~/Library/Application Support/PhotoWidget/ after backing up anything you need.",
+    "sources": [
+      {
+        "label": "Arras security and privacy policy",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md"
       },
       {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
+        "label": "Arras current shipped feature contract",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
       }
     ]
   },
   {
-    "question": "Can a Mac photo widget display images without cropping?",
-    "answer": [
-      "Yes. Arras displays each desktop photo at its original aspect ratio, so a panorama remains wide and a portrait remains vertical without forced cropping, black bars, or a fixed square frame.",
-      "You can drag a corner to resize while the aspect ratio stays locked. For rotating photo sets, Dynamic sizing lets each image use its own true proportions, while Fixed sizing deliberately crops images into one stable frame."
-    ],
-    "sources": [
-      {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
-      }
-    ]
-  },
-  {
-    "question": "How to get rid of the photo widget on Mac desktop?",
-    "answer": [
-      "For a standard macOS widget, Control-click it and choose Remove Widget, or open Edit Widgets mode and click its Remove button.",
-      "For an Arras photo, right-click the photo window and choose Remove. Removing one Arras image does not reset the positions, sizes, or settings of the other desktop photos."
-    ],
-    "sources": [
-      {
-        "label": "Apple Support: Add and customize widgets on Mac",
-        "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
-      },
-      {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
-      }
-    ]
-  },
-  {
-    "question": "How to customize photo widgets on Mac?",
-    "answer": [
-      "For a standard macOS widget, Control-click it to use any available Edit option, choose another supported size, or remove it. Apple also provides desktop settings for widget visibility and color treatment.",
-      "Arras adds per-photo controls for opacity, layering, locked placement, shape masks, mats, shadows, borders, edge fade, tilt, and Gallery, Polaroid, Minimal, or Modern presets. Photos can also sit behind desktop icons or float above other windows."
-    ],
-    "sources": [
-      {
-        "label": "Apple Support: Add and customize widgets on Mac",
-        "href": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"
-      },
-      {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
-      }
-    ]
-  },
-  {
-    "question": "Can Arras rotate several photos in one widget?",
-    "answer": [
-      "Yes. Arras can rotate several images in one desktop photo Space, with on-click or timed changes.",
-      "Dynamic sizing preserves each image’s individual aspect ratio. Fixed sizing is available when you intentionally want every image to use the same frame. Configure these controls in Arras rather than the macOS widget gallery."
-    ],
-    "sources": [
-      {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
-      }
-    ]
-  },
-  {
+    "id": "gatekeeper",
+    "group": "first-launch",
     "question": "Why does macOS say it cannot verify Arras?",
     "answer": [
-      "The current Arras download is not notarized, so macOS may block the first launch. This warning does not by itself establish whether an app is safe; download only from the official release and open it only if you trust its source.",
-      "After trying to open it, follow Apple’s guidance in System Settings → Privacy & Security → Open Anyway. The Arras installation section links only to the official GitHub Releases DMG and explains the distribution limits."
+      "The public download is ad-hoc signed without a Developer ID certificate and is not notarized by Apple. This explains the first-launch warning; it does not establish that a download is safe.",
+      "Download from the official GitHub release. If you trust that download, try opening Arras, then follow Apple’s guidance in System Settings → Privacy & Security → Open Anyway. Do not bypass a warning about malware or a damaged app."
     ],
     "sources": [
       {
@@ -122,44 +226,12 @@
         "href": "https://support.apple.com/en-us/102445"
       },
       {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
-      }
-    ]
-  },
-  {
-    "question": "Which Macs can run Arras?",
-    "answer": [
-      "The current Arras release requires macOS 14 Sonoma or later and its downloadable build supports both Apple Silicon and Intel Macs."
-    ],
-    "sources": [
-      {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
-      },
-      {
-        "label": "Latest Arras release",
+        "label": "Official GitHub release and downloads",
         "href": "https://github.com/yashashwi-s/Arras/releases/latest"
-      }
-    ]
-  },
-  {
-    "question": "Is Arras free and open source?",
-    "answer": [
-      "Yes. Arras is free and open source under the MIT License, with no subscription or account required. Start with the official Arras website for the app overview, compatibility, and installation instructions; GitHub hosts the source code and downloadable release files."
-    ],
-    "sources": [
-      {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
       },
       {
-        "label": "Arras source and technical documentation",
-        "href": "https://github.com/yashashwi-s/Arras"
-      },
-      {
-        "label": "Latest Arras release",
-        "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+        "label": "Arras security and privacy policy",
+        "href": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md"
       }
     ]
   }

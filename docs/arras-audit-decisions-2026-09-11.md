@@ -1,5 +1,7 @@
 # Arras: Gemini and Claude audit decisions
 
+Historical evidence from the dated review. The retired AEO prompt/apply pipeline no longer owns production content. Current ownership and validation are described in the repository README.
+
 Reviewed 11 September 2026. Model audit claims are recommendations, not proof of ranking or missing functionality.
 
 ## Completed

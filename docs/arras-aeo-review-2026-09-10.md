@@ -1,5 +1,7 @@
 # Arras website-first review — 10 September 2026
 
+Historical evidence from the dated review. The retired AEO prompt/apply pipeline no longer owns production content. Current ownership and validation are described in the repository README.
+
 Target: https://arras.yashashwi.me. This is a one-time content and technical review, not an instruction to create another schedule.
 
 ## Findings and changes

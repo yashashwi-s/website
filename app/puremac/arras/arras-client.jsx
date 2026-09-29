@@ -1,11 +1,7 @@
-import { macProducts } from "@/data/mac-products";
 import { ArrasNavigation, ArrasFooter } from "./arras-navigation";
 import ArrasDemo from "./arras-demo";
 import "./arras.css";
 
-const product = macProducts.arras;
-const SOURCE = product.repo;
-const DOWNLOAD = `${SOURCE}/releases/latest/download/Arras.dmg`;
 const features = [
   ["Keep the whole picture.", "Panoramas stay wide. Portraits stay tall. Arras follows your photo’s proportions, not a fixed widget grid."],
   ["Find its place.", "Arrange photos below desktop icons, above them, or over your windows. Move and resize without stealing focus from your work."],
@@ -13,13 +9,14 @@ const features = [
   ["Let it change.", "Rotate a collection of images in one widget, or bring GIFs and APNGs to your desktop."],
 ];
 
-export default function ArrasClient({ release, downloads, links, posterProps }) {
-  const download = DOWNLOAD;
+export default function ArrasClient({ release, downloads, links, posterProps, product }) {
+  const SOURCE = product.repositoryUrl;
+  const download = `${SOURCE}/releases/latest/download/Arras.dmg`;
   return (
     <main id="arras-page">
       <ArrasNavigation links={links} />
 
-      <header className="ar-wrap ar-hero">
+      <header id="arras-content" tabIndex={-1} className="ar-wrap ar-hero">
         <div><p className="ar-label">A native macOS photo widget.</p><h1>Your photos.<br /><em>Not squares.</em></h1></div>
         <div className="ar-hero-copy"><p>Arras is a free, native Mac photo widget that keeps each image’s original aspect ratio. Your photos, without forced cropping. Their shape, their place, your desktop.</p><a className="ar-button" href={download}>Download Arras <span>↙</span></a><p className="ar-fine">Open source · No account · Photos stored locally</p><p className="ar-fine">{product.operatingSystem} · {product.architecture}</p><a className="ar-text-link" href={links.security}>Security &amp; Privacy →</a><br /><a className="ar-text-link" href="#install">First time installing? Read this first →</a></div>
       </header>
@@ -45,7 +42,7 @@ export default function ArrasClient({ release, downloads, links, posterProps }) 
             <h3>From the official release</h3>
             <p>Download the DMG from GitHub using the button here. Open it, drag Arras into Applications, then open Arras from there. Its controls live in your menu bar.</p>
             <h3>Before the first launch</h3>
-            <p>Arras is ad-hoc signed and not notarized by Apple. macOS may say the developer cannot be verified. If you trust the official download, follow <a href="https://support.apple.com/en-us/102445">Apple’s first-launch guidance ↗</a>: try opening Arras, then choose System Settings → Privacy &amp; Security → Open Anyway.</p>
+            <p>Arras uses {product.publicRelease.signing} signing and {product.publicRelease.notarized ? "is notarized by Apple" : "is not notarized by Apple"}. {product.publicRelease.signing === "ad-hoc" && "macOS may say the developer cannot be verified."} If you trust the official download, follow <a href="https://support.apple.com/en-us/102445">Apple’s first-launch guidance ↗</a>: try opening Arras, then choose System Settings → Privacy &amp; Security → Open Anyway.</p>
             <p>Do not bypass a warning about detected malware or a damaged app.</p>
             <a className="ar-text-link" href={links.security}>Read Security &amp; Privacy →</a>
           </div>

@@ -1,6 +1,7 @@
 import metadata from "./arras-product.json";
+import { validateArrasProduct } from "../lib/arras-product-schema.mjs";
 
-export const arrasProduct = metadata;
+export const arrasProduct = validateArrasProduct(metadata);
 export const arrasCanonicalUrl = metadata.canonicalUrl.replace(/\/$/, "");
 export const arrasPublisherUrl = metadata.publisher.url.replace(/\/$/, "");
 
@@ -17,6 +18,21 @@ export const arrasArchitectureSummary = `Published download for ${arrasPublicArc
   " and "
 )}${metadata.sourceBuild.intelSupported && !metadata.publicRelease.architectures.includes("x86_64") ? "; Intel supported from source" : ""}`;
 
-export function arrasFeatureContractUrl(tag) {
-  return `${metadata.repositoryUrl}/blob/${tag ?? "main"}/${metadata.featureContractPath}`;
+export function summarizeArrasProduct(product = arrasProduct) {
+  const publicArchitectures = product.publicRelease.architectures.map(
+    (architecture) => architectureNames[architecture] ?? architecture
+  );
+  return {
+    operatingSystem: `macOS ${Number.parseFloat(product.minimumMacOS)} or later`,
+    publicArchitectures,
+    architecture: `Published download for ${publicArchitectures.join(" and ")}${
+      product.sourceBuild.intelSupported && !product.publicRelease.architectures.includes("x86_64")
+        ? "; Intel supported from source"
+        : ""
+    }`,
+  };
+}
+
+export function arrasFeatureContractUrl() {
+  return metadata.documentation.featureContractUrl;
 }

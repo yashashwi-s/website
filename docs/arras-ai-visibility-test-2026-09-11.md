@@ -1,5 +1,7 @@
 # Arras AI visibility test — 11 September 2026
 
+Historical evidence from the dated review. The retired AEO prompt/apply pipeline no longer owns production content. Current ownership and validation are described in the repository README.
+
 Target: https://arras.yashashwi.me/
 
 ## Method

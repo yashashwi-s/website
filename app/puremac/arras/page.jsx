@@ -1,17 +1,15 @@
 import ArrasClient from "./arras-client";
 import { getImageProps } from "next/image";
-import { macProducts } from "@/data/mac-products";
 import {
   arrasCanonicalUrl,
   arrasProduct,
-  arrasPublicArchitectures,
-  arrasPublisherUrl,
+  summarizeArrasProduct,
 } from "@/data/arras-product";
+import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasLinks } from "./arras-links";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
 const SITE_URL = arrasCanonicalUrl;
-const PUREMAC_URL = arrasPublisherUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
 const CONTENT_UPDATED_AT = "2026-09-29";
@@ -62,7 +60,8 @@ export const metadata = {
   },
 };
 
-function ArrasJsonLd({ release, downloads, dateModified }) {
+function ArrasJsonLd({ release, downloads, dateModified, product }) {
+  const summary = summarizeArrasProduct(product);
   const downloadUrl = OFFICIAL_DMG_URL;
   const graph = [
     {
@@ -74,58 +73,49 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       dateModified,
       isPartOf: { "@id": `${SITE_URL}/#website` },
       mainEntity: { "@id": `${ARRAS_URL}#software` },
-      breadcrumb: { "@id": `${ARRAS_URL}#breadcrumb` },
     },
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: `${SITE_URL}/`,
-      name: arrasProduct.name,
-      publisher: { "@id": `${PUREMAC_URL}/#publisher` },
-    },
-    {
-      "@type": "Organization",
-      "@id": `${PUREMAC_URL}/#publisher`,
-      name: arrasProduct.publisher.name,
-      url: `${PUREMAC_URL}/`,
-      logo: `${PUREMAC_URL}/puremac/mark.svg`,
-      founder: { "@id": "https://yashashwi.me/#person" },
-      sameAs: ["https://github.com/yashashwi-s"],
+      name: product.name,
+      publisher: { "@id": "https://yashashwi.me/#person" },
     },
     {
       "@type": "Person",
       "@id": "https://yashashwi.me/#person",
-      name: "Yashashwi Singhania",
-      url: "https://yashashwi.me/",
+      name: product.publisher.name,
+      url: product.publisher.url,
       sameAs: ["https://github.com/yashashwi-s"],
     },
     {
       "@type": "SoftwareApplication",
       "@id": `${ARRAS_URL}#software`,
-      name: arrasProduct.name,
-      alternateName: arrasProduct.historicalNames,
+      name: product.name,
+      alternateName: product.historicalNames,
       identifier: {
         "@type": "PropertyValue",
         propertyID: "macOS bundle identifier",
-        value: arrasProduct.bundleIdentifier,
+        value: product.bundleIdentifier,
       },
-      sameAs: [arrasProduct.repositoryUrl],
+      sameAs: [product.repositoryUrl],
       description: DESCRIPTION,
       url: ARRAS_URL,
       downloadUrl,
       softwareVersion: release?.tag ?? undefined,
-      releaseNotes: release?.url ?? `${arrasProduct.repositoryUrl}/releases`,
+      releaseNotes: release?.url ?? `${product.repositoryUrl}/releases`,
       dateModified,
       applicationCategory: "MultimediaApplication",
-      applicationSubCategory: arrasProduct.category,
-      operatingSystem: macProducts.arras.operatingSystem,
+      applicationSubCategory: product.category,
+      processorRequirements: summary.publicArchitectures.join(" or "),
+      operatingSystem: summary.operatingSystem,
       isAccessibleForFree: true,
-      license: arrasProduct.license.url,
-      codeRepository: arrasProduct.repositoryUrl,
+      license: product.license.url,
+      codeRepository: product.repositoryUrl,
       screenshot: `${SITE_URL}${OG_IMAGE}`,
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
-      publisher: { "@id": `${PUREMAC_URL}/#publisher` },
+      publisher: { "@id": "https://yashashwi.me/#person" },
       offers: {
         "@type": "Offer",
         price: "0",
@@ -154,7 +144,7 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
       "@id": `${ARRAS_URL}#install-howto`,
       name: "How to install Arras from the official GitHub release",
       description: "Download the free Arras DMG from its official GitHub release, move it to Applications, and follow Apple’s first-launch guidance if macOS blocks it.",
-      supply: [{ "@type": "HowToSupply", name: `${arrasPublicArchitectures.join(" and ")} Mac running ${macProducts.arras.operatingSystem}` }],
+      supply: [{ "@type": "HowToSupply", name: `${summary.publicArchitectures.join(" and ")} Mac running ${summary.operatingSystem}` }],
       step: [
         {
           "@type": "HowToStep",
@@ -179,24 +169,6 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
         },
       ],
     },
-    {
-      "@type": "BreadcrumbList",
-      "@id": `${ARRAS_URL}#breadcrumb`,
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: arrasProduct.publisher.name,
-          item: `${PUREMAC_URL}/`,
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: arrasProduct.name,
-          item: ARRAS_URL,
-        },
-      ],
-    },
   ];
 
   return (
@@ -215,10 +187,11 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
 export default async function ArrasPage() {
   // Renamed from Tableau in v2.3.1. GitHub redirects the old API path, but
   // asking for the current name keeps this working if that ever stops.
-  const [release, downloads, links] = await Promise.all([
+  const [release, downloads, links, product] = await Promise.all([
     latestRelease("Arras"),
     totalDownloads("Arras"),
     getArrasLinks(),
+    getArrasProduct(),
   ]);
   const dateModified = new Date(
     Math.max(Date.parse(CONTENT_UPDATED_AT), Date.parse(release?.publishedAt ?? "1970-01-01"))
@@ -236,12 +209,13 @@ export default async function ArrasPage() {
 
   return (
     <>
-      <ArrasJsonLd release={release} downloads={downloads} dateModified={dateModified} />
+      <ArrasJsonLd release={release} downloads={downloads} dateModified={dateModified} product={product} />
       <ArrasClient
         release={release}
         downloads={downloads}
         links={links}
         posterProps={posterProps}
+        product={{ ...product, ...summarizeArrasProduct(product) }}
       />
     </>
   );

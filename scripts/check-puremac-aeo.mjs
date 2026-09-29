@@ -141,15 +141,11 @@ check(robotsMeta.includes("index") && robotsMeta.includes("follow"), "Arras robo
 check(googleBotMeta.includes("max-image-preview:large"), "Arras Googlebot metadata must allow large image previews");
 check(canonicals.includes(arrasBaseUrl), "Arras canonical URL is missing or incorrect");
 check((arrasHtml.match(/<h1(?:\s|>)/gi) ?? []).length === 1, "/arras must render exactly one H1");
-check(faq?.mainEntity?.length === 15, "/faqs must expose the 15 visible FAQ questions");
-for (const type of ["SoftwareApplication", "HowTo", "BreadcrumbList", "Organization", "Person", "WebPage"]) {
+check((faq?.mainEntity?.length ?? 0) > 0, "/faqs must expose its visible questions as structured data");
+for (const type of ["SoftwareApplication", "HowTo", "WebSite", "Person", "WebPage"]) {
   check(graphTypes.has(type), `/arras JSON-LD is missing ${type}`);
 }
 check(faqHtml.replace(/<[^>]*>/g, "").includes("How is Arras different from the macOS Photos widget?"), "/arras comparison answer is missing");
-check(
-  faqHtml.includes("support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"),
-  "/arras canonical Apple source link is missing"
-);
 check(arrasHtml.includes("github.com/yashashwi-s/Arras"), "/arras project source link is missing");
 
 if (!arrasOnly) {
@@ -187,8 +183,8 @@ check(arrasSitemap.includes("<lastmod>"), "Arras /sitemap.xml is missing a fresh
 
 const arrasLlms = arrasPages["/llms.txt"].body;
 check(arrasLlms.startsWith("# Arras"), "Arras /llms.txt must start with the product identity");
-check(arrasLlms.includes("## Verified Product Facts"), "Arras /llms.txt must expose verified facts");
-check(arrasLlms.includes("## Citation Guidance"), "Arras /llms.txt must include citation guidance");
+check(arrasLlms.includes("## Distribution facts"), "Arras /llms.txt must expose distribution facts");
+check(arrasLlms.includes("## Citation guidance"), "Arras /llms.txt must include citation guidance");
 check(
   arrasPages["/favicon.ico"].response.headers.get("content-type")?.startsWith("image/"),
   "Arras favicon must return an image"

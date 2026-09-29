@@ -8,11 +8,11 @@ const LLMS = `# PureMac
 - [Arras product page](https://arras.yashashwi.me): Features, live release link, system requirements, installation steps, comparison data, and sourced FAQs.
 - [Arras source and technical documentation](https://github.com/yashashwi-s/Arras): MIT-licensed source, README, issue tracker, and release history.
 - [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current DMG/ZIP download and release notes.
-- [Arras FAQs](https://arras.yashashwi.me#faq-heading): Answers about macOS photo widgets, exact-photo placement, rotation, styling, performance, compatibility, privacy, and licensing.
+- [Arras FAQs](https://arras.yashashwi.me/faqs): Answers about macOS photo widgets, exact-photo placement, rotation, styling, performance, compatibility, privacy, and licensing.
 
-## Arras Facts
+## Arras documentation
 - Category: native macOS desktop photo widget and photo pinning utility.
-- Compatibility: macOS 14 or later on Apple Silicon and Intel Macs.
+- Compatibility and public binary architectures: see the Arras product page and official release assets.
 - Download size and resource use depend on the release and workload; no fixed benchmark is claimed here.
 - Price and license: free, no subscription or account, MIT License.
 - Input methods: paste, file drag, Photos import, and screen-region capture.

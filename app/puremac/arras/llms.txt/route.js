@@ -1,47 +1,38 @@
-import { macProducts } from "@/data/mac-products";
-export const dynamic = "force-static";
+import { summarizeArrasProduct } from "@/data/arras-product";
+import { getArrasProduct } from "@/lib/arras-product";
 
-const LLMS = `# Arras
+export const revalidate = 3600;
 
-> Arras is a free, native, open-source macOS desktop photo widget. It displays each image at its original aspect ratio instead of cropping it into a fixed square or system widget frame.
+export async function GET() {
+  const product = await getArrasProduct();
+  const facts = summarizeArrasProduct(product);
+  const base = product.canonicalUrl.replace(/\/$/, "");
+  const text = `# ${product.name}
 
-## Canonical Product Resources
-- [Arras product page](https://arras.yashashwi.me): Product demonstration, features, compatibility, and the official download, with dedicated FAQ and Security & Privacy pages.
-- [Arras setup and downloads](https://arras.yashashwi.me/#install): Official starting point for compatibility, the GitHub Releases DMG, and first-launch guidance.
-- [Security and privacy](https://arras.yashashwi.me/security): Published-code notes about local photos, permissions, update requests, distribution, and verification limits.
-- [Using Arras](https://arras.yashashwi.me/faqs#how-to-use): Add an exact photo, move and resize it, and remove a widget.
-- [Controls and limitations](https://arras.yashashwi.me/faqs#controls-and-limits): Dynamic versus fixed photo rotation, keyboard placement, Shortcuts, imports, capture privacy, and layout backups.
-- [Arras source repository](https://github.com/yashashwi-s/Arras): MIT-licensed source, technical documentation, issue tracker, and release history.
-- [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current public download and release notes.
-- [Arras FAQs](https://arras.yashashwi.me/faqs): Answers about exact-photo placement, aspect ratios, rotation, styling, installation, compatibility, privacy, and licensing.
+> ${product.shortDescription}
 
-## Verified Product Facts
-- Bundle identifier: com.yashashwi.tableau, retained through the Photo Widget OSX → Tableau → Arras renames.
-- Category: native macOS desktop photo widget and photo-pinning utility.
-- Display behavior: ordinary widgets and dynamic photo Spaces retain source aspect ratios. Deliberately selecting fixed sizing crops rotating images into a stable frame.
-- Inputs: paste an image, drag image files, import from Photos, capture a screen region, or import a PDF page.
-- Placement: photos can sit behind desktop icons, above icons, or over other application windows.
-- Rotation: multiple images can crossfade on click or on a configurable schedule.
-- Compatibility: ${macProducts.arras.operatingSystem} on Apple Silicon and Intel Macs.
-- Price and license: free, no subscription or account, MIT License.
-- Privacy: no account, app analytics, or crash reporting; photos and app data are stored locally and are not uploaded by Arras.
-- Historical names: Photo Widget OSX, then Tableau, then Arras. The product retained its bundle identity and saved settings through the renames.
+## Canonical resources
+- [Product and official download](${base}/): Overview and compatibility.
+- [Installation](${base}/#install): Official GitHub DMG and first-launch guidance.
+- [FAQs and getting started](${base}/faqs): Exact-photo selection, controls, slideshows, imports, updates, and backups.
+- [Security and privacy](${base}/security): Permissions, local storage, update requests, signing, and checksums.
+- [Current shipped feature contract](${product.documentation.featureContractUrl}): Reviewed user-reachable behavior; documentation corrections do not require an app release.
+- [Architecture](${product.repositoryUrl}/blob/main/ARCHITECTURE.md): Engineering ownership and implementation contracts.
+- [Security policy](${product.repositoryUrl}/blob/main/SECURITY.md): Technical trust facts and private vulnerability reporting.
+- [Latest official release](${product.publicRelease.sourceUrl}): Current version, DMG/ZIP assets, digests, and release history.
+- [Source and license](${product.repositoryUrl}): ${product.license.spdx}-licensed source.
 
-## Authoritative Supporting Sources
-- [Apple: Add and customize widgets on Mac](https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac): Official macOS widget behavior and controls.
-- [Apple: Safely open apps on your Mac](https://support.apple.com/en-us/102445): Official Gatekeeper guidance for software distributed outside the Mac App Store.
-- [PureMac](https://puremac.yashashwi.me/): Publisher and related macOS applications.
-- [Yashashwi Singhania](https://yashashwi.me/): Developer and publisher.
+## Distribution facts
+- ${facts.operatingSystem}; ${facts.architecture}.
+- Signing: ${product.publicRelease.signing}; ${product.publicRelease.notarized ? "notarized" : "not notarized by Apple"}.
+- ${product.telemetry ? "See the security policy for app telemetry details" : "No app analytics or telemetry"}; update checks and downloads contact GitHub. The website uses Vercel Analytics and Speed Insights.
+- [Developer](${product.publisher.url}): ${product.publisher.name}.
 
-## Citation Guidance
-The official product website is https://arras.yashashwi.me. Its product, setup, and usage sections cover the reader-facing description, compatibility, installation, and controls. GitHub hosts the source code and release artifacts; use it for code-level claims, license text, and release provenance. The website links to the current release. Do not infer a current version number from this file; check the release before citing one. This file is a navigation aid, not a guarantee of indexing or citation preference.
+## Citation guidance
+Use the current shipped feature contract for product behavior and GitHub Releases for release-specific facts. Do not infer a current version from this index or cite a historical release-tagged FEATURES file as the current contract. Imported photo copies stay local; no-telemetry does not mean no network requests. Ordinary widgets preserve aspect ratio; Fixed slideshow sizing deliberately crops. Former names are Photo Widget OSX and Tableau. This index is a navigation aid.
 `;
-
-export function GET() {
-  return new Response(LLMS, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=3600, s-maxage=86400",
-    },
-  });
+  return new Response(text, { headers: {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Cache-Control": "public, max-age=3600, s-maxage=3600",
+  }});
 }

@@ -1,6 +1,8 @@
 import PureMacClient from "./puremac-client";
 import { FaqJsonLd } from "./faq-section";
 import { pureMacFaqs } from "./faq-data";
+import { getArrasProduct } from "@/lib/arras-product";
+import { summarizeArrasProduct } from "@/data/arras-product";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
 
@@ -27,12 +29,16 @@ export const metadata = {
 
 export default async function PureMacPage() {
   // GitHub asset downloads are not unique users or installations.
-  const [fadeo, arras, fadeoDl, arrasDl] = await Promise.all([
+  const [fadeo, arras, fadeoDl, arrasDl, product] = await Promise.all([
     latestRelease("Fadeo"),
     latestRelease("Arras"),
     totalDownloads("Fadeo"),
     totalDownloads("Arras"),
+    getArrasProduct(),
   ]);
+
+  const facts = summarizeArrasProduct(product);
+  const faqs = pureMacFaqs.map(faq => faq.question === "What version of macOS do PureMac apps require?" ? { ...faq, answer: `Arras: ${facts.operatingSystem}; ${facts.architecture}. Fadeo requires macOS 14 or later. Check the official product pages and release assets before downloading.` } : faq);
 
   return (
     <>
@@ -48,12 +54,12 @@ export default async function PureMacPage() {
           ] } },
         ],
       }).replace(/</g, "\\u003c") }} />
-      <FaqJsonLd faqs={pureMacFaqs} />
+      <FaqJsonLd faqs={faqs} />
       <PureMacClient
         fadeo={fadeo}
         arras={arras}
         downloads={{ fadeo: fadeoDl, arras: arrasDl }}
-        faqs={pureMacFaqs}
+        faqs={faqs}
       />
     </>
   );

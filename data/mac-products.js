@@ -27,6 +27,5 @@ export const macProducts = {
 };
 // Reviewed against these published releases, never an unreleased branch.
 export const releaseHighlights = {
-  arras: { version: "v2.4.6", date: "2026-08-31", title: "Updates and durable backups", text: "Daily checksum-checked updates and safer portable backups. Layout imports validate media before replacement, and replacing a Space image survives relaunch. Settings also improve accessible labels and keyboard access.", url: "https://github.com/yashashwi-s/Arras/releases/tag/v2.4.6" },
   fadeo: { version: "v0.4.0", date: "2026-07-17", title: "Playback that resumes reliably", text: "Play order and repeat mode survive switching and resuming. Paused playback keeps its position across quitting, and an End Session control clears the bookmark and pauses automation. Schedule boundaries crossed during sleep are handled on wake.", url: "https://github.com/yashashwi-s/Fadeo/releases/tag/v0.4.0" },
 };

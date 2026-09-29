@@ -1,0 +1,55 @@
+name: Arras deterministic audit
+
+on:
+  pull_request:
+    paths:
+      - "app/puremac/arras/**"
+      - "app/puremac/arras-faqs.json"
+      - "app/puremac/faq-data.js"
+      - "data/arras-product.*"
+      - "lib/arras-product*"
+      - "lib/github-release.js"
+      - "scripts/audit-arras.mjs"
+      - "scripts/arras-product.test.mjs"
+      - "scripts/check-arras-product.mjs"
+      - "scripts/check-puremac-aeo.mjs"
+      - "next.config.mjs"
+      - "package-lock.json"
+      - "package.json"
+      - ".github/workflows/arras-audit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/puremac/arras/**"
+      - "app/puremac/arras-faqs.json"
+      - "app/puremac/faq-data.js"
+      - "data/arras-product.*"
+      - "lib/arras-product*"
+      - "lib/github-release.js"
+      - "scripts/audit-arras.mjs"
+      - "scripts/arras-product.test.mjs"
+      - "scripts/check-arras-product.mjs"
+      - "scripts/check-puremac-aeo.mjs"
+      - "next.config.mjs"
+      - "package-lock.json"
+      - "package.json"
+      - ".github/workflows/arras-audit.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arras-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run audit:arras

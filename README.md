@@ -58,13 +58,15 @@ To update the content of the portfolio without digging into the component code, 
 
 ### Arras product facts
 
-Arras facts are reviewed against the app source and release artifacts before updating this site. To copy a reviewed app contract into the website mirror, run:
+Server-rendered Arras routes fetch the canonical product contract from the Arras repository with a short timeout and hourly revalidation. Invalid or unavailable remote data falls back to the validated `data/arras-product.json` snapshot, so local and production rendering remain available. No routine sync is required for the rendered site. When deliberately refreshing the generated outage snapshot, use:
 
 ```bash
-node scripts/sync-arras-product.mjs --source ../app/product-metadata.json
+npm run sync:arras-product
 ```
 
-The released v2.4.9 metadata has an inaccurate architecture fact, so it must not be synchronized automatically. The command removes the retired Homebrew field while preserving the current schema.
+The refresh command validates types, known architecture/signing values, authoritative URL boundaries, and the absence of retired Homebrew fields before writing. The Arras contract owns the values. It never accepts a caller-supplied source path.
+
+Run the complete deterministic Arras check with `npm run audit:arras`. It validates the metadata resolver and fallback behavior, performs an offline production build, starts that build, and audits the rendered `/`, `/faqs`, `/security`, crawler files, links, and JSON-LD through the Arras host. The weekly `Arras live report` workflow is read-only and uploads a Lighthouse report for the deployed site; it does not edit or commit content.
 
 ## 🚢 Deployment
 

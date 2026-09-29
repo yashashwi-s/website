@@ -1,5 +1,7 @@
 # Arras: distribution with a clear identity
 
+Historical planning notes. Current product claims and distribution facts belong to the Arras contract, not reusable copy below. See [current features](https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md) and [official downloads](https://github.com/yashashwi-s/Arras/releases/latest).
+
 Updated 10 September 2026. No artificial 30-day deadline. Notarization remains deferred at the maker’s request.
 
 ## The promise
@@ -36,7 +38,7 @@ Useful third-party coverage and accurate demonstrations are a stronger next inve
 
 **Short description:** Arras is a free, open-source photo widget for macOS that keeps every image’s original proportions and lets you choose its placement and styling.
 
-**Demo caption:** Portraits stay tall. Panoramas stay wide. Here’s Arras arranging actual photos on a Mac desktop—without cropping them into a widget grid. I’m the maker; it’s free and open source. macOS 14+, Apple silicon. The current release is not notarized, so please read the installation notes.
+**Demo caption:** Portraits stay tall. Panoramas stay wide. Here’s Arras arranging actual photos on a Mac desktop—without cropping them into a widget grid. I’m the maker; it’s free and open source. Check the official download’s current compatibility before publishing. The current release is not notarized, so please read the installation notes.
 
 **Reviewer opening:** I built Arras because desktop photo widgets kept forcing my images into preset shapes. It’s a small native Mac app that preserves the full photo and gives each image its own placement and styling. Would a short real-app demo be useful for your Mac utilities coverage?
 

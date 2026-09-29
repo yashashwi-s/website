@@ -69,13 +69,13 @@ export const pureMacFaqs = [
   {
     question: "Do PureMac apps collect telemetry?",
     answer:
-      "PureMac does not build its apps around background tracking. Arras sends nothing home. Fadeo makes its workflow decisions locally and only sends limited information for actions such as license activation, optional diagnostics, feedback, or a mailing-list signup.",
+      "PureMac does not build its apps around background tracking. Arras has no app analytics or telemetry; update checks and downloads contact GitHub. Fadeo makes its workflow decisions locally and only sends limited information for actions such as license activation, optional diagnostics, feedback, or a mailing-list signup.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
     question: "What version of macOS do PureMac apps require?",
     answer:
-      "The current Arras and Fadeo releases require macOS 14 or later. Arras currently supports Apple Silicon and Intel Macs; check each product page and GitHub release before downloading because compatibility can change between versions.",
+      "Check the Arras product page and official release for downloadable architectures and macOS requirements. Fadeo requires macOS 14 or later.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
