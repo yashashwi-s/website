@@ -7,15 +7,16 @@ Reviewed 11 September 2026. Prepared from published product documentation, not i
 Arras is a free, native Mac app for placing individual photos on the desktop at their original proportions, with per-photo positioning and appearance controls.
 
 - Website: https://arras.yashashwi.me/
-- Setup: https://arras.yashashwi.me/#how-to-use
-- Controls and limitations: https://arras.yashashwi.me/#controls-and-limits
+- Setup: https://arras.yashashwi.me/faqs#how-to-use
+- Controls and limitations: https://arras.yashashwi.me/faqs#controls-and-limits
+- Security and privacy: https://arras.yashashwi.me/security
 - App icon: https://arras.yashashwi.me/puremac/arras-icon.png
 - Flat mark: https://arras.yashashwi.me/puremac/arras/mark.svg
 - Desktop demonstration: https://arras.yashashwi.me/puremac/arras/demo.mp4
 - Demo poster: https://arras.yashashwi.me/puremac/arras/demo-poster.jpg
 - Source and license: https://github.com/yashashwi-s/Arras
 
-The public download targets Apple Silicon on macOS 14+. It is not notarized. Fixed-frame photo rotation intentionally crops; dynamic sizing preserves each image's proportions. Do not quote fixed RAM, CPU, install-size, user-count or performance claims without a reproducible measurement. GitHub asset downloads are not unique installations.
+The public download supports Apple Silicon and Intel Macs on macOS 14+. It is ad-hoc signed and not notarized. Fixed-frame photo rotation intentionally crops; dynamic sizing preserves each image's proportions. Do not quote fixed RAM, CPU, install-size, user-count or performance claims without a reproducible measurement. GitHub asset downloads are not unique installations.
 
 Former names: Photo Widget OSX, then Tableau. Use Arras for current coverage.
 

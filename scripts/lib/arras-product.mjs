@@ -1,8 +1,6 @@
 import { readFile } from "node:fs/promises";
 
 const EXPECTED_REPOSITORY = "https://github.com/yashashwi-s/Arras";
-const EXPECTED_TAP = "yashashwi-s/tap";
-const EXPECTED_CASK = "arras";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -67,22 +65,16 @@ export function validateArrasProduct(metadata) {
   assert(metadata.license.spdx === "MIT", 'license.spdx must be "MIT"');
   assertHttps(metadata.license.url, "license.url");
 
-  assertObject(metadata.homebrew, "homebrew");
-  assert(metadata.homebrew.tap === EXPECTED_TAP, `homebrew.tap must be ${EXPECTED_TAP}`);
-  assert(metadata.homebrew.cask === EXPECTED_CASK, `homebrew.cask must be ${EXPECTED_CASK}`);
-  assert(metadata.homebrew.trustScope === "tap", 'homebrew.trustScope must be "tap"');
-  assertHttps(metadata.homebrew.tapRepository, "homebrew.tapRepository");
-  const expectedCommands = [
-    `brew tap ${metadata.homebrew.tap}`,
-    `brew trust ${metadata.homebrew.tap}`,
-    `brew install --cask ${metadata.homebrew.cask}`,
-  ];
-  assert(
-    JSON.stringify(metadata.homebrew.commands) === JSON.stringify(expectedCommands),
-    `homebrew.commands must exactly equal ${expectedCommands.join(", ")}`
-  );
-  assert(!metadata.homebrew.commands.some((command) => command.includes("brew trust --cask")), "homebrew.commands must not use cask-level trust");
   return metadata;
+}
+
+// Older released contracts included an inactive Homebrew distribution block.
+// Keep the release metadata sync useful while ensuring it cannot restore that
+// retired distribution path to this website.
+export function normalizeArrasProduct(metadata) {
+  if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) return metadata;
+  const { homebrew: _retiredHomebrew, ...currentMetadata } = metadata;
+  return currentMetadata;
 }
 
 export async function readAndValidateArrasProduct(path) {
@@ -93,7 +85,7 @@ export async function readAndValidateArrasProduct(path) {
   } catch (error) {
     throw new Error(`${path} is not valid JSON: ${error.message}`);
   }
-  return validateArrasProduct(metadata);
+  return validateArrasProduct(normalizeArrasProduct(metadata));
 }
 
 export function serializeArrasProduct(metadata) {

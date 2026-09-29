@@ -7,14 +7,14 @@ import {
   arrasPublicArchitectures,
   arrasPublisherUrl,
 } from "@/data/arras-product";
-import { FaqJsonLd } from "../faq-section";
-import { arrasFaqs } from "../faq-data";
+import { getArrasLinks } from "./arras-links";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
 const SITE_URL = arrasCanonicalUrl;
 const PUREMAC_URL = arrasPublisherUrl;
 const ARRAS_URL = SITE_URL;
-const CONTENT_UPDATED_AT = "2026-09-18";
+const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
+const CONTENT_UPDATED_AT = "2026-09-29";
 const TITLE = "Arras — Free Mac Photo Widgets Without Forced Cropping";
 const DESCRIPTION =
   "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
@@ -63,7 +63,7 @@ export const metadata = {
 };
 
 function ArrasJsonLd({ release, downloads, dateModified }) {
-  const downloadUrl = release?.dmg ?? release?.zip ?? `${arrasProduct.repositoryUrl}/releases/latest`;
+  const downloadUrl = OFFICIAL_DMG_URL;
   const graph = [
     {
       "@type": "WebPage",
@@ -152,23 +152,29 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
     {
       "@type": "HowTo",
       "@id": `${ARRAS_URL}#install-howto`,
-      name: "How to install Arras on a Mac with Homebrew",
-      description: "Install the free Arras desktop photo widget with Homebrew and allow the current public build to open on macOS.",
+      name: "How to install Arras from the official GitHub release",
+      description: "Download the free Arras DMG from its official GitHub release, move it to Applications, and follow Apple’s first-launch guidance if macOS blocks it.",
       supply: [{ "@type": "HowToSupply", name: `${arrasPublicArchitectures.join(" and ")} Mac running ${macProducts.arras.operatingSystem}` }],
-      tool: [{ "@type": "HowToTool", name: "Homebrew" }],
       step: [
-        ...arrasProduct.homebrew.commands.map((command, index) => ({
-          "@type": "HowToStep",
-          position: index + 1,
-          name: ["Add the Arras Homebrew tap", "Trust the PureMac tap", "Install the Arras cask"][index],
-          text: `Run ${command} in Terminal.`,
-          url: `${ARRAS_URL}#install`,
-        })),
         {
           "@type": "HowToStep",
-          position: arrasProduct.homebrew.commands.length + 1,
+          position: 1,
+          name: "Download the official DMG",
+          text: "Download Arras from the official GitHub release linked on this site.",
+          url: `${ARRAS_URL}#install`,
+        },
+        {
+          "@type": "HowToStep",
+          position: 2,
+          name: "Move Arras to Applications",
+          text: "Open the DMG and drag Arras into Applications.",
+          url: `${ARRAS_URL}#install`,
+        },
+        {
+          "@type": "HowToStep",
+          position: 3,
           name: "Review the first-launch warning",
-          text: "Open Arras. The public build is not notarized. If macOS blocks it, only proceed if you trust the official download; review the installation section for the Privacy & Security options and the implications of bypassing quarantine.",
+          text: "Open Arras. The public build is ad-hoc signed and not notarized. If macOS blocks it, only proceed if you trust the official download and follow Apple’s Privacy & Security guidance.",
           url: `${ARRAS_URL}#install`,
         },
       ],
@@ -209,9 +215,10 @@ function ArrasJsonLd({ release, downloads, dateModified }) {
 export default async function ArrasPage() {
   // Renamed from Tableau in v2.3.1. GitHub redirects the old API path, but
   // asking for the current name keeps this working if that ever stops.
-  const [release, downloads] = await Promise.all([
+  const [release, downloads, links] = await Promise.all([
     latestRelease("Arras"),
     totalDownloads("Arras"),
+    getArrasLinks(),
   ]);
   const dateModified = new Date(
     Math.max(Date.parse(CONTENT_UPDATED_AT), Date.parse(release?.publishedAt ?? "1970-01-01"))
@@ -230,12 +237,10 @@ export default async function ArrasPage() {
   return (
     <>
       <ArrasJsonLd release={release} downloads={downloads} dateModified={dateModified} />
-      <FaqJsonLd faqs={arrasFaqs} />
       <ArrasClient
         release={release}
         downloads={downloads}
-        dateModified={dateModified}
-        faqs={arrasFaqs}
+        links={links}
         posterProps={posterProps}
       />
     </>

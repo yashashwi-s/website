@@ -38,6 +38,8 @@ const responses = await Promise.all(
 const pages = Object.fromEntries(responses);
 const arrasPaths = [
   "/",
+  "/faqs",
+  "/security",
   "/robots.txt",
   "/sitemap.xml",
   "/llms.txt",
@@ -114,7 +116,24 @@ const graphTypes = new Set(
     return nodes.flatMap((node) => (Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]]));
   })
 );
-const faq = jsonLdBlocks.find((block) => block["@type"] === "FAQPage");
+const faqHtml = arrasPages["/faqs"].body;
+const securityHtml = arrasPages["/security"].body;
+const faqBlocks = [...faqHtml.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(match => JSON.parse(match[1]));
+const faq = faqBlocks.find(block => block["@type"] === "FAQPage");
+check(!jsonLdBlocks.some(block => block["@type"] === "FAQPage"), "FAQ schema belongs only on the page with its visible answers");
+for (const [path, html] of [["/faqs", faqHtml], ["/security", securityHtml]]) {
+  check(html.includes(`rel="canonical" href="${arrasBaseUrl}${path}"`), `Arras ${path}: incorrect canonical`);
+  check((html.match(/<h1(?:\s|>)/gi) ?? []).length === 1, `Arras ${path}: expected one H1`);
+  check(!html.includes('name="robots" content="noindex'), `Arras ${path}: must allow indexing`);
+}
+for (const entry of faq?.mainEntity ?? []) {
+  check(decodeHtml(faqHtml.replace(/<[^>]*>/g, "")).includes(entry.name), `FAQ schema question is not visible: ${entry.name}`);
+}
+check((faqHtml.match(/<details(?:\s|>)/g) ?? []).length === faq?.mainEntity?.length, "Visible FAQ count must match its structured data");
+for (const fact of ["not notarized by Apple", "not sandboxed", "does not upload", "GitHub", "Vercel Analytics", "does not verify a Developer ID signature"]) {
+  check(securityHtml.replace(/<[^>]*>/g, "").includes(fact), `Security page is missing: ${fact}`);
+}
+check(!securityHtml.includes("xattr -dr"), "Security page must not lead users to a quarantine bypass");
 
 check(title.length >= 45 && title.length <= 60, `Arras title is ${title.length} characters, expected 45-60`);
 check(description.length >= 130 && description.length <= 160, `/arras description is ${description.length} characters`);
@@ -122,13 +141,13 @@ check(robotsMeta.includes("index") && robotsMeta.includes("follow"), "Arras robo
 check(googleBotMeta.includes("max-image-preview:large"), "Arras Googlebot metadata must allow large image previews");
 check(canonicals.includes(arrasBaseUrl), "Arras canonical URL is missing or incorrect");
 check((arrasHtml.match(/<h1(?:\s|>)/gi) ?? []).length === 1, "/arras must render exactly one H1");
-check(faq?.mainEntity?.length === 10, "/arras must expose exactly 10 FAQ schema questions");
+check(faq?.mainEntity?.length === 15, "/faqs must expose the 15 visible FAQ questions");
 for (const type of ["SoftwareApplication", "HowTo", "BreadcrumbList", "Organization", "Person", "WebPage"]) {
   check(graphTypes.has(type), `/arras JSON-LD is missing ${type}`);
 }
-check(arrasHtml.replace(/<[^>]*>/g, "").includes("How is Arras different from the macOS Photos widget?"), "/arras comparison answer is missing");
+check(faqHtml.replace(/<[^>]*>/g, "").includes("How is Arras different from the macOS Photos widget?"), "/arras comparison answer is missing");
 check(
-  arrasHtml.includes("support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"),
+  faqHtml.includes("support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"),
   "/arras canonical Apple source link is missing"
 );
 check(arrasHtml.includes("github.com/yashashwi-s/Arras"), "/arras project source link is missing");
@@ -163,6 +182,7 @@ for (const crawler of ["OAI-SearchBot", "GPTBot", "ClaudeBot", "PerplexityBot", 
 check(arrasRobots.includes(`Sitemap: ${arrasBaseUrl}/sitemap.xml`), "Arras /robots.txt sitemap URL is incorrect");
 const arrasSitemap = arrasPages["/sitemap.xml"].body;
 check(arrasSitemap.includes(`<loc>${arrasBaseUrl}</loc>`), "Arras /sitemap.xml is missing the canonical root");
+for (const path of ["/faqs", "/security"]) check(arrasSitemap.includes(`<loc>${arrasBaseUrl}${path}</loc>`), `Arras sitemap is missing ${path}`);
 check(arrasSitemap.includes("<lastmod>"), "Arras /sitemap.xml is missing a freshness timestamp");
 
 const arrasLlms = arrasPages["/llms.txt"].body;
@@ -191,7 +211,7 @@ const nodes = jsonLdBlocks.flatMap(block => block["@graph"] ?? [block]);
 const software = nodes.find(node => node["@type"] === "SoftwareApplication");
 check(software?.url === arrasBaseUrl, "Arras SoftwareApplication must identify its official website");
 check(software?.offers?.url === `${arrasBaseUrl}/#install`, "Arras offer must lead to the official installation section");
-check(arrasHtml.includes('id="how-to-use"'), "Arras first-party usage guide is missing");
+check(faqHtml.includes('id="how-to-use"'), "Arras FAQ usage guide is missing");
 check(arrasHtml.includes('id="install"'), "Arras first-party installation section is missing");
 const iconHref = arrasHtml.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1];
 check(Boolean(iconHref), "Arras must advertise a favicon");

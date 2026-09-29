@@ -15,7 +15,7 @@ export const arrasPublicArchitectures = metadata.publicRelease.architectures.map
 export const arrasOperatingSystem = `macOS ${Number.parseFloat(metadata.minimumMacOS)} or later`;
 export const arrasArchitectureSummary = `Published download for ${arrasPublicArchitectures.join(
   " and "
-)}${metadata.sourceBuild.intelSupported ? "; Intel supported from source" : ""}`;
+)}${metadata.sourceBuild.intelSupported && !metadata.publicRelease.architectures.includes("x86_64") ? "; Intel supported from source" : ""}`;
 
 export function arrasFeatureContractUrl(tag) {
   return `${metadata.repositoryUrl}/blob/${tag ?? "main"}/${metadata.featureContractPath}`;

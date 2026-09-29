@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function ArrasDemo({ posterProps }) {
+export default function ArrasDemo({ posterProps, setupUrl }) {
   const demoRef = useRef(null);
   const manuallyPaused = useRef(false);
   const [demoPlaying, setDemoPlaying] = useState(false);
@@ -50,7 +50,7 @@ export default function ArrasDemo({ posterProps }) {
         <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" onPlay={() => { setDemoPlaying(true); setDemoStarted(true); }} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
         {!demoStarted && <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />}
       </div>
-      <div className="ar-caption"><a href="#how-to-use">Read the setup instructions ↓</a><button type="button" aria-controls="arras-demo" onClick={async () => {
+      <div className="ar-caption"><a href={setupUrl}>Read the setup instructions →</a><button type="button" aria-controls="arras-demo" onClick={async () => {
         const demo = demoRef.current;
         if (!demo) return;
         if (!demo.paused) {

@@ -2,7 +2,7 @@ import { arrasCanonicalUrl } from "@/data/arras-product";
 import { latestRelease } from "@/lib/github-release";
 
 const SITE_URL = arrasCanonicalUrl;
-const LAST_UPDATED = "2026-09-18";
+const LAST_UPDATED = "2026-09-29";
 
 export default async function sitemap() {
   const release = await latestRelease("Arras");
@@ -18,5 +18,6 @@ export default async function sitemap() {
       priority: 1,
       images: [`${SITE_URL}/puremac/arras/demo-poster.jpg`],
     },
+    ...["faqs", "security"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: LAST_UPDATED, changeFrequency: "monthly", priority: 0.7 })),
   ];
 }

@@ -19,3 +19,58 @@ body:has(#arras-page){background:#f5f1e8;cursor:auto}body:has(#arras-page)>.nois
   contain-intrinsic-size: auto 700px;
 }
 #arras-page section[id] { scroll-margin-top: 24px; }
+
+/* Animated anchor scrolling uses stale heights while deferred sections expand. */
+html:has(#arras-page) { scroll-behavior: auto; }
+
+/* Supporting pages share Arras's paper, ink, and type; no separate visual system. */
+.ar-nav a[aria-current="page"] { color: #aa5539; text-decoration: underline; text-underline-offset: 6px; }
+.ar-help { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; padding: 30px 0 70px; }
+.ar-help > div { border-top: 1px solid #29292740; padding-top: 22px; }
+.ar-help a { display: flex; justify-content: space-between; font-size: 20px; font-weight: 500; }
+.ar-help p { margin-top: 12px; font-size: 14px; line-height: 1.7; color: #66635e; }
+.ar-support-header { padding: 72px 0 60px; }
+#arras-page.ar-support h1 { font-size: clamp(44px, 5.8vw, 76px); letter-spacing: -3px; line-height: 1.06; }
+.ar-support-header .ar-intro { margin-top: 24px; max-width: 630px; }
+.ar-document { display: grid; grid-template-columns: 220px minmax(0, 720px); justify-content: space-between; gap: 70px; padding-bottom: 90px; }
+.ar-document aside nav { position: sticky; top: 32px; border-top: 1px solid #29292740; padding-top: 24px; }
+.ar-document aside .ar-label { margin-bottom: 16px; }
+.ar-document aside a { display: block; font-size: 13px; line-height: 1.6; padding: 7px 0; color: #66635e; }
+.ar-document-body > section { border-top: 1px solid #29292740; padding: 30px 0 40px; scroll-margin-top: 30px; }
+#arras-page .ar-document-body h2 { font-size: 28px; line-height: 1.2; letter-spacing: -.8px; margin: 0 0 20px; }
+.ar-document-body p, .ar-steps li { font-size: 15px; line-height: 1.85; color: #66635e; margin: 0 0 16px; }
+.ar-document-body strong { color: #292927; font-weight: 550; }
+.ar-document-body p a { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #29292755; }
+.ar-document-body .ar-document-lead { color: #292927; font-size: 24px; line-height: 1.5; letter-spacing: -.5px; }
+.ar-document-body .ar-fine, .ar-document-body .ar-answer-sources { font-size: 12px; opacity: 1; }
+.ar-document-body code { overflow-wrap: anywhere; font-size: .88em; }
+.ar-steps { list-style: decimal; padding-left: 22px; }
+.ar-steps li { padding-left: 8px; }
+.ar-steps li::marker { color: #aa5539; font-size: 13px; }
+.ar-answer { border-bottom: 1px solid #29292725; scroll-margin-top: 30px; }
+.ar-answer summary { display: flex; justify-content: space-between; gap: 20px; padding: 18px 0; list-style: none; font-size: 16px; font-weight: 500; line-height: 1.5; }
+.ar-answer summary::-webkit-details-marker { display: none; }
+.ar-answer summary span { color: #aa5539; font-size: 22px; font-weight: 400; line-height: 1; padding-top: 2px; }
+.ar-answer[open] summary span { transform: rotate(45deg); }
+.ar-answer > div { padding: 0 30px 8px 0; }
+.ar-answer-sources { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.ar-document-body > section > details:not(.ar-answer) { border-top: 1px solid #29292725; margin-top: 24px; padding-top: 18px; }
+.ar-document-body > section > details:not(.ar-answer) summary { font-size: 15px; margin-bottom: 16px; }
+.ar-document-end { border-top: 1px solid #29292740; padding-top: 24px; }
+@media(max-width:800px) {
+  .ar-nav>div>a:first-child { display: inline; }
+  .ar-nav { flex-wrap: wrap; gap: 24px; padding: 24px 0; }
+  .ar-nav>div { gap: 18px; }
+  .ar-support-header { padding: 50px 0 40px; }
+  .ar-document { grid-template-columns: 1fr; gap: 32px; padding-bottom: 50px; }
+  .ar-document aside nav { position: static; display: flex; flex-wrap: wrap; gap: 0 20px; padding-top: 18px; }
+  .ar-document aside .ar-label { width: 100%; margin-bottom: 8px; }
+  .ar-help { gap: 30px; padding-bottom: 50px; }
+  .ar-help a { font-size: 18px; }
+}
+@media(max-width:520px) {
+  .ar-nav>div { width: 100%; justify-content: space-between; gap: 12px; }
+  #arras-page.ar-support h1 { font-size: 45px; letter-spacing: -2px; }
+  .ar-help { grid-template-columns: 1fr; }
+  .ar-answer > div { padding-right: 0; }
+}

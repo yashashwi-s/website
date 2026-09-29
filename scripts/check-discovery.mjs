@@ -15,13 +15,17 @@ for (const [url, name, canonical] of [[puremac, "PureMac", "https://puremac.yash
   assert(canonicals.length === 1 && canonicals[0][1].replace(/\/$/, "") === canonical, `${name}: canonical mismatch`);
   assert(html.match(/<meta[^>]*name="twitter:title"[^>]*content="([^"]+)"/)?.[1].startsWith(name), `${name}: inherited or absent social title`);
   assert((html.match(/<h1(?:\s|>)/g) || []).length === 1, `${name}: expected one primary heading`);
-  if (name !== "PureMac") assert(html.includes('id="release-highlights"'), `${name}: missing reviewed release highlight`);
+  if (name === "Fadeo") assert(html.includes('id="release-highlights"'), `${name}: missing reviewed release highlight`);
   if (name === "Fadeo") {
     assert(html.includes('"@type":"SoftwareApplication"'), "Fadeo: missing software identity");
     assert(html.includes('name="twitter:image" content="https://puremac.yashashwi.me/puremac/fadeo/screenshot-workspaces.png"'), "Fadeo: missing product screenshot preview");
   }
   if (name === "Arras") {
-    for (const id of ["controls-and-limits", "photo-rotation", "keyboard-controls", "shortcuts-and-imports", "sharing-privacy", "layout-backups"]) assert(html.includes(`id="${id}"`), `Arras: missing ${id}`);
+    const faq = await get(`${arras}/faqs`);
+    const security = await get(`${arras}/security`);
+    for (const id of ["controls-and-limits", "photo-rotation", "keyboard-controls", "shortcuts-and-imports", "sharing-privacy", "layout-backups"]) assert(faq.html.includes(`id="${id}"`), `Arras FAQ: missing ${id}`);
+    assert(security.html.includes('id="download-trust"'), "Arras security: missing download trust");
+    assert(html.includes("Open source · No account · Photos stored locally"), "Arras: missing compact privacy claim near download CTA");
     assert(!html.includes("That Never Crops"), "Arras: absolute cropping claim returned");
   }
   if (name === "PureMac") {

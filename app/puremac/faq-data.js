@@ -75,13 +75,13 @@ export const pureMacFaqs = [
   {
     question: "What version of macOS do PureMac apps require?",
     answer:
-      "The current Arras and Fadeo releases require macOS 14 or later. Arras currently requires Apple Silicon; check each product page and GitHub release before downloading because compatibility can change between versions.",
+      "The current Arras and Fadeo releases require macOS 14 or later. Arras currently supports Apple Silicon and Intel Macs; check each product page and GitHub release before downloading because compatibility can change between versions.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
     question: "How do I install a PureMac app?",
     answer:
-      "Download the latest DMG from the app's product page or GitHub release. Arras can also be installed through Yashashwi's Homebrew tap. The product page lists the exact installation steps and any one-time Gatekeeper action.",
+      "Download the latest DMG from the app's product page or GitHub release. The Arras product page lists the exact installation steps and any one-time Gatekeeper action.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo, SOURCES.appleGatekeeper],
   },
   {

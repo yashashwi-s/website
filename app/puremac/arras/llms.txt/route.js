@@ -6,13 +6,14 @@ const LLMS = `# Arras
 > Arras is a free, native, open-source macOS desktop photo widget. It displays each image at its original aspect ratio instead of cropping it into a fixed square or system widget frame.
 
 ## Canonical Product Resources
-- [Arras product page](https://arras.yashashwi.me): Features, comparison with the macOS Photos widget, installation instructions, compatibility, privacy information, and sourced FAQs.
-- [Arras setup and downloads](https://arras.yashashwi.me/#install): Official starting point for compatibility, download options, Homebrew, and first-launch guidance.
-- [Using Arras](https://arras.yashashwi.me/#how-to-use): Add an exact photo, move and resize it, and remove a widget.
-- [Controls and limitations](https://arras.yashashwi.me/#controls-and-limits): Dynamic versus fixed photo rotation, keyboard placement, Shortcuts, imports, capture privacy, and layout backups.
+- [Arras product page](https://arras.yashashwi.me): Product demonstration, features, compatibility, and the official download, with dedicated FAQ and Security & Privacy pages.
+- [Arras setup and downloads](https://arras.yashashwi.me/#install): Official starting point for compatibility, the GitHub Releases DMG, and first-launch guidance.
+- [Security and privacy](https://arras.yashashwi.me/security): Published-code notes about local photos, permissions, update requests, distribution, and verification limits.
+- [Using Arras](https://arras.yashashwi.me/faqs#how-to-use): Add an exact photo, move and resize it, and remove a widget.
+- [Controls and limitations](https://arras.yashashwi.me/faqs#controls-and-limits): Dynamic versus fixed photo rotation, keyboard placement, Shortcuts, imports, capture privacy, and layout backups.
 - [Arras source repository](https://github.com/yashashwi-s/Arras): MIT-licensed source, technical documentation, issue tracker, and release history.
 - [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current public download and release notes.
-- [Arras FAQs](https://arras.yashashwi.me/#faq-heading): Answers about exact-photo placement, aspect ratios, rotation, styling, installation, compatibility, privacy, and licensing.
+- [Arras FAQs](https://arras.yashashwi.me/faqs): Answers about exact-photo placement, aspect ratios, rotation, styling, installation, compatibility, privacy, and licensing.
 
 ## Verified Product Facts
 - Bundle identifier: com.yashashwi.tableau, retained through the Photo Widget OSX → Tableau → Arras renames.
@@ -21,9 +22,9 @@ const LLMS = `# Arras
 - Inputs: paste an image, drag image files, import from Photos, capture a screen region, or import a PDF page.
 - Placement: photos can sit behind desktop icons, above icons, or over other application windows.
 - Rotation: multiple images can crossfade on click or on a configurable schedule.
-- Compatibility: ${macProducts.arras.operatingSystem}; the project documents source builds for Intel Macs.
+- Compatibility: ${macProducts.arras.operatingSystem} on Apple Silicon and Intel Macs.
 - Price and license: free, no subscription or account, MIT License.
-- Privacy: no telemetry.
+- Privacy: no account, app analytics, or crash reporting; photos and app data are stored locally and are not uploaded by Arras.
 - Historical names: Photo Widget OSX, then Tableau, then Arras. The product retained its bundle identity and saved settings through the renames.
 
 ## Authoritative Supporting Sources

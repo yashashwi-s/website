@@ -12,7 +12,7 @@ const LLMS = `# PureMac
 
 ## Arras Facts
 - Category: native macOS desktop photo widget and photo pinning utility.
-- Compatibility: macOS 14 or later on Apple Silicon.
+- Compatibility: macOS 14 or later on Apple Silicon and Intel Macs.
 - Download size and resource use depend on the release and workload; no fixed benchmark is claimed here.
 - Price and license: free, no subscription or account, MIT License.
 - Input methods: paste, file drag, Photos import, and screen-region capture.

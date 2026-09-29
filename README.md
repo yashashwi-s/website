@@ -6,7 +6,7 @@ This repository powers Yashashwi Singhania’s portfolio and the PureMac product
 
 - [yashashwi.me](https://yashashwi.me/) — developer portfolio and selected work.
 - [puremac.yashashwi.me](https://puremac.yashashwi.me/) — the PureMac publisher site for native macOS apps.
-- [arras.yashashwi.me](https://arras.yashashwi.me/) — the Arras product site. See the [Arras source](https://github.com/yashashwi-s/Arras) and [Homebrew distribution](https://github.com/yashashwi-s/homebrew-tap).
+- [arras.yashashwi.me](https://arras.yashashwi.me/) — the Arras product site. See the [Arras source and official releases](https://github.com/yashashwi-s/Arras/releases/latest).
 
 ## 🚀 Tech Stack
 
@@ -55,6 +55,16 @@ To update the content of the portfolio without digging into the component code, 
 
 - `/data/personal.js`: Contains your bio, name, and social links.
 - `/data/projects.js`: Contains the list of your projects, descriptions, and links. Projects are ordered by their `order` property.
+
+### Arras product facts
+
+Arras facts are reviewed against the app source and release artifacts before updating this site. To copy a reviewed app contract into the website mirror, run:
+
+```bash
+node scripts/sync-arras-product.mjs --source ../app/product-metadata.json
+```
+
+The released v2.4.9 metadata has an inaccurate architecture fact, so it must not be synchronized automatically. The command removes the retired Homebrew field while preserving the current schema.
 
 ## 🚢 Deployment
 

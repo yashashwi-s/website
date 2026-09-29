@@ -114,7 +114,7 @@
     "question": "Why does macOS say it cannot verify Arras?",
     "answer": [
       "The current Arras download is not notarized, so macOS may block the first launch. This warning does not by itself establish whether an app is safe; download only from the official release and open it only if you trust its source.",
-      "After trying to open it, follow Apple’s guidance in System Settings → Privacy & Security → Open Anyway. The Arras installation section also explains the Homebrew option and what removing the quarantine flag does."
+      "After trying to open it, follow Apple’s guidance in System Settings → Privacy & Security → Open Anyway. The Arras installation section links only to the official GitHub Releases DMG and explains the distribution limits."
     ],
     "sources": [
       {
@@ -130,13 +130,9 @@
   {
     "question": "Which Macs can run Arras?",
     "answer": [
-      "The current Arras release requires macOS 14 Sonoma or later and its downloadable build supports Apple Silicon Macs. The project documentation says an Intel build can be compiled from source."
+      "The current Arras release requires macOS 14 Sonoma or later and its downloadable build supports both Apple Silicon and Intel Macs."
     ],
     "sources": [
-      {
-        "label": "Arras released feature documentation",
-        "href": "https://github.com/yashashwi-s/Arras/blob/v2.4.7/FEATURES.md"
-      },
       {
         "label": "Arras source and technical documentation",
         "href": "https://github.com/yashashwi-s/Arras"

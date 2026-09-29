@@ -18,7 +18,8 @@
   "minimumMacOS": "14.0",
   "publicRelease": {
     "architectures": [
-      "arm64"
+      "arm64",
+      "x86_64"
     ],
     "notarized": false
   },
@@ -30,16 +31,5 @@
     "url": "https://github.com/yashashwi-s/Arras/blob/main/LICENSE"
   },
   "telemetry": false,
-  "featureContractPath": "FEATURES.md",
-  "homebrew": {
-    "tap": "yashashwi-s/tap",
-    "tapRepository": "https://github.com/yashashwi-s/homebrew-tap",
-    "cask": "arras",
-    "trustScope": "tap",
-    "commands": [
-      "brew tap yashashwi-s/tap",
-      "brew trust yashashwi-s/tap",
-      "brew install --cask arras"
-    ]
-  }
+  "featureContractPath": "FEATURES.md"
 }
