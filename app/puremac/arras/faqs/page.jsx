@@ -4,6 +4,7 @@ import { arrasFaqs } from "../../faq-data";
 import { FaqJsonLd } from "../../faq-section";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";
+import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 
 export const metadata = supportMetadata("faqs", "Arras — FAQs & Getting Started", "Practical answers about adding photos to your Mac desktop, arranging widgets, rotation, compatibility, backups, and first-launch warnings.");
 
@@ -24,7 +25,7 @@ export default async function FaqPage() {
   const architectures = product.publicRelease.architectures.map(arch => arch === "arm64" ? "Apple Silicon" : "Intel").join(" and ");
   const faqs = arrasFaqs.map(faq => faq.id === "compatibility" ? {
     ...faq, answer: `The official DMG and ZIP support ${architectures} Macs running macOS ${Number.parseFloat(product.minimumMacOS)} or later. Source builds are also available; see the contributor guide for build instructions.`,
-  } : faq);
+  } : faq.id === "gatekeeper" ? { ...faq, answer: getArrasInstallation(product).faqAnswer } : faq);
   const groups = [["getting-started", "Getting started"], ["personalize", "Make it yours"], ["controls-and-limits", "Controls & limits"], ["first-launch", "Before you open it"]];
   return (
     <>

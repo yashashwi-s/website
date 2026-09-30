@@ -1,6 +1,8 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { readAndValidateArrasProduct } from "./lib/arras-product.mjs";
+import { getArrasInstallation } from "../lib/arras-installation.mjs";
+import { hasRetiredArrasTrustCopy } from "./lib/arras-trust-copy.mjs";
 
 const root = resolve(".");
 const metadata = await readAndValidateArrasProduct(resolve(root, "data/arras-product.json"));
@@ -32,6 +34,7 @@ check(sources.client.includes("releases/latest/download/Arras.dmg"), "Visible do
 check(!/\/blob\/v\d+\.\d+\.\d+\/FEATURES\.md/.test(`${sources.faqs} ${sources.faqData}`), "Current feature documentation must not pin a historical release tag");
 
 const faqData = JSON.parse(sources.faqData);
+check(JSON.stringify(faqData.find(faq => faq.id === "gatekeeper")?.answer) === JSON.stringify(getArrasInstallation(metadata).faqAnswer), "Committed Gatekeeper FAQ must match the shared explanation for fallback metadata");
 check(new Set(faqData.map(faq => faq.id)).size === faqData.length, "FAQ identifiers must be unique");
 check(new Set(faqData.map(faq => faq.question)).size === faqData.length, "FAQ questions must be unique");
 for (const faq of faqData) {
@@ -43,6 +46,11 @@ for (const faq of faqData) {
   }
 }
 const currentDocumentation = Object.values(sources).join("\n");
+const arrasConsumerCopy = ["page", "client", "faqs", "security", "faqData", "llms"].map(key => sources[key]).join("\n");
+check(!hasRetiredArrasTrustCopy(arrasConsumerCopy), "Current public Arras copy contains retired trust disclaimers");
+for (const key of ["page", "client", "faqs", "security", "llms"]) {
+  check(sources[key].includes("getArrasInstallation(product)"), `${paths[key]} must use the shared first-launch explanation`);
+}
 check(!/homebrew|brew tap|brew install|brew trust/i.test(currentDocumentation), "Current Arras documentation must not present retired Homebrew distribution");
 
 for (const [value, label] of [

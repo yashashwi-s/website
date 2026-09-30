@@ -1,4 +1,25 @@
 body:has(#arras-page){background:#f5f1e8;cursor:auto}body:has(#arras-page)>.noise-bg{display:none}
+/* Shared by the homepage and support pages. Override the body's translucent
+   white-on-white selection utilities with opaque Arras peach and charcoal. */
+#arras-page {
+  --ar-selection-bg: #edac93;
+  --ar-selection-text: #292927;
+}
+#arras-page::selection,
+#arras-page *::selection {
+  background-color: var(--ar-selection-bg);
+  color: var(--ar-selection-text);
+  text-shadow: none;
+}
+#arras-page::-moz-selection,
+#arras-page *::-moz-selection {
+  background-color: var(--ar-selection-bg);
+  color: var(--ar-selection-text);
+  text-shadow: none;
+}
+/* Element opacity also fades the selection; mute only the unselected text. */
+#arras-page .ar-fine { color: #66635e; opacity: 1; }
+#arras-page .ar-comparison .ar-fine { color: #c5c1b8; }
 /* Match the global rule's layer: layered !important beats unlayered overrides. */
 @layer base {
   html:has(#arras-page), body:has(#arras-page), body:has(#arras-page) * { cursor: auto !important; }

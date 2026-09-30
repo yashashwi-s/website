@@ -8,11 +8,12 @@ import {
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasLinks } from "./arras-links";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
+import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 
 const SITE_URL = arrasCanonicalUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
-const CONTENT_UPDATED_AT = "2026-09-29";
+const CONTENT_UPDATED_AT = "2026-09-30";
 const TITLE = "Arras — Free Mac Photo Widgets Without Forced Cropping";
 const DESCRIPTION =
   "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
@@ -62,6 +63,7 @@ export const metadata = {
 
 function ArrasJsonLd({ release, downloads, dateModified, product }) {
   const summary = summarizeArrasProduct(product);
+  const installation = getArrasInstallation(product);
   const downloadUrl = OFFICIAL_DMG_URL;
   const graph = [
     {
@@ -143,31 +145,11 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       "@type": "HowTo",
       "@id": `${ARRAS_URL}#install-howto`,
       name: "How to install Arras from the official GitHub release",
-      description: "Download the free Arras DMG from its official GitHub release, move it to Applications, and follow Apple’s first-launch guidance if macOS blocks it.",
+      description: "Download the free Arras DMG from its official GitHub release, move it to Applications, and confirm the first launch in macOS.",
       supply: [{ "@type": "HowToSupply", name: `${summary.publicArchitectures.join(" and ")} Mac running ${summary.operatingSystem}` }],
-      step: [
-        {
-          "@type": "HowToStep",
-          position: 1,
-          name: "Download the official DMG",
-          text: "Download Arras from the official GitHub release linked on this site.",
-          url: `${ARRAS_URL}#install`,
-        },
-        {
-          "@type": "HowToStep",
-          position: 2,
-          name: "Move Arras to Applications",
-          text: "Open the DMG and drag Arras into Applications.",
-          url: `${ARRAS_URL}#install`,
-        },
-        {
-          "@type": "HowToStep",
-          position: 3,
-          name: "Review the first-launch warning",
-          text: "Open Arras. The public build is ad-hoc signed and not notarized. If macOS blocks it, only proceed if you trust the official download and follow Apple’s Privacy & Security guidance.",
-          url: `${ARRAS_URL}#install`,
-        },
-      ],
+      step: installation.steps.map((step, index) => ({
+        "@type": "HowToStep", position: index + 1, ...step, url: `${ARRAS_URL}#install`,
+      })),
     },
   ];
 

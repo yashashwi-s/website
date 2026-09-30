@@ -1,11 +1,13 @@
 import { summarizeArrasProduct } from "@/data/arras-product";
 import { getArrasProduct } from "@/lib/arras-product";
+import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 
 export const revalidate = 3600;
 
 export async function GET() {
   const product = await getArrasProduct();
   const facts = summarizeArrasProduct(product);
+  const installation = getArrasInstallation(product);
   const base = product.canonicalUrl.replace(/\/$/, "");
   const text = `# ${product.name}
 
@@ -27,6 +29,13 @@ export async function GET() {
 - Signing: ${product.publicRelease.signing}; ${product.publicRelease.notarized ? "notarized" : "not notarized by Apple"}.
 - ${product.telemetry ? "See the security policy for app telemetry details" : "No app analytics or telemetry"}; update checks and downloads contact GitHub. The website uses Vercel Analytics and Speed Insights.
 - [Developer](${product.publisher.url}): ${product.publisher.name}.
+
+## Official downloads and first launch
+${installation.trust} Official downloads originate from ${product.publicRelease.sourceUrl}, linked directly from ${base}/. The app has no account, advertising SDK, or external crash-reporting service.
+
+${installation.verification}
+
+${installation.faqAnswer[1]}
 
 ## Citation guidance
 Use the current shipped feature contract for product behavior and GitHub Releases for release-specific facts. Do not infer a current version from this index or cite a historical release-tagged FEATURES file as the current contract. Imported photo copies stay local; no-telemetry does not mean no network requests. Ordinary widgets preserve aspect ratio; Fixed slideshow sizing deliberately crops. Former names are Photo Widget OSX and Tableau. This index is a navigation aid.

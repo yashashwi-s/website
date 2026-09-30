@@ -1,5 +1,6 @@
 import { ArrasNavigation, ArrasFooter } from "./arras-navigation";
 import ArrasDemo from "./arras-demo";
+import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 import "./arras.css";
 
 const features = [
@@ -12,6 +13,7 @@ const features = [
 export default function ArrasClient({ release, downloads, links, posterProps, product }) {
   const SOURCE = product.repositoryUrl;
   const download = `${SOURCE}/releases/latest/download/Arras.dmg`;
+  const installation = getArrasInstallation(product);
   return (
     <main id="arras-page">
       <ArrasNavigation links={links} />
@@ -39,12 +41,9 @@ export default function ArrasClient({ release, downloads, links, posterProps, pr
             <a className="ar-text-link" href={`${SOURCE}/releases`}>Release notes ↗</a>
           </div>
           <div className="ar-install-notes">
-            <h3>From the official release</h3>
-            <p>Download the DMG from GitHub using the button here. Open it, drag Arras into Applications, then open Arras from there. Its controls live in your menu bar.</p>
-            <h3>Before the first launch</h3>
-            <p>Arras uses {product.publicRelease.signing} signing and {product.publicRelease.notarized ? "is notarized by Apple" : "is not notarized by Apple"}. {product.publicRelease.signing === "ad-hoc" && "macOS may say the developer cannot be verified."} If you trust the official download, follow <a href="https://support.apple.com/en-us/102445">Apple’s first-launch guidance ↗</a>: try opening Arras, then choose System Settings → Privacy &amp; Security → Open Anyway.</p>
-            <p>Do not bypass a warning about detected malware or a damaged app.</p>
-            <a className="ar-text-link" href={links.security}>Read Security &amp; Privacy →</a>
+            <h3>Install Arras</h3>
+            <ol className="ar-steps">{installation.steps.map(step => <li key={step.name}>{step.text}</li>)}</ol>
+            <a className="ar-text-link" href={`${links.security}#first-launch`}>Why does this message appear? →</a>
           </div>
         </div>
       </section>

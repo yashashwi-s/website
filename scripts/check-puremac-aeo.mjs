@@ -1,3 +1,5 @@
+import { hasRetiredArrasTrustCopy } from "./lib/arras-trust-copy.mjs";
+
 const baseUrl = (process.env.PUREMAC_BASE_URL || "https://puremac.yashashwi.me").replace(/\/$/, "");
 const requestBaseUrl = (process.env.PUREMAC_REQUEST_BASE_URL || baseUrl).replace(/\/$/, "");
 const arrasBaseUrl = (process.env.ARRAS_BASE_URL || "https://arras.yashashwi.me").replace(/\/$/, "");
@@ -118,6 +120,17 @@ const graphTypes = new Set(
 );
 const faqHtml = arrasPages["/faqs"].body;
 const securityHtml = arrasPages["/security"].body;
+function visibleText(html) {
+  return decodeHtml(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "").replace(/<[^>]*>/g, "")).replace(/\s+/g, " ");
+}
+for (const [path, body] of [["/", arrasHtml], ["/faqs", faqHtml], ["/security", securityHtml], ["/llms.txt", arrasPages["/llms.txt"].body]]) {
+  const text = visibleText(body);
+  check(!hasRetiredArrasTrustCopy(decodeHtml(body)), `${path} contains retired Arras trust disclaimers`);
+  for (const fact of ["Open Anyway", "password", "Touch ID"]) check(text.includes(fact), `${path} must explain first-launch confirmation: ${fact}`);
+}
+const howTo = jsonLdBlocks.flatMap(block => block["@graph"] ?? [block]).find(node => node["@type"] === "HowTo");
+check(howTo?.step?.length === 4, "Install HowTo must include download, Applications, open, and first-launch confirmation");
+for (const step of howTo?.step ?? []) check(visibleText(arrasHtml).includes(step.text), `Install schema step must match visible instructions: ${step.name}`);
 const faqBlocks = [...faqHtml.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(match => JSON.parse(match[1]));
 const faq = faqBlocks.find(block => block["@type"] === "FAQPage");
 check(!jsonLdBlocks.some(block => block["@type"] === "FAQPage"), "FAQ schema belongs only on the page with its visible answers");
@@ -128,6 +141,9 @@ for (const [path, html] of [["/faqs", faqHtml], ["/security", securityHtml]]) {
 }
 for (const entry of faq?.mainEntity ?? []) {
   check(decodeHtml(faqHtml.replace(/<[^>]*>/g, "")).includes(entry.name), `FAQ schema question is not visible: ${entry.name}`);
+}
+for (const entry of faq?.mainEntity ?? []) {
+  for (const paragraph of entry.acceptedAnswer.text.split("\n\n")) check(visibleText(faqHtml).includes(paragraph.replace(/\s+/g, " ")), `FAQ schema answer must match visible copy: ${entry.name}`);
 }
 check((faqHtml.match(/<details(?:\s|>)/g) ?? []).length === faq?.mainEntity?.length, "Visible FAQ count must match its structured data");
 for (const fact of ["not notarized by Apple", "not sandboxed", "does not upload", "GitHub", "Vercel Analytics", "does not verify a Developer ID signature"]) {
@@ -184,6 +200,7 @@ check(arrasSitemap.includes("<lastmod>"), "Arras /sitemap.xml is missing a fresh
 const arrasLlms = arrasPages["/llms.txt"].body;
 check(arrasLlms.startsWith("# Arras"), "Arras /llms.txt must start with the product identity");
 check(arrasLlms.includes("## Distribution facts"), "Arras /llms.txt must expose distribution facts");
+check(arrasLlms.includes("## Official downloads and first launch"), "Arras /llms.txt must explain official downloads and first-launch confirmation");
 check(arrasLlms.includes("## Citation guidance"), "Arras /llms.txt must include citation guidance");
 check(
   arrasPages["/favicon.ico"].response.headers.get("content-type")?.startsWith("image/"),

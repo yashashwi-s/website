@@ -217,8 +217,9 @@
     "group": "first-launch",
     "question": "Why does macOS say it cannot verify Arras?",
     "answer": [
-      "The public download is ad-hoc signed without a Developer ID certificate and is not notarized by Apple. This explains the first-launch warning; it does not establish that a download is safe.",
-      "Download from the official GitHub release. If you trust that download, try opening Arras, then follow Apple’s guidance in System Settings → Privacy & Security → Open Anyway. Do not bypass a warning about malware or a damaged app."
+      "The current Arras build is not notarized by Apple, so macOS may show its standard Gatekeeper verification message on first launch. The message “Apple is not able to verify that it is free from malware” is expected for this distribution: it means Apple cannot verify the build, rather than reporting that malware was detected.",
+      "For the download from this website or the official yashashwi-s/Arras GitHub Release, move Arras to Applications and try opening it. After trying to open Arras, open System Settings → Privacy & Security → Open Anyway. Confirm with your Mac password or Touch ID if requested, then choose Open. This is macOS confirming your decision to open Arras; the password is not shared with the app. After approval, Arras opens normally.",
+      "Arras is free and open source, its official releases are published on GitHub, and photos stay locally on your Mac. The app has no analytics or telemetry."
     ],
     "sources": [
       {
