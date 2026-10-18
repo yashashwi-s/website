@@ -6,10 +6,45 @@ export default function ArrasDemo({ posterProps, setupUrl }) {
   const demoRef = useRef(null);
   const manuallyPaused = useRef(false);
   const [demoPlaying, setDemoPlaying] = useState(false);
-  const [demoStarted, setDemoStarted] = useState(false);
+  const [demoHasFrame, setDemoHasFrame] = useState(false);
   const [allowAutoplay, setAllowAutoplay] = useState(false);
   const [demoNearViewport, setDemoNearViewport] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
+
+  useEffect(() => {
+    const demo = demoRef.current;
+    let frameRequest = null;
+    const cancelFrame = () => {
+      if (frameRequest !== null) demo.cancelVideoFrameCallback(frameRequest);
+      frameRequest = null;
+    };
+    const revealFrame = () => {
+      cancelFrame();
+      // `play` only changes paused state; keep the poster until a frame is presented.
+      if (demo.requestVideoFrameCallback) {
+        frameRequest = demo.requestVideoFrameCallback(() => {
+          frameRequest = null;
+          setDemoHasFrame(true);
+        });
+      } else if (demo.readyState >= 2) {
+        setDemoHasFrame(true);
+      }
+    };
+    const resetFrame = () => {
+      cancelFrame();
+      setDemoHasFrame(false);
+      setDemoPlaying(false);
+    };
+    demo.addEventListener("playing", revealFrame);
+    demo.addEventListener("emptied", resetFrame);
+    demo.addEventListener("error", resetFrame);
+    return () => {
+      cancelFrame();
+      demo.removeEventListener("playing", revealFrame);
+      demo.removeEventListener("emptied", resetFrame);
+      demo.removeEventListener("error", resetFrame);
+    };
+  }, []);
 
   useEffect(() => {
     const update = () => setPageVisible(document.visibilityState === "visible");
@@ -55,8 +90,8 @@ export default function ArrasDemo({ posterProps, setupUrl }) {
   return (
     <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
       <div className="ar-demo-media">
-        <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" onPlay={() => { setDemoPlaying(true); setDemoStarted(true); }} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/launch-2.5.0.mp4" type="video/mp4" />Your browser does not support video.</video>
-        {!demoStarted && <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />}
+        <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />
+        <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" poster={posterProps.src} data-frame-ready={demoHasFrame} onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/launch-2.5.0.mp4" type="video/mp4" />Your browser does not support video.</video>
       </div>
       <div className="ar-caption"><a href={setupUrl}>Read the setup instructions →</a><button type="button" aria-controls="arras-demo" onClick={async () => {
         const demo = demoRef.current;
