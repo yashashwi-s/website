@@ -46,6 +46,6 @@
   },
   "telemetry": true,
   "featureContractPath": "FEATURES.md",
-  "telemetryStatus": "Limited statistics, including a weekly configuration summary",
-  "telemetryDisclosure": "Limited configuration and milestone statistics linked by a random installation UUID. No photos, filenames, paths, layouts or personal content."
+  "telemetryStatus": "Limited usage statistics, including a weekly configuration summary",
+  "telemetryDisclosure": "Limited usage and configuration statistics linked by a random installation UUID; no photos, filenames, paths, layouts or personal content."
 }
