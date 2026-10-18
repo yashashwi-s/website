@@ -164,3 +164,8 @@ all three dashboard sources reported OK. Do not invoke the installed collector
 with another Python and mistake that process's denied credential access for a
 production storage failure. First-party statistics start at launch; historical
 Vercel project totals remain separately labeled and cannot be backfilled with UTM data.
+
+The live Lighthouse workflow honors `AUDIT_SITE=arras` and `--report-only`: it
+archives the measured mobile/desktop scores without treating a score below 100
+as a failed collection. Browser/runtime/report errors still fail the workflow.
+Deterministic route, FAQ, metadata and redirect checks remain required separately.

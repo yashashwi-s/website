@@ -8,12 +8,16 @@ const requireAgentic = process.argv.includes('--require-agentic');
 const requiredAgenticAudits = ['agent-accessibility-tree', 'cumulative-layout-shift', 'llms-txt'];
 const view = process.argv.includes('--view');
 const local = process.argv.includes('--local');
+const reportOnly = process.argv.includes('--report-only');
+const requestedSite = process.env.AUDIT_SITE;
 const devices = process.argv.includes('--mobile-only') ? ['mobile'] : ['mobile', 'desktop'];
 const output = path.resolve(process.env.AUDIT_OUTPUT || `docs/performance/${new Date().toISOString().slice(0, 10)}-${local ? 'local' : 'live'}`);
 const port = process.env.AUDIT_PORT || '3100';
-const sites = local
+const availableSites = local
   ? [['portfolio', `http://localhost:${port}`], ['arras', `http://arras.localhost:${port}`], ['puremac', `http://puremac.localhost:${port}`]]
   : [['portfolio', 'https://yashashwi.me'], ['arras', 'https://tryarras.tech'], ['puremac', 'https://puremac.yashashwi.me']];
+if (requestedSite && !availableSites.some(([name]) => name === requestedSite)) throw new Error(`Unknown AUDIT_SITE: ${requestedSite}`);
+const sites = requestedSite ? availableSites.filter(([name]) => name === requestedSite) : availableSites;
 const summaries = [];
 await mkdir(output, { recursive: true });
 for (const [name, url] of sites) {
@@ -55,4 +59,4 @@ for (const [name, url] of sites) {
 console.table(summaries.map(({ name, device, performance, accessibility, seo, agentic, targetMet }) =>
   ({ name, device, performance, accessibility, seo, agentic, targetMet })));
 console.log(`Reports: ${output}`);
-if (summaries.some(result => requireAgentic ? !result.agenticTargetMet : !result.targetMet)) process.exitCode = 1;
+if (!reportOnly && summaries.some(result => requireAgentic ? !result.agenticTargetMet : !result.targetMet)) process.exitCode = 1;
