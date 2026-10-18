@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "status": "ready",
+  "reviewedAt": "2026-10-18",
+  "page": "arras",
+  "summary": "Reviewed ten 2.5.0 FAQs against the now-published GitHub release, README, feature and security contracts, and official Apple documentation. Retained accurate core answers and updated collages, collections, saved setups, weekly statistics and notarized installation. Query notes preserve observed PAA wording and actual AI citation visibility; no tryarras.tech citation was observed.",
+  "queries": [
+    {
+      "query": "macOS desktop photo widget",
+      "paaQuestions": [
+        "How do I add a photo widget to my Mac desktop?",
+        "How to put a photo widget on desktop?",
+        "How do I get rid of the photo widget on my Mac desktop?",
+        "How to create a macOS desktop widget?"
+      ],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. Google AI Overview visible: Apple Support Guide, WidgetWall and PhotoStickies citations; no Arras mention or citation observed. Other AI checks: ChatGPT: no Arras citation observed; Perplexity: no Arras citation observed; Gemini: no Arras citation observed."
+    },
+    {
+      "query": "add photo widgets to MacBook desktop",
+      "paaQuestions": [
+        "How do I add a photo widget to my Mac desktop?",
+        "How to put a photo widget on desktop?",
+        "Can I add Pinterest widgets to my Mac desktop?",
+        "How do I move widgets to the desktop on my Mac?"
+      ],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. Google AI Overview visible: Apple Support Guide and YouTube tutorial citations; no Arras mention or citation observed. Other AI checks: ChatGPT: no Arras citation observed; Perplexity: no Arras citation observed; Gemini: no Arras citation observed."
+    },
+    {
+      "query": "put a specific photo on a widget on Mac",
+      "paaQuestions": [
+        "How to make a specific picture a widget on Mac?",
+        "How do I put one specific picture on a widget?",
+        "How do I change the image of a widget on my Mac?",
+        "How do I add an image in a widget?"
+      ],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. Google AI Overview visible: Apple Community, Reddit and One Photo Widget citations; no Arras mention or citation observed. Other AI checks: ChatGPT: no Arras citation observed; Perplexity: no Arras citation observed; Gemini: no Arras citation observed."
+    },
+    {
+      "query": "photo widget without cropping on Mac",
+      "paaQuestions": [
+        "How to make a specific photo a widget on a MacBook?",
+        "How can I resize a photo without cropping?",
+        "How do I resize an image in the Mac photos app?",
+        "How to edit which photos show on widget on Mac?"
+      ],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. Google AI Overview mentions legacy PhotoWidgetOSX. Visible citations include DevHunt and a Reddit macOS post about Tableau. No tryarras.tech citation observed; do not treat the legacy name as a new-domain citation. Other AI checks: ChatGPT: no Arras citation observed; Perplexity: visible product links https://sourceforge.net/projects/tableau-macos/; Gemini: no Arras citation observed."
+    },
+    {
+      "query": "free open-source Mac desktop photo widget",
+      "paaQuestions": [],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. No People Also Ask section visible. Google AI Overview names Arras and its historical names, and cites https://github.com/yashashwi-s/Arras; the clicked link preview exposed this exact destination. Reddit citations also visible. Its performance/click-through statements are not accepted as verified app facts. No tryarras.tech citation observed. Other AI checks: ChatGPT: visible product links https://github.com/yashashwi-s/Arras, https://github.com/yashashwi-s/Arras/releases/latest; Perplexity: visible product links https://github.com/yashashwi-s/Arras, https://sourceforge.net/projects/tableau-macos/; Gemini: no Arras citation observed."
+    },
+    {
+      "query": "Arras Mac app",
+      "paaQuestions": [],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. No People Also Ask section visible. Google AI Overview describes an Arras desktop app by PureMac/Yashashwi alongside unrelated Arras software; GitHub and GitHub Topics citation labels visible. No tryarras.tech citation observed. Other AI checks: ChatGPT: visible product links https://github.com/yashashwi-s/Arras, https://github.com/yashashwi-s/Arras/releases/latest; Perplexity: visible product links https://arras.yashashwi.me/, https://github.com/yashashwi-s/Arras, https://github.com/yashashwi-s/Arras/blob/main/appcast.json, https://sourceforge.net/projects/tableau-macos/; Gemini: visible product links https://arras.yashashwi.me/."
+    },
+    {
+      "query": "Tableau photo widget Mac",
+      "paaQuestions": [
+        "Can I add a photo as a widget on Mac?",
+        "Can I use Tableau on a Mac?",
+        "How do I add a photo as a widget?",
+        "How to get photo widget off Mac desktop?"
+      ],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. Google AI Overview describes the legacy Tableau photo-widget app and cites SourceForge. PAA includes an ambiguous Tableau question; no claim about the unrelated BI product is added to FAQs. No tryarras.tech citation observed. Other AI checks: ChatGPT: no Arras citation observed; Perplexity: visible product links https://github.com/yashashwi-s/Tableau, https://sourceforge.net/projects/tableau-macos/; Gemini: no Arras citation observed."
+    },
+    {
+      "query": "Photo Widget OSX",
+      "paaQuestions": [
+        "Can I add a photo as a widget on Mac?",
+        "How do I get the photo widget off my Mac?",
+        "How do I change what Photos show on the widget on my Mac?",
+        "Is photo widget free?"
+      ],
+      "notes": "Observed in signed-out in-app Google Search on 18 October 2026. Google AI Overview visible but focuses on Apple’s Photos widget, WidgetWall and PhotoStickies; no Arras citation observed. Other AI checks: ChatGPT: no Arras citation observed; Perplexity: provider returned “Sorry, something went wrong”; no answer/citation available; Gemini: no Arras citation observed."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "How do I add a single photo widget to my Mac desktop?",
+      "answer": [
+        "Choose Add → Add Photos or Videos, paste a copied image, drag its file onto the menu bar icon, or select an individual picture from Photos. Arras displays the exact photo you choose; you do not need to create an Apple Photos album just for one widget. Try an Example adds an editable scene with bundled sample images.",
+        "Your desktop photo keeps its true aspect ratio and its own position and size. Arras lives in the menu bar. Ordinary photo widgets do not require Screen Recording or Accessibility permission."
+      ],
+      "sources": [
+        {
+          "label": "Arras current shipped feature contract",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+        }
+      ]
+    },
+    {
+      "question": "Which Macs can run the official download?",
+      "answer": [
+        "Download compatibility follows the official packaged executable. See the current requirements on the product page and GitHub release; source-build capability is a separate fact."
+      ],
+      "sources": [
+        {
+          "label": "Official GitHub release and downloads",
+          "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+        }
+      ]
+    },
+    {
+      "question": "Is Arras free and open source?",
+      "answer": [
+        "Yes. Arras is free under the MIT License, with no subscription or account required. GitHub hosts its source and official release files."
+      ],
+      "sources": [
+        {
+          "label": "MIT License",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/LICENSE"
+        },
+        {
+          "label": "Official GitHub release and downloads",
+          "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+        }
+      ]
+    },
+    {
+      "question": "Can a Mac desktop photo widget show my whole photo without cropping?",
+      "answer": [
+        "Yes. Ordinary Arras photo widgets stay uncropped at the source image’s true aspect ratio as you resize: panoramas stay wide and portraits stay tall. A multi-photo Space slideshow with Dynamic sizing follows each image’s proportions. Fixed sizing deliberately crops to one stable frame, and optional shape masks can hide parts of an image."
+      ],
+      "sources": [
+        {
+          "label": "Arras current shipped feature contract",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+        }
+      ]
+    },
+    {
+      "question": "Can I build a collage and still move or resize each photo?",
+      "answer": [
+        "Yes. Choose Add → Create Collage, then use Edit Collage to add or remove photos, choose a background and spacing, and add captions or labels. Drag the background to move the group. Hover a photo’s corner to resize that photo; the boundary refits as it grows or shrinks.",
+        "Photos remain independently editable and can be dragged out. Depth and Space pinning are controlled by the collage. Individual standalone values are preserved for detaching. Remove Collage, Keep Photos removes the group while retaining its photos."
+      ],
+      "sources": [
+        {
+          "label": "Feature guide",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+        }
+      ]
+    },
+    {
+      "question": "Can I rotate multiple photos in one Space slideshow widget?",
+      "answer": [
+        "Choose Add → Create Slideshow to combine selected photos, then use Edit Slideshow to reorder, add or remove images. A photo Space slideshow is separate from macOS desktop Spaces and can belong to a collage.",
+        "Choose On Click and double-click to advance, or choose an interval and playback order. Dynamic sizing follows each image’s proportions; Fixed sizing intentionally crops to one frame. Rotation waits during an affected move or resize. Linked albums and folders own their source membership; edit those collections at the source."
+      ],
+      "sources": [
+        {
+          "label": "Arras current shipped feature contract",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+        }
+      ]
+    },
+    {
+      "question": "Can I keep a screenshot or PDF page floating above my work?",
+      "answer": [
+        "Yes. Enable Capture Screen Region or Add PDF Page in Preferences → Menu bar, then use that command from Add. Set the resulting widget to floating depth to keep a screenshot or PDF-page reference overlay above application windows. Adjust opacity and resize it while keeping its aspect ratio.",
+        "Capture Screen Region runs a one-time interactive screenshot command, rather than continuously recording your screen. macOS may request Screen Recording permission for that command; ordinary photo widgets do not need it."
+      ],
+      "sources": [
+        {
+          "label": "Arras current shipped feature contract",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+        }
+      ]
+    },
+    {
+      "question": "Can I save and switch between different desktop setups?",
+      "answer": [
+        "Yes. Save named desktop setups before experimenting, then restore an arrangement when you want it back. A setup includes its stored media and photo/collage arrangement; app-wide preferences are kept separately.",
+        "Undo and redo cover arrangement changes such as moving, resizing and collage membership during the current session. Removal recovery keeps the most recent removal until the next one. Export an .arras backup when you want a portable copy with stored media."
+      ],
+      "sources": [
+        {
+          "label": "Feature guide",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"
+        }
+      ]
+    },
+    {
+      "question": "Does Arras collect usage statistics?",
+      "answer": [
+        "Arras 2.5.0 sends limited configuration and milestone statistics linked by a random installation UUID. Photos, filenames, paths, layouts, captions and notes are not transmitted. Your photo content stays on your Mac.",
+        "Configuration summaries use weekly Wednesday–Tuesday UTC periods. The initial first-launch report can be sent sooner; an app that is closed reports when it next runs and is eligible. These reports are not a live-online-user counter. This version has no in-app statistics opt-out.",
+        "Privacy explains the data, identifiers and retention. Website visit and download-request counters are separate and are not joined to the app installation ID."
+      ],
+      "sources": [
+        {
+          "label": "Arras security and statistics protocol",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md"
+        }
+      ]
+    },
+    {
+      "question": "How do I install the notarized Arras download?",
+      "answer": [
+        "The current Arras build is notarized by Apple. macOS may ask you to confirm opening an app downloaded from the internet.",
+        "Download the Arras DMG using this website’s button or the official yashashwi-s/Arras GitHub Release. Open the DMG and drag Arras into Applications. Open Arras from Applications. Its controls live in your menu bar.",
+        "Arras is free and open source, its official releases are published on GitHub, and photos stay locally on your Mac. See Security & Privacy for permissions, connections and limited statistics."
+      ],
+      "sources": [
+        {
+          "label": "Apple Support: Safely open apps on your Mac",
+          "href": "https://support.apple.com/en-us/102445"
+        },
+        {
+          "label": "Official GitHub release and downloads",
+          "href": "https://github.com/yashashwi-s/Arras/releases/latest"
+        },
+        {
+          "label": "Arras security and privacy policy",
+          "href": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "claim": "Arras 2.5.0 is the current public release, with a universal Developer ID signed, Apple-notarized app and DMG.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/releases/tag/v2.5.0",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Arras imports individual photos and uses independently placed desktop windows, with a menu bar interface.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras#readme",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "The current public README documents macOS 14 or later and universal Apple Silicon/Intel downloads.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras#readme",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Slideshows support Dynamic and Fixed sizing; Fixed sizing deliberately crops to fill.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Local layout backups and stored media differ from archival copies of original source photographs.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Capture exclusion has compatibility limits and does not guarantee privacy in modern sharing tools.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Apple documents Gatekeeper and first-open confirmation for downloaded apps.",
+      "sourceUrl": "https://support.apple.com/en-us/102445",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Apple documents adding widgets through the macOS widget gallery.",
+      "sourceUrl": "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "The 2.5.0 feature guide documents independently editable collage members, live refitting, group-controlled depth and Space pinning, and named saved setups.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "claim": "Arras 2.5.0 sends limited installation-linked usage and weekly configuration statistics, excluding photos, filenames, paths, layouts and personal content.",
+      "sourceUrl": "https://github.com/yashashwi-s/Arras/blob/main/SECURITY.md",
+      "checkedAt": "2026-10-18"
+    }
+  ]
+}
