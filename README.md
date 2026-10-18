@@ -132,7 +132,7 @@ sample-only collage, slideshow/layer, appearance, Preferences and Privacy captur
 Versioned film/poster filenames avoid stale optimized-image caches. Individual
 screenshots can be enlarged. No fabricated interface or personal media is used.
 
-Daily website counters require `ARRAS_WEBSITE_ANALYTICS_ENABLED=1` in the reviewed
+Daily website counters are enabled with `ARRAS_WEBSITE_ANALYTICS_ENABLED=1` in the reviewed
 **Production** environment. They reuse the existing Redis connection setting,
 with separate `arras:website:v1:production` keys. Leave Preview disabled. The
 default `ARRAS_WEBSITE_ANALYTICS_MONTHLY_LIMIT` is 5000 admitted write attempts;
@@ -153,7 +153,14 @@ scope are visible in the three-column `~/bss.sh` dashboard.
 calendar. CI retains main's deterministic/live audits and adds isolated Redis 8
 telemetry tests. The AEO prompt/apply workflows were removed from deployed main
 on 29 September; their restoration uses the 17th of each month and a safe
-changed-base publication check. The current review is issue #5. Do not post its
-`/submit-aeo-review` command until paired app-source facts are public and the
-owner has approved publication (approved on 18 October 2026). See `docs/arras-aeo-roadmap.md` for the observed
-questions, citations and evidence limits.
+changed-base publication check. October issue #5 is now closed after the validated
+apply workflow committed its evidence archive and Vercel deployed the resulting
+main commit. Its ten launch answers needed no further changes. See
+`docs/arras-aeo-roadmap.md` for exact questions, citations, workflow evidence and limits.
+
+The normal `~/bss.sh` launcher uses system Python and its existing Keychain
+identity. Launch verification read the new first-party buckets successfully and
+all three dashboard sources reported OK. Do not invoke the installed collector
+with another Python and mistake that process's denied credential access for a
+production storage failure. First-party statistics start at launch; historical
+Vercel project totals remain separately labeled and cannot be backfilled with UTM data.

@@ -79,7 +79,7 @@ Each new page must have one H1, a direct answer after question headings, sources
 
 ## 18 October 2026 launch evidence review
 
-Production on both Arras domains still serves 2.4.9. The new domain currently
+At the start of this review, production on both Arras domains served 2.4.9. The new domain then
 has its own canonical links; the old domain remains active independently. The
 local release prepares 2.5.0 and selects tryarras.tech as primary, with matching
 old-page redirects and compatible API/media paths. Public GitHub's latest release
@@ -89,10 +89,7 @@ paired app-source publication before submitting the launch FAQ payload.
 
 Both AEO workflows report `deleted` on GitHub, last updated 29 September. Their
 restoration is prepared locally. The missing October issue was created from the
-review prompt: [issue #5](https://github.com/yashashwi-s/website/issues/5). No apply
-command has been posted: that would commit/push and deploy before the owner's
-final approval. Therefore there is no October apply-run, publication commit or
-new deployment to report. The existing production was preserved.
+review prompt: [issue #5](https://github.com/yashashwi-s/website/issues/5). The apply command was initially held for owner approval; the completed publication result is recorded below.
 
 The ten launch FAQs keep accurate core answers for single photos, compatibility,
 free/open-source licensing, aspect ratio and references. Verified 2.5.0 evidence
@@ -201,3 +198,33 @@ archive remains owned by the apply workflow. After approval, publish the paired
 app facts, restore the workflows on main, recheck the GitHub claims, submit to
 issue #5, monitor its validated commit and Vercel deployment, and rerun production
 checks against that exact deployed commit. No user copy/paste is required.
+
+### Approved publication and completed review
+
+The owner approved both pushes and the full cutover on 18 October. The official
+[Arras 2.5.0 release](https://github.com/yashashwi-s/Arras/releases/tag/v2.5.0)
+now supplies the verified Developer ID signed, Apple-notarized universal app.
+README, FEATURES and SECURITY were read back from the GitHub API after push;
+search-tool copies of the unversioned pages still showed cached 2.4.9 content.
+The publishable FAQ evidence uses the actual new GitHub source and Apple guidance.
+
+The complete ten-FAQ/eight-query payload passed validate-only locally and was
+[submitted to issue #5](https://github.com/yashashwi-s/website/issues/5#issuecomment-6246435731).
+The [Apply Arras AEO review workflow](https://github.com/yashashwi-s/website/actions/runs/39103213906)
+passed on attempt 2, committed `aaba2ec1078263140056899ef2a0fe8312d09a66`, and closed
+the issue. Attempt 1 failed because the audit requested `/puremac/` rather than
+its canonical `/puremac` root. The request construction was corrected and the
+exact original command passed locally before rerunning; no FAQ assertions were removed.
+
+The workflow retained the ten already-reviewed launch answers unchanged and
+added the October evidence archive. Vercel production deployment
+`dpl_A2TjrjtX64UQ6teuDDWhgcXXL1BC` is READY for that exact main-branch commit.
+The new domain is canonical, old Arras pages redirect, and both telemetry API
+hosts return direct compatible responses. Production AEO, SEO and all 117
+legacy-redirect checks passed. The new film was played in the browser: 10.4 seconds,
+1470×956, muted, without a media error.
+
+The PAA wording and AI observations above remain the actual pre-publication
+observations, not a claim that answer engines have already refreshed. No
+`tryarras.tech` AI citation was observed. Search Console access remains unavailable
+because its connector requires an active paid subscription; no upgrade was made.
