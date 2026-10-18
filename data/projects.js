@@ -9,7 +9,7 @@ export const projects = [
     github: "https://github.com/yashashwi-s/Fadeo",
     live: "https://puremac.yashashwi.me/fadeo",
     type: "personal",
-    featured: true,
+    featured: false,
     emoji: "🔊",
     color: "#67e4d2", // Fadeo's own accent teal
     image: "/puremac/fadeo/screenshot-workspaces.png",
@@ -26,7 +26,8 @@ export const projects = [
     featured: true,
     emoji: "🖼️",
     color: "#ff6b6b", // Coral
-    order: 10,
+    image: "/puremac/arras/features/collages.webp",
+    order: 1,
   },
   {
     title: "CodeForge",

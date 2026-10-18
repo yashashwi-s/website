@@ -1,17 +1,20 @@
 # Yashashwi Singhania
 
-> The official portfolio of Yashashwi Singhania, an IIT (BHU) dual-degree student building reinforcement-learning projects, systems software, and native macOS apps.
+> The official portfolio of Yashashwi Singhania, creator of Arras and an IIT (BHU) dual-degree student building native macOS apps, systems software and reinforcement-learning projects.
 
 ## Portfolio
 - [Selected work](https://yashashwi.me/#work): Projects, source repositories, experience, and achievements.
 - [Curriculum vitae](https://cv.yashashwi.me/): Education, experience, and technical skills.
 - [GitHub](https://github.com/yashashwi-s): Public source repositories and contributions.
 
-## Native macOS Apps
-- [PureMac](https://puremac.yashashwi.me/): The official catalog of independent, open-source Mac apps.
-- [Arras desktop photo widgets for Mac](https://tryarras.tech/): Uncropped photos, editable collages, linked Photos albums and folders, GIF/APNG and muted video widgets, reference tools and saved desktop setups.
+## Featured Project: Arras
+- [Arras desktop photo widgets for Mac](https://tryarras.tech/): The portfolio's primary project. Uncropped photos, editable collages, slideshows, placement layers, linked Photos albums and folders, GIF/APNG and muted video widgets, reference tools and saved desktop setups.
+- [Arras source and GitHub stars](https://github.com/yashashwi-s/Arras): MIT-licensed source, release history and the repository's Star action.
+
+## Other macOS Work
 - [Fadeo](https://puremac.yashashwi.me/fadeo): Rule-driven workflow audio for macOS; includes features and licensing details.
+- [PureMac](https://puremac.yashashwi.me/): The catalog of independent, open-source Mac apps.
 
 ## Further Documentation
-- [PureMac documentation index](https://puremac.yashashwi.me/llms.txt): App facts and authoritative documentation.
 - [Arras documentation index](https://tryarras.tech/llms.txt): Product facts, sources, and installation guidance.
+- [PureMac documentation index](https://puremac.yashashwi.me/llms.txt): Other app facts and authoritative documentation.

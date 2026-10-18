@@ -16,7 +16,12 @@ function attributes(tag) {
   return Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*["']([^"']*)["']/g)].map(([, key, value]) => [key.toLowerCase(), decode(value)]));
 }
 const metaValues = (html, key) => [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => attributes(match[0])).filter(meta => (meta.name || meta.property) === key).map(meta => meta.content);
-const anchors = html => [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)].map(([, attrs, body]) => ({ ...attributes(attrs), text: visible(body) }));
+const anchors = html => [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)].map(([, attrs, body]) => {
+  const parsed = attributes(attrs);
+  const text = visible(body);
+  const imageAlt = [...body.matchAll(/<img\b([^>]*)>/gi)].map(([, img]) => attributes(img).alt || "").join(" ");
+  return { ...parsed, text, name: decode(parsed["aria-label"] || text || imageAlt) };
+});
 
 const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path => {
   const response = await requestPage(`${arrasOrigin}${path}`, { headers: { Host: "tryarras.tech", "User-Agent": googlebot } });
@@ -90,8 +95,9 @@ check(portfolioResponse.status === 200, "Portfolio must return HTTP 200 for Goog
 const portfolio = await portfolioResponse.text();
 const portfolioLinks = anchors(portfolio.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ""));
 const arrasLinks = portfolioLinks.filter(link => link.href && new URL(link.href, "https://yashashwi.me").origin === canonical);
-check(arrasLinks.length >= 4 && arrasLinks.every(link => /Arras/.test(link.text)), "Portfolio must expose Arras navigation, project, feature and footer as named <a href> links");
-check(arrasLinks.some(link => /desktop photo widgets/i.test(link.text)), "Arras portfolio anchor text should describe desktop photo widgets");
+check(arrasLinks.length >= 4 && arrasLinks.every(link => /Arras/.test(link.name)), "Portfolio must expose Arras navigation, project, feature and footer as named <a href> links");
+check(arrasLinks.some(link => /desktop photo widgets/i.test(link.name)), "Arras portfolio links should describe desktop photo widgets");
+check(portfolioLinks.some(link => link.href === product.repositoryUrl && /Star.*Arras|Star on GitHub/i.test(link.name)), "Portfolio must expose a named GitHub star link for Arras");
 check(portfolioLinks.some(link => link.href === "https://puremac.yashashwi.me/fadeo" && /Fadeo/.test(link.text)), "Fadeo's crawlable product link must stay intact");
 check(!portfolioLinks.some(link => /^https:\/\/puremac\.yashashwi\.me\/?$|puremac\.yashashwi\.me\/(?:puremac\/)?arras(?:\/|$)/.test(link.href || "")), "Portfolio Arras links must go directly to the product host");
 check(!/<(?:button|div|span)\b[^>]*(?:href|data-href)="https?:/i.test(portfolio), "External portfolio navigation must use standard anchors");

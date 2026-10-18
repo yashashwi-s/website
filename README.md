@@ -22,9 +22,12 @@ documentation before changing framework behavior, as directed by `AGENTS.md`.
 
 - `data/personal.js`, `data/projects.js`, `data/achievements.js` and `data/skills.js`
   contain portfolio content.
+  Arras leads the homepage hero, dedicated screenshot showcase and selected work;
+  its website links go directly to `tryarras.tech`. The portfolio's GitHub star
+  link uses the shared hourly server-cached count; it does not star on a visitor's behalf.
 - `data/resume.tex` feeds the CV page. `lib/cv-downloads.mjs` refreshes Arras's
   public release-download milestone weekly, rounded down to hundreds, with a
-  verified 700+ fallback. Downloads are not active users or successful installs.
+  published 1,000+ baseline. Downloads are not active users or successful installs.
   The downloadable PDF is a separate artifact and must be reviewed when updated.
 - `data/arras-product.json` owns the Arras version, platform requirements and
   release links. Its shared readers keep product pages and metadata consistent.

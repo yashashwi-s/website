@@ -5,6 +5,7 @@ import { projects } from "@/data/projects";
 import { experience } from "@/data/experience";
 import { achievements } from "@/data/achievements";
 import { skills } from "@/data/skills";
+import { repositoryStars } from "@/lib/github-release";
 
 /* Fourth face in the house set, after Bricolage (Arras), Instrument Serif
    (PureMac index) and Space Grotesk (Fadeo). Anton is the poster face: heavy,
@@ -36,7 +37,7 @@ const mono = JetBrains_Mono({
 
 const TITLE = "Yashashwi Singhania — systems, RL, and native macOS apps";
 const DESCRIPTION =
-  "Dual-degree student at IIT (BHU) writing reinforcement learning, systems code and native macOS apps. Selected work, experience and the things that came out of it.";
+  "Creator of Arras, a free Mac app for photo widgets, editable collages and slideshows. IIT (BHU) dual-degree student building native apps, systems software and reinforcement-learning projects.";
 
 export const metadata = {
   title: TITLE,
@@ -54,9 +55,10 @@ export const metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
-export default function Home() {
+export default async function Home() {
   // Featured order drives the work list; everything else falls into "Also built".
   const ordered = [...projects].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  const arrasStars = await repositoryStars("Arras");
 
   return (
     <HomeClient
@@ -65,6 +67,7 @@ export default function Home() {
       experience={experience}
       achievements={achievements}
       skills={skills}
+      arrasStars={arrasStars}
       fontClass={`${poster.variable} ${editorial.variable} ${mono.variable}`}
     />
   );

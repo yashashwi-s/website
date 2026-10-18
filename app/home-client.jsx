@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Star } from "lucide-react";
+import Image from "next/image";
 import CustomCursor from "@/components/CustomCursor";
 import ScrambleText from "@/components/ScrambleText";
 import SmoothScroll from "@/components/SmoothScroll";
 import { GRAIN } from "./puremac/grain";
-import { arrasCanonicalUrl } from "@/data/arras-product";
-import { macProducts } from "@/data/mac-products";
+import { arrasCanonicalUrl, arrasProduct } from "@/data/arras-product";
 
 /* Fourth identity in the family.
  *
@@ -289,7 +289,8 @@ function WorkRow({ project, index, accent }) {
     <a
       href={href}
       target="_blank"
-      rel="noreferrer"
+      rel="noopener"
+      referrerPolicy="origin"
       data-cursor="snap"
       onMouseMove={onMove}
       className="work-row group relative block border-t border-white/10 px-1 py-7 sm:py-9"
@@ -368,7 +369,56 @@ function MagneticLink({ children }) {
   );
 }
 
-export default function HomeClient({ personal, projects, experience, achievements, skills, fontClass = "" }) {
+function ArrasShowcase({ accent, stars }) {
+  return (
+    <section id="arras" aria-labelledby="arras-title" className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-24">
+      <div className="overflow-hidden rounded-3xl border border-white/15 bg-[#121214]">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/55 sm:px-8">
+          <span style={{ color: accent }}>Featured project</span>
+          <span>Arras {arrasProduct.publicRelease.version} · Free &amp; open source</span>
+        </div>
+        <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-10">
+          <div>
+            <div className="flex items-center gap-4">
+              <Image src="/puremac/arras-icon.png" alt="" width={48} height={48} className="rounded-xl" />
+              <h2 id="arras-title" className="text-[clamp(3.5rem,7vw,5.8rem)] leading-none tracking-[0.01em]">Arras</h2>
+            </div>
+            <p className="editorial mt-5 text-[27px] leading-tight text-white/90 sm:text-[32px]">Your photos. Your kind of desktop.</p>
+            <p className="mt-4 max-w-md text-[15px] leading-[1.7] text-white/60">
+              Desktop photo widgets, slideshows and editable collages for your Mac. Keep each picture’s proportions,
+              choose its layer and save the whole setup.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 font-mono text-[10px] uppercase tracking-[0.12em] text-white/65">
+              {[["Collages", "collages"], ["Slideshows", "slideshows"], ["Layers", "layers"]].map(([label, id]) => (
+                <a key={id} href={`${arrasCanonicalUrl}/#${id}`} aria-label={`Explore Arras ${label.toLowerCase()}`} data-cursor="snap" className="underline decoration-white/25 underline-offset-4 transition-colors hover:text-white">{label}</a>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a href={arrasCanonicalUrl} data-cursor="snap" className="inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-3 text-[13px] font-semibold text-black" style={{ backgroundColor: accent }}>
+                Explore Arras <ArrowUpRight size={15} aria-hidden="true" />
+              </a>
+              <a href={arrasProduct.repositoryUrl} target="_blank" rel="noopener" referrerPolicy="origin" data-cursor="snap"
+                aria-label={stars == null ? "Star Arras on GitHub" : `Star Arras on GitHub, ${stars} stars`}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/25 px-4 py-3 text-[13px] text-white/85 transition-colors hover:border-white/60 hover:text-white">
+                <Star size={15} aria-hidden="true" /> Star on GitHub
+                {stars != null && <span className="border-l border-white/20 pl-2 font-mono text-[11px] tabular-nums">{new Intl.NumberFormat("en-US").format(stars)}</span>}
+              </a>
+            </div>
+            <a href={arrasCanonicalUrl} aria-label="Visit Arras at tryarras.tech" data-cursor="snap" className="mt-4 inline-block font-mono text-[11px] tracking-[0.08em] text-white/50 transition-colors hover:text-white">tryarras.tech ↗</a>
+          </div>
+          <figure className="min-w-0">
+            <a href={`${arrasCanonicalUrl}/#collages`} data-cursor="snap" aria-label="Explore Arras desktop photo widgets and collages" className="block overflow-hidden rounded-xl border border-white/15">
+              <Image src="/puremac/arras/features/collages.webp" alt="Arras on a Mac desktop with a paper collage, individually framed photos and a transparent photo group beside its Settings window." width={1470} height={956} sizes="(min-width: 1152px) 580px, (min-width: 1024px) 55vw, calc(100vw - 88px)" className="h-auto w-full" />
+            </a>
+            <figcaption className="mt-3 text-[12px] leading-relaxed text-white/45">Editable collages. Individual photos. A real Mac desktop.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function HomeClient({ personal, projects, experience, achievements, skills, arrasStars = null, fontClass = "" }) {
   const [accentIdx, setAccentIdx] = useState(0);
   const accent = ACCENTS[accentIdx];
 
@@ -423,7 +473,7 @@ export default function HomeClient({ personal, projects, experience, achievement
             <a href="#work" data-cursor="snap" className="transition-colors hover:text-white">
               <ScrambleText text="Work" />
             </a>
-            <a href={arrasCanonicalUrl} data-cursor="snap" className="transition-colors hover:text-white">
+            <a href={arrasCanonicalUrl} data-cursor="snap" style={{ color: accent }} className="transition-opacity hover:opacity-75">
               <ScrambleText text="Arras" />
             </a>
             <a href={personal.resume} data-cursor="snap" className="transition-colors hover:text-white">
@@ -459,20 +509,20 @@ export default function HomeClient({ personal, projects, experience, achievement
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <MagneticLink>
                   <a
-                    href="#work"
+                    href={arrasCanonicalUrl}
                     data-cursor="snap"
                     className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-semibold text-black"
                     style={{ backgroundColor: accent }}
                   >
-                    See the work
+                    Explore Arras <ArrowUpRight size={16} aria-hidden="true" />
                   </a>
                 </MagneticLink>
                 <a
-                  href={`mailto:${personal.email}`}
+                  href="#work"
                   data-cursor="snap"
                   className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
                 >
-                  Say hello
+                  More work
                 </a>
               </div>
             </div>
@@ -482,7 +532,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                 ["based in", personal.location],
                 ["studying", "Biochem. Eng."],
                 ["graduating", personal.graduationYear.replace(" (Expected)", "")],
-                ["shipping", "macOS apps"],
+                ["shipping", `Arras ${arrasProduct.publicRelease.version}`],
               ].map(([k, v]) => (
                 <div key={k}>
                   <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/55">{k}</dt>
@@ -495,6 +545,8 @@ export default function HomeClient({ personal, projects, experience, achievement
 
         {/* ------------------------------------------------------------ marquee */}
         <Ticker accent={accent} />
+
+        <ArrasShowcase accent={accent} stars={arrasStars} />
 
         {/* -------------------------------------------------------------- stats */}
         <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
@@ -524,7 +576,7 @@ export default function HomeClient({ personal, projects, experience, achievement
         </section>
 
         {/* --------------------------------------------------------------- work */}
-        <section id="work" className="mx-auto max-w-6xl px-5 sm:px-8">
+        <section id="work" className="mx-auto max-w-6xl px-5 pb-20 sm:px-8 sm:pb-28">
           <div className="flex items-end justify-between gap-6 pb-10">
             <h2 className="text-[clamp(2.2rem,6vw,4.4rem)] leading-[0.9]">
               Selected
@@ -542,37 +594,6 @@ export default function HomeClient({ personal, projects, experience, achievement
             {featured.map((p, i) => (
               <WorkRow key={p.title} project={p} index={i} accent={accent} />
             ))}
-          </div>
-        </section>
-
-        {/* ----------------------------------------------------------- Mac apps */}
-        <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-          <div
-            className="relative block overflow-hidden rounded-3xl border border-white/12 p-8 sm:p-12"
-          >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-60 transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "radial-gradient(80% 120% at 85% 0%, rgba(103,228,210,0.16), transparent 60%)" }}
-            />
-            <div className="relative grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end">
-              <div>
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">A small studio</p>
-                <h2 className="mt-5 text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[0.9]">
-                  Made for <span className="text-white/55">Mac</span>
-                </h2>
-                <p className="mt-5 max-w-md text-[15.5px] leading-[1.65] text-white/55">
-                  Two native macOS apps, both open source, both free to run.{" "}
-                  <a href={arrasCanonicalUrl} className="text-white/85 underline underline-offset-4">Arras desktop photo widgets</a> keep your photos uncropped at their
-                  true aspect ratio. <a href={macProducts.fadeo.url} className="text-white/85 underline underline-offset-4">Fadeo workflow audio</a> changes your audio
-                  to match what you are doing.
-                </p>
-              </div>
-              <a href={arrasCanonicalUrl} data-cursor="snap" className="inline-flex items-center gap-2 self-start rounded-full border border-white/20 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 transition-colors hover:border-white/50 hover:text-white sm:self-end">
-                Get Arras for Mac
-                <ArrowUpRight size={14} />
-              </a>
-            </div>
           </div>
         </section>
 
@@ -695,7 +716,8 @@ export default function HomeClient({ personal, projects, experience, achievement
                 key={p.title}
                 href={p.live || p.github}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener"
+                referrerPolicy="origin"
                 data-cursor="snap"
                 className="group inline-flex items-center gap-2.5 rounded-full border border-white/12 px-4 py-2.5 text-[13.5px] text-white/60 transition-colors hover:border-white/35 hover:text-white"
               >
@@ -727,6 +749,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                   ["LinkedIn", personal.linkedin],
                   ["Codeforces", personal.codeforces],
                   ["Arras", arrasCanonicalUrl],
+                  ["Star Arras", arrasProduct.repositoryUrl],
                   ["CV", personal.resume],
                 ].map(([label, href]) => (
                   <a key={label} href={href} data-cursor="snap" className="transition-colors hover:text-white">
