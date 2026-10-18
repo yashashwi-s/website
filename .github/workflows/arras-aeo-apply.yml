@@ -78,7 +78,7 @@ jobs:
           done
 
           curl --fail --silent http://127.0.0.1:3000/puremac/arras > /dev/null
-          PUREMAC_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac ARRAS_REQUEST_BASE_URL=http://127.0.0.1:3000/puremac/arras npm run check:aeo
+          PUREMAC_REQUEST_BASE_URL=http://127.0.0.1:3000 PUREMAC_REQUEST_HOST=puremac.yashashwi.me ARRAS_REQUEST_BASE_URL=http://127.0.0.1:3000 ARRAS_REQUEST_HOST=tryarras.tech npm run check:aeo
 
       - name: Commit and push the validated update
         env:

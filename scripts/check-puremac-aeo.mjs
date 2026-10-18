@@ -33,7 +33,7 @@ const arrasOnly = process.argv.includes("--arras-only");
 const paths = arrasOnly ? [] : ["/", "/fadeo", "/robots.txt", "/sitemap.xml", "/llms.txt"];
 const responses = await Promise.all(
   paths.map(async (path) => {
-    const response = await requestPage(`${requestBaseUrl}${path}`, {
+    const response = await requestPage(path === "/" && new URL(requestBaseUrl).pathname !== "/" ? requestBaseUrl : `${requestBaseUrl}${path}`, {
       headers: requestHeaders,
     });
     const body = await response.text();
