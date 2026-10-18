@@ -228,3 +228,21 @@ The PAA wording and AI observations above remain the actual pre-publication
 observations, not a claim that answer engines have already refreshed. No
 `tryarras.tech` AI citation was observed. Search Console access remains unavailable
 because its connector requires an active paid subscription; no upgrade was made.
+
+### Earlier review record and document ownership
+
+The September review remains in `data/arras-aeo-reviews/2026-09.json`,
+[issue #4](https://github.com/yashashwi-s/website/issues/4) and its
+[successful apply workflow](https://github.com/yashashwi-s/website/actions/runs/35341514719).
+Its deployment commit was `122b707fab4aff9faae12d037125e7e5cad72dad`.
+Those dated observations preceded the new domain and 2.5.0; they do not describe
+current downloads or current citation visibility. This roadmap owns the evidence
+review, README owns current verification commands, and the distribution plan owns
+launch media. Redundant static audit/handoff files were consolidated here rather
+than maintained as competing descriptions of what is public.
+
+The canonical Security page now renders the full statistics policy, including
+exact fields, the installation identifier, Wednesday UTC cadence, retries and
+30/400-day retention. The old privacy-details URL stays a compatibility redirect.
+A rendered assertion checks the details on `/security` itself, preventing source
+text in an unreachable page from being mistaken for published disclosure.
