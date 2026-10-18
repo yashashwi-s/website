@@ -167,6 +167,9 @@ check(title.length >= 45 && title.length <= 60, `Arras title is ${title.length} 
 check(description.length >= 130 && description.length <= 160, `/arras description is ${description.length} characters`);
 check(robotsMeta.includes("index") && robotsMeta.includes("follow"), "Arras robots metadata must allow indexing");
 check(googleBotMeta.includes("max-image-preview:large"), "Arras Googlebot metadata must allow large image previews");
+for (const marker of ['id="telemetry-details"', 'id="identifier"', 'id="network-retention"', '30 days', '400 days', 'random installation']) {
+  check(securityHtml.includes(marker), `Canonical Security page must expose policy detail: ${marker}`);
+}
 check(canonicals.includes(arrasBaseUrl), "Arras canonical URL is missing or incorrect");
 check((arrasHtml.match(/<h1(?:\s|>)/gi) ?? []).length === 1, "/arras must render exactly one H1");
 check((faq?.mainEntity?.length ?? 0) > 0, "/faq must expose its visible questions as structured data");

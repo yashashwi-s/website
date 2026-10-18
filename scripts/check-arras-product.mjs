@@ -51,7 +51,7 @@ check(sources.sharedLlms.includes("summarizeArrasProduct"), "Shared AI summary m
 check(sources.press.includes("Apple Silicon and Intel") && sources.press.includes("2.5.0"), "Arras press compatibility must describe the reviewed universal 2.5.0 artifacts");
 check(sources.press.includes("/faq#how-to-use") && sources.sharedLlms.includes("https://tryarras.tech/faq"), "Shared Arras links must point to the canonical FAQ page");
 for (const [name, text] of [["FAQ", sources.faqData], ["Security", sources.security],
-  ["Privacy policy", await readFile(resolve(root, "app/puremac/arras/security-privacy/page.jsx"), "utf8")]]) {
+  ["Privacy policy", await readFile(resolve(root, "app/puremac/arras/telemetry-details.jsx"), "utf8")]]) {
   check(text.includes("2.5.0") && /weekly|seven-day/i.test(text), `${name} must disclose 2.5.0 weekly statistics`);
 }
 const currentDocumentation = ["page", "client", "faqs", "security", "faqData", "llms", "sharedFaqs", "sharedLlms", "press"].map(key => sources[key]).join("\n");

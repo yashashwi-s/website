@@ -169,3 +169,10 @@ The live Lighthouse workflow honors `AUDIT_SITE=arras` and `--report-only`: it
 archives the measured mobile/desktop scores without treating a score below 100
 as a failed collection. Browser/runtime/report errors still fail the workflow.
 Deterministic route, FAQ, metadata and redirect checks remain required separately.
+
+The canonical Security page contains the full server-rendered telemetry policy
+inside a native disclosure: exact fields, installation identity, Wednesday UTC
+cadence, retry/expiry behavior, provider handling and retention. `/security-privacy`
+remains a 301 compatibility alias and reuses the same page for direct internal-path
+requests. The rendered audit checks the detail content on the actual public page,
+not merely in an unreachable source file.

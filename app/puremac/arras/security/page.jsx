@@ -1,3 +1,4 @@
+import ArrasTelemetryDetails from "../telemetry-details";
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 import { getArrasLinks } from "../arras-links";
@@ -49,6 +50,7 @@ export default async function SecurityPage() {
         <h2>Limited statistics, with weekly summaries</h2>
         <p>Arras 2.5.0 sends limited configuration counts and first-use or version milestones. Configuration summaries are weekly. A random installation UUID links reports from the same installation; reports do not contain photos, filenames, paths, notes, layouts or desktop contents.</p>
         <p>There is no in-app opt-out switch in this version. Reports are not a live-online-user counter. <a href={links.privacyDetails}>Read the identifiers, exact data and retention details →</a></p>
+        <ArrasTelemetryDetails installation={installation} links={links} />
       </section>
       <section id="capture-privacy">
         <h2>When you share your screen</h2>

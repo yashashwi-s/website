@@ -7,5 +7,5 @@ export async function getArrasLinks() {
   const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "")
     .split(",")[0].trim().split(":")[0].toLowerCase();
   const base = host === "tryarras.tech" || host === "www.tryarras.tech" || host.startsWith("arras.") ? "" : "/puremac/arras";
-  return { download: `${base}/download`, home: `${base}/`, faqs: `${base}/faq`, security: `${base}/security`, privacyDetails: `${base}/security#telemetry` };
+  return { download: `${base}/download`, home: `${base}/`, faqs: `${base}/faq`, security: `${base}/security`, privacyDetails: `${base}/security#scope` };
 }
