@@ -8,11 +8,11 @@ const requestBaseUrl = (process.env.PUREMAC_REQUEST_BASE_URL || baseUrl).replace
 const arrasBaseUrl = (process.env.ARRAS_BASE_URL || "https://tryarras.tech").replace(/\/$/, "");
 const arrasRequestBaseUrl = (process.env.ARRAS_REQUEST_BASE_URL || arrasBaseUrl).replace(/\/$/, "");
 const requestHeaders = {
-  "User-Agent": "PureMac-AEO-Check/1.0",
+  "User-Agent": "PureMac-AEO-Check-bot/1.0",
   ...(process.env.PUREMAC_REQUEST_HOST ? { Host: process.env.PUREMAC_REQUEST_HOST } : {}),
 };
 const arrasRequestHeaders = {
-  "User-Agent": "PureMac-AEO-Check/1.0",
+  "User-Agent": "PureMac-AEO-Check-bot/1.0",
   ...(process.env.ARRAS_REQUEST_HOST ? { Host: process.env.ARRAS_REQUEST_HOST } : {}),
 };
 
@@ -85,8 +85,10 @@ for (const [path, { response }] of Object.entries(arrasPages)) {
 }
 
 const arrasHtml = arrasPages["/"].body;
-if (process.env.ARRAS_REQUEST_HOST?.startsWith("arras.")) {
-  check(!/<a\b[^>]*\bhref="\/puremac\/arras(?:\/|#|")/.test(arrasHtml), "Arras homepage navigation must use clean subdomain paths");
+if (/^(?:arras\.|(?:www\.)?tryarras\.tech$)/.test(process.env.ARRAS_REQUEST_HOST || "")) {
+  const navigation = arrasHtml.match(/<nav\b[^>]*aria-label="Main navigation"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
+  check(Boolean(navigation), "Arras homepage must render its main navigation");
+  check(!/<a\b[^>]*\bhref="\/puremac\/arras(?:\/|#|")/.test(navigation || ""), "Arras homepage navigation must use clean subdomain paths");
 }
 const title = arrasHtml.match(/<title>([^<]+)<\/title>/i)?.[1] ?? "";
 const description = decodeHtml(

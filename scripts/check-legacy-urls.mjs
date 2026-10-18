@@ -24,7 +24,7 @@ cases.push([`${canonical}/security-privacy`, `${canonical}/security`]);
 async function get(url) {
   const parsed = new URL(url);
   const requestUrl = preview ? `${new URL(preview).origin}${parsed.pathname}${parsed.search}` : url;
-  return requestPage(requestUrl, { headers: { Host: parsed.host, "User-Agent": "Arras-SEO-Redirect-Check/1.0" } });
+  return requestPage(requestUrl, { headers: { Host: parsed.host, "User-Agent": "Arras-SEO-Redirect-Check-bot/1.0" } });
 }
 // A redirect must be 301 (Next's permanent:true default is 308), preserve
 // queries and land directly on the destination page without another hop.
