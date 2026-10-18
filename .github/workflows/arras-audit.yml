@@ -9,6 +9,14 @@ on:
       - "data/arras-product.*"
       - "lib/arras-product*"
       - "lib/arras-installation.mjs"
+      - "lib/arras-attribution.mjs"
+      - "lib/arras-faqs.mjs"
+      - "lib/arras-telemetry*.mjs"
+      - "lib/arras-website-statistics.mjs"
+      - "app/api/telemetry/**"
+      - "scripts/test-arras*.mjs"
+      - "scripts/arras-aeo*.mjs"
+      - "proxy.js"
       - "scripts/lib/arras-trust-copy.mjs"
       - "lib/github-release.js"
       - "scripts/audit-arras.mjs"
@@ -28,6 +36,14 @@ on:
       - "data/arras-product.*"
       - "lib/arras-product*"
       - "lib/arras-installation.mjs"
+      - "lib/arras-attribution.mjs"
+      - "lib/arras-faqs.mjs"
+      - "lib/arras-telemetry*.mjs"
+      - "lib/arras-website-statistics.mjs"
+      - "app/api/telemetry/**"
+      - "scripts/test-arras*.mjs"
+      - "scripts/arras-aeo*.mjs"
+      - "proxy.js"
       - "scripts/lib/arras-trust-copy.mjs"
       - "lib/github-release.js"
       - "scripts/audit-arras.mjs"
@@ -49,6 +65,12 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      redis:
+        image: redis:8-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -56,4 +78,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run test:arras-telemetry
+        env:
+          ARRAS_TELEMETRY_TEST_REDIS_URL: redis://127.0.0.1:6379
       - run: npm run audit:arras

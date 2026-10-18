@@ -4,7 +4,7 @@ import { macProducts } from "@/data/mac-products";
 import "./puremac.css";
 
 const apps = [
-  { id: "arras", name: "Arras", icon: "/puremac/arras-icon.png", category: "Your desktop, your composition", title: "A place for your photos.", description: "Put the exact photos you love on your desktop, at their own proportions. Arrange, frame, and layer each one your way.", page: "https://arras.yashashwi.me/", price: `${macProducts.arras.price} · ${macProducts.arras.license} open source`, facts: "Original aspect ratios · Per-photo styling · Photo rotation" },
+  { id: "arras", name: "Arras", icon: "/puremac/arras-icon.png", category: "Your desktop, your composition", title: "A place for your photos.", description: "Put the exact photos you love on your desktop, at their own proportions. Arrange, frame, and layer each one your way.", page: "https://tryarras.tech/", price: `${macProducts.arras.price} · ${macProducts.arras.license} open source`, facts: "Original aspect ratios · Per-photo styling · Photo rotation" },
   { id: "fadeo", name: "Fadeo", icon: "/puremac/fadeo-icon.png", category: "Sound that follows your workflow", title: "Less switching. More flow.", description: "Let your music follow the app, Space, or meeting you’re in. Set your own rules for when audio plays, fades, or changes.", page: "https://puremac.yashashwi.me/fadeo", price: macProducts.fadeo.price, facts: "Context-based rules · Smooth fades · Local decisions" },
 ];
 

@@ -1,9 +1,11 @@
 import { headers } from "next/headers";
 
-// The product lives at the subdomain root, but can also be previewed at its
-// repository route. Keep both navigation paths local to the current site.
+// Rewrites can replace Host with the internal server address. Next preserves
+// the original host in X-Forwarded-Host, including in local subdomain previews.
 export async function getArrasLinks() {
-  const host = (await headers()).get("host")?.split(":")[0] ?? "";
-  const base = host.startsWith("arras.") ? "" : "/puremac/arras";
-  return { home: `${base}/`, faqs: `${base}/faqs`, security: `${base}/security` };
+  const requestHeaders = await headers();
+  const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "")
+    .split(",")[0].trim().split(":")[0].toLowerCase();
+  const base = host === "tryarras.tech" || host === "www.tryarras.tech" || host.startsWith("arras.") ? "" : "/puremac/arras";
+  return { download: `${base}/download`, home: `${base}/`, faqs: `${base}/faq`, security: `${base}/security`, privacyDetails: `${base}/security#telemetry` };
 }

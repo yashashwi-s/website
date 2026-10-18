@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { websiteObservation, recordWebsiteObservation } from './lib/arras-website-statistics.mjs';
 
 export const config = {
   matcher: [
@@ -13,9 +14,19 @@ export const config = {
   ],
 };
 
-export default function proxy(req) {
+export default function proxy(req, event) {
+  const observation = websiteObservation(req);
+  if (observation) event.waitUntil(recordWebsiteObservation(observation));
   const url = req.nextUrl;
   const hostname = (req.headers.get('host') || '').split(':')[0];
+
+  // Config redirects run first, so legacy Arras URLs already received a 301.
+  if (url.pathname !== '/' && url.pathname.endsWith('/')) {
+    // A plain URL avoids NextURL restoring the original trailingSlash flag.
+    const normalized = new URL(req.url);
+    normalized.pathname = normalized.pathname.replace(/\/+$/, '');
+    return NextResponse.redirect(normalized, 308);
+  }
 
   // Extract the current host (removing the root domain)
   // For local testing: cv.localhost:3000 -> 'cv'
@@ -37,13 +48,13 @@ export default function proxy(req) {
       url.pathname = `/cv${url.pathname}`;
       return NextResponse.rewrite(url);
     }
-  } else if (currentHost === 'arras') {
+  } else if (currentHost === 'arras' || hostname === 'tryarras.tech' || hostname === 'www.tryarras.tech') {
     if (url.pathname === '/favicon.ico') {
       url.pathname = '/puremac/arras-icon.png';
       return NextResponse.rewrite(url);
     }
 
-    // arras.yashashwi.me is a focused product site. Keep the implementation in
+    // Keep API compatibility on both hosts; the reviewed page redirects select the primary domain. Keep the implementation in
     // its existing route group while exposing it at the subdomain root.
     if (!url.pathname.startsWith('/puremac/arras')) {
       const suffix = url.pathname === '/' ? '' : url.pathname;

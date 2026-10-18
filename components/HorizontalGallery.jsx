@@ -133,13 +133,15 @@ export default function HorizontalGallery() {
                 </div>
                 <div className="flex gap-4">
                   {project.github && (
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-3 border border-white/20 rounded-full hover:border-white hover:bg-white/10 transition-all">
+                    <a href={project.github} target="_blank" rel="noopener" referrerPolicy="origin" className="p-3 border border-white/20 rounded-full hover:border-white hover:bg-white/10 transition-all">
                       <GithubIcon size={24} />
+                      <span className="sr-only">{project.title} source on GitHub</span>
                     </a>
                   )}
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer" className="p-3 border border-white/20 rounded-full hover:border-white hover:bg-white/10 transition-all">
                       <ExternalLink size={24} />
+                      <span className="sr-only">Visit {project.title}{project.title === "Arras" ? " desktop photo widgets for Mac" : ""}</span>
                     </a>
                   )}
                 </div>
@@ -186,13 +188,15 @@ export default function HorizontalGallery() {
                 </div>
                 <div className="flex gap-3">
                   {project.github && (
-                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full bg-white/5 hover:border-white hover:bg-white/10 transition-all">
+                    <a href={project.github} target="_blank" rel="noopener" referrerPolicy="origin" className="p-2 border border-white/20 rounded-full bg-white/5 hover:border-white hover:bg-white/10 transition-all">
                       <GithubIcon size={20} />
+                      <span className="sr-only">{project.title} source on GitHub</span>
                     </a>
                   )}
                   {project.live && (
                     <a href={project.live} target="_blank" rel="noopener noreferrer" className="p-2 border border-white/20 rounded-full bg-white/5 hover:border-white hover:bg-white/10 transition-all">
                       <ExternalLink size={20} />
+                      <span className="sr-only">Visit {project.title}{project.title === "Arras" ? " desktop photo widgets for Mac" : ""}</span>
                     </a>
                   )}
                 </div>

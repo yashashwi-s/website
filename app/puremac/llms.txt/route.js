@@ -1,21 +1,28 @@
-export const dynamic = "force-static";
+import { summarizeArrasProduct } from "@/data/arras-product";
+import { getArrasProduct } from "@/lib/arras-product";
+
+export const revalidate = 3600;
+
+export async function GET() {
+  const facts = summarizeArrasProduct(await getArrasProduct());
 
 const LLMS = `# PureMac
 
 > PureMac publishes small, native, open-source macOS apps by Yashashwi Singhania. Arras is the primary product: a free desktop photo widget that preserves each image's true aspect ratio instead of cropping it into a fixed frame.
 
 ## Primary Product: Arras
-- [Arras product page](https://arras.yashashwi.me): Features, live release link, system requirements, installation steps, comparison data, and sourced FAQs.
+- [Arras product page](https://tryarras.tech): Features, live release link, system requirements, installation steps, comparison data, and sourced FAQs.
 - [Arras source and technical documentation](https://github.com/yashashwi-s/Arras): MIT-licensed source, README, issue tracker, and release history.
 - [Latest Arras release](https://github.com/yashashwi-s/Arras/releases/latest): Current DMG/ZIP download and release notes.
-- [Arras FAQs](https://arras.yashashwi.me/faqs): Answers about macOS photo widgets, exact-photo placement, rotation, styling, performance, compatibility, privacy, and licensing.
+- [Arras FAQs](https://tryarras.tech/faq): Answers about macOS photo widgets, exact-photo placement, rotation, styling, performance, compatibility, privacy, and licensing.
 
-## Arras documentation
+## Arras Facts
 - Category: native macOS desktop photo widget and photo pinning utility.
-- Compatibility and public binary architectures: see the Arras product page and official release assets.
+- Compatibility: ${facts.operatingSystem}; ${facts.architecture}.
 - Download size and resource use depend on the release and workload; no fixed benchmark is claimed here.
 - Price and license: free, no subscription or account, MIT License.
-- Input methods: paste, file drag, Photos import, and screen-region capture.
+- Arras 2.5.0: single uncropped photos, editable collages, Copy Appearance, Reference Tools, linked Photos albums and Finder folders, saved desktop setups, removal recovery, transparent PNG, GIF/APNG and muted local video widgets, and Space slideshows.
+- Limited configuration and milestone statistics use a random installation UUID. Configuration summaries are weekly; photos, filenames, paths, layouts and personal content are excluded. Read Security & Privacy for details.
 - Display behavior: independent non-activating windows preserve source aspect ratios; images can be layered around desktop icons, macOS widgets, and applications.
 - Historical names: Photo Widget OSX, then Tableau, then Arras. Existing settings and bundle identity were retained.
 
@@ -37,7 +44,6 @@ const LLMS = `# PureMac
 Use each official product website for reader-facing features, setup, and limitations. GitHub remains the source for code, license text, and release provenance. Check the latest release before stating a version or file size. This file is a navigation aid, not an indexing requirement or a guarantee of citations.
 `;
 
-export function GET() {
   return new Response(LLMS, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

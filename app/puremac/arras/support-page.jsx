@@ -7,9 +7,9 @@ export function supportMetadata(path, title, description) {
   return {
     title, description, metadataBase: new URL(arrasCanonicalUrl),
     alternates: { canonical: url },
-    robots: { index: true, follow: true },
-    openGraph: { title, description, url, siteName: "Arras", type: "website", images: [{ url: "/puremac/arras/demo-poster.jpg", alt: "Arras photo widgets on a Mac desktop" }] },
-    twitter: { card: "summary_large_image", title, description, images: [{ url: "/puremac/arras/demo-poster.jpg", alt: "Arras photo widgets on a Mac desktop" }] },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-video-preview": -1, "max-snippet": -1 } },
+    openGraph: { title, description, url, siteName: "Arras", type: "website", images: [{ url: `${arrasCanonicalUrl}/puremac/arras/launch-2.5.0-poster.jpg`, alt: "Arras photo widgets on a Mac desktop" }] },
+    twitter: { card: "summary_large_image", title, description, images: [{ url: `${arrasCanonicalUrl}/puremac/arras/launch-2.5.0-poster.jpg`, alt: "Arras photo widgets on a Mac desktop" }] },
   };
 }
 
@@ -17,7 +17,7 @@ export default function SupportPage({ links, active, label, title, intro, sectio
   return (
     <main id="arras-page" className="ar-support">
       <ArrasNavigation links={links} active={active} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", url: `${arrasCanonicalUrl}/${active}`, name: label, description: intro, isPartOf: { "@id": `${arrasCanonicalUrl}/#website` } }).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", url: `${arrasCanonicalUrl}/${active === "faqs" ? "faq" : active}`, name: label, description: intro, isPartOf: { "@id": `${arrasCanonicalUrl}/#website` } }).replace(/</g, "\\u003c") }} />
       <header id="arras-content" tabIndex={-1} className="ar-wrap ar-support-header">
         <p className="ar-label">{label}</p>
         <h1>{title}</h1>

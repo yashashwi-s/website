@@ -9,9 +9,9 @@
 
 ## Native macOS Apps
 - [PureMac](https://puremac.yashashwi.me/): The official catalog of independent, open-source Mac apps.
-- [Arras](https://arras.yashashwi.me/): Desktop photo widgets that preserve each image's aspect ratio; includes downloads and installation instructions.
+- [Arras desktop photo widgets for Mac](https://tryarras.tech/): Uncropped photos, editable collages, linked Photos albums and folders, GIF/APNG and muted video widgets, reference tools and saved desktop setups.
 - [Fadeo](https://puremac.yashashwi.me/fadeo): Rule-driven workflow audio for macOS; includes features and licensing details.
 
 ## Further Documentation
 - [PureMac documentation index](https://puremac.yashashwi.me/llms.txt): App facts and authoritative documentation.
-- [Arras documentation index](https://arras.yashashwi.me/llms.txt): Product facts, sources, and installation guidance.
+- [Arras documentation index](https://tryarras.tech/llms.txt): Product facts, sources, and installation guidance.

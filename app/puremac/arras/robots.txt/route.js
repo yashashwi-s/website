@@ -1,3 +1,5 @@
+import { arrasCanonicalUrl } from "@/data/arras-product";
+
 export const dynamic = "force-static";
 
 const AI_CRAWLERS = [
@@ -15,7 +17,7 @@ const AI_CRAWLERS = [
 ];
 
 const AI_RULES = AI_CRAWLERS.map(
-  (crawler) => `User-agent: ${crawler}\nAllow: /`
+  (crawler) => `User-agent: ${crawler}\nAllow: /\nDisallow: /api/`
 ).join("\n\n");
 
 const ROBOTS = `# Arras is public to search engines and answer engines.
@@ -23,8 +25,9 @@ ${AI_RULES}
 
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://arras.yashashwi.me/sitemap.xml
+Sitemap: ${arrasCanonicalUrl}/sitemap.xml
 `;
 
 export function GET() {

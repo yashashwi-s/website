@@ -1,6 +1,6 @@
 // Read-only regression checks. Override origins to test a preview with host routing.
 const puremac = process.env.PUREMAC_BASE_URL || "https://puremac.yashashwi.me";
-const arras = process.env.ARRAS_BASE_URL || "https://arras.yashashwi.me";
+const arras = process.env.ARRAS_BASE_URL || "https://tryarras.tech";
 const failures = [];
 const assert = (ok, message) => { if (!ok) failures.push(message); };
 const get = async url => {
@@ -8,24 +8,20 @@ const get = async url => {
   assert(response.ok, `${url}: HTTP ${response.status}`);
   return { response, html: await response.text() };
 };
-for (const [url, name, canonical] of [[puremac, "PureMac", "https://puremac.yashashwi.me"], [`${puremac}/fadeo`, "Fadeo", "https://puremac.yashashwi.me/fadeo"], [arras, "Arras", "https://arras.yashashwi.me"]]) {
+for (const [url, name, canonical] of [[puremac, "PureMac", "https://puremac.yashashwi.me"], [`${puremac}/fadeo`, "Fadeo", "https://puremac.yashashwi.me/fadeo"], [arras, "Arras", "https://tryarras.tech"]]) {
   const { html, response } = await get(url);
   assert(!response.headers.get("x-robots-tag")?.includes("noindex"), `${name}: noindex response header`);
   const canonicals = [...html.matchAll(/<link[^>]*rel="canonical"[^>]*href="([^"]+)"/g)];
   assert(canonicals.length === 1 && canonicals[0][1].replace(/\/$/, "") === canonical, `${name}: canonical mismatch`);
   assert(html.match(/<meta[^>]*name="twitter:title"[^>]*content="([^"]+)"/)?.[1].startsWith(name), `${name}: inherited or absent social title`);
   assert((html.match(/<h1(?:\s|>)/g) || []).length === 1, `${name}: expected one primary heading`);
-  if (name === "Fadeo") assert(html.includes('id="release-highlights"'), `${name}: missing reviewed release highlight`);
+  if (name !== "PureMac") assert(html.includes('id="release-highlights"'), `${name}: missing reviewed release highlight`);
   if (name === "Fadeo") {
     assert(html.includes('"@type":"SoftwareApplication"'), "Fadeo: missing software identity");
     assert(html.includes('name="twitter:image" content="https://puremac.yashashwi.me/puremac/fadeo/screenshot-workspaces.png"'), "Fadeo: missing product screenshot preview");
   }
   if (name === "Arras") {
-    const faq = await get(`${arras}/faqs`);
-    const security = await get(`${arras}/security`);
-    for (const id of ["controls-and-limits", "photo-rotation", "keyboard-controls", "shortcuts-and-imports", "sharing-privacy", "layout-backups"]) assert(faq.html.includes(`id="${id}"`), `Arras FAQ: missing ${id}`);
-    assert(security.html.includes('id="download-trust"'), "Arras security: missing download trust");
-    assert(html.includes("Open source · No account · Photos stored locally"), "Arras: missing compact privacy claim near download CTA");
+    for (const id of ["controls-and-limits", "photo-rotation", "keyboard-controls", "shortcuts-and-imports", "sharing-privacy", "layout-backups"]) assert(html.includes(`id="${id}"`), `Arras: missing ${id}`);
     assert(!html.includes("That Never Crops"), "Arras: absolute cropping claim returned");
   }
   if (name === "PureMac") {
@@ -42,7 +38,7 @@ for (const origin of [puremac, arras]) {
   assert(key.html.trim() === "7515130a027efb4813a91ff4482c0886", `${origin}: ownership file mismatch`);
 }
 const press = await get(`${puremac}/puremac/press.md`);
-assert(press.html.includes("https://arras.yashashwi.me/"), "Press resources should prefer the official product website");
+assert(press.html.includes("https://tryarras.tech/"), "Press resources should prefer the official product website");
 assert(!/about 20 MB|about 2\.4 MB/.test(summary.html), "PureMac summary contains unsupported fixed measurements");
 if (failures.length) { console.error(failures.join("\n")); process.exitCode = 1; }
 else console.log("Discovery checks passed: canonical URLs, social titles, headings, publisher identity, useful Arras answers, favicon and summary accuracy.");

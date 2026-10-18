@@ -9,6 +9,14 @@ export default function ArrasDemo({ posterProps, setupUrl }) {
   const [demoStarted, setDemoStarted] = useState(false);
   const [allowAutoplay, setAllowAutoplay] = useState(false);
   const [demoNearViewport, setDemoNearViewport] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
+
+  useEffect(() => {
+    const update = () => setPageVisible(document.visibilityState === "visible");
+    update();
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -36,18 +44,18 @@ export default function ArrasDemo({ posterProps, setupUrl }) {
   useEffect(() => {
     const demo = demoRef.current;
     if (!demo) return;
-    if (!demoNearViewport) {
+    if (!demoNearViewport || !pageVisible) {
       demo.pause();
       return;
     }
     if (!allowAutoplay || manuallyPaused.current) return;
     demo.play().catch(() => {});
-  }, [allowAutoplay, demoNearViewport]);
+  }, [allowAutoplay, demoNearViewport, pageVisible]);
 
   return (
     <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
       <div className="ar-demo-media">
-        <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" onPlay={() => { setDemoPlaying(true); setDemoStarted(true); }} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/demo.mp4" type="video/mp4" />Your browser does not support video.</video>
+        <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" onPlay={() => { setDemoPlaying(true); setDemoStarted(true); }} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/launch-2.5.0.mp4" type="video/mp4" />Your browser does not support video.</video>
         {!demoStarted && <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />}
       </div>
       <div className="ar-caption"><a href={setupUrl}>Read the setup instructions →</a><button type="button" aria-controls="arras-demo" onClick={async () => {

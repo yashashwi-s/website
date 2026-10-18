@@ -22,7 +22,7 @@ jobs:
         run: npm run sync:arras-product -- --check
       - name: Check deployed Arras routes and structured data
         env:
-          ARRAS_REQUEST_BASE_URL: https://arras.yashashwi.me
+          ARRAS_REQUEST_BASE_URL: https://tryarras.tech
         run: node scripts/check-puremac-aeo.mjs --arras-only
       - name: Audit the deployed Arras site
         env:

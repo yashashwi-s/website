@@ -6,6 +6,8 @@ import CustomCursor from "@/components/CustomCursor";
 import ScrambleText from "@/components/ScrambleText";
 import SmoothScroll from "@/components/SmoothScroll";
 import { GRAIN } from "./puremac/grain";
+import { arrasCanonicalUrl } from "@/data/arras-product";
+import { macProducts } from "@/data/mac-products";
 
 /* Fourth identity in the family.
  *
@@ -421,8 +423,8 @@ export default function HomeClient({ personal, projects, experience, achievement
             <a href="#work" data-cursor="snap" className="transition-colors hover:text-white">
               <ScrambleText text="Work" />
             </a>
-            <a href="https://puremac.yashashwi.me" data-cursor="snap" className="transition-colors hover:text-white">
-              <ScrambleText text="PureMac" />
+            <a href={arrasCanonicalUrl} data-cursor="snap" className="transition-colors hover:text-white">
+              <ScrambleText text="Arras" />
             </a>
             <a href={personal.resume} data-cursor="snap" className="transition-colors hover:text-white">
               <ScrambleText text="CV" />
@@ -543,12 +545,10 @@ export default function HomeClient({ personal, projects, experience, achievement
           </div>
         </section>
 
-        {/* ------------------------------------------------------------ puremac */}
+        {/* ----------------------------------------------------------- Mac apps */}
         <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-          <a
-            href="https://puremac.yashashwi.me"
-            data-cursor="snap"
-            className="group relative block overflow-hidden rounded-3xl border border-white/12 p-8 transition-colors hover:border-white/30 sm:p-12"
+          <div
+            className="relative block overflow-hidden rounded-3xl border border-white/12 p-8 sm:p-12"
           >
             <div
               aria-hidden
@@ -559,21 +559,21 @@ export default function HomeClient({ personal, projects, experience, achievement
               <div>
                 <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">A small studio</p>
                 <h2 className="mt-5 text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[0.9]">
-                  Pure<span className="text-white/55">Mac</span>
+                  Made for <span className="text-white/55">Mac</span>
                 </h2>
                 <p className="mt-5 max-w-md text-[15.5px] leading-[1.65] text-white/55">
                   Two native macOS apps, both open source, both free to run.{" "}
-                  <span className="text-white/85">Arras</span> puts photos on your desktop at their
-                  real proportions. <span className="text-white/85">Fadeo</span> changes your audio
+                  <a href={arrasCanonicalUrl} className="text-white/85 underline underline-offset-4">Arras desktop photo widgets</a> keep your photos uncropped at their
+                  true aspect ratio. <a href={macProducts.fadeo.url} className="text-white/85 underline underline-offset-4">Fadeo workflow audio</a> changes your audio
                   to match what you are doing.
                 </p>
               </div>
-              <span className="inline-flex items-center gap-2 self-start rounded-full border border-white/20 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 transition-colors group-hover:border-white/50 group-hover:text-white sm:self-end">
-                Visit PureMac
+              <a href={arrasCanonicalUrl} data-cursor="snap" className="inline-flex items-center gap-2 self-start rounded-full border border-white/20 px-6 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 transition-colors hover:border-white/50 hover:text-white sm:self-end">
+                Get Arras for Mac
                 <ArrowUpRight size={14} />
-              </span>
+              </a>
             </div>
-          </a>
+          </div>
         </section>
 
         {/* ------------------------------------------- paper section (inverted) */}
@@ -726,7 +726,7 @@ export default function HomeClient({ personal, projects, experience, achievement
                   ["GitHub", personal.github],
                   ["LinkedIn", personal.linkedin],
                   ["Codeforces", personal.codeforces],
-                  ["PureMac", "https://puremac.yashashwi.me"],
+                  ["Arras", arrasCanonicalUrl],
                   ["CV", personal.resume],
                 ].map(([label, href]) => (
                   <a key={label} href={href} data-cursor="snap" className="transition-colors hover:text-white">

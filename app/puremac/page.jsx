@@ -1,8 +1,6 @@
 import PureMacClient from "./puremac-client";
 import { FaqJsonLd } from "./faq-section";
 import { pureMacFaqs } from "./faq-data";
-import { getArrasProduct } from "@/lib/arras-product";
-import { summarizeArrasProduct } from "@/data/arras-product";
 import { latestRelease, totalDownloads } from "@/lib/github-release";
 
 
@@ -29,16 +27,12 @@ export const metadata = {
 
 export default async function PureMacPage() {
   // GitHub asset downloads are not unique users or installations.
-  const [fadeo, arras, fadeoDl, arrasDl, product] = await Promise.all([
+  const [fadeo, arras, fadeoDl, arrasDl] = await Promise.all([
     latestRelease("Fadeo"),
     latestRelease("Arras"),
     totalDownloads("Fadeo"),
     totalDownloads("Arras"),
-    getArrasProduct(),
   ]);
-
-  const facts = summarizeArrasProduct(product);
-  const faqs = pureMacFaqs.map(faq => faq.question === "What version of macOS do PureMac apps require?" ? { ...faq, answer: `Arras: ${facts.operatingSystem}; ${facts.architecture}. Fadeo requires macOS 14 or later. Check the official product pages and release assets before downloading.` } : faq);
 
   return (
     <>
@@ -49,17 +43,17 @@ export default async function PureMacPage() {
           { "@type": "Person", "@id": "https://yashashwi.me/#person", name: "Yashashwi Singhania", url: "https://yashashwi.me/" },
           { "@type": "WebSite", "@id": "https://puremac.yashashwi.me/#website", name: "PureMac", url: "https://puremac.yashashwi.me/", publisher: { "@id": "https://puremac.yashashwi.me/#publisher" } },
           { "@type": "CollectionPage", "@id": "https://puremac.yashashwi.me/#page", name: "PureMac apps", url: "https://puremac.yashashwi.me/", isPartOf: { "@id": "https://puremac.yashashwi.me/#website" }, mainEntity: { "@type": "ItemList", itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Arras", url: "https://arras.yashashwi.me/" },
+            { "@type": "ListItem", position: 1, name: "Arras", url: "https://tryarras.tech/" },
             { "@type": "ListItem", position: 2, name: "Fadeo", url: "https://puremac.yashashwi.me/fadeo" },
           ] } },
         ],
       }).replace(/</g, "\\u003c") }} />
-      <FaqJsonLd faqs={faqs} />
+      <FaqJsonLd faqs={pureMacFaqs} />
       <PureMacClient
         fadeo={fadeo}
         arras={arras}
         downloads={{ fadeo: fadeoDl, arras: arrasDl }}
-        faqs={faqs}
+        faqs={pureMacFaqs}
       />
     </>
   );

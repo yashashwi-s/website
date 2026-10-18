@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 
-const port = "3199";
+const port = process.env.ARRAS_AUDIT_PORT || "3199";
 const env = { ...process.env, ARRAS_METADATA_OFFLINE: "1", PORT: port };
 
 function run(command, args, options = {}) {
@@ -20,7 +20,7 @@ try {
   for (let attempt = 0; attempt < 60; attempt += 1) {
     if (server.exitCode !== null) throw new Error(`production server exited ${server.exitCode}`);
     try {
-      const response = await fetch(`http://arras.localhost:${port}/`);
+      const response = await fetch(`http://127.0.0.1:${port}/puremac/arras`);
       if (response.ok) { ready = true; break; }
     } catch {}
     await new Promise((resolve) => setTimeout(resolve, 250));
@@ -29,12 +29,17 @@ try {
   await run("node", ["scripts/check-puremac-aeo.mjs", "--arras-only"], {
     env: {
       ...env,
-      ARRAS_REQUEST_BASE_URL: `http://arras.localhost:${port}`,
+      ARRAS_REQUEST_BASE_URL: `http://127.0.0.1:${port}`,
+      ARRAS_REQUEST_HOST: "arras.localhost",
     },
   });
 } finally {
-  server.kill("SIGTERM");
-  await new Promise((resolve) => server.once("exit", resolve));
+  if (server.exitCode === null) {
+    await new Promise(resolve => {
+      server.once("exit", resolve);
+      server.kill("SIGTERM");
+    });
+  }
 }
 
 console.log("Deterministic offline Arras production audit passed.");

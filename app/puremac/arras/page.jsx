@@ -7,23 +7,23 @@ import {
 } from "@/data/arras-product";
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasLinks } from "./arras-links";
-import { latestRelease, totalDownloads } from "@/lib/github-release";
+import { latestRelease, totalDownloads, repositoryStars } from "@/lib/github-release";
 import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 
 const SITE_URL = arrasCanonicalUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
-const CONTENT_UPDATED_AT = "2026-09-30";
-const TITLE = "Arras — Free Mac Photo Widgets Without Forced Cropping";
+const CONTENT_UPDATED_AT = "2026-10-18";
+const TITLE = "Arras — Mac Photo Widgets & Editable Desktop Collages";
 const DESCRIPTION =
-  "Put photos on your Mac desktop at their original aspect ratio. Arras is a free, native, open-source photo widget with no telemetry.";
-const OG_IMAGE = "/puremac/arras/demo-poster.jpg";
+  "Free Mac photo widgets and editable desktop collages. Keep true aspect ratios, link Photos albums, add muted videos, copy a look and save desktop setups.";
+const OG_IMAGE = "/puremac/arras/launch-2.5.0-poster.jpg";
 
 export const metadata = {
   title: TITLE,
   description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
-  alternates: { canonical: "/" },
+  alternates: { canonical: SITE_URL },
   robots: {
     index: true,
     follow: true,
@@ -35,14 +35,20 @@ export const metadata = {
       "max-snippet": -1,
     },
   },
-  // Two renames deep, so the old names stay searchable.
   keywords: [
     "Arras",
-    "Tableau macOS",
-    "Photo Widget OSX",
-    "macOS desktop photo widget",
-    "desktop widget aspect ratio",
-    "free mac app",
+    "Mac desktop photo widget without cropping",
+    "single photo widget for Mac",
+    "true aspect ratio desktop photos",
+    "Polaroid and Gallery photo frames",
+    "transparent PNG desktop widget",
+    "animated GIF and APNG widgets",
+    "floating screenshot and PDF reference overlay",
+    "multi-photo Space slideshow",
+    "editable desktop photo collages",
+    "linked Photos albums and folders",
+    "muted video desktop widgets",
+    "saved desktop setups",
   ],
   openGraph: {
     title: TITLE,
@@ -51,13 +57,13 @@ export const metadata = {
     siteName: arrasProduct.name,
     locale: "en_US",
     type: "website",
-    images: [{ url: OG_IMAGE, width: 1470, height: 956, alt: "Arras widgets on a macOS desktop" }],
+    images: [{ url: `${SITE_URL}${OG_IMAGE}`, width: 1470, height: 956, alt: "Arras widgets on a macOS desktop" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ url: OG_IMAGE, alt: "Arras photo widgets arranged on a macOS desktop" }],
+    images: [{ url: `${SITE_URL}${OG_IMAGE}`, alt: "Arras photo widgets arranged on a macOS desktop" }],
   },
 };
 
@@ -104,8 +110,8 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       description: DESCRIPTION,
       url: ARRAS_URL,
       downloadUrl,
-      softwareVersion: release?.tag ?? undefined,
-      releaseNotes: release?.url ?? `${product.repositoryUrl}/releases`,
+      softwareVersion: product.publicRelease.version,
+      releaseNotes: `${product.repositoryUrl}/releases`,
       dateModified,
       applicationCategory: "MultimediaApplication",
       applicationSubCategory: product.category,
@@ -113,7 +119,6 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       operatingSystem: summary.operatingSystem,
       isAccessibleForFree: true,
       license: product.license.url,
-      codeRepository: product.repositoryUrl,
       screenshot: `${SITE_URL}${OG_IMAGE}`,
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
@@ -126,10 +131,19 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
         url: `${ARRAS_URL}/#install`,
       },
       featureList: [
-        "Preserves each image's source aspect ratio",
-        "Pastes, imports, captures, and rotates desktop photos",
-        "Layers photos around desktop icons, widgets, and applications",
-        "Requires no account and collects no telemetry",
+        "Uncropped desktop photos at their true aspect ratio",
+        "Single photo widgets without creating Apple Photos albums",
+        "Editable collages with independent member movement and resizing, captions and labels",
+        "Polaroid and Gallery looks with custom mats, borders, shapes and shadows",
+        "Copy Appearance without replacing photo content or placement",
+        "Transparent PNG, animated GIF/APNG and muted local video widgets",
+        "Linked Photos albums and Finder folders with managed local snapshots",
+        "Multi-photo Space slideshows with timed or on-click rotation",
+        "Behind Icons, On Desktop, Above Widgets and Floating depth levels",
+        "Reference Tools for non-destructive crop, rotation, flips, grayscale, notes and source links",
+        "Saved desktop setups, arrangement undo/redo and removal recovery",
+        "Explicit .arras layout backups with stored media",
+        "No account; photo content stays local"
       ],
       ...(downloads?.total > 0
         ? {
@@ -140,6 +154,18 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
             },
           }
         : {}),
+    },
+    {
+      "@type": "VideoObject",
+      "@id": `${ARRAS_URL}#launch-film`,
+      name: "Arras 2.5.0 — Your own world",
+      description: "Arrange photos into a collage, lock the layout, and see different real Arras desktop setups.",
+      thumbnailUrl: [`${SITE_URL}${OG_IMAGE}`],
+      contentUrl: `${SITE_URL}/puremac/arras/launch-2.5.0.mp4`,
+      uploadDate: "2026-10-18T00:00:00+05:30",
+      duration: "PT10.4S",
+      isFamilyFriendly: true,
+      publisher: { "@id": "https://yashashwi.me/#person" },
     },
     {
       "@type": "HowTo",
@@ -169,9 +195,10 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
 export default async function ArrasPage() {
   // Renamed from Tableau in v2.3.1. GitHub redirects the old API path, but
   // asking for the current name keeps this working if that ever stops.
-  const [release, downloads, links, product] = await Promise.all([
+  const [release, downloads, stars, links, product] = await Promise.all([
     latestRelease("Arras"),
     totalDownloads("Arras"),
+    repositoryStars("Arras"),
     getArrasLinks(),
     getArrasProduct(),
   ]);
@@ -195,6 +222,7 @@ export default async function ArrasPage() {
       <ArrasClient
         release={release}
         downloads={downloads}
+        stars={stars}
         links={links}
         posterProps={posterProps}
         product={{ ...product, ...summarizeArrasProduct(product) }}

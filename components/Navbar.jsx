@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { personal } from "@/data/personal";
+import { arrasCanonicalUrl } from "@/data/arras-product";
 import { Menu, X } from "lucide-react";
 import Magnetic from "@/components/Magnetic";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -13,8 +14,8 @@ const navLinks = [
   { label: "Capabilities", href: "#skills" },
   { label: "Milestones", href: "#achievements" },
   {
-    label: "PureMac",
-    href: "https://puremac.yashashwi.me",
+    label: "Arras",
+    href: arrasCanonicalUrl,
     external: true,
   },
   {

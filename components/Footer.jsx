@@ -1,6 +1,7 @@
 "use client";
 
 import { personal } from "@/data/personal";
+import { arrasCanonicalUrl } from "@/data/arras-product";
 import Magnetic from "@/components/Magnetic";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
@@ -53,7 +54,7 @@ export default function Footer() {
                 <a href={personal.linkedin} target="_blank" rel="noreferrer" className="text-lg uppercase text-white/60 hover:text-white transition-colors">LinkedIn</a>
               </Magnetic>
               <Magnetic>
-                <a href="https://puremac.yashashwi.me" target="_blank" rel="noreferrer" className="text-lg uppercase text-white/60 hover:text-white transition-colors">PureMac</a>
+                <a href={arrasCanonicalUrl} target="_blank" rel="noreferrer" className="text-lg uppercase text-white/60 hover:text-white transition-colors">Arras desktop photo widgets</a>
               </Magnetic>
             </div>
             <p className="text-white/30 text-sm mt-4 md:mt-0">© {new Date().getFullYear()} {personal.name}</p>

@@ -1,4 +1,4 @@
-import { arrasProduct } from "./arras-product";
+import { arrasCanonicalUrl, arrasProduct } from "./arras-product";
 
 export const projects = [
   {
@@ -18,10 +18,10 @@ export const projects = [
   {
     title: arrasProduct.name,
     description:
-      "A macOS menu bar app that places photos on your desktop as borderless, always-on-desktop overlays — perfectly matching each image's native aspect ratio. No cropping, no black bars.",
+      "Free Mac photo widgets and editable desktop collages at each image’s true aspect ratio. Link Photos albums or Finder folders, add GIFs or muted videos, reuse appearance, keep reference notes and save desktop setups.",
     tags: ["Swift", "SwiftUI", "AppKit", "Core Animation"],
     github: arrasProduct.repositoryUrl,
-    live: arrasProduct.canonicalUrl,
+    live: arrasCanonicalUrl,
     type: "personal",
     featured: true,
     emoji: "🖼️",

@@ -1,4 +1,4 @@
-import arrasFaqData from "./arras-faqs.json";
+
 
 const SOURCES = {
   appleWidgets: {
@@ -69,25 +69,25 @@ export const pureMacFaqs = [
   {
     question: "Do PureMac apps collect telemetry?",
     answer:
-      "PureMac does not build its apps around background tracking. Arras has no app analytics or telemetry; update checks and downloads contact GitHub. Fadeo makes its workflow decisions locally and only sends limited information for actions such as license activation, optional diagnostics, feedback, or a mailing-list signup.",
+      "Arras 2.5.0 keeps photo content local and sends limited configuration and milestone statistics linked by a random installation identifier. Configuration summaries are weekly; photos, filenames, paths, layouts and personal content are excluded. Update checks and downloads contact GitHub. Fadeo makes its workflow decisions locally and only sends limited information for actions such as license activation, optional diagnostics, feedback, or a mailing-list signup.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
     question: "What version of macOS do PureMac apps require?",
     answer:
-      "Check the Arras product page and official release for downloadable architectures and macOS requirements. Fadeo requires macOS 14 or later.",
+      "Arras 2.5.0 supports Apple Silicon and Intel Macs running macOS 14 or later. Fadeo also requires macOS 14 or later; check its product page and GitHub release for the available architectures.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
     question: "How do I install a PureMac app?",
     answer:
-      "Download the latest DMG from the app's product page or GitHub release. The Arras product page lists the exact installation steps and any one-time Gatekeeper action.",
+      "Download the latest DMG from the app's official product page or GitHub release. Get Arras directly at tryarras.tech. The product page lists the installation steps and any one-time macOS first-launch confirmation.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo, SOURCES.appleGatekeeper],
   },
   {
     question: "Why can macOS show a Gatekeeper warning for a PureMac download?",
     answer:
-      "The apps are ad-hoc signed and distributed outside the Mac App Store. macOS may therefore ask you to approve the app once in Privacy & Security. The warning reflects the distribution method, and you can inspect the public source before deciding to run it.",
+      "Arras 2.5.0 is Developer ID signed and notarized by Apple. Other PureMac apps may use different signing; check their current release guidance. macOS may therefore ask you to approve the app once in Privacy & Security. The warning reflects the distribution method, and you can inspect the public source before deciding to run it.",
     sources: [SOURCES.appleGatekeeper, SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
@@ -98,7 +98,7 @@ export const pureMacFaqs = [
   },
 ];
 
-export const arrasFaqs = arrasFaqData;
+export { arrasFaqs } from "@/lib/arras-faqs.mjs";
 
 export const fadeoFaqs = [
   {

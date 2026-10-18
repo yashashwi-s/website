@@ -1,8 +1,11 @@
+import metadata from "../data/arras-product.json" with { type: "json" };
+import { getArrasInstallation } from "../lib/arras-installation.mjs";
+import { requestPage } from "./lib/request-page.mjs";
 import { hasRetiredArrasTrustCopy } from "./lib/arras-trust-copy.mjs";
 
 const baseUrl = (process.env.PUREMAC_BASE_URL || "https://puremac.yashashwi.me").replace(/\/$/, "");
 const requestBaseUrl = (process.env.PUREMAC_REQUEST_BASE_URL || baseUrl).replace(/\/$/, "");
-const arrasBaseUrl = (process.env.ARRAS_BASE_URL || "https://arras.yashashwi.me").replace(/\/$/, "");
+const arrasBaseUrl = (process.env.ARRAS_BASE_URL || "https://tryarras.tech").replace(/\/$/, "");
 const arrasRequestBaseUrl = (process.env.ARRAS_REQUEST_BASE_URL || arrasBaseUrl).replace(/\/$/, "");
 const requestHeaders = {
   "User-Agent": "PureMac-AEO-Check/1.0",
@@ -16,6 +19,7 @@ const arrasRequestHeaders = {
 function arrasRequestUrl(path) {
   const configured = new URL(arrasRequestBaseUrl);
   const directRoute = configured.pathname !== "/" && configured.pathname !== "";
+  if (directRoute && path === "/") return arrasRequestBaseUrl;
   if (directRoute && path === "/favicon.ico") {
     return `${configured.origin}/puremac/arras-icon.png`;
   }
@@ -26,12 +30,11 @@ function arrasRequestUrl(path) {
 }
 
 const arrasOnly = process.argv.includes("--arras-only");
-const paths = arrasOnly ? [] : ["/", "/arras", "/fadeo", "/robots.txt", "/sitemap.xml", "/llms.txt"];
+const paths = arrasOnly ? [] : ["/", "/fadeo", "/robots.txt", "/sitemap.xml", "/llms.txt"];
 const responses = await Promise.all(
   paths.map(async (path) => {
-    const response = await fetch(`${requestBaseUrl}${path}`, {
+    const response = await requestPage(`${requestBaseUrl}${path}`, {
       headers: requestHeaders,
-      redirect: "follow",
     });
     const body = await response.text();
     return [path, { response, body }];
@@ -40,19 +43,18 @@ const responses = await Promise.all(
 const pages = Object.fromEntries(responses);
 const arrasPaths = [
   "/",
-  "/faqs",
+  "/faq",
   "/security",
   "/robots.txt",
   "/sitemap.xml",
   "/llms.txt",
   "/favicon.ico",
-  "/puremac/arras/demo-poster.jpg",
+  "/puremac/arras/launch-2.5.0-poster.jpg",
 ];
 const arrasResponses = await Promise.all(
   arrasPaths.map(async (path) => {
-    const response = await fetch(arrasRequestUrl(path), {
+    const response = await requestPage(arrasRequestUrl(path), {
       headers: arrasRequestHeaders,
-      redirect: "follow",
     });
     const body = await response.text();
     return [path, { response, body }];
@@ -83,6 +85,9 @@ for (const [path, { response }] of Object.entries(arrasPages)) {
 }
 
 const arrasHtml = arrasPages["/"].body;
+if (process.env.ARRAS_REQUEST_HOST?.startsWith("arras.")) {
+  check(!/<a\b[^>]*\bhref="\/puremac\/arras(?:\/|#|")/.test(arrasHtml), "Arras homepage navigation must use clean subdomain paths");
+}
 const title = arrasHtml.match(/<title>([^<]+)<\/title>/i)?.[1] ?? "";
 const description = decodeHtml(
   arrasHtml.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i)?.[1] ??
@@ -118,15 +123,20 @@ const graphTypes = new Set(
     return nodes.flatMap((node) => (Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]]));
   })
 );
-const faqHtml = arrasPages["/faqs"].body;
+const faqHtml = arrasPages["/faq"].body;
 const securityHtml = arrasPages["/security"].body;
 function visibleText(html) {
   return decodeHtml(html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "").replace(/<[^>]*>/g, "")).replace(/\s+/g, " ");
 }
-for (const [path, body] of [["/", arrasHtml], ["/faqs", faqHtml], ["/security", securityHtml], ["/llms.txt", arrasPages["/llms.txt"].body]]) {
+for (const [path, body] of [["/", arrasHtml], ["/faq", faqHtml], ["/security", securityHtml], ["/llms.txt", arrasPages["/llms.txt"].body]]) {
   const text = visibleText(body);
   check(!hasRetiredArrasTrustCopy(decodeHtml(body)), `${path} contains retired Arras trust disclaimers`);
-  for (const fact of ["Open Anyway", "password", "Touch ID"]) check(text.includes(fact), `${path} must explain first-launch confirmation: ${fact}`);
+  if (metadata.publicRelease.notarized) {
+    check(text.includes(getArrasInstallation(metadata).explanation), `${path} must explain normal notarized first launch`);
+    check(!/Open Anyway|not notarized by Apple|ad-hoc signed/.test(text), `${path} contains obsolete approval instructions`);
+  } else {
+    for (const fact of ["Open Anyway", "password", "Touch ID"]) check(text.includes(fact), `${path} must explain first-launch confirmation: ${fact}`);
+  }
 }
 const howTo = jsonLdBlocks.flatMap(block => block["@graph"] ?? [block]).find(node => node["@type"] === "HowTo");
 check(howTo?.step?.length === 4, "Install HowTo must include download, Applications, open, and first-launch confirmation");
@@ -134,7 +144,7 @@ for (const step of howTo?.step ?? []) check(visibleText(arrasHtml).includes(step
 const faqBlocks = [...faqHtml.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(match => JSON.parse(match[1]));
 const faq = faqBlocks.find(block => block["@type"] === "FAQPage");
 check(!jsonLdBlocks.some(block => block["@type"] === "FAQPage"), "FAQ schema belongs only on the page with its visible answers");
-for (const [path, html] of [["/faqs", faqHtml], ["/security", securityHtml]]) {
+for (const [path, html] of [["/faq", faqHtml], ["/security", securityHtml]]) {
   check(html.includes(`rel="canonical" href="${arrasBaseUrl}${path}"`), `Arras ${path}: incorrect canonical`);
   check((html.match(/<h1(?:\s|>)/gi) ?? []).length === 1, `Arras ${path}: expected one H1`);
   check(!html.includes('name="robots" content="noindex'), `Arras ${path}: must allow indexing`);
@@ -146,7 +156,7 @@ for (const entry of faq?.mainEntity ?? []) {
   for (const paragraph of entry.acceptedAnswer.text.split("\n\n")) check(visibleText(faqHtml).includes(paragraph.replace(/\s+/g, " ")), `FAQ schema answer must match visible copy: ${entry.name}`);
 }
 check((faqHtml.match(/<details(?:\s|>)/g) ?? []).length === faq?.mainEntity?.length, "Visible FAQ count must match its structured data");
-for (const fact of ["not notarized by Apple", "not sandboxed", "does not upload", "GitHub", "Vercel Analytics", "does not verify a Developer ID signature"]) {
+for (const fact of [metadata.publicRelease.notarized ? "notarized by Apple" : "not notarized by Apple", "not sandboxed", "does not upload", "GitHub", "Vercel Analytics", "does not verify a Developer ID signature"]) {
   check(securityHtml.replace(/<[^>]*>/g, "").includes(fact), `Security page is missing: ${fact}`);
 }
 check(!securityHtml.includes("xattr -dr"), "Security page must not lead users to a quarantine bypass");
@@ -157,7 +167,7 @@ check(robotsMeta.includes("index") && robotsMeta.includes("follow"), "Arras robo
 check(googleBotMeta.includes("max-image-preview:large"), "Arras Googlebot metadata must allow large image previews");
 check(canonicals.includes(arrasBaseUrl), "Arras canonical URL is missing or incorrect");
 check((arrasHtml.match(/<h1(?:\s|>)/gi) ?? []).length === 1, "/arras must render exactly one H1");
-check((faq?.mainEntity?.length ?? 0) > 0, "/faqs must expose its visible questions as structured data");
+check((faq?.mainEntity?.length ?? 0) > 0, "/faq must expose its visible questions as structured data");
 for (const type of ["SoftwareApplication", "HowTo", "WebSite", "Person", "WebPage"]) {
   check(graphTypes.has(type), `/arras JSON-LD is missing ${type}`);
 }
@@ -194,7 +204,7 @@ for (const crawler of ["OAI-SearchBot", "GPTBot", "ClaudeBot", "PerplexityBot", 
 check(arrasRobots.includes(`Sitemap: ${arrasBaseUrl}/sitemap.xml`), "Arras /robots.txt sitemap URL is incorrect");
 const arrasSitemap = arrasPages["/sitemap.xml"].body;
 check(arrasSitemap.includes(`<loc>${arrasBaseUrl}</loc>`), "Arras /sitemap.xml is missing the canonical root");
-for (const path of ["/faqs", "/security"]) check(arrasSitemap.includes(`<loc>${arrasBaseUrl}${path}</loc>`), `Arras sitemap is missing ${path}`);
+for (const path of ["/faq", "/security"]) check(arrasSitemap.includes(`<loc>${arrasBaseUrl}${path}</loc>`), `Arras sitemap is missing ${path}`);
 check(arrasSitemap.includes("<lastmod>"), "Arras /sitemap.xml is missing a freshness timestamp");
 
 const arrasLlms = arrasPages["/llms.txt"].body;
@@ -207,7 +217,7 @@ check(
   "Arras favicon must return an image"
 );
 check(
-  arrasPages["/puremac/arras/demo-poster.jpg"].response.headers.get("content-type")?.startsWith("image/"),
+  arrasPages["/puremac/arras/launch-2.5.0-poster.jpg"].response.headers.get("content-type")?.startsWith("image/"),
   "Arras Open Graph image must return an image"
 );
 
@@ -229,7 +239,7 @@ check(arrasHtml.includes('id="install"'), "Arras first-party installation sectio
 const iconHref = arrasHtml.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1];
 check(Boolean(iconHref), "Arras must advertise a favicon");
 if (iconHref) {
-  const icon = await fetch(arrasRequestUrl(decodeHtml(iconHref)), { headers: arrasRequestHeaders });
+  const icon = await requestPage(arrasRequestUrl(decodeHtml(iconHref)), { headers: arrasRequestHeaders });
   check(icon.ok && icon.headers.get("content-type")?.startsWith("image/"), "Arras advertised favicon must resolve to an image");
 }
 

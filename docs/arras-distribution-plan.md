@@ -1,29 +1,28 @@
 # Arras: distribution with a clear identity
 
-Historical planning notes. Current product claims and distribution facts belong to the Arras contract, not reusable copy below. See [current features](https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md) and [official downloads](https://github.com/yashashwi-s/Arras/releases/latest).
-
-Updated 10 September 2026. No artificial 30-day deadline. Notarization remains deferred at the maker’s request.
+Updated 18 October 2026. The 2.5.0 ZIP and DMG are Developer ID signed, notarized and verified. The owner approved the app/site release and tryarras.tech cutover on 18 October.
 
 ## The promise
 
-Your photos. Not squares. A native Mac photo widget that respects the original image and lets you control its placement and appearance.
+Your photos. Your kind of desktop. A native Mac photo widget that respects the original image and lets you control its placement and appearance.
 
-Keep the future customizable widget suite as a product direction, not a claim about what people can download today. Use the approved three-part mark consistently across the website, app, release artwork, and listings. The vector master and 1024px app-icon export are in this repository; the app binary still needs a separate asset update.
+Keep the future customizable widget suite as a product direction, not a claim about what people can download today. Use the approved three-part mark consistently across the website, app, release artwork, and listings. Review the icon and wordmark in the packaged app and launch assets together; do not resurrect the old Tableau identity.
 
 ## What the referral data actually tells us
 
 The supplied snapshot contains 107 referral events: 52 ChatGPT, 28 Reddit, 19 Google, 6 GitHub, and 2 Bing. ChatGPT accounts for about 49% of those events. The reporting period and conversion counts were not supplied. Unique visitors must not be summed across sources because the same person may appear in several groups.
 
-This is evidence of visits attributed to ChatGPT, not proof of a crawler run, a ranking improvement, or installs. Separate website download clicks from GitHub asset download totals; neither measures successful installation. Keep any website measurement distinct from Arras’s no-app-telemetry promise.
+This is evidence of visits attributed to ChatGPT, not proof of a crawler run, a ranking improvement, or installs. Separate website download clicks from GitHub asset download totals; neither measures successful installation. Keep website measurements separate from app telemetry. Older 2.4.9 downloads are telemetry-disabled; 2.5.0 enables limited weekly statistics. Do not link web visitors to installation UUIDs.
 
 ## Next work, in priority order
 
-1. Make the approved brand consistent. Ship the website identity now; integrate the app asset when preparing the next binary. Keep the current notarization warning and official release links visible.
-2. Turn the real demo into a short demonstration: show a tall portrait, a panorama, moving a photo, and one styling adjustment. End with the free download and macOS requirements. Avoid fabricated macOS screens or implied Apple comparisons made from cropped Arras footage.
+1. Keep the published app and website consistent as 2.5.0 evolves. The site contains real feature screenshots, universal/notarized download facts, ten FAQs, weekly-statistics disclosure, canonical metadata and new-domain redirects. Preserve portfolio/CV/Fadeo changes and both telemetry endpoint addresses. tryarras.tech is the selected primary domain; old Arras pages redirect there.
+2. The finished **10.4-second**, silent desktop film uses real movement followed by the deliberate YOUR / OWN / WORLD montage and desktop finale. Its actual native scenes and sample-photo rights are preserved in `~/Arras Launch 2.5.0/Desktop Film/`. The website has an optimized 1.8 MB copy and real collage, slideshow/layer, appearance, Preferences and Privacy captures. Additional media is optional, not a launch blocker.
+
 3. Improve existing discovery surfaces before creating duplicates. Arras already has an [AlternativeTo listing](https://alternativeto.net/software/arras/about/). Check its icon, current name, screenshots, requirements, and canonical link. Prepare proposed edits for review.
 4. Follow up where people have already shown interest. On Reddit, identify yourself as the maker, answer installation questions, and share a meaningful change only where the community permits it. Do not mass-post the same promotional copy or manufacture recommendations.
 5. Publish one useful comparison and one concise setup tutorial, grounded in the downloadable release. Explain where the built-in Photos widget is sufficient and where Arras offers different control. Cite [Apple’s widget documentation](https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac) and the [Arras source and release notes](https://github.com/yashashwi-s/Arras).
-6. Assemble a small press kit: transparent mark, app icon, real screenshots, 20-second demo, one-sentence description, system requirements, license, installation caveat, and maker contact. Pitch a specific use case to a small number of relevant Mac reviewers after reviewing their submission preferences.
+6. Assemble a small press kit: transparent mark, app icon, labeled real screenshots, 10.4-second real-desktop demo, one-sentence description, system requirements, license, notarized installation steps, and maker contact. Pitch a specific use case to a small number of relevant Mac reviewers after reviewing their submission preferences.
 7. Consider a contribution to [awesome-mac](https://github.com/jaywcjlove/awesome-mac) and a [Product Hunt launch](https://www.producthunt.com/launch) after checking their current guidelines and preparing good support coverage. These are proposals, not submitted listings.
 
 ## Answer-engine visibility
@@ -38,7 +37,7 @@ Useful third-party coverage and accurate demonstrations are a stronger next inve
 
 **Short description:** Arras is a free, open-source photo widget for macOS that keeps every image’s original proportions and lets you choose its placement and styling.
 
-**Demo caption:** Portraits stay tall. Panoramas stay wide. Here’s Arras arranging actual photos on a Mac desktop—without cropping them into a widget grid. I’m the maker; it’s free and open source. Check the official download’s current compatibility before publishing. The current release is not notarized, so please read the installation notes.
+**Demo caption:** Portraits stay tall. Panoramas stay wide. Here’s Arras arranging actual photos on a Mac desktop—without cropping them into a widget grid. I’m the maker; it’s free and open source. macOS 14+, Apple silicon and Intel. Developer ID signed and notarized by Apple.
 
 **Reviewer opening:** I built Arras because desktop photo widgets kept forcing my images into preset shapes. It’s a small native Mac app that preserves the full photo and gives each image its own placement and styling. Would a short real-app demo be useful for your Mac utilities coverage?
 
