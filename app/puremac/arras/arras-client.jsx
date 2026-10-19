@@ -3,7 +3,7 @@ import { ArrasNavigation, ArrasFooter } from "./arras-navigation";
 import ArrasDemo from "./arras-demo";
 import { ArrasDownloadLink } from "./arras-attribution";
 import ArrasStar from "./arras-star";
-import { getArrasInstallation } from "@/lib/arras-installation.mjs";
+import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
 import "./arras.css";
 
 function DesktopShot({ src, alt, caption }) {
@@ -14,12 +14,29 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
   const SOURCE = product.repositoryUrl;
   const download = links.download;
   const installation = getArrasInstallation(product);
+  const storeOffer = getArrasAppStoreOffer(product);
   return (
     <main id="arras-page">
       <ArrasNavigation links={links} />
       <header id="arras-content" tabIndex={-1} className="ar-wrap ar-hero">
         <div><p className="ar-label">Mac desktop photo widgets · 2.5.0</p><h1>Your photos.<br /><em>Your kind of desktop.</em></h1></div>
-        <div className="ar-hero-copy"><p>Make a little world on your Mac. Arrange an editable collage, let a favorite collection change, or keep a reference floating beside your work. Every picture has a place.</p><div className="ar-download-actions"><ArrasDownloadLink className="ar-button" href={download}>Download Arras <span aria-hidden="true">↙</span></ArrasDownloadLink><ArrasStar repository={SOURCE} stars={stars} /></div><p className="ar-fine">Free &amp; open source · No account · Photos stored locally</p><p className="ar-fine">{product.operatingSystem} · {product.architecture}</p><a className="ar-text-link" href={links.security}>Security &amp; Privacy →</a><br /><a className="ar-text-link" href="#install">{product.publicRelease.notarized ? "Installation →" : "First time installing? Read this first →"}</a></div>
+        <div className="ar-hero-copy">
+          <p>Make a little world on your Mac. Arrange an editable collage, let a favorite collection change, or keep a reference floating beside your work. Every picture has a place.</p>
+          <div className="ar-download-actions">
+            <ArrasDownloadLink className="ar-button" href={download}>Download Arras <span aria-hidden="true">↙</span></ArrasDownloadLink>
+            <ArrasStar repository={SOURCE} stars={stars} />
+          </div>
+          <p className="ar-fine">Free &amp; open source · No account · Photos stored locally</p>
+          <p className="ar-fine">{product.operatingSystem} · {product.architecture}</p>
+          {storeOffer && <div className="ar-store-offer">
+            <a href={storeOffer.url} aria-label="Get Arras Widgets on the Mac App Store">
+              <Image src="/puremac/arras/mac-app-store-badge.svg" width={120} height={40} alt="Download on the App Store" unoptimized />
+            </a>
+            <p>Optional paid edition · {storeOffer.price}<br />Local prices may vary.</p>
+          </div>}
+          <a className="ar-text-link" href={links.security}>Security &amp; Privacy →</a><br />
+          <a className="ar-text-link" href="#install">{product.publicRelease.notarized ? "Installation →" : "First time installing? Read this first →"}</a>
+        </div>
       </header>
       <ArrasDemo posterProps={posterProps} setupUrl={`${links.faqs}#how-to-use`} />
 

@@ -4,7 +4,7 @@ import fallback from "../data/arras-product.json" with { type: "json" };
 import { ARRAS_PRODUCT_METADATA_URL, getArrasProductResolution } from "../lib/arras-product-resolver.mjs";
 import { validateArrasProduct } from "../lib/arras-product-schema.mjs";
 import { arrasFaqs as faqData } from "../lib/arras-faqs.mjs";
-import { getArrasInstallation } from "../lib/arras-installation.mjs";
+import { getArrasInstallation, getArrasAppStoreOffer } from "../lib/arras-installation.mjs";
 import { hasRetiredArrasTrustCopy } from "./lib/arras-trust-copy.mjs";
 import { releasedArrasProduct } from "./lib/arras-product.mjs";
 
@@ -184,4 +184,28 @@ test("domain migration rejects lookalike origins and unexpected documentation pa
   product.documentation.faqUrl = "https://arras.yashashwi.me/unrelated";
   const result = await getArrasProductResolution({ fetchImpl: async () => response(product) });
   assert.equal(result.source, "fallback");
+});
+
+
+test("Store badge stays absent until the listing is approved and publicly live", () => {
+  const product = structuredClone(fallback);
+  delete product.appStore;
+  assert.equal(getArrasAppStoreOffer(validateArrasProduct(product)), null);
+  for (const status of ["in-preparation", "in-review", "approved", "unavailable"]) {
+    product.appStore = { ...fallback.appStore, status };
+    assert.equal(getArrasAppStoreOffer(validateArrasProduct(product)), null, status);
+  }
+  product.appStore.status = "live";
+  assert.deepEqual(getArrasAppStoreOffer(validateArrasProduct(product)), {
+    url: "https://apps.apple.com/app/id6824271927", price: "US$4.99",
+  });
+  assert.equal(product.publicRelease.sourceUrl, "https://github.com/yashashwi-s/Arras/releases/latest");
+});
+
+test("Store metadata rejects an incorrect listing or distribution privacy claim", () => {
+  for (const change of [{ appleId: "123456789" }, { status: "ready" }, { sandboxed: false }, { telemetry: true }]) {
+    const product = structuredClone(fallback);
+    Object.assign(product.appStore, change);
+    assert.throws(() => validateArrasProduct(product), /appStore|App Store/);
+  }
 });
