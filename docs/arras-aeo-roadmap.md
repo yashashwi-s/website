@@ -257,8 +257,8 @@ AI-only markup. Existing analytics already cover website visits; adding GA4 is
 not a prerequisite for indexing. The download-only site has no local storefront,
 customer accounts, paid web checkout or marketing-email signup to provision.
 
-The Security page now includes the same public support contact used in the app,
-with access/deletion-request guidance that does not ask for photos or backups.
+The Security page includes the maker’s personal Gmail support contact, with
+access/deletion-request guidance that does not ask for photos or backups.
 The shared footer identifies the maker and links to that contact section. This
 is an operational contact path, not a claim of automated per-installation deletion
 or a legal-compliance certification. Existing disclosure of identifiers, data

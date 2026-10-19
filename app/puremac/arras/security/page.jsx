@@ -5,6 +5,8 @@ import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";
 
+const supportEmail = "yashashwisinghania@gmail.com";
+
 export const metadata = supportMetadata("security", "Arras — Security & Privacy", "Arras keeps photos local. Read about permissions, the direct-download edition’s limited statistics, and the sandboxed Store edition’s storage and updates.");
 
 export default async function SecurityPage() {
@@ -89,7 +91,7 @@ export default async function SecurityPage() {
       </section>
       <section id="contact">
         <h2>Contact &amp; privacy requests</h2>
-        <p>Arras is made and maintained by <a href="https://yashashwi.me">{personal.name}</a>. For support, privacy questions or a request to access or delete retained app statistics, email <a href={`mailto:${personal.email}`}>{personal.email}</a>.</p>
+        <p>Arras is made and maintained by <a href="https://yashashwi.me">{personal.name}</a>. For support, privacy questions or a request to access or delete retained app statistics, email <a href={`mailto:${supportEmail}`}>{supportEmail}</a>.</p>
         <p>Do not send photos or library backups. To locate installation-linked reports, we may need the random installation identifier described above. Website counters have no visitor identifier and cannot be looked up by a visitor’s name.</p>
       </section>
       <p className="ar-document-end">Report a vulnerability using <a referrerPolicy="origin" href={securityPolicy}>the private reporting instructions</a>. Need help getting started? <a href={links.faqs}>Read the FAQs →</a></p>
