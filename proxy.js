@@ -50,7 +50,7 @@ export default function proxy(req, event) {
     }
   } else if (currentHost === 'arras' || hostname === 'tryarras.tech' || hostname === 'www.tryarras.tech') {
     if (url.pathname === '/favicon.ico') {
-      url.pathname = '/puremac/arras-icon.png';
+      url.pathname = '/puremac/arras/favicon.ico';
       return NextResponse.rewrite(url);
     }
 

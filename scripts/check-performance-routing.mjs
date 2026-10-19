@@ -34,6 +34,8 @@ for (const path of ['/puremac/arras', '/puremac/arras/', '/puremac/arras/robots.
 }
 for (const [host, path, target] of [
   ['tryarras.tech', '/', '/puremac/arras'],
+  ['tryarras.tech', '/favicon.ico', '/puremac/arras/favicon.ico'],
+  ['arras.yashashwi.me', '/favicon.ico', '/puremac/arras/favicon.ico'],
   ['tryarras.tech', '/faq', '/puremac/arras/faq'],
   ['tryarras.tech', '/security', '/puremac/arras/security'],
   ['arras.yashashwi.me', '/', '/puremac/arras'],

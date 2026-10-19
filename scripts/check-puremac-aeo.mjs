@@ -21,7 +21,7 @@ function arrasRequestUrl(path) {
   const directRoute = configured.pathname !== "/" && configured.pathname !== "";
   if (directRoute && path === "/") return arrasRequestBaseUrl;
   if (directRoute && path === "/favicon.ico") {
-    return `${configured.origin}/puremac/arras-icon.png`;
+    return `${configured.origin}/puremac/arras/favicon.ico`;
   }
   if (directRoute && path.startsWith("/puremac/")) {
     return `${configured.origin}${path}`;
@@ -245,7 +245,14 @@ const iconHref = arrasHtml.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1]
 check(Boolean(iconHref), "Arras must advertise a favicon");
 if (iconHref) {
   const icon = await requestPage(arrasRequestUrl(decodeHtml(iconHref)), { headers: arrasRequestHeaders });
-  check(icon.ok && icon.headers.get("content-type")?.startsWith("image/"), "Arras advertised favicon must resolve to an image");
+  check(icon.ok && icon.headers.get("content-type")?.startsWith("image/png"), "Arras advertised favicon must resolve to a PNG for search-engine compatibility");
+  const bytes = Buffer.from(await icon.arrayBuffer());
+  const isPng = bytes.length >= 24 && bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  check(isPng, "Arras advertised favicon must contain a valid PNG header");
+  if (isPng) {
+    const width = bytes.readUInt32BE(16), height = bytes.readUInt32BE(20);
+    check(width === height && width >= 48, "Arras favicon must be square and at least 48 pixels wide");
+  }
 }
 
 if (failures.length) {
