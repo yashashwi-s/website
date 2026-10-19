@@ -13,14 +13,37 @@ on:
       - 'app/globals.css'
       - 'proxy.js'
       - 'next.config.mjs'
+      - 'lib/indexnow.mjs'
+      - 'lib/arras-faqs.mjs'
+      - 'lib/arras-product*'
+      - 'scripts/notify-indexnow.mjs'
+      - 'scripts/indexnow.test.mjs'
+      - '.github/workflows/product-indexnow.yml'
+  pull_request:
+    paths:
+      - 'lib/indexnow.mjs'
+      - 'scripts/notify-indexnow.mjs'
+      - 'scripts/indexnow.test.mjs'
+      - '.github/workflows/product-indexnow.yml'
 permissions:
   contents: read
   statuses: read
 concurrency:
-  group: product-indexnow
+  group: product-indexnow-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/indexnow.test.mjs
   notify:
+    if: github.event_name == 'push'
+    needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

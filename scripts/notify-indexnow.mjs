@@ -9,9 +9,21 @@ else {
   if (![before, after].every(ref => /^[a-f0-9]{40}$/.test(ref || ""))) throw new Error("Expected explicit full commit hashes");
   urls = changedProductUrls(execFileSync("git", ["diff", "--name-only", before, after], { encoding: "utf8" }).trim().split("\n"));
 }
+const hostOption = args.find(arg => arg.startsWith("--host="));
+if (hostOption !== undefined) {
+  const hostFilter = hostOption.slice("--host=".length);
+  if (!productUrls.some(url => new URL(url).host === hostFilter)) throw new Error("Unknown product host");
+  urls = urls.filter(url => new URL(url).host === hostFilter);
+}
 console.log("Changed public product pages:", urls);
 if (!urls.length || args.includes("--dry-run")) process.exit(0);
-const request = (url, options = {}) => fetch(url, { ...options, signal: AbortSignal.timeout(20000) });
+const request = async (url, options = {}) => {
+  try {
+    return await fetch(url, { ...options, signal: AbortSignal.timeout(20000) });
+  } catch (cause) {
+    throw new Error(`Request failed for ${url}: ${cause.message}`, { cause });
+  }
+};
 if (process.env.INDEXNOW_WAIT_FOR_DEPLOY === "true") {
   const sha = process.env.INDEXNOW_AFTER;
   if (process.env.GITHUB_REPOSITORY !== "yashashwi-s/website") throw new Error("Unexpected repository");
