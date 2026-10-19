@@ -1,10 +1,10 @@
 // Server-rendered policy details live on the canonical Security page.
 export default function ArrasTelemetryDetails({ installation, links }) {
   return <details id="telemetry-details">
-    <summary>Exact data, installation identifier and retention</summary>
+    <summary>Direct-download statistics: exact data, identifier and retention</summary>
     <section id="scope">
       <h3>Configuration summaries are weekly.</h3>
-      <p>Arras 2.5.0 includes limited configuration and milestone statistics to understand which features are used. Broad configuration counts are reported once per Wednesday–Tuesday UTC week. First-run, version and first-feature milestones may be sent earlier. Weekly reports are not a live-online-user counter.</p>
+      <p>The direct download of Arras 2.5.0 includes limited configuration and milestone statistics to understand which features are used. Broad configuration counts are reported once per Wednesday–Tuesday UTC week. First-run, version and first-feature milestones may be sent earlier. Weekly reports are not a live-online-user counter.</p>
       <p>The schema contains a version and development/production environment, a random installation UUID, random event IDs for retry deduplication, Arras version and build, macOS major/minor, running architecture, and UTC day. Events cover first run, app update, first widget/collage/feature use and configuration. The legacy event name <code>daily_configuration</code> does not change the seven-day public reporting cadence.</p>
       <p>Counts use ranges: 0, 1, 2–4, 5–9, 10–19 and 20+. They cover total widgets, collages and broad media/source types such as photos, animation, video, slideshows, linked folders and Photos collections. Hidden widgets count as configured. The protocol retains a legacy container value for compatibility; that does not describe a separate current product feature.</p>
       <p>Reports exclude photos or media bytes, filenames, paths, EXIF, notes, source links, layouts and coordinates, desktop or clipboard contents, names, email, Apple IDs, serial numbers, hardware UUIDs, MAC addresses, display identifiers and precise location. Arras does not report click streams, drag paths, resize ticks, session durations or playback history.</p>
@@ -24,7 +24,7 @@ export default function ArrasTelemetryDetails({ installation, links }) {
     </section>
     <section id="controls">
       <h3>Controls and older versions.</h3>
-      <p>This version has no in-app opt-out switch. The server kill switch is an operational control, not an individual preference. Arras 2.4.9 downloads have telemetry disabled; the limited-statistics description above applies to 2.5.0.</p>
+      <p>This version has no in-app opt-out switch. The server kill switch is an operational control, not an individual preference. Arras 2.4.9 downloads have telemetry disabled; the limited-statistics description above applies to the direct download of 2.5.0. The sandboxed TestFlight and App Store edition excludes these statistics.</p>
       <p>Update checks are separate and follow the frequency selected in Preferences. They contact GitHub for the feed and release assets. Preferences can separately read the public repository star count; results and failures are cached in memory for an hour, with no polling timer, cookies, credentials or installation ID. macOS may contact Apple for requested Photos/iCloud downloads. {installation.signingSummary} The <a href={`${links.security}#first-launch`}>installation guidance</a> explains the first launch.</p>
     </section>
   </details>;
