@@ -1,4 +1,5 @@
 import ArrasTelemetryDetails from "../telemetry-details";
+import { personal } from "@/data/personal";
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 import { getArrasLinks } from "../arras-links";
@@ -14,7 +15,7 @@ export default async function SecurityPage() {
   const installation = getArrasInstallation(product);
   return (
     <SupportPage links={links} active="security" label="Security & privacy" title={<>Your photos.<br /><em>Your choice.</em></>} intro="Open source. Photos stored locally. No account or advertising. The free direct download is published from the public GitHub repository."
-      sections={[["at-a-glance", "At a glance"], ["first-launch", "First launch on macOS"], ["permissions", "Permissions"], ["local-data", "Your photos"], ["connections", "Connections & updates"], ["telemetry", "App statistics"], ["capture-privacy", "Screen sharing"], ["download-trust", "For technical users"], ["website", "This website"]]}>
+      sections={[["at-a-glance", "At a glance"], ["first-launch", "First launch on macOS"], ["permissions", "Permissions"], ["local-data", "Your photos"], ["connections", "Connections & updates"], ["telemetry", "App statistics"], ["capture-privacy", "Screen sharing"], ["download-trust", "For technical users"], ["website", "This website"], ["contact", "Contact & privacy requests"]]}>
       <section id="at-a-glance">
         <h2>Open source. Photos stay local.</h2>
         <p>The direct download is free, <a referrerPolicy="origin" href={product.license.url}>MIT-licensed open-source software</a>. Its <a referrerPolicy="origin" href={source}>source is public</a>, and the download button on this site redirects to the <a referrerPolicy="origin" href={product.publicRelease.sourceUrl}>official yashashwi-s/Arras GitHub Release</a>.</p>
@@ -85,6 +86,11 @@ export default async function SecurityPage() {
         <p>Download links pass through this site before redirecting to GitHub. They record a short source label or referring hostname and a coarse browser category in Vercel Runtime Logs. The first source is kept in this browser tab’s session storage; no cookie or visitor identifier is added. The custom event excludes full referring URLs, IP addresses and raw user-agent strings. Hosting providers still receive normal connection information. Logs follow the hosting provider’s retention limits.</p>
         <p>Daily Arras page and download-request totals also retain short referring-host and UTM campaign labels for up to 90 days. No IP address, full referring URL, cookie, visitor identifier or raw user-agent string is added to these counters. An event allowance bounds stored requests; a service failure can leave gaps. Historical Vercel reports cover the shared portfolio project, and its paid UTM export is not enabled.</p>
         <p>These are download requests, not unique people, completed transfers or installations. Known automated requests are marked separately, and HEAD and prefetch requests are excluded. The GitHub star count is fetched by the server and cached for up to an hour; opening GitHub sends only this site’s origin as the referrer. No app installation identifier is joined to these website measurements.</p>
+      </section>
+      <section id="contact">
+        <h2>Contact &amp; privacy requests</h2>
+        <p>Arras is made and maintained by <a href="https://yashashwi.me">{personal.name}</a>. For support, privacy questions or a request to access or delete retained app statistics, email <a href={`mailto:${personal.email}`}>{personal.email}</a>.</p>
+        <p>Do not send photos or library backups. To locate installation-linked reports, we may need the random installation identifier described above. Website counters have no visitor identifier and cannot be looked up by a visitor’s name.</p>
       </section>
       <p className="ar-document-end">Report a vulnerability using <a referrerPolicy="origin" href={securityPolicy}>the private reporting instructions</a>. Need help getting started? <a href={links.faqs}>Read the FAQs →</a></p>
     </SupportPage>

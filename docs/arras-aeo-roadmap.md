@@ -226,8 +226,43 @@ legacy-redirect checks passed. The new film was played in the browser: 10.4 seco
 
 The PAA wording and AI observations above remain the actual pre-publication
 observations, not a claim that answer engines have already refreshed. No
-`tryarras.tech` AI citation was observed. Search Console access remains unavailable
-because its connector requires an active paid subscription; no upgrade was made.
+`tryarras.tech` AI citation was observed during that review. The Search Console
+connector required a paid subscription; browser access was subsequently verified
+on 19 October, as recorded below. No paid upgrade was made.
+
+### Search setup follow-up, 19 October 2026
+
+The school Google account can access the verified `tryarras.tech` property directly
+in Search Console. Its sitemap reports Success and three discovered pages. URL
+Inspection confirms the homepage, `/faq` and `/security` are each indexed; this is
+separate from Bing's earlier discovered-but-not-crawled state. The homepage's last
+recorded Google crawl was 18 October at 03:05:43, as displayed by Search Console,
+before the 19 October PNG/ICO favicon fix. Google accepted one fresh homepage crawl
+request. Request receipt does not prove that search-result favicon caches refreshed.
+Keep icon URLs stable, as [Google's favicon guidance](https://developers.google.com/search/docs/appearance/favicon-in-search)
+requires; DuckDuckGo documents its own [favicon refresh delay](https://duckduckgo.com/duckduckgo-help-pages/privacy/favicons).
+
+Search Console has insufficient Chrome UX Report data for mobile and desktop Core
+Web Vitals. The existing [19 October production audit](https://github.com/yashashwi-s/website/actions/runs/39240522906)
+measured Lighthouse performance 96 mobile / 100 desktop, accessibility, best
+practices and SEO 100 on both, with measured CLS 0. These are lab results, not
+real-user INP, continuous uptime or proof of complete accessibility compliance.
+The existing weekly live report owns ongoing route and Lighthouse checks.
+
+The [Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a)
+were read in the browser. Retain crawlable HTML, canonical links, accurate
+structured data and useful original product evidence. Do not add keyword-stuffed
+image alternatives, invented endorsements, duplicate feature pages or special
+AI-only markup. Existing analytics already cover website visits; adding GA4 is
+not a prerequisite for indexing. The download-only site has no local storefront,
+customer accounts, paid web checkout or marketing-email signup to provision.
+
+The Security page now includes the same public support contact used in the app,
+with access/deletion-request guidance that does not ask for photos or backups.
+The shared footer identifies the maker and links to that contact section. This
+is an operational contact path, not a claim of automated per-installation deletion
+or a legal-compliance certification. Existing disclosure of identifiers, data
+exclusions and retention remains in place.
 
 ### Earlier review record and document ownership
 

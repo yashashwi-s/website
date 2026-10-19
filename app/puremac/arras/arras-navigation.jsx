@@ -1,5 +1,6 @@
 import { ArrasAttribution } from "./arras-attribution";
 import { arrasProduct } from "@/data/arras-product";
+import { personal } from "@/data/personal";
 
 export function ArrasNavigation({ links, active }) {
   return (
@@ -22,8 +23,8 @@ export function ArrasFooter({ links }) {
   return (
     <footer className="ar-wrap ar-footer">
       <a className="ar-brand" href={links.home}><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />Arras</a>
-      <p>Small by intention. Yours by design.</p>
-      <div><a href={links.faqs}>FAQs</a><a href={links.security}>Security &amp; Privacy</a><a href={arrasProduct.repositoryUrl} referrerPolicy="origin">Source ↗</a><a href="https://yashashwi.me">Yashashwi ↗</a></div>
+      <p>Made by <a href="https://yashashwi.me">{personal.name}</a>.</p>
+      <div><a href={links.faqs}>FAQs</a><a href={links.security}>Security &amp; Privacy</a><a href={arrasProduct.repositoryUrl} referrerPolicy="origin">Source ↗</a><a href={`${links.security}#contact`}>Contact</a></div>
     </footer>
   );
 }
