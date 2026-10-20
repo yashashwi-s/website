@@ -1,4 +1,4 @@
-import { Anton, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Manrope, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import HomeClient from "./home-client";
 import { personal } from "@/data/personal";
 import { projects } from "@/data/projects";
@@ -7,15 +7,11 @@ import { achievements } from "@/data/achievements";
 import { skills } from "@/data/skills";
 import { repositoryStars } from "@/lib/github-release";
 
-/* Fourth face in the house set, after Bricolage (Arras), Instrument Serif
-   (PureMac index) and Space Grotesk (Fadeo). Anton is the poster face: heavy,
-   condensed, and unmistakable at the sizes this page uses. Instrument Serif
-   returns here only in italic, as the editorial counterweight. */
-const poster = Anton({
+// These faces belong to the personal portfolio; product sites keep their own.
+const studio = Manrope({
   subsets: ["latin"],
-  variable: "--font-poster",
+  variable: "--font-studio",
   display: "swap",
-  weight: "400",
 });
 
 // Avoid late swaps changing the hero copy and navigation line wrapping.
@@ -35,9 +31,9 @@ const mono = JetBrains_Mono({
   display: "optional",
 });
 
-const TITLE = "Yashashwi Singhania — systems, RL, and native macOS apps";
+const TITLE = "Yashashwi Singhania — Curiosity, compiled.";
 const DESCRIPTION =
-  "Creator of Arras, a free Mac app for photo widgets, editable collages and slideshows. IIT (BHU) dual-degree student building native apps, systems software and reinforcement-learning projects.";
+  "Creator of Arras, a free native Mac app with 1,000+ downloads. Student at IIT (BHU), building thoughtful software, intelligent agents, and a more personal Mac.";
 
 export const metadata = {
   title: TITLE,
@@ -52,12 +48,18 @@ export const metadata = {
     locale: "en_US",
     type: "website",
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default async function Home() {
   // Featured order drives the work list; everything else falls into "Also built".
-  const ordered = [...projects].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  const ordered = [...projects].sort(
+    (a, b) => (a.order ?? 999) - (b.order ?? 999),
+  );
   const arrasStars = await repositoryStars("Arras");
 
   return (
@@ -68,7 +70,7 @@ export default async function Home() {
       achievements={achievements}
       skills={skills}
       arrasStars={arrasStars}
-      fontClass={`${poster.variable} ${editorial.variable} ${mono.variable}`}
+      fontClass={`${studio.variable} ${editorial.variable} ${mono.variable}`}
     />
   );
 }

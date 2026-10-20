@@ -1,771 +1,1344 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Star } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  MotionConfig,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import {
+  ArrowDown,
+  ArrowDownRight,
+  ArrowUpRight,
+  Check,
+  CodeXml,
+  Copy,
+  Download,
+  Pause,
+  Play,
+  Plus,
+  Star,
+} from "lucide-react";
 import Image from "next/image";
-import CustomCursor from "@/components/CustomCursor";
-import ScrambleText from "@/components/ScrambleText";
-import SmoothScroll from "@/components/SmoothScroll";
-import { GRAIN } from "./puremac/grain";
-import { arrasCanonicalUrl, arrasProduct } from "@/data/arras-product";
+import KineticSculpture from "@/components/portfolio/kinetic-sculpture";
+import ArrasFilm from "@/components/portfolio/arras-film";
+import { arrasCanonicalUrl } from "@/data/arras-product";
+import "./portfolio.css";
 
-/* Fourth identity in the family.
- *
- * PureMac's index is paper + serif, Arras is indigo + amber, Fadeo is teal +
- * instrument panel. This one is the personal site, so it gets to be the loudest:
- * poster-condensed display type, an acid accent, and one section that flips to
- * paper mid-scroll so the page has two temperatures instead of one.
- *
- * Everything moves on hover, scroll or time. Nothing loops on a timer except the
- * clock, and the grain is held still -- the root layout's animated one strobes.
- */
-
-// Click the mark in the nav to cycle these. Small, pointless, findable.
-const ACCENTS = ["#ccff2e", "#ff9e5e", "#67e4d2", "#c8a2ff"];
-
-const STATS = [
-  { value: 1720, label: "Codeforces", sub: "hackerman15", href: "https://codeforces.com/profile/hackerman15" },
-  { value: 8.74, label: "CGPA", sub: "IIT (BHU)", decimals: 2 },
-  { value: 13, label: "AMS Derive 2026", sub: "All India Rank", suffix: "th" },
-  { value: 3000, label: "Participants", sub: "Byte the Bits", suffix: "+" },
+const EASE = [0.23, 1, 0.32, 1];
+const NAV_ITEMS = [
+  { id: "work", label: "The work", number: "01" },
+  { id: "proof", label: "The proof", number: "02" },
+  { id: "about", label: "The person", number: "03" },
 ];
 
-/* Ranks read as positions here rather than "AIR 13" / "SR 20" — the acronym is
-   the least interesting part of the number, and it forced the stat column wider
-   than any of them needed. What the rank actually is moves to the detail line
-   underneath, so nothing is lost. Applied at render rather than in
-   data/achievements.js, since that file is shared with other renderers. */
-function ordinal(n) {
-  const num = Number(n);
-  if (!Number.isFinite(num)) return null;
-  const tens = num % 100;
-  if (tens >= 11 && tens <= 13) return `${num}th`;
-  return `${num}${["th", "st", "nd", "rd"][num % 10] || "th"}`;
-}
-
-const RANK_KINDS = { AIR: "All India Rank", SR: "State Rank" };
-const IST_TIME_FORMATTER = new Intl.DateTimeFormat("en-GB", {
-  timeZone: "Asia/Kolkata",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  hour12: false,
-});
-const IST_HOUR_FORMATTER = new Intl.DateTimeFormat("en-GB", {
-  timeZone: "Asia/Kolkata",
-  hour: "2-digit",
-  hour12: false,
-});
-
-function asPosition(item) {
-  const match = /^(AIR|SR)\s+(\d+)$/.exec(item.stat.trim());
-  if (!match) return item;
-  const position = ordinal(match[2]);
-  if (!position) return item;
-  return {
-    ...item,
-    stat: position,
-    detail: item.detail ? `${RANK_KINDS[match[1]]} · ${item.detail}` : RANK_KINDS[match[1]],
-  };
-}
-
-/* Time-aware, because the bio already claims 3AM segfaults. Resolved after mount
-   so the server and client agree on first paint. */
-function statusFor(hourIST) {
-  if (hourIST >= 2 && hourIST < 6) return "debugging a segfault, probably";
-  if (hourIST >= 6 && hourIST < 9) return "asleep, ideally";
-  if (hourIST >= 9 && hourIST < 13) return "in a lecture, physically";
-  if (hourIST >= 13 && hourIST < 18) return "shipping something";
-  if (hourIST >= 18 && hourIST < 22) return "on a problem set";
-  return "reading someone else's source";
-}
-
-function Clock() {
-  const [now, setNow] = useState(null);
-
-  useEffect(() => {
-    const tick = () => setNow(new Date());
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  // Nothing until mounted: rendering a clock on the server guarantees a
-  // hydration mismatch, and a blank slot for one frame is cheaper than that.
-  if (!now) return <span className="opacity-0">--:--:--</span>;
-
-  const ist = IST_TIME_FORMATTER.format(now);
-  const hourIST = Number(IST_HOUR_FORMATTER.format(now));
-
+function AppStoreMark({ size = 26 }) {
   return (
-    <span>
-      {ist} IST — {statusFor(hourIST)}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect
+        x="1"
+        y="1"
+        width="30"
+        height="30"
+        rx="7"
+        stroke="currentColor"
+        strokeWidth="1.3"
+      />
+      <path
+        d="m12 7 11 19M20 7 9 26M6 21h13m4 0h3"
+        stroke="currentColor"
+        strokeWidth="2.3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function SectionLabel({ number, children, light = false }) {
+  return (
+    <div className={`ys-section-label${light ? " ys-label-light" : ""}`}>
+      <span className="ys-cross">+</span>
+      <span>
+        {number} / {children}
+      </span>
+    </div>
+  );
+}
+
+function Reveal({ children, className = "", delay = 0, paused }) {
+  return (
+    <motion.div
+      className={className}
+      initial={false}
+      whileInView={
+        paused
+          ? undefined
+          : {
+              opacity: [0.45, 1],
+              transform: ["translateY(28px)", "translateY(0px)"],
+            }
+      }
+      viewport={{ once: true, margin: "0px 0px -45px 0px" }}
+      transition={{ duration: 0.7, delay, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function LocalClock() {
+  const [time, setTime] = useState(null);
+  useEffect(() => {
+    const formatter = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    const update = () => setTime(formatter.format(new Date()));
+    update();
+    const timer = setInterval(update, 30000);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <span className="ys-local-time">
+      Varanasi, IN <span>{time || "--:--"} IST</span>
     </span>
   );
 }
 
-function useReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduced(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-
-  return reduced;
+function MagneticLink({ children, className = "", href, paused, ...rest }) {
+  const x = useMotionValue(0),
+    y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 150, damping: 18, mass: 0.2 });
+  const sy = useSpring(y, { stiffness: 150, damping: 18, mass: 0.2 });
+  const transform = useTransform(
+    [sx, sy],
+    ([xx, yy]) => `translate3d(${xx}px, ${yy}px, 0)`,
+  );
+  function move(event) {
+    if (paused || event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    x.set((event.clientX - bounds.left - bounds.width / 2) * 0.12);
+    y.set((event.clientY - bounds.top - bounds.height / 2) * 0.2);
+  }
+  return (
+    <motion.a
+      href={href}
+      className={className}
+      style={paused ? undefined : { transform }}
+      onPointerMove={move}
+      onPointerLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      onFocus={() => {
+        x.jump(0);
+        y.jump(0);
+      }}
+      {...rest}
+    >
+      {children}
+    </motion.a>
+  );
 }
 
-/* The site already has a VelocityMarquee, but it bakes in the main page's look:
-   hollow outlined type, its own border and padding. This page wants filled type
-   and its own rhythm, so it gets its own — same scroll-velocity idea, drifting
-   faster the harder you scroll and reversing when you scroll back. */
-function Ticker({ accent }) {
-  const items = ["Reinforcement learning", "Systems", "Native macOS", "Competitive programming"];
-  const ref = useRef(null);
-  const track = useRef(null);
-  const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (reduceMotion || !ref.current || !track.current) return;
-
-    let frame;
-    let inView = false;
-    let visible = document.visibilityState === "visible";
-    let x = 0;
-    let lastTime = performance.now();
-    let lastScroll = window.scrollY;
-    let velocity = 0;
-
-    const onScroll = () => {
-      const nextScroll = window.scrollY;
-      velocity = nextScroll - lastScroll;
-      lastScroll = nextScroll;
-    };
-    const onVisibilityChange = () => {
-      visible = document.visibilityState === "visible";
-      lastTime = performance.now();
-      if (visible) start();
-    };
-    const tick = (now) => {
-      const elapsed = Math.min(now - lastTime, 64);
-      lastTime = now;
-      if (inView && visible) {
-        const direction = velocity < 0 ? -1 : 1;
-        const distance = direction * (2.4 + Math.min(Math.abs(velocity) * 0.15, 14)) * (elapsed / 1000);
-        x = ((x - distance) % 50 + 50) % 50;
-        track.current.style.transform = `translate3d(${-x}%, 0, 0)`;
-        velocity *= 0.9;
-      }
-      frame = undefined;
-      if (inView && visible) start();
-    };
-    const start = () => {
-      if (frame === undefined && inView && visible) frame = requestAnimationFrame(tick);
-    };
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        inView = entry.isIntersecting;
-        if (inView) start();
-        else if (frame !== undefined) {
-          cancelAnimationFrame(frame);
-          frame = undefined;
-        }
-      },
-      { rootMargin: "200px" }
-    );
-    observer.observe(ref.current);
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    return () => {
-      if (frame !== undefined) cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-    };
-  }, [reduceMotion]);
-
+function AppStoreLabel({ className = "" }) {
   return (
-    <div ref={ref} className="mt-20 overflow-hidden border-y border-white/10 py-5 sm:mt-28">
-      <div ref={track} className="flex w-max gap-10 will-change-transform">
-        {[0, 1].map((half) => (
-          <div key={half} className="flex shrink-0 items-center gap-10" aria-hidden={half === 1}>
-            {items.map((t) => (
-              <span key={t} className="flex items-center gap-10">
-                <span className="display whitespace-nowrap text-[clamp(1.7rem,4.6vw,3.4rem)] leading-none text-white/85">
-                  {t}
-                </span>
-                <span className="text-[clamp(1.7rem,4.6vw,3.4rem)] leading-none" style={{ color: accent }}>
-                  ✳
-                </span>
-              </span>
-            ))}
-          </div>
-        ))}
+    <div
+      className={`ys-store-label ${className}`}
+      aria-label="Arras is coming soon to the Mac App Store"
+    >
+      <div className="ys-store-label-top">
+        <span>THE NEXT CHAPTER</span>
+        <span>↗</span>
+      </div>
+      <div className="ys-store-label-main">
+        <AppStoreMark size={29} />
+        <span>
+          App Store<em>coming soon.</em>
+        </span>
+      </div>
+      <div className="ys-store-label-bottom">
+        <span className="ys-store-dot" />
+        <span>A NEW HOME FOR ARRAS.</span>
       </div>
     </div>
   );
 }
 
-function CountUp({ value, decimals = 0, prefix = "", suffix = "" }) {
-  const ref = useRef(null);
-  const reduceMotion = useReducedMotion();
-  // Seeded with the real number, not zero. The count-up is decoration; if the
-  // observer never fires, or JS is slow, or motion is reduced, the correct
-  // figure is what stays on screen rather than a permanent 0.00.
-  const [shown, setShown] = useState(value);
-
-  useEffect(() => {
-    if (reduceMotion || !ref.current || window.matchMedia("(pointer: coarse)").matches) return;
-
-    let frame;
-    let started = false;
-    let elapsed = 0;
-    let lastTime;
-    const tick = (now) => {
-      if (document.visibilityState !== "visible") {
-        frame = undefined;
-        return;
-      }
-      elapsed += now - lastTime;
-      lastTime = now;
-      const progress = Math.min(elapsed / 1100, 1);
-      const eased = 1 - (1 - progress) ** 4;
-      setShown(value * eased);
-      frame = progress < 1 ? requestAnimationFrame(tick) : undefined;
-    };
-    const start = () => {
-      if (started && frame === undefined && elapsed < 1100 && document.visibilityState === "visible") {
-        lastTime = performance.now();
-        frame = requestAnimationFrame(tick);
-      }
-    };
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || started || document.visibilityState !== "visible") return;
-        started = true;
-        start();
-        observer.disconnect();
-      },
-      { rootMargin: "-80px" }
-    );
-    observer.observe(ref.current);
-    document.addEventListener("visibilitychange", start);
-    return () => {
-      if (frame !== undefined) cancelAnimationFrame(frame);
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", start);
-    };
-  }, [reduceMotion, value]);
-
-  return (
-    <span ref={ref}>
-      {prefix}
-      {shown.toFixed(decimals)}
-      {suffix}
-    </span>
+function Hero({ personal, paused }) {
+  const hero = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: hero,
+    offset: ["start start", "end start"],
+  });
+  const artworkTransform = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["translate3d(0,0px,0)", "translate3d(0,70px,0)"],
   );
-}
-
-/* A project row that floods with its own colour on hover, and tracks the pointer
-   so the wash follows rather than just switching on. */
-function WorkRow({ project, index, accent }) {
-  const colour = project.color || accent;
-
-  const onMove = useCallback(
-    (e) => {
-      const r = e.currentTarget.getBoundingClientRect();
-      e.currentTarget.style.setProperty("--wash-x", `${((e.clientX - r.left) / r.width) * 100}%`);
-    },
-    []
+  const x = useMotionValue(0),
+    y = useMotionValue(0);
+  const rx = useSpring(x, { stiffness: 100, damping: 16 });
+  const ry = useSpring(y, { stiffness: 100, damping: 16 });
+  const tilt = useTransform(
+    [rx, ry],
+    ([a, b]) =>
+      `perspective(1000px) rotateX(${b}deg) rotateY(${a}deg) rotate(-5deg)`,
   );
-
-  const href = project.live || project.github;
-
+  function move(event) {
+    if (paused || event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    x.set(((event.clientX - bounds.left) / bounds.width - 0.5) * 9);
+    y.set(((event.clientY - bounds.top) / bounds.height - 0.5) * -9);
+  }
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener"
-      referrerPolicy="origin"
-      data-cursor="snap"
-      onMouseMove={onMove}
-      className="work-row group relative block border-t border-white/10 px-1 py-7 sm:py-9"
-      style={{ "--wash-x": "50%", "--work": colour }}
-    >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: `radial-gradient(60% 140% at var(--wash-x) 50%, ${colour}1f, transparent 70%)` }}
-      />
-      <div className="flex items-baseline gap-4 sm:gap-7">
-        <span className="w-8 shrink-0 font-mono text-[11px] tracking-[0.1em] text-white/55 transition-colors group-hover:text-white/70">
-          {String(index + 1).padStart(2, "0")}
+    <section ref={hero} className="ys-hero" aria-labelledby="ys-hero-heading">
+      <div className="ys-hero-eyebrow">
+        <span>
+          <i className="ys-status-dot" /> An engineer with a curious streak.
         </span>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <h3
-              className="work-title display text-[clamp(1.7rem,4.6vw,3.1rem)] leading-[0.95] tracking-[0.005em] transition-colors"
-            >
-              {project.title}
-            </h3>
-            {project.wip && (
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
-                in progress
-              </span>
-            )}
-          </div>
-          <p className="mt-2.5 max-w-xl text-[14.5px] leading-[1.65] text-white/55 transition-colors group-hover:text-white/70">
-            {project.description}
-          </p>
-          <ul className="mt-3.5 flex flex-wrap gap-x-4 gap-y-1.5">
-            {project.tags.map((t) => (
-              <li key={t} className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
-                {t}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <ArrowUpRight
-          size={20}
-          className="mt-2 shrink-0 -translate-x-1 text-white/20 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-          style={{ color: colour }}
-        />
+        <span>Independent mind. IIT (BHU).</span>
       </div>
-    </a>
-  );
-}
-
-function MagneticLink({ children }) {
-  const ref = useRef(null);
-  const reduceMotion = useReducedMotion();
-
-  const onMove = useCallback(
-    (event) => {
-      if (reduceMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-      const element = ref.current;
-      if (!element) return;
-      const bounds = element.getBoundingClientRect();
-      const x = (event.clientX - (bounds.left + bounds.width / 2)) * 0.18;
-      const y = (event.clientY - (bounds.top + bounds.height / 2)) * 0.18;
-      element.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.03)`;
-    },
-    [reduceMotion]
-  );
-
-  const reset = useCallback(() => {
-    if (ref.current) ref.current.style.transform = "";
-  }, []);
-
-  return (
-    <span ref={ref} onMouseMove={onMove} onMouseLeave={reset} className="inline-block transition-transform duration-150 ease-out">
-      {children}
-    </span>
-  );
-}
-
-function ArrasShowcase({ accent, stars }) {
-  return (
-    <section id="arras" aria-labelledby="arras-title" className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-24">
-      <div className="overflow-hidden rounded-3xl border border-white/15 bg-[#121214]">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white/55 sm:px-8">
-          <span style={{ color: accent }}>Featured project</span>
-          <span>Arras {arrasProduct.publicRelease.version} · Free &amp; open source</span>
-        </div>
-        <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-10">
-          <div>
-            <div className="flex items-center gap-4">
-              <Image src="/puremac/arras-icon.png" alt="" width={48} height={48} className="rounded-xl" />
-              <h2 id="arras-title" className="text-[clamp(3.5rem,7vw,5.8rem)] leading-none tracking-[0.01em]">Arras</h2>
-            </div>
-            <p className="editorial mt-5 text-[27px] leading-tight text-white/90 sm:text-[32px]">Your photos. Your kind of desktop.</p>
-            <p className="mt-4 max-w-md text-[15px] leading-[1.7] text-white/60">
-              Desktop photo widgets, slideshows and editable collages for your Mac. Keep each picture’s proportions,
-              choose its layer and save the whole setup.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 font-mono text-[10px] uppercase tracking-[0.12em] text-white/65">
-              {[["Collages", "collages"], ["Slideshows", "slideshows"], ["Layers", "layers"]].map(([label, id]) => (
-                <a key={id} href={`${arrasCanonicalUrl}/#${id}`} aria-label={`Explore Arras ${label.toLowerCase()}`} data-cursor="snap" className="underline decoration-white/25 underline-offset-4 transition-colors hover:text-white">{label}</a>
-              ))}
-            </div>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href={arrasCanonicalUrl} data-cursor="snap" className="inline-flex min-h-11 items-center gap-2 rounded-full px-5 py-3 text-[13px] font-semibold text-black" style={{ backgroundColor: accent }}>
-                Explore Arras <ArrowUpRight size={15} aria-hidden="true" />
-              </a>
-              <a href={arrasProduct.repositoryUrl} target="_blank" rel="noopener" referrerPolicy="origin" data-cursor="snap"
-                aria-label={stars == null ? "Star Arras on GitHub" : `Star Arras on GitHub, ${stars} stars`}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/25 px-4 py-3 text-[13px] text-white/85 transition-colors hover:border-white/60 hover:text-white">
-                <Star size={15} aria-hidden="true" /> Star on GitHub
-                {stars != null && <span className="border-l border-white/20 pl-2 font-mono text-[11px] tabular-nums">{new Intl.NumberFormat("en-US").format(stars)}</span>}
-              </a>
-            </div>
-            <a href={arrasCanonicalUrl} aria-label="Visit Arras at tryarras.tech" data-cursor="snap" className="mt-4 inline-block font-mono text-[11px] tracking-[0.08em] text-white/50 transition-colors hover:text-white">tryarras.tech ↗</a>
+      <div className="ys-hero-grid">
+        <div className="ys-hero-copy">
+          <div className="ys-hero-intro">
+            Hi, I’m Yashashwi <span>↘</span>
           </div>
-          <figure className="min-w-0">
-            <a href={`${arrasCanonicalUrl}/#collages`} data-cursor="snap" aria-label="Explore Arras desktop photo widgets and collages" className="block overflow-hidden rounded-xl border border-white/15">
-              <Image src="/puremac/arras/features/collages.webp" alt="Arras on a Mac desktop with a paper collage, individually framed photos and a transparent photo group beside its Settings window." width={1470} height={956} sizes="(min-width: 1152px) 580px, (min-width: 1024px) 55vw, calc(100vw - 88px)" className="h-auto w-full" />
-            </a>
-            <figcaption className="mt-3 text-[12px] leading-relaxed text-white/45">Editable collages. Individual photos. A real Mac desktop.</figcaption>
-          </figure>
+          <h1 id="ys-hero-heading">
+            <span className="ys-title-mask">
+              <span>Curiosity,</span>
+            </span>
+            <span className="ys-title-mask">
+              <span>
+                compiled<span className="ys-red">.</span>
+              </span>
+            </span>
+          </h1>
+          <div className="ys-hero-description">
+            <p>
+              Creator of{" "}
+              <a
+                href={arrasCanonicalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Arras
+              </a>
+              . I turn a slightly obsessive attention to detail into things
+              people love using.
+            </p>
+            <div className="ys-hero-actions">
+              <MagneticLink
+                href={arrasCanonicalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ys-button ys-button-dark"
+                paused={paused}
+              >
+                Meet Arras <ArrowUpRight size={18} />
+              </MagneticLink>
+              <a href="#work" className="ys-text-link">
+                Explore the work <ArrowDown size={16} />
+              </a>
+            </div>
+            <div className="ys-hero-downloads">
+              <Download size={14} />
+              <strong>1,000+</strong>
+              <span>downloads. And just getting started.</span>
+            </div>
+          </div>
         </div>
+        <motion.div
+          className="ys-hero-art"
+          style={paused ? undefined : { transform: artworkTransform }}
+          onPointerMove={move}
+          onPointerLeave={() => {
+            x.set(0);
+            y.set(0);
+          }}
+        >
+          <div className="ys-art-coordinates">
+            <span>FIG. 001 / ARRAS</span>
+            <span>FROM AN IDEA TO YOUR DESKTOP.</span>
+          </div>
+          <KineticSculpture paused={paused} />
+          <span className="ys-art-cross ys-art-cross-a">+</span>
+          <span className="ys-art-cross ys-art-cross-b">+</span>
+          <motion.a
+            href={arrasCanonicalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ys-hero-product"
+            style={paused ? undefined : { transform: tilt }}
+            aria-label="Explore Arras, my free Mac app"
+          >
+            <div className="ys-mac-chrome">
+              <span>
+                <i />
+                <i />
+                <i />
+              </span>
+              <span>your desktop. your world.</span>
+              <ArrowUpRight size={11} />
+            </div>
+            <Image
+              src="/puremac/arras/features/collages.webp"
+              alt="Arras turns a Mac desktop into a personal canvas of photographs and editable collages"
+              width={1200}
+              height={750}
+              sizes="(max-width: 760px) 90vw, 46vw"
+              preload
+            />
+            <div className="ys-hero-product-name">
+              <Image
+                src="/puremac/arras/icon.svg"
+                alt=""
+                width={38}
+                height={38}
+              />
+              <span>
+                <strong>Arras</strong>
+                <small>A more personal Mac.</small>
+              </span>
+              <span className="ys-free-tag">NATIVE & FREE</span>
+            </div>
+          </motion.a>
+          <AppStoreLabel className="ys-hero-store" />
+          <div className="ys-art-note">
+            a little more <em>you.</em>
+            <span>↖</span>
+          </div>
+        </motion.div>
+      </div>
+      <div className="ys-hero-bottom">
+        <span className="ys-hero-footer-note">
+          Independent work. A slightly obsessive standard.
+        </span>
+        <a href="#work">
+          Made with intent. Scroll to explore{" "}
+          <span className="ys-scroll-circle">
+            <ArrowDown size={14} />
+          </span>
+        </a>
       </div>
     </section>
   );
 }
 
-export default function HomeClient({ personal, projects, experience, achievements, skills, arrasStars = null, fontClass = "" }) {
-  const [accentIdx, setAccentIdx] = useState(0);
-  const accent = ACCENTS[accentIdx];
-
-  const featured = projects.filter((p) => p.featured);
-  const rest = projects.filter((p) => !p.featured);
-
+function DisciplineStrip({ paused }) {
+  const strip = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: strip,
+    offset: ["start end", "end start"],
+  });
+  const transform = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["translateX(3%)", "translateX(-12%)"],
+  );
   return (
     <div
-      id="latest-page"
-      className={`${fontClass} min-h-screen overflow-x-clip bg-[#0b0b0c] text-white`}
-      style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, sans-serif", "--acc": accent }}
+      ref={strip}
+      className="ys-discipline-strip"
+      aria-label="Native macOS. Reinforcement learning. Systems. Competitive programming."
     >
-      <SmoothScroll />
-      <style>{`
-        body:has(#latest-page) .noise-bg { display: none; }
-        #latest-page h1, #latest-page h2, #latest-page h3, #latest-page .display {
-          font-family: var(--font-poster), ui-sans-serif, system-ui, sans-serif;
-          font-weight: 400;
-          text-transform: uppercase;
-        }
-        #latest-page .editorial {
-          font-family: var(--font-editorial), ui-serif, Georgia, serif;
-          font-style: italic;
-          text-transform: none;
-        }
-        /* Skip layout and paint of distant sections while retaining searchable HTML.
-           Remember each section's measured size after it has been visited. */
-        #latest-page section:not(:first-of-type) {
-          content-visibility: auto;
-          contain-intrinsic-size: auto 700px;
-        }
-        #latest-page section[id] { scroll-margin-top: 24px; }
-        #latest-page .work-row:hover .work-title { color: var(--work); }
-        #latest-page ::selection { background: var(--acc); color: #000; }
-      `}</style>
+      <motion.div aria-hidden="true" style={paused ? undefined : { transform }}>
+        {[0, 1].map((i) => (
+          <span key={i}>
+            NATIVE macOS <span>✳</span> REINFORCEMENT LEARNING <span>✳</span>{" "}
+            SYSTEMS <span>✳</span> COMPETITIVE PROGRAMMING <span>✳</span>{" "}
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
 
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 opacity-[0.05]" style={{ backgroundImage: GRAIN }} />
-      <CustomCursor />
+const PROOFS = [
+  {
+    id: "competitive",
+    tag: "01 / THE PROBLEM SOLVER",
+    value: "1720",
+    unit: "EXPERT",
+    title: "A thing for hard problems.",
+    copy: "Codeforces Expert. A lot of thinking, a lot of wrong answers, and the occasional very satisfying accepted.",
+    detail: "hackerman15",
+    href: "https://codeforces.com/profile/hackerman15",
+    foot: "Competitive programming",
+    color: "sage",
+  },
+  {
+    id: "hackathon",
+    tag: "02 / THE BUILDER",
+    value: "01",
+    unit: "FIRST PRIZE",
+    title: "Built it. Shipped it. Won it.",
+    copy: "First prize at DevBits, Udyam 2025. The best part of a deadline? Finding out how much you can actually build.",
+    detail: "Udyam · IIT (BHU) · 2025",
+    foot: "DevBits hackathon",
+    color: "orange",
+  },
+  {
+    id: "national",
+    tag: "03 / THE MATHEMATICAL MIND",
+    value: "13",
+    unit: "ALL INDIA RANK",
+    title: "Thinking beyond the obvious.",
+    copy: "All India Rank 13 in POSTERIOR at AMS Derive 2026. Also AIR 39 in PRIOR. Two national top-50 finishes.",
+    detail: "POSTERIOR + PRIOR · AMS Derive 2026",
+    foot: "A national stage",
+    color: "lilac",
+  },
+  {
+    id: "community",
+    tag: "04 / THE MULTIPLIER",
+    value: "3,000",
+    suffix: "+",
+    unit: "PARTICIPANTS",
+    title: "Better when we build together.",
+    copy: "As a COPS Category Head, organised Byte the Bits at Technex across 5+ events. Helped 200+ students get started with Python.",
+    detail: "Club of Programmers · IIT (BHU)",
+    foot: "Community, at scale",
+    color: "cream",
+  },
+];
 
-      <div className="relative z-10">
-        {/* ---------------------------------------------------------------- nav */}
-        <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
-          <button
-            onClick={() => setAccentIdx((i) => (i + 1) % ACCENTS.length)}
-            data-cursor="snap"
-            title="go on, click it"
-            className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/50 transition-colors hover:text-white"
+function ProofGraphic({ index }) {
+  if (index === 0)
+    return (
+      <div className="ys-proof-code" aria-hidden="true">
+        <span>{"while (curious) {"}</span>
+        <span> solve(harder_problem);</span>
+        <span>{"}"}</span>
+        <i>✓ accepted</i>
+      </div>
+    );
+  if (index === 1)
+    return (
+      <svg
+        className="ys-proof-trophy"
+        viewBox="0 0 120 120"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M35 20h50v29c0 22-11 34-25 34S35 71 35 49V20Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M35 28H18v12c0 17 9 22 21 22M85 28h17v12c0 17-9 22-21 22M60 83v20m-21 0h42M43 110h34"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d="m60 32 4 9 10 1-8 7 2 10-8-5-8 5 2-10-8-7 10-1 4-9Z"
+          stroke="currentColor"
+        />
+      </svg>
+    );
+  if (index === 2)
+    return (
+      <div className="ys-proof-math" aria-hidden="true">
+        <span>∑</span>
+        <small>curiosity → clarity</small>
+      </div>
+    );
+  return (
+    <div className="ys-proof-dots" aria-hidden="true">
+      {Array.from({ length: 72 }, (_, i) => (
+        <i key={i} />
+      ))}
+    </div>
+  );
+}
+
+function ProofCard({ item, index, progress, paused }) {
+  const entry = (index - 1) / 3;
+  const transform = useTransform(
+    progress,
+    [
+      index === 0 ? 0 : Math.max(0, entry),
+      index === 0 ? 1 : Math.min(1, entry + 0.3),
+    ],
+    [
+      index === 0
+        ? "translate3d(0,0%,0) rotate(-2deg)"
+        : `translate3d(0,125%,0) rotate(${8 - index * 2}deg)`,
+      `translate3d(0,${index * -2}%,0) rotate(${index % 2 === 0 ? -2 : 2}deg)`,
+    ],
+  );
+  return (
+    <motion.article
+      className={`ys-proof-card ys-proof-${item.color}`}
+      style={paused ? { zIndex: index + 1 } : { transform, zIndex: index + 1 }}
+      aria-labelledby={`proof-${item.id}`}
+    >
+      <div className="ys-proof-card-top">
+        <span>{item.tag}</span>
+        <Plus size={17} />
+      </div>
+      <div className="ys-proof-number">
+        {item.value}
+        <span>{item.suffix}</span>
+        <small>{item.unit}</small>
+      </div>
+      <ProofGraphic index={index} />
+      <div className="ys-proof-card-copy">
+        <h3 id={`proof-${item.id}`}>{item.title}</h3>
+        <p>{item.copy}</p>
+      </div>
+      <div className="ys-proof-card-bottom">
+        <span>{item.detail}</span>
+        {item.href ? (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View hackerman15 on Codeforces"
           >
-            <span style={{ color: accent }}>●</span> ys
-          </button>
-          <nav className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
-            <a href="#work" data-cursor="snap" className="transition-colors hover:text-white">
-              <ScrambleText text="Work" />
-            </a>
-            <a href={arrasCanonicalUrl} data-cursor="snap" style={{ color: accent }} className="transition-opacity hover:opacity-75">
-              <ScrambleText text="Arras" />
-            </a>
-            <a href={personal.resume} data-cursor="snap" className="transition-colors hover:text-white">
-              <ScrambleText text="CV" />
-            </a>
-          </nav>
-        </header>
+            <ArrowUpRight size={22} />
+          </a>
+        ) : (
+          <span className="ys-proof-stamp">{item.foot}</span>
+        )}
+      </div>
+    </motion.article>
+  );
+}
 
-        <main>
-        {/* --------------------------------------------------------------- hero */}
-        <section className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-24">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/55">
-            <span className="inline-flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent }} />
-              <Clock />
+function ProofSection({ paused, achievements }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+  const progressTransform = useTransform(
+    scrollYProgress,
+    (value) => `scaleY(${0.05 + value * 0.95})`,
+  );
+  const exams =
+    achievements.find((group) => group.category === "National Examinations")
+      ?.items || [];
+  return (
+    <>
+      <section
+        ref={ref}
+        id="proof"
+        className={`ys-proof-section${paused ? " ys-proof-static" : ""}`}
+        aria-labelledby="ys-proof-heading"
+      >
+        <div className="ys-proof-sticky">
+          <div className="ys-proof-intro">
+            <SectionLabel number="02" light>
+              The proof
+            </SectionLabel>
+            <h2 id="ys-proof-heading">
+              Less talk.
+              <br />
+              More <em>proof.</em>
+            </h2>
+            <p>
+              A few milestones from a very persistent habit of asking{" "}
+              <span>“what if?”</span>
+            </p>
+            <div className="ys-proof-progress">
+              <span>01</span>
+              <span className="ys-proof-progress-track">
+                <motion.i
+                  style={paused ? undefined : { transform: progressTransform }}
+                />
+              </span>
+              <span>04</span>
+            </div>
+            <a href="#about" className="ys-proof-skip">
+              The person behind all this <ArrowDownRight size={18} />
+            </a>
+          </div>
+          <div className="ys-proof-deck">
+            {PROOFS.map((item, index) => (
+              <ProofCard
+                key={item.id}
+                item={item}
+                index={index}
+                progress={scrollYProgress}
+                paused={paused}
+              />
+            ))}
+            <span className="ys-deck-caption">
+              A SMALL COLLECTION OF REASONS TO KEEP GOING.
             </span>
           </div>
-
-          <h1 className="mt-7 text-[clamp(3.2rem,15vw,12rem)] leading-[0.82] tracking-[0.01em]">
-            Yashashwi
+        </div>
+      </section>
+      <div className="ys-early-signals">
+        <div className="ys-early-title">
+          <span className="ys-red-dot" />
+          <span>
+            EARLY SIGNALS
             <br />
-            <span style={{ color: accent }}>Singhania</span>
-          </h1>
+            <small>The curiosity started early.</small>
+          </span>
+        </div>
+        {exams.map((item) => (
+          <div className="ys-exam" key={item.label}>
+            <span>{item.stat.replace("SR", "STATE RANK")}</span>
+            <p>{item.label}</p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
-          <div className="mt-10 grid gap-10 sm:grid-cols-[1.15fr_0.85fr] sm:gap-14">
-            <div>
-              <p className="max-w-lg text-[17px] leading-[1.6] text-white/65">
-                I build <span className="editorial text-white">systems</span> and overthink{" "}
-                <span className="editorial text-white">algorithms</span>. Dual degree at IIT (BHU),
-                mostly writing reinforcement learning, systems code, and native macOS apps people
-                actually keep installed.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <MagneticLink>
-                  <a
-                    href={arrasCanonicalUrl}
-                    data-cursor="snap"
-                    className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-semibold text-black"
-                    style={{ backgroundColor: accent }}
-                  >
-                    Explore Arras <ArrowUpRight size={16} aria-hidden="true" />
-                  </a>
-                </MagneticLink>
+function ArrasShowcase({ project, paused, stars }) {
+  const visual = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: visual,
+    offset: ["start end", "end start"],
+  });
+  const transform = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [
+      "translate3d(0,30px,0) rotate(-3deg) scale(0.94)",
+      "translate3d(0,-20px,0) rotate(1deg) scale(1.02)",
+    ],
+  );
+  return (
+    <Reveal className="ys-arras-feature" paused={paused}>
+      <div className="ys-arras-visual" ref={visual}>
+        <div className="ys-visual-topline">
+          <span>THE FLAGSHIP / NATIVE macOS</span>
+          <a
+            href={arrasCanonicalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Explore Arras — desktop photo widgets and collages for Mac"
+          >
+            MADE TO FEEL AT HOME. ↗
+          </a>
+        </div>
+        <span className="ys-arras-wordmark" aria-hidden="true">
+          arras
+        </span>
+        <motion.div
+          className="ys-arras-image"
+          style={paused ? undefined : { transform }}
+        >
+          <ArrasFilm paused={paused} />
+        </motion.div>
+        <div className="ys-arras-icon">
+          <Image src="/puremac/arras/icon.svg" alt="" width={62} height={62} />
+        </div>
+        <a
+          href={arrasCanonicalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ys-project-visit"
+          aria-label="Visit the Arras website"
+        >
+          <ArrowUpRight size={22} />
+        </a>
+      </div>
+      <div className="ys-arras-copy">
+        <div>
+          <span className="ys-project-category">MY FLAGSHIP PROJECT</span>
+          <h3>
+            Arras<span className="ys-red">.</span>
+          </h3>
+          <p>
+            Your desktop, a little more yours. Free photo widgets, editable
+            collages, and slideshows. Built with obsessive attention to how a
+            Mac app should feel.
+          </p>
+          <div className="ys-arras-milestone">
+            <strong>
+              1k<span>+</span>
+            </strong>
+            <span>
+              downloads
+              <br />& counting.
+            </span>
+          </div>
+        </div>
+        <div>
+          <div className="ys-store-inline">
+            <AppStoreMark size={18} />
+            <span>
+              Mac App Store <em>coming soon</em>
+            </span>
+            <span className="ys-store-dot" />
+          </div>
+          <div className="ys-tags">
+            {project.tags.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
+          </div>
+          <div className="ys-project-links">
+            <a
+              href={arrasCanonicalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore Arras <ArrowUpRight size={17} />
+            </a>
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Star Arras on GitHub"
+            >
+              <CodeXml size={17} />
+              {Number.isSafeInteger(stars) && stars > 0 ? (
+                <>
+                  <Star size={13} />
+                  <span>{stars}</span>
+                </>
+              ) : (
+                "Source"
+              )}
+            </a>
+          </div>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+function PacmanBoard({ paused }) {
+  const [running, setRunning] = useState(true);
+  return (
+    <div
+      className={`ys-pacman-stage${paused || !running ? " ys-pacman-paused" : ""}`}
+    >
+      <div className="ys-pacman-grid" aria-hidden="true">
+        {Array.from({ length: 80 }, (_, i) => (
+          <span
+            key={i}
+            className={
+              [
+                0, 1, 2, 7, 8, 9, 20, 23, 24, 26, 29, 30, 33, 36, 39, 40, 41,
+                43, 46, 48, 49, 60, 63, 66, 69, 70, 71, 72, 77, 78, 79,
+              ].includes(i)
+                ? "is-wall"
+                : ""
+            }
+          />
+        ))}
+      </div>
+      <div className="ys-pacman-agent ys-agent-one" aria-hidden="true" />
+      <div className="ys-pacman-agent ys-agent-two" aria-hidden="true" />
+      <div className="ys-pacman-agent ys-agent-three" aria-hidden="true" />
+      <div className="ys-pacman-hud">
+        <span>
+          <i /> MULTI-AGENT ARENA
+        </span>
+        <button
+          type="button"
+          onClick={() => setRunning((value) => !value)}
+          aria-label={
+            running ? "Pause arena illustration" : "Play arena illustration"
+          }
+          aria-pressed={!running}
+        >
+          {running ? <Pause size={12} /> : <Play size={12} />}
+        </button>
+      </div>
+      <span className="ys-pacman-caption">
+        AN ILLUSTRATION OF A COMPETITIVE ENVIRONMENT.
+      </span>
+    </div>
+  );
+}
+
+function WorkSection({ projects, stars, paused }) {
+  const arras = projects.find((project) => project.title === "Arras");
+  const fadeo = projects.find((project) => project.title === "Fadeo");
+  const pacman = projects.find((project) => project.title === "FFA-Pacman");
+  const [expanded, setExpanded] = useState(false);
+  const remaining = projects.filter(
+    (project) => !["Arras", "Fadeo", "FFA-Pacman"].includes(project.title),
+  );
+  const visible = expanded ? remaining : remaining.slice(0, 3);
+  return (
+    <section id="work" className="ys-work" aria-labelledby="ys-work-heading">
+      <div className="ys-section-heading">
+        <div>
+          <SectionLabel number="01">The work</SectionLabel>
+          <Reveal paused={paused}>
+            <h2 id="ys-work-heading">
+              Thoughtfully built.
+              <br />
+              <em>Personally obsessed.</em>
+            </h2>
+          </Reveal>
+        </div>
+        <p>
+          Arras is the main story.
+          <br />A few other rabbit holes follow.
+        </p>
+      </div>
+      {arras && <ArrasShowcase project={arras} stars={stars} paused={paused} />}
+      <div className="ys-work-pair">
+        {fadeo && (
+          <Reveal className="ys-work-card" paused={paused}>
+            <a
+              href={fadeo.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ys-fadeo-visual"
+              aria-label="Explore Fadeo, a workflow-aware audio app"
+            >
+              <div className="ys-visual-topline">
+                <span>02 / FADEO · SOUND, IN CONTEXT</span>
+                <ArrowUpRight size={16} />
+              </div>
+              <div className="ys-fadeo-equalizer" aria-hidden="true">
+                {Array.from({ length: 37 }, (_, i) => (
+                  <i
+                    key={i}
+                    style={{
+                      height: `${Math.round(18 + Math.abs(Math.sin(i * 0.53) * Math.cos(i * 0.21)) * 130)}px`,
+                      animationDelay: `${(i * -0.09).toFixed(2)}s`,
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="ys-fadeo-mini">
+                <Image
+                  src="/puremac/fadeo-icon.png"
+                  alt=""
+                  width={37}
+                  height={37}
+                />
+                <div>
+                  <strong>Fadeo, in your flow.</strong>
+                  <span>Sound that knows when to step back.</span>
+                </div>
+                <div className="ys-fadeo-toggle">
+                  <i />
+                </div>
+              </div>
+            </a>
+            <div className="ys-work-card-title">
+              <h3>Fadeo</h3>
+              <a
+                href={fadeo.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Fadeo source on GitHub"
+              >
+                <CodeXml size={19} />
+              </a>
+            </div>
+            <p className="ys-work-card-description">
+              A native Mac app that adapts audio to your workflow. The right
+              sound, the right moment. Every rule is yours.
+            </p>
+            <div className="ys-tags">
+              {fadeo.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+          </Reveal>
+        )}
+        {pacman && (
+          <Reveal className="ys-work-card" paused={paused} delay={0.06}>
+            <div className="ys-pacman-visual">
+              <div className="ys-visual-topline">
+                <span>03 / TEACHING MACHINES TO PLAY</span>
                 <a
-                  href="#work"
-                  data-cursor="snap"
-                  className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/55 underline-offset-4 transition-colors hover:text-white hover:underline"
+                  href={pacman.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="FFA-Pacman on GitHub"
                 >
-                  More work
+                  <ArrowUpRight size={16} />
                 </a>
               </div>
+              <PacmanBoard paused={paused} />
             </div>
-
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-white/10 pt-6 sm:justify-self-end">
-              {[
-                ["based in", personal.location],
-                ["studying", "Biochem. Eng."],
-                ["graduating", personal.graduationYear.replace(" (Expected)", "")],
-                ["shipping", `Arras ${arrasProduct.publicRelease.version}`],
-              ].map(([k, v]) => (
-                <div key={k}>
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/55">{k}</dt>
-                  <dd className="mt-1 text-[14.5px] text-white/75">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------ marquee */}
-        <Ticker accent={accent} />
-
-        <ArrasShowcase accent={accent} stars={arrasStars} />
-
-        {/* -------------------------------------------------------------- stats */}
-        <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
-          <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-            {STATS.map((s) => {
-              const Tag = s.href ? "a" : "div";
-              return (
-                <Tag
-                  key={s.label}
-                  {...(s.href ? { href: s.href, target: "_blank", rel: "noreferrer", "data-cursor": "snap" } : {})}
-                  className="group block"
-                >
-                  <p
-                    className="display text-[clamp(2.6rem,7vw,4.6rem)] leading-none tracking-[0.005em] transition-colors"
-                    style={{ color: accent }}
-                  >
-                    <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
-                  </p>
-                  <p className="mt-3 text-[15px] font-medium text-white/80">{s.label}</p>
-                  <p className="mt-0.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
-                    {s.sub}
-                  </p>
-                </Tag>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* --------------------------------------------------------------- work */}
-        <section id="work" className="mx-auto max-w-6xl px-5 pb-20 sm:px-8 sm:pb-28">
-          <div className="flex items-end justify-between gap-6 pb-10">
-            <h2 className="text-[clamp(2.2rem,6vw,4.4rem)] leading-[0.9]">
-              Selected
-              <br />
-              <span className="editorial normal-case text-white/55">work</span>
-            </h2>
-            <p className="hidden max-w-[15rem] text-right font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/55 sm:block">
-              {projects.length} repositories
-              <br />
-              most of them still running
-            </p>
-          </div>
-
-          <div>
-            {featured.map((p, i) => (
-              <WorkRow key={p.title} project={p} index={i} accent={accent} />
-            ))}
-          </div>
-        </section>
-
-        {/* ------------------------------------------- paper section (inverted) */}
-        <section className="bg-[#f2efe6] py-24 text-[#111014] sm:py-32">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-black/60">Where I have been</p>
-
-            <div className="mt-12 space-y-14">
-              {experience.map((e) => (
-                <div key={e.role + e.company} className="grid gap-5 sm:grid-cols-[13rem_1fr] sm:gap-10">
-                  <div>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-black/60">{e.period}</p>
-                    <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-black/60">
-                      {e.location}
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-[clamp(1.5rem,3.4vw,2.3rem)] leading-[1] text-[#111014]">{e.role}</h3>
-                    <p className="editorial mt-1 text-[19px] text-black/55">{e.company}</p>
-                    <ul className="mt-4 space-y-2">
-                      {e.bullets.map((b) => (
-                        <li key={b} className="flex gap-3 text-[14.5px] leading-[1.65] text-black/60">
-                          <span className="mt-[0.6em] h-[4px] w-[4px] shrink-0 rounded-full bg-black/30" />
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                    <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
-                      {e.tags.map((t) => (
-                        <li key={t} className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-black/60">
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* skills, as a dense strip rather than another card grid */}
-            <div className="mt-20 border-t border-black/12 pt-10">
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                {skills.map((group) => (
-                  <div key={group.category}>
-                    <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-black/60">
-                      {group.category}
-                    </p>
-                    <ul className="mt-3 space-y-1.5">
-                      {group.items.map((i) => (
-                        <li key={i} className="text-[14.5px] text-black/70">
-                          {i}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------- achievements */}
-        <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
-          <h2 className="text-[clamp(2rem,5.4vw,3.8rem)] leading-[0.92]">
-            Receipts
-          </h2>
-          <div className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2">
-            {achievements.map((group) => (
-              <div key={group.category}>
-                <p className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55">
-                  {group.category}
-                </p>
-                <ul className="mt-6 space-y-6">
-                  {group.items.map(asPosition).map((it) => {
-                    const Row = it.link ? "a" : "div";
-                    return (
-                      <li key={it.label}>
-                        <Row
-                          {...(it.link ? { href: it.link, target: "_blank", rel: "noreferrer", "data-cursor": "snap" } : {})}
-                          className="group flex items-baseline gap-5"
-                        >
-                          {/* Stats here run from "1st" to "QUALIFIED", so the
-                              size steps down with length — a fixed size either
-                              wrapped the long ones or wasted the column. */}
-                          <span
-                            className="display w-[7rem] shrink-0 whitespace-nowrap leading-none"
-                            style={{
-                              color: accent,
-                              fontSize:
-                                it.stat.length > 7 ? "1.15rem" : it.stat.length > 4 ? "1.45rem" : "1.85rem",
-                            }}
-                          >
-                            {it.stat}
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block text-[15px] text-white/80 transition-colors group-hover:text-white">
-                              {it.label}
-                            </span>
-                            <span className="mt-0.5 block font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/55">
-                              {it.detail}
-                            </span>
-                          </span>
-                        </Row>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* --------------------------------------------------------- more work */}
-        <section className="mx-auto max-w-6xl px-5 pb-24 sm:px-8 sm:pb-32">
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">Also built</p>
-          <div className="mt-8 flex flex-wrap gap-2.5">
-            {rest.map((p) => (
+            <div className="ys-work-card-title">
+              <h3>FFA-Pacman</h3>
               <a
-                key={p.title}
-                href={p.live || p.github}
+                href={pacman.github}
                 target="_blank"
-                rel="noopener"
-                referrerPolicy="origin"
-                data-cursor="snap"
-                className="group inline-flex items-center gap-2.5 rounded-full border border-white/12 px-4 py-2.5 text-[13.5px] text-white/60 transition-colors hover:border-white/35 hover:text-white"
+                rel="noopener noreferrer"
+                aria-label="Explore FFA-Pacman on GitHub"
               >
-                <span className="h-[6px] w-[6px] rounded-full" style={{ backgroundColor: p.color }} />
-                {p.title}
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/55">
-                  {p.tags[0]}
-                </span>
+                <ArrowUpRight size={21} />
+              </a>
+            </div>
+            <p className="ys-work-card-description">
+              An arena built from scratch. Multiple agents learning to compete,
+              collect energy, and survive with deep reinforcement learning.
+            </p>
+            <div className="ys-tags">
+              {pacman.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+          </Reveal>
+        )}
+      </div>
+      <div className="ys-lab-heading">
+        <span>THE REST OF THE RABBIT HOLE</span>
+        <span>
+          {String(remaining.length).padStart(2, "0")} MORE EXPLORATIONS
+        </span>
+      </div>
+      <div id="ys-project-archive" className="ys-project-archive">
+        {visible.map((project, i) => (
+          <a
+            key={project.title}
+            href={project.github}
+            className="ys-archive-row"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="ys-archive-number">
+              {String(i + 4).padStart(2, "0")}
+            </span>
+            <h3>
+              {project.title}
+              {project.wip && <small>IN PROGRESS</small>}
+            </h3>
+            <span className="ys-archive-description">
+              {project.description}
+            </span>
+            <span className="ys-archive-tech">
+              {project.tags.slice(0, 2).join(" / ")}
+            </span>
+            <ArrowUpRight size={22} />
+          </a>
+        ))}
+      </div>
+      <button
+        className="ys-archive-toggle"
+        type="button"
+        onClick={() => setExpanded((value) => !value)}
+        aria-expanded={expanded}
+        aria-controls="ys-project-archive"
+      >
+        {expanded
+          ? "A little less"
+          : `Open the archive (${remaining.length - 3} more)`}
+        <Plus
+          size={16}
+          style={{ transform: expanded ? "rotate(45deg)" : undefined }}
+        />
+      </button>
+    </section>
+  );
+}
+
+function AboutSection({ personal, experience, skills, paused }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const transform = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["rotate(-9deg)", "rotate(9deg)"],
+  );
+  return (
+    <section
+      id="about"
+      className="ys-about"
+      ref={ref}
+      aria-labelledby="ys-about-heading"
+    >
+      <SectionLabel number="03">The person behind the projects</SectionLabel>
+      <div className="ys-about-grid">
+        <div>
+          <Reveal paused={paused}>
+            <h2 id="ys-about-heading">
+              A biochemical
+              <br />
+              engineer.
+              <br />
+              <em>Plot twist, I know.</em>
+            </h2>
+          </Reveal>
+          <motion.div
+            className="ys-id-card"
+            style={paused ? undefined : { transform }}
+          >
+            <div>
+              <span>STUDENT OF THE HARD PROBLEM</span>
+              <Plus size={15} />
+            </div>
+            <span className="ys-id-monogram">
+              ys<span>✳</span>
+            </span>
+            <div>
+              <strong>IIT (BHU) Varanasi</strong>
+              <p>B.Tech + M.Tech · Biochemical Engineering</p>
+            </div>
+            <footer>
+              <span>CLASS OF 2028</span>
+              <span>{personal.cgpa} CGPA</span>
+            </footer>
+          </motion.div>
+        </div>
+        <div className="ys-about-body">
+          <Reveal paused={paused}>
+            <p className="ys-about-lead">
+              My degree says biochemical engineering.
+              <br />
+              My browser tabs tell a different story.
+            </p>
+            <p>
+              I’m a dual-degree student at IIT (BHU), happiest somewhere between
+              a hard algorithm and a tool someone will actually use.
+            </p>
+            <p>
+              That’s taken me from two-agent reinforcement games and Nash
+              equilibria to C++ systems, open-source contributions, and native
+              Mac apps. I like understanding how things work. I like making them
+              work even more.
+            </p>
+          </Reveal>
+          <div className="ys-experience">
+            <h3>A LITTLE CONTEXT</h3>
+            {experience.map((item) => (
+              <Reveal
+                key={item.company}
+                className="ys-experience-row"
+                paused={paused}
+              >
+                <div>
+                  <span className="ys-red-dot" />
+                  <strong>{item.company}</strong>
+                  <span className="ys-experience-period">{item.period}</span>
+                </div>
+                <h4>{item.role}</h4>
+                <p>
+                  {item.type === "research"
+                    ? "Two-agent reinforcement games, non-shared states, value/policy iteration, and convergence to Nash equilibrium."
+                    : "Multimodal RAG pipelines, enterprise document understanding, and automated analytical reporting."}
+                </p>
+                <div className="ys-tags">
+                  {item.tags.slice(0, 3).map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="ys-toolbox">
+            <h3>THE CURRENT TOOLBOX</h3>
+            <div>
+              {[
+                ...skills[0].items.filter((item) => item !== "LaTeX"),
+                "Swift",
+                "SwiftUI",
+                "React",
+                "PettingZoo",
+              ].map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="ys-about-footnote">
+        <span>Outside the editor?</span>
+        <p>
+          Probably overthinking a chess algorithm.
+          <br />
+          Or debugging a segfault at 3 AM.
+        </p>
+        <span className="ys-footnote-asterisk" aria-hidden="true">
+          ✳
+        </span>
+      </div>
+    </section>
+  );
+}
+
+function Contact({ personal, paused }) {
+  const [copyState, setCopyState] = useState("idle");
+  const timer = useRef(null);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(personal.email);
+      setCopyState("copied");
+    } catch {
+      setCopyState("failed");
+    }
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopyState("idle"), 2500);
+  }
+  return (
+    <footer id="contact" className="ys-contact">
+      <SectionLabel number="04">An open invitation</SectionLabel>
+      <div className="ys-contact-top">
+        <h2>
+          Got a good
+          <br />
+          <em>“what if?”</em>
+        </h2>
+        <div>
+          <p>
+            A hard problem. A strange idea.
+            <br />
+            Something worth building together.
+            <br />
+            I’d like to hear it.
+          </p>
+          <MagneticLink
+            href={`mailto:${personal.email}`}
+            className="ys-button ys-button-dark"
+            paused={paused}
+          >
+            Let’s make it happen <ArrowUpRight size={18} />
+          </MagneticLink>
+          <button className="ys-copy-email" onClick={copyEmail} type="button">
+            {copyState === "copied" ? <Check size={13} /> : <Copy size={13} />}
+            <span aria-live="polite">
+              {copyState === "copied"
+                ? "Email copied"
+                : copyState === "failed"
+                  ? "Use the email link above"
+                  : "Or copy my email"}
+            </span>
+          </button>
+        </div>
+      </div>
+      <div className="ys-footer-links">
+        <a href={personal.github} target="_blank" rel="noopener noreferrer">
+          GitHub <ArrowUpRight size={15} />
+        </a>
+        <a href={personal.linkedin} target="_blank" rel="noopener noreferrer">
+          LinkedIn <ArrowUpRight size={15} />
+        </a>
+        <a href={personal.codeforces} target="_blank" rel="noopener noreferrer">
+          Codeforces <ArrowUpRight size={15} />
+        </a>
+        <a href={personal.resume} target="_blank" rel="noopener noreferrer">
+          Résumé <ArrowUpRight size={15} />
+        </a>
+        <a className="ys-back-top" href="#top">
+          Back to the top <ArrowUpRight size={15} />
+        </a>
+      </div>
+      <a
+        className="ys-footer-name"
+        href="#top"
+        aria-label="Yashashwi — back to top"
+      >
+        yashashwi<span>✳</span>
+      </a>
+      <div className="ys-colophon">
+        <span>© {new Date().getFullYear()} Yashashwi Singhania</span>
+        <span>Made with intent. Always in progress.</span>
+        <span>VARANASI → EVERYWHERE</span>
+      </div>
+    </footer>
+  );
+}
+
+export default function HomeClient({
+  personal,
+  projects,
+  experience,
+  achievements,
+  skills,
+  arrasStars,
+  fontClass,
+}) {
+  const prefersReduced = useReducedMotion();
+  const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const systemReduced = Boolean(motionPreferenceReady && prefersReduced);
+  const paused = systemReduced || userPaused;
+  useEffect(() => setMotionPreferenceReady(true), []);
+  const { scrollYProgress } = useScroll();
+  const progressTransform = useTransform(
+    scrollYProgress,
+    (value) => `scaleX(${value})`,
+  );
+  useEffect(() => {
+    const elements = [
+      document.querySelector(".ys-hero"),
+      ...NAV_ITEMS.map((item) => document.getElementById(item.id)),
+    ].filter(Boolean);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries)
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+      },
+      { rootMargin: "-20% 0px -50% 0px" },
+    );
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    const elements = [...document.querySelectorAll(".ys-hero, .ys-work-card")];
+    const visible = new Set();
+    const update = () =>
+      elements.forEach((element) => {
+        const state =
+          !paused && !document.hidden && visible.has(element)
+            ? "running"
+            : "paused";
+        element
+          .querySelectorAll(
+            ".ys-hero-store, .ys-fadeo-equalizer > i, .ys-pacman-agent",
+          )
+          .forEach((animation) => {
+            animation.style.animationPlayState = state;
+          });
+      });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      });
+      update();
+    });
+    elements.forEach((element) => observer.observe(element));
+    document.addEventListener("visibilitychange", update);
+    update();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", update);
+    };
+  }, [paused]);
+  useEffect(() => {
+    if (paused || !window.matchMedia("(pointer: fine)").matches) return;
+    let cancelled = false,
+      cleanup = () => {};
+    import("lenis").then(({ default: Lenis }) => {
+      if (cancelled) return;
+      const lenis = new Lenis({
+        duration: 1.05,
+        smoothWheel: true,
+        syncTouch: false,
+        // Native hash navigation stays immediate for keyboard and skip links.
+        anchors: false,
+        autoRaf: false,
+      });
+      let frame = 0;
+      function tick(time) {
+        lenis.raf(time);
+        frame = requestAnimationFrame(tick);
+      }
+      function visibility() {
+        cancelAnimationFrame(frame);
+        if (!document.hidden) frame = requestAnimationFrame(tick);
+      }
+      frame = requestAnimationFrame(tick);
+      document.addEventListener("visibilitychange", visibility);
+      cleanup = () => {
+        cancelAnimationFrame(frame);
+        document.removeEventListener("visibilitychange", visibility);
+        lenis.destroy();
+      };
+    });
+    return () => {
+      cancelled = true;
+      cleanup();
+    };
+  }, [paused]);
+  return (
+    <MotionConfig reducedMotion={paused ? "always" : "user"}>
+      <div
+        id="top"
+        className={`ys-site ${fontClass}`}
+        data-motion={paused ? "paused" : "full"}
+      >
+        <a className="ys-skip-link" href="#main-content">
+          Skip to content
+        </a>
+        <motion.div
+          className="ys-reading-progress"
+          style={{ transform: progressTransform }}
+        />
+        <header className="ys-header">
+          <a
+            className="ys-brand"
+            href="#top"
+            aria-label="Yashashwi Singhania, home"
+          >
+            <span className="ys-brand-symbol">
+              y<span>✳</span>
+            </span>
+            <span>
+              yashashwi
+              <br />
+              <strong>singhania</strong>
+            </span>
+          </a>
+          <nav aria-label="Main navigation">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={activeSection === item.id ? "is-active" : ""}
+              >
+                <span>{item.number}</span>
+                {item.label}
               </a>
             ))}
+          </nav>
+          <div className="ys-header-end">
+            <LocalClock />
+            <button
+              type="button"
+              className="ys-motion-toggle"
+              onClick={() => setUserPaused((value) => !value)}
+              aria-label={paused ? "Enable motion" : "Pause motion"}
+              aria-pressed={paused}
+              disabled={systemReduced}
+              title={
+                systemReduced
+                  ? "Following your device’s reduced motion preference"
+                  : paused
+                    ? "Enable motion"
+                    : "Pause motion"
+              }
+            >
+              {paused ? <Play size={13} /> : <Pause size={13} />}
+              <span>Motion {paused ? "off" : "on"}</span>
+            </button>
+            <a href="#contact" className="ys-nav-contact">
+              Let’s talk <ArrowUpRight size={16} />
+            </a>
           </div>
-        </section>
-
-        {/* ------------------------------------------------------------- footer */}
+        </header>
+        <main id="main-content">
+          <Hero personal={personal} paused={paused} />
+          <DisciplineStrip paused={paused} />
+          <WorkSection projects={projects} stars={arrasStars} paused={paused} />
+          <ProofSection paused={paused} achievements={achievements} />
+          <AboutSection
+            personal={personal}
+            experience={experience}
+            skills={skills}
+            paused={paused}
+          />
         </main>
-        <footer className="border-t border-white/10">
-          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
-            <h2 className="text-[clamp(2.4rem,10vw,8rem)] leading-[0.85]">
-              Let&apos;s build
-              <br />
-              <span style={{ color: accent }}>something</span>
-            </h2>
-
-            <div className="mt-14 flex flex-wrap items-end justify-between gap-10">
-              <div className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white/55">
-                {[
-                  ["Email", `mailto:${personal.email}`],
-                  ["GitHub", personal.github],
-                  ["LinkedIn", personal.linkedin],
-                  ["Codeforces", personal.codeforces],
-                  ["Arras", arrasCanonicalUrl],
-                  ["Star Arras", arrasProduct.repositoryUrl],
-                  ["CV", personal.resume],
-                ].map(([label, href]) => (
-                  <a key={label} href={href} data-cursor="snap" className="transition-colors hover:text-white">
-                    <ScrambleText text={label} />
-                  </a>
-                ))}
-              </div>
-              <p className="font-mono text-[10.5px] uppercase leading-[1.9] tracking-[0.14em] text-white/55">
-                Varanasi, India
-                <br />
-                Built with too many rewrites
-              </p>
-            </div>
-          </div>
-        </footer>
+        <Contact personal={personal} paused={paused} />
       </div>
-    </div>
+    </MotionConfig>
   );
 }
