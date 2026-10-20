@@ -30,13 +30,26 @@ body:has(.ys-site) > .noise-bg {
 .ys-site,
 .ys-site * {
   box-sizing: border-box;
-  cursor: auto !important;
 }
-.ys-site a,
-.ys-site a *,
-.ys-site button,
-.ys-site button * {
-  cursor: pointer !important;
+/* Important rules reverse cascade-layer priority. Match the shared base layer
+   so these scoped selectors beat its universal hidden-cursor rule. */
+@layer base {
+  html:has(.ys-site),
+  body:has(.ys-site),
+  .ys-site,
+  .ys-site * {
+    cursor: auto !important;
+  }
+  .ys-site a,
+  .ys-site a *,
+  .ys-site button,
+  .ys-site button * {
+    cursor: pointer !important;
+  }
+  .ys-site button:disabled,
+  .ys-site button:disabled * {
+    cursor: default !important;
+  }
 }
 .ys-site a {
   color: inherit;
@@ -45,10 +58,6 @@ body:has(.ys-site) > .noise-bg {
 .ys-site button {
   font: inherit;
   color: inherit;
-}
-.ys-site button:disabled,
-.ys-site button:disabled * {
-  cursor: default !important;
 }
 .ys-site ::selection {
   background: #e84e32;
