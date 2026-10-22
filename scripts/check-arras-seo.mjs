@@ -40,6 +40,11 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
     const directives = metaValues(metadataHtml, name);
     check(directives.length === 1 && !directives.some(value => /\b(noindex|nofollow|none)\b/i.test(value)), `${path}: ${name} must allow indexing and following`);
   }
+  const ids = [...metadataHtml.matchAll(/<[a-z][^>]*>/gi)].map(match => attributes(match[0]).id).filter(Boolean);
+  check(new Set(ids).size === ids.length, `${path}: document IDs must be unique so feature and FAQ links reach the right section`);
+  for (const link of anchors(metadataHtml).filter(link => link.href?.startsWith("#"))) {
+    check(ids.includes(decodeURIComponent(link.href.slice(1))), `${path}: broken in-page link ${link.href}`);
+  }
   const canonicals = [...metadataHtml.matchAll(/<link\b[^>]*>/gi)].map(match => attributes(match[0])).filter(link => link.rel === "canonical").map(link => link.href);
   check(canonicals.length === 1 && canonicals[0] === expected, `${path}: expected one canonical ${expected}`);
   check(JSON.stringify(metaValues(metadataHtml, "og:url")) === JSON.stringify([expected]), `${path}: incorrect OpenGraph URL`);

@@ -1,6 +1,6 @@
 # Arras AEO operating plan
 
-Last updated: 2026-10-18
+Last updated: 2026-10-22
 
 This plan converts the public AEO playbook into work that is relevant and supportable for Arras. It deliberately excludes invented testimonials, keyword-density targets, fake expertise, and unverified industry statistics.
 
@@ -281,3 +281,16 @@ exact fields, the installation identifier, Wednesday UTC cadence, retries and
 30/400-day retention. The old privacy-details URL stays a compatibility redirect.
 A rendered assertion checks the details on `/security` itself, preventing source
 text in an unreachable page from being mistaken for published disclosure.
+
+
+## 22 October 2026 search and recommendation review
+
+The owner requested direct Search Console inspection using the school account and review of at least 500 SEO/AEO/GEO recommendations. The account was accessible through the normal browser. Current URL Inspection confirms that the homepage, `/faq` and `/security` are indexed with their intended canonical URLs; the older page-indexing summary predates those records. The submitted sitemap was read successfully with three discovered pages. No manual action or security issue was reported. Private performance numbers, query rows and account screenshots stay outside this public repository.
+
+The research reviewed **528 source checklist items**, counting cross-source overlaps explicitly: [Seodar](https://seodar.io/checks) 195, [Semrush](https://www.semrush.com/blog/seo-checklist/) 43, [Shopify](https://www.shopify.com/ca/blog/seo-checklist-online-store) 50, [Backlinko](https://backlinko.com/seo-checklist) 48, [Illucrum](https://illucrum.com/blog/seo-checklist/) 54 and [Digital Applied](https://www.digitalapplied.com/blog/technical-seo-audit-checklist-200-items) 138. The last article advertises 200+ but only its 138 explicit recommendations were counted. This is relevance triage, not 528 distinct defects or passed tests. Temporary item references and decisions are in the local search-review evidence folder, outside source control.
+
+Apply advice against [Google's current AI-search guidance](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), rather than treating vendor checklists as engine requirements. Useful changes are a direct product explanation in the opening copy, three compact native disclosures reusing the reviewed FAQ answers, an actual collage screenshot in SoftwareApplication metadata, and sitemap dates that follow substantive page edits. The shared answer renderer keeps the homepage and FAQ display consistent. The existing rendered audit now rejects duplicate document IDs and broken local fragment links, preserving feature links when answers appear on both pages.
+
+Keep all ten reviewed questions on `/faq`; the three homepage answers are a convenient introduction, not a promise of rich-result eligibility. Google's [current documentation changelog](https://developers.google.com/search/updates) records retirement of the FAQ rich-result feature in 2026. Do not add artificial ratings, search boxes or unnecessary markup to chase unavailable results. The [sitelinks search box was retired](https://developers.google.com/search/blog/2024/10/sitelinks-search-box), and the [Mobile Usability report was retired](https://developers.google.com/search/blog/2016/05/a-new-mobile-friendly-testing-tool); validate actual responsive rendering instead.
+
+Reject fixed keyword-density or word-count targets, manufactured mentions, mass-produced query-variation pages, fake reviews and claims that special AI files guarantee citations. Retain the existing llms.txt as a factual navigation aid, with no ranking promise. Do not add new analytics vendors or session recording solely because a checklist suggests them. Field Core Web Vitals and long-term search trends require enough real traffic; a lab build or a short reporting window cannot establish those outcomes.

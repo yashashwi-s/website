@@ -3,6 +3,8 @@ import { ArrasNavigation, ArrasFooter } from "./arras-navigation";
 import ArrasDemo from "./arras-demo";
 import { ArrasDownloadLink } from "./arras-attribution";
 import ArrasStar from "./arras-star";
+import ArrasAnswer from "./arras-answer";
+import { arrasFaqs } from "@/lib/arras-faqs.mjs";
 import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
 import "./arras.css";
 
@@ -21,7 +23,7 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
       <header id="arras-content" tabIndex={-1} className="ar-wrap ar-hero">
         <div><p className="ar-label">Mac desktop photo widgets · 2.5.0</p><h1>Your photos.<br /><em>Your kind of desktop.</em></h1></div>
         <div className="ar-hero-copy">
-          <p>Make a little world on your Mac. Arrange an editable collage, let a favorite collection change, or keep a reference floating beside your work. Every picture has a place.</p>
+          <p>Arras is a free, open-source Mac app for photo widgets, editable desktop collages and slideshows. Keep each photo’s natural proportions, choose its layer, and save a desktop that feels like yours.</p>
           <div className="ar-download-actions">
             <ArrasDownloadLink className="ar-button" href={download}>Download Arras <span aria-hidden="true">↙</span></ArrasDownloadLink>
             <ArrasStar repository={SOURCE} stars={stars} />
@@ -67,6 +69,12 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
       </section>
 
       <section id="install" className="ar-wrap ar-section"><div className="ar-split"><div><p className="ar-label">Yours to use. Yours to inspect.</p><h2>A little room<br /><em>for your photos.</em></h2><p className="ar-intro">No subscription. No account. Photos stay local.<br />Just a native app, and your desktop.</p><div className="ar-download-actions"><ArrasDownloadLink className="ar-button" href={download}>Download for Mac <span aria-hidden="true">↙</span></ArrasDownloadLink><ArrasStar repository={SOURCE} stars={stars} /></div><p className="ar-fine">{`v${product.publicRelease.version}`}{downloads?.total ? ` · ${new Intl.NumberFormat("en-US").format(downloads.total)} GitHub asset downloads` : ""}</p><p className="ar-fine"><a href={links.security}>Security &amp; Privacy →</a></p><a className="ar-text-link" href={`${SOURCE}/releases`} referrerPolicy="origin">Release notes ↗</a></div><div className="ar-install-notes"><h3>Install Arras</h3><ol className="ar-steps">{installation.steps.map(step=><li key={step.name}>{step.text}</li>)}</ol><a className="ar-text-link" href={`${links.security}#first-launch`}>{installation.helpLabel}</a></div></div></section>
+      <section className="ar-wrap ar-faq ar-quick-answers" aria-labelledby="quick-answers-heading">
+        <p className="ar-label">Before you get started</p>
+        <h2 id="quick-answers-heading">A few quick answers.</h2>
+        {arrasFaqs.filter(({ id }) => ["exact-photo", "free-open-source", "collages"].includes(id)).map(faq => <ArrasAnswer key={faq.id} {...faq} id={`quick-${faq.id}`} />)}
+        <p className="ar-fine"><a className="ar-text-link" href={links.faqs}>All questions, setup steps and privacy details →</a></p>
+      </section>
       <section className="ar-wrap ar-help" aria-label="Help and information"><div id="how-to-use"><span id="controls-and-limits" /><a id="faq-heading" href={links.faqs}>FAQs &amp; getting started <span>→</span></a><p>Adding photos, arranging your desktop, and the details that matter.</p></div><div><a id="security-and-privacy" href={links.security}>Security &amp; Privacy <span>→</span></a><p>Permissions, local storage, updates, and official downloads.</p></div></section>
       <ArrasFooter links={links} />
     </main>
