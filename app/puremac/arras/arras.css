@@ -139,3 +139,9 @@ html:has(#arras-page) { scroll-behavior: auto; }
 .ar-gallery-note a { text-decoration: underline; text-underline-offset: 4px; }
 @media(max-width:800px){ .ar-feature-pair {gap:30px;} .ar-settings-gallery {gap:20px;} .ar-settings-gallery figure>a {height:auto;padding:18px 14px 0;} .ar-settings-gallery figcaption {padding:22px 18px;} }
 @media(max-width:650px){ .ar-feature-pair,.ar-settings-gallery {grid-template-columns:1fr;} .ar-feature-pair {gap:24px;} .ar-settings-gallery {gap:26px;} .ar-settings-gallery figure>a {height:auto;max-height:none;padding:24px 22px 0;} .ar-desktop-shot {margin-top:24px;} #arras-page .ar-feature-pair h3{font-size:22px;} }
+
+/* Compact, native disclosures share the reviewed FAQ content. */
+#arras-page .ar-quick-answers h2 { font-size: 30px; letter-spacing: -.8px; }
+.ar-quick-answers .ar-label { margin-bottom: 16px; }
+.ar-quick-answers .ar-answer > div p { margin: 0 0 16px; font-size: 14px; line-height: 1.8; color: #66635e; }
+.ar-quick-answers .ar-answer > div .ar-answer-sources { font-size: 12px; }

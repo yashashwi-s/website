@@ -13,7 +13,7 @@ import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 const SITE_URL = arrasCanonicalUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
-const CONTENT_UPDATED_AT = "2026-10-18";
+const CONTENT_UPDATED_AT = "2026-10-22";
 const TITLE = "Arras — Mac Photo Widgets & Editable Desktop Collages";
 const DESCRIPTION =
   "Free Mac photo widgets and editable desktop collages. Keep true aspect ratios, link Photos albums, add muted videos, copy a look and save desktop setups.";
@@ -119,7 +119,7 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       operatingSystem: summary.operatingSystem,
       isAccessibleForFree: true,
       license: product.license.url,
-      screenshot: `${SITE_URL}${OG_IMAGE}`,
+      screenshot: `${SITE_URL}/puremac/arras/features/collages.webp`,
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
       publisher: { "@id": "https://yashashwi.me/#person" },
