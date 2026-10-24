@@ -25,7 +25,7 @@ export function ArrasFooter({ links }) {
     <footer className="ar-wrap ar-footer">
       <a className="ar-brand" href={links.home}><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />Arras</a>
       <p>Made by <a href="https://yashashwi.me">{personal.name}</a>.</p>
-      <div><a href={links.faqs}>FAQs</a><a href={links.support}>Support</a><a href={links.security}>Security &amp; Privacy</a><a href={arrasProduct.repositoryUrl} referrerPolicy="origin">Source ↗</a><a href={`${links.support}#contact`}>Contact</a></div>
+      <div><a href={links.guide}>Desktop setup guide</a><a href={links.faqs}>FAQs</a><a href={links.support}>Support</a><a href={links.security}>Security &amp; Privacy</a><a href={arrasProduct.repositoryUrl} referrerPolicy="origin">Source ↗</a><a href={`${links.support}#contact`}>Contact</a></div>
     </footer>
   );
 }

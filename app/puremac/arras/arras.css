@@ -169,3 +169,16 @@ html:has(#arras-page) { scroll-behavior: auto; }
 
 #arras-page .ar-purchase-note { font-size: 13px; line-height: 1.75; margin: -6px 0 22px; font-weight: 600; }
 .ar-purchase-note span { color: #66635e; font-size: 12px; font-weight: 400; }
+
+/* Desktop guide: real captures within the existing reading layout. */
+.ar-guide-shot { margin: 28px 0 32px; }
+.ar-guide-shot>a { display: block; border: 1px solid #29292725; border-radius: 10px; overflow: hidden; }
+.ar-guide-shot img { display: block; width: 100%; height: auto; }
+.ar-guide-shot figcaption { color: #66635e; font-size: 12px; line-height: 1.7; margin-top: 12px; }
+.ar-guide-table { overflow-x: auto; margin: 24px 0; border: 1px solid #29292725; border-radius: 6px; }
+.ar-guide-table table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.65; text-align: left; }
+.ar-guide-table th, .ar-guide-table td { padding: 14px 16px; vertical-align: top; border-bottom: 1px solid #29292720; }
+.ar-guide-table thead { background: #eae4d8; }
+.ar-guide-table tbody th { width: 43%; font-weight: 500; }
+.ar-guide-table tr:last-child>* { border-bottom: 0; }
+.ar-guide-table:focus-visible { outline: 2px solid #aa5539; outline-offset: 4px; }

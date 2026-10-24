@@ -6,7 +6,7 @@ const canonical = "https://tryarras.tech";
 const cases = [];
 for (const host of ["puremac.yashashwi.me", "yashashwi.me", "arras.yashashwi.me"]) {
   for (const prefix of ["/arras", "/puremac/arras"]) {
-    for (const [suffix, target] of [["", "/"], ["/faq", "/faq"], ["/faqs", "/faq"], ["/security", "/security"], ["/security-privacy", "/security"], ["/robots.txt", "/robots.txt"], ["/sitemap.xml", "/sitemap.xml"], ["/llms.txt", "/llms.txt"]]) {
+    for (const [suffix, target] of [["", "/"], ["/faq", "/faq"], ["/faqs", "/faq"], ["/security", "/security"], ["/security-privacy", "/security"], ["/robots.txt", "/robots.txt"], ["/sitemap.xml", "/sitemap.xml"], ["/llms.txt", "/llms.txt"], ["/mac-desktop-customization", "/mac-desktop-customization"]]) {
       for (const slash of ["", "/"]) cases.push([`https://${host}${prefix}${suffix}${slash}?utm_source=legacy-check`, `${canonical}${target}?utm_source=legacy-check`]);
     }
   }
@@ -16,7 +16,7 @@ for (const host of ["puremac.yashashwi.me", "yashashwi.me"]) {
 }
 for (const path of ["/faqs", "/faqs/"]) cases.push([`${canonical}${path}`, `${canonical}/faq`]);
 for (const host of ["arras.yashashwi.me", "www.tryarras.tech"]) {
-  for (const path of ["/", "/faq", "/security", "/robots.txt", "/sitemap.xml", "/llms.txt"]) cases.push([`https://${host}${path}`, `${canonical}${path}`]);
+  for (const path of ["/", "/faq", "/security", "/robots.txt", "/sitemap.xml", "/llms.txt", "/mac-desktop-customization"]) cases.push([`https://${host}${path}`, `${canonical}${path}`]);
   cases.push([`https://${host}/security-privacy`, `${canonical}/security`]);
 }
 cases.push([`${canonical}/security-privacy`, `${canonical}/security`]);

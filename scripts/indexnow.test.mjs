@@ -3,7 +3,7 @@ import test from "node:test";
 import { spawnSync } from "node:child_process";
 import { arrasUrls, changedProductUrls, productUrls } from "../lib/indexnow.mjs";
 
-const arrasPages = ["https://tryarras.tech/", "https://tryarras.tech/faq", "https://tryarras.tech/security", "https://tryarras.tech/support"];
+const arrasPages = ["https://tryarras.tech/", "https://tryarras.tech/faq", "https://tryarras.tech/security", "https://tryarras.tech/support", "https://tryarras.tech/mac-desktop-customization"];
 const sorted = values => [...values].sort();
 
 test("full submissions include all canonical Arras pages, without redirects or assets", () => {
