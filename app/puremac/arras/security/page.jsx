@@ -4,8 +4,9 @@ import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasInstallation } from "@/lib/arras-installation.mjs";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";
+import { ARRAS_SUPPORT_EMAIL } from "@/lib/arras-support.mjs";
 
-const supportEmail = "yashashwisinghania@gmail.com";
+const supportEmail = ARRAS_SUPPORT_EMAIL;
 
 export const metadata = supportMetadata("security", "Arras — Security & Privacy", "Arras keeps photos local. Read about permissions, the direct-download edition’s limited statistics, and the sandboxed Store edition’s storage and updates.");
 
@@ -26,6 +27,7 @@ export default async function SecurityPage() {
       </section>
       <section id="first-launch">
         <h2>The first launch on macOS</h2>
+        <p><strong>Arras Widgets from the Mac App Store:</strong> install and open it through Apple. Its controls appear in your menu bar; Apple manages Store updates. The DMG steps below apply to the free direct download.</p>
         <p>{installation.verification}</p>
         <ol className="ar-steps">
           <li>Download the DMG from this website’s button or the <a referrerPolicy="origin" href={product.publicRelease.sourceUrl}>official GitHub Release</a>.</li>

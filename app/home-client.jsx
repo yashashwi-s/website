@@ -173,7 +173,7 @@ function AppStoreLabel({ className = "" }) {
       <div className="ys-store-label-main">
         <AppStoreMark size={29} />
         <span>
-          App Store<em>available now.</em>
+          App Store<em>out now.</em>
         </span>
       </div>
       <div className="ys-store-label-bottom">
