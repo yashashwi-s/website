@@ -107,7 +107,6 @@ export default function ArrasFilm({ paused }) {
         title={paused ? "Enable motion to play the film" : undefined}
         aria-controls="ys-arras-demo"
         aria-pressed={playing}
-        aria-label={playing ? "Pause Arras demo" : "Play Arras demo"}
       >
         {playing ? <Pause size={12} /> : <Play size={12} />}
         <span>

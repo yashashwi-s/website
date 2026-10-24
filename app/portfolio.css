@@ -14,9 +14,10 @@ body:has(.ys-site) > .noise-bg {
 .ys-site {
   --paper: #f4f2eb;
   --ink: #253128;
-  --muted: #687068;
+  --muted: #5c665b;
   --line: #d7d9cf;
   --red: #e84e32;
+  --red-ink: #ac2d1c;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   background: var(--paper);
@@ -487,7 +488,7 @@ body:has(.ys-site) > .noise-bg {
 .ys-store-label {
   display: block;
   width: 196px;
-  background: var(--red);
+  background: #b93624;
   padding: 13px 17px 11px;
   color: #fff9e9;
   box-shadow: 0 8px 15px -8px #6f1b1b55;
@@ -903,7 +904,7 @@ body:has(.ys-site) > .noise-bg {
   font-size: 17px;
   display: inline-block;
   margin-left: 6px;
-  color: var(--red);
+  color: var(--red-ink);
 }
 .ys-store-inline .ys-store-dot {
   margin-left: auto;
@@ -922,7 +923,7 @@ body:has(.ys-site) > .noise-bg {
   border: 1px solid #cfd3c8;
   padding: 5px 8px;
   border-radius: 3px;
-  color: #687062;
+  color: #5c665b;
 }
 .ys-project-links {
   display: flex;
@@ -939,7 +940,7 @@ body:has(.ys-site) > .noise-bg {
 }
 .ys-project-links > a:last-child {
   font-size: 9px;
-  color: #687062;
+  color: #5c665b;
   gap: 6px;
 }
 .ys-work-pair {
@@ -1205,7 +1206,7 @@ body:has(.ys-site) > .noise-bg {
 }
 .ys-archive-row h3 small {
   display: block;
-  color: var(--red);
+  color: var(--red-ink);
   font:
     6px var(--font-mono),
     monospace;
@@ -1397,7 +1398,7 @@ body:has(.ys-site) > .noise-bg {
   font-size: 11px;
   line-height: 1.8;
   max-width: 345px;
-  color: #4c5846;
+  color: #253128;
 }
 .ys-proof-card-bottom {
   border-top: 1px solid #25312830;
@@ -1783,7 +1784,7 @@ body:has(.ys-site) > .noise-bg {
 }
 .ys-contact-top p {
   font-size: 13px;
-  color: #626f59;
+  color: #526149;
   line-height: 1.9;
   margin-bottom: 23px;
 }
@@ -1798,7 +1799,7 @@ body:has(.ys-site) > .noise-bg {
   align-items: center;
   gap: 7px;
   font-size: 9px !important;
-  color: #68795d !important;
+  color: #526149 !important;
   padding: 6px 0;
 }
 .ys-footer-links {
@@ -1845,7 +1846,7 @@ body:has(.ys-site) > .noise-bg {
   font:
     7px var(--font-mono),
     monospace;
-  color: #718065;
+  color: #526149;
 }
 @keyframes ys-title-in {
   from {

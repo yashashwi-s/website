@@ -164,7 +164,6 @@ function AppStoreLabel({ className = "" }) {
       href={appStoreOffer.url}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Download Arras Widgets on the Mac App Store"
     >
       <div className="ys-store-label-top">
         <span>THE NEXT CHAPTER</span>
@@ -289,7 +288,6 @@ function Hero({ personal, paused }) {
             rel="noopener noreferrer"
             className="ys-hero-product"
             style={paused ? undefined : { transform: tilt }}
-            aria-label="Explore Arras photo widgets and collages for Mac"
           >
             <div className="ys-mac-chrome">
               <span>
@@ -359,6 +357,7 @@ function DisciplineStrip({ paused }) {
     <div
       ref={strip}
       className="ys-discipline-strip"
+      role="img"
       aria-label="Native macOS. Reinforcement learning. Systems. Competitive programming."
     >
       <motion.div aria-hidden="true" style={paused ? undefined : { transform }}>
@@ -633,7 +632,7 @@ function ArrasShowcase({ project, paused, stars }) {
             href={arrasCanonicalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Explore Arras — desktop photo widgets and collages for Mac"
+            aria-label="Made to feel at home. Explore Arras desktop photo widgets and collages for Mac."
           >
             MADE TO FEEL AT HOME. ↗
           </a>
@@ -689,7 +688,6 @@ function ArrasShowcase({ project, paused, stars }) {
               href={appStoreOffer.url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Download Arras Widgets on the Mac App Store"
             >
               <AppStoreMark size={18} />
               <span>
@@ -715,7 +713,7 @@ function ArrasShowcase({ project, paused, stars }) {
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Star Arras on GitHub"
+              aria-label={Number.isSafeInteger(stars) && stars > 0 ? `${stars} stars. Star Arras on GitHub` : "Source: Star Arras on GitHub"}
             >
               <CodeXml size={17} />
               {Number.isSafeInteger(stars) && stars > 0 ? (
@@ -816,7 +814,6 @@ function WorkSection({ projects, stars, paused }) {
               target="_blank"
               rel="noopener noreferrer"
               className="ys-fadeo-visual"
-              aria-label="Explore Fadeo, a workflow-aware audio app"
             >
               <div className="ys-visual-topline">
                 <span>02 / FADEO · SOUND, IN CONTEXT</span>
@@ -1295,7 +1292,7 @@ export default function HomeClient({
             href="#top"
             aria-label="Yashashwi Singhania, home"
           >
-            <span className="ys-brand-symbol">
+            <span className="ys-brand-symbol" aria-hidden="true">
               y<span>✳</span>
             </span>
             <span>
@@ -1322,7 +1319,7 @@ export default function HomeClient({
               type="button"
               className="ys-motion-toggle"
               onClick={() => setUserPaused((value) => !value)}
-              aria-label={paused ? "Enable motion" : "Pause motion"}
+              aria-label={paused ? "Motion off: enable motion" : "Motion on: pause motion"}
               aria-pressed={paused}
               disabled={systemReduced}
               title={
