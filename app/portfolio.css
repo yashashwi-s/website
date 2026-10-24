@@ -2790,3 +2790,5 @@ body:has(.ys-site) > .noise-bg {
     break-inside: avoid;
   }
 }
+
+.ys-arras-copy p.ys-arras-support { font-size: 13px; line-height: 1.8; margin-top: 18px; }

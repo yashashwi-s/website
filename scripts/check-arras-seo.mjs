@@ -122,6 +122,23 @@ check(portfolioLinks.some(link => link.href === "https://puremac.yashashwi.me/fa
 check(!portfolioLinks.some(link => /^https:\/\/puremac\.yashashwi\.me\/?$|puremac\.yashashwi\.me\/(?:puremac\/)?arras(?:\/|$)/.test(link.href || "")), "Portfolio Arras links must go directly to the product host");
 check(!/<(?:button|div|span)\b[^>]*(?:href|data-href)="https?:/i.test(portfolio), "External portfolio navigation must use standard anchors");
 for (const link of portfolioLinks) check(Boolean(link.href), "Every rendered portfolio anchor must have an href");
+const portfolioText = visible(portfolio);
+const storeUrl = `https://apps.apple.com/app/id${product.appStore.appleId}`;
+check(portfolioLinks.filter(link => link.href === storeUrl).length >= 2, "Portfolio needs working Store links in its hero and Arras project");
+check(/supports my independent work/i.test(portfolioText) && /free, open-source download stays available/i.test(portfolioText), "Portfolio must explain the paid support option and retain the free choice");
+check(/one-time purchase/i.test(pages["/"].text) && /Support independent development/.test(pages["/"].text), "Arras homepage must explain what the Store purchase supports");
+check(/up to six family members/i.test(pages["/"].text) && /Family Sharing/.test(pages["/support"].text), "Verified Family Sharing should be explained on the purchase and support pages");
+const profileNodes = [...portfolio.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].flatMap(([, json]) => { const block = JSON.parse(json); return block["@graph"] || [block]; });
+check(profileNodes.some(node => node["@type"] === "Person" && node["@id"] === "https://yashashwi.me/#person"), "Portfolio must identify the same maker as the Arras site");
+const portfolioRequests = await Promise.all(["/robots.txt", "/sitemap.xml", "/llms.txt", "/7515130a027efb4813a91ff4482c0886.txt"].map(async path => {
+  const response = await requestPage(`${portfolioOrigin}${path}`, { headers: { Host: "yashashwi.me", "User-Agent": googlebot } });
+  return { path, status: response.status, body: await response.text() };
+}));
+for (const response of portfolioRequests) check(response.status === 200, `Portfolio ${response.path} must be crawlable`);
+check(portfolioRequests[0].body.includes("Sitemap: https://yashashwi.me/sitemap.xml"), "Portfolio robots must identify its own sitemap");
+check(JSON.stringify([...portfolioRequests[1].body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => url)) === JSON.stringify(["https://yashashwi.me/"]), "Portfolio sitemap must contain only its canonical page");
+check(portfolioRequests[2].body.includes(storeUrl) && portfolioRequests[2].body.includes("https://tryarras.tech/support"), "Portfolio AI navigation must include the official Store listing and support");
+check(portfolioRequests[3].body.trim() === "7515130a027efb4813a91ff4482c0886", "Portfolio IndexNow ownership token must be served on its host");
 
 assert.equal(failures.length, 0, failures.join("\n"));
 console.log("SEO checks passed: crawlable public pages, Store and free offers, support contact, matching FAQ answers, canonical metadata, robots, sitemap, and portfolio links (Fadeo intact).");

@@ -46,7 +46,8 @@ export default async function ArrasSupportPage() {
         </section>
         <section id="updates">
           <h2>Updates, downloads &amp; purchases</h2>
-          <p><strong>Mac App Store edition.</strong> Apple manages your purchase, downloads and app updates. Open the App Store on your Mac to check for updates. To download a previous purchase, use the Apple Account that bought Arras Widgets.</p>
+          <p><strong>Mac App Store edition.</strong> Apple manages your purchase, downloads and app updates. Open the App Store on your Mac to check for updates. To download a previous purchase, use the Apple Account that bought Arras Widgets. It is a one-time purchase; local prices may vary. With Family Sharing enabled, up to six family members can use the app.</p>
+          <p><a href="https://support.apple.com/guide/mac-help/share-purchases-family-sharing-group-mchlc2b37692/mac">Set up Family Sharing ↗</a> · <a href="https://support.apple.com/en-us/118223">Request an eligible purchase refund from Apple ↗</a></p>
           <p><a href="https://support.apple.com/en-us/102417">Apple’s redownload instructions ↗</a> · <a href="https://support.apple.com/billing">Apple purchase and billing support ↗</a></p>
           <p><strong>Free direct download.</strong> Updates come from the official GitHub release. Review the update controls in Arras Preferences. <a href={`${links.home}#install`}>Download and installation instructions →</a></p>
           <p>For an app problem, email <a href={`mailto:${ARRAS_SUPPORT_EMAIL}`}>{ARRAS_SUPPORT_EMAIL}</a>. For a privacy request, see <a href={`${links.security}#contact`}>Security &amp; Privacy</a>. Report a security issue through the <a href={product.documentation.securityPolicyUrl} referrerPolicy="origin">private reporting instructions ↗</a>.</p>

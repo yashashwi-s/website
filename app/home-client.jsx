@@ -178,7 +178,7 @@ function AppStoreLabel({ className = "" }) {
       </div>
       <div className="ys-store-label-bottom">
         <span className="ys-store-dot" />
-        <span>ARRAS WIDGETS IS HERE.</span>
+        <span>{appStoreOffer.price} · BUY ONCE.</span>
       </div>
     </a>
   );
@@ -289,7 +289,7 @@ function Hero({ personal, paused }) {
             rel="noopener noreferrer"
             className="ys-hero-product"
             style={paused ? undefined : { transform: tilt }}
-            aria-label="Explore Arras, my free Mac app"
+            aria-label="Explore Arras photo widgets and collages for Mac"
           >
             <div className="ys-mac-chrome">
               <span>
@@ -319,7 +319,7 @@ function Hero({ personal, paused }) {
                 <strong>Arras</strong>
                 <small>A more personal Mac.</small>
               </span>
-              <span className="ys-free-tag">NATIVE & FREE</span>
+              <span className="ys-free-tag">MADE FOR MAC</span>
             </div>
           </motion.a>
           <AppStoreLabel className="ys-hero-store" />
@@ -667,10 +667,11 @@ function ArrasShowcase({ project, paused, stars }) {
             Arras<span className="ys-red">.</span>
           </h3>
           <p>
-            Your desktop, a little more yours. Free photo widgets, editable
+            Your desktop, a little more yours. Photo widgets, editable
             collages, and slideshows. Built with obsessive attention to how a
             Mac app should feel.
           </p>
+          {appStoreOffer && <p className="ys-arras-support">Buying Arras Widgets supports my independent work. One purchase, updates through Apple, and no Arras usage statistics. The free, open-source download stays available on the Arras website.</p>}
           <div className="ys-arras-milestone">
             <strong>
               1k<span>+</span>
@@ -692,7 +693,7 @@ function ArrasShowcase({ project, paused, stars }) {
             >
               <AppStoreMark size={18} />
               <span>
-                Mac App Store <em>available now</em>
+                Mac App Store <em>{appStoreOffer.price} · buy once</em>
               </span>
               <span className="ys-store-dot" />
             </a>

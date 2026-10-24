@@ -5,6 +5,7 @@ import { ArrasDownloadLink } from "./arras-attribution";
 import ArrasStar from "./arras-star";
 import ArrasAnswer from "./arras-answer";
 import { arrasFaqs } from "@/lib/arras-faqs.mjs";
+import { getArrasStoreFaqs } from "@/lib/arras-support.mjs";
 import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
 import "./arras.css";
 
@@ -18,7 +19,7 @@ function StoreOffer({ offer }) {
     <a href={offer.url} aria-label="Get Arras Widgets on the Mac App Store">
       <Image src="/puremac/arras/mac-app-store-badge.svg" width={156} height={52} alt="Download on the App Store" unoptimized />
     </a>
-    <p><strong>Arras Widgets · {offer.price}</strong><br />Mac App Store · Local prices may vary.</p>
+    <p><strong>Arras Widgets · {offer.price}</strong><br />One-time purchase · Local prices may vary.</p>
   </div>;
 }
 
@@ -35,6 +36,7 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
         <div className="ar-hero-copy">
           <p>Arras puts photo widgets, editable collages and slideshows on your Mac. Keep each photo’s natural proportions. Save a desktop that feels like yours.</p>
           <StoreOffer offer={storeOffer} />
+          {storeOffer && <p className="ar-purchase-note">Buy once. Support independent development.<br /><span>Updates through Apple. No Arras usage statistics.</span></p>}
           <div className="ar-download-actions">
             <ArrasDownloadLink className={`ar-button${storeOffer ? " ar-button-secondary" : ""}`} href={download}>Free direct download <span aria-hidden="true">↙</span></ArrasDownloadLink>
             <ArrasStar repository={SOURCE} stars={stars} />
@@ -78,7 +80,7 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
           <div>
             <p className="ar-label">A place for your photos. A choice of editions.</p>
             <h2>Make yourself<br /><em>at home.</em></h2>
-            <p className="ar-intro">Choose Arras Widgets on the Mac App Store for Apple-managed installation and updates. Or get the free, open-source direct download. Your photos stay on your Mac.</p>
+            <p className="ar-intro">Buying Arras Widgets supports my work on Arras. Get Apple-managed installation and updates, a sandboxed app and no Arras usage statistics. The free, open-source direct download is here too. Your photos stay on your Mac.</p>
             <StoreOffer offer={storeOffer} />
             <div className="ar-download-actions"><ArrasDownloadLink className="ar-button ar-button-secondary" href={download}>Free direct download <span aria-hidden="true">↙</span></ArrasDownloadLink><ArrasStar repository={SOURCE} stars={stars} /></div>
             <p className="ar-fine">{`v${product.publicRelease.version}`}{downloads?.total ? ` · ${new Intl.NumberFormat("en-US").format(downloads.total)} GitHub asset downloads` : ""}</p>
@@ -86,7 +88,7 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
             <a className="ar-text-link" href={`${SOURCE}/releases`} referrerPolicy="origin">Direct-download release notes ↗</a>
           </div>
           <div className="ar-install-notes">
-            {storeOffer && <div className="ar-store-install"><h3>From the Mac App Store</h3><p>Get <a href={storeOffer.url}>Arras Widgets</a>, then open it on your Mac. Its controls live in the menu bar. Apple manages your purchase and updates. This edition is sandboxed and sends no Arras usage statistics.</p></div>}
+            {storeOffer && <div className="ar-store-install"><h3>From the Mac App Store</h3><p>Get <a href={storeOffer.url}>Arras Widgets</a>, then open it on your Mac. Its controls live in the menu bar. Apple manages your purchase and updates. This edition is sandboxed and sends no Arras usage statistics.</p><p><strong>One purchase, for the family.</strong> With Family Sharing enabled, up to six family members can use Arras Widgets. <a href="https://support.apple.com/guide/mac-help/share-purchases-family-sharing-group-mchlc2b37692/mac">How Family Sharing works ↗</a></p></div>}
             <h3>Install the free direct download</h3>
             <ol className="ar-steps">{installation.steps.map(step => <li key={step.name}>{step.text}</li>)}</ol>
             <a className="ar-text-link" href={`${links.security}#first-launch`}>{installation.helpLabel}</a>
@@ -96,7 +98,7 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
       <section className="ar-wrap ar-faq ar-quick-answers" aria-labelledby="quick-answers-heading">
         <p className="ar-label">Before you get started</p>
         <h2 id="quick-answers-heading">A few quick answers.</h2>
-        {arrasFaqs.filter(({ id }) => ["exact-photo", "free-open-source", "collages"].includes(id)).map(faq => <ArrasAnswer key={faq.id} {...faq} id={`quick-${faq.id}`} />)}
+        {[...arrasFaqs.filter(({ id }) => ["exact-photo", "free-open-source", "collages"].includes(id)), ...getArrasStoreFaqs(product).filter(({ id }) => id === "support-development")].map(faq => <ArrasAnswer key={faq.id} {...faq} id={`quick-${faq.id}`} />)}
         <p className="ar-fine"><a className="ar-text-link" href={links.faqs}>All questions, setup steps and privacy details →</a></p>
       </section>
       <section className="ar-wrap ar-help" aria-label="Help and information"><div id="how-to-use"><span id="controls-and-limits" /><a id="faq-heading" href={links.faqs}>FAQs &amp; getting started <span>→</span></a><p>Adding photos, arranging your desktop, and the details that matter.</p></div><div><a href={links.support}>Support, from the developer <span>→</span></a><p>Something not quite right? Get help with Arras Widgets, purchases, or the free download.</p><a className="ar-text-link" id="security-and-privacy" href={links.security}>Security &amp; Privacy →</a></div></section>
