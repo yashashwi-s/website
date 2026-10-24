@@ -33,7 +33,7 @@ const mono = JetBrains_Mono({
 
 const TITLE = "Yashashwi Singhania — Curiosity, compiled.";
 const DESCRIPTION =
-  "Creator of Arras, a free native Mac app with 1,000+ downloads. Student at IIT (BHU), building thoughtful software, intelligent agents, and a more personal Mac.";
+  "Creator of Arras Widgets for Mac. Explore my native apps, support independent development on the App Store, and see my work at IIT (BHU).";
 
 export const metadata = {
   title: TITLE,
@@ -62,7 +62,16 @@ export default async function Home() {
   );
   const arrasStars = await repositoryStars("Arras");
 
+  const profile = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "WebPage", "@id": "https://yashashwi.me/#page", url: "https://yashashwi.me/", name: TITLE, description: DESCRIPTION, mainEntity: { "@id": "https://yashashwi.me/#person" } },
+      { "@type": "Person", "@id": "https://yashashwi.me/#person", name: personal.name, url: "https://yashashwi.me/", sameAs: ["https://github.com/yashashwi-s"], description: "Creator of Arras and a dual-degree student at IIT (BHU)." },
+    ],
+  };
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profile).replace(/</g, "\\u003c") }} />
     <HomeClient
       personal={personal}
       projects={ordered}
@@ -72,5 +81,6 @@ export default async function Home() {
       arrasStars={arrasStars}
       fontClass={`${studio.variable} ${editorial.variable} ${mono.variable}`}
     />
+    </>
   );
 }

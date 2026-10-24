@@ -166,3 +166,6 @@ html:has(#arras-page) { scroll-behavior: auto; }
 .ar-quick-answers .ar-label { margin-bottom: 16px; }
 .ar-quick-answers .ar-answer > div p { margin: 0 0 16px; font-size: 14px; line-height: 1.8; color: #66635e; }
 .ar-quick-answers .ar-answer > div .ar-answer-sources { font-size: 12px; }
+
+#arras-page .ar-purchase-note { font-size: 13px; line-height: 1.75; margin: -6px 0 22px; font-weight: 600; }
+.ar-purchase-note span { color: #66635e; font-size: 12px; font-weight: 400; }

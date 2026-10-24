@@ -9,6 +9,8 @@
 
 ## Featured Project: Arras
 - [Arras desktop photo widgets for Mac](https://tryarras.tech/): The portfolio's primary project. Uncropped photos, editable collages, slideshows, placement layers, linked Photos albums and folders, GIF/APNG and muted video widgets, reference tools and saved desktop setups.
+- [Arras Widgets on the Mac App Store](https://apps.apple.com/app/id6824271927): One-time US$4.99 purchase; local prices may vary. Buying supports independent development. Apple manages updates, the app is sandboxed, and this edition sends no Arras usage statistics. The free direct download remains available.
+- [Arras support](https://tryarras.tech/support): Setup, library migration and purchase help from the developer.
 - [Arras source and GitHub stars](https://github.com/yashashwi-s/Arras): MIT-licensed source, release history and the repository's Star action.
 
 ## Other macOS Work

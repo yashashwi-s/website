@@ -17,7 +17,7 @@ export async function GET() {
 
 ## Canonical resources
 - [Product and official download](${base}/): Overview and compatibility.
-- [Installation](${base}/#install): Official GitHub DMG and first-launch guidance.
+- [Installation and edition choice](${base}/#install): Paid Mac App Store purchase, free GitHub DMG and first-launch guidance.
 - [FAQs and getting started](${base}/faq): Exact-photo selection, controls, slideshows, imports, updates, and backups.
 - [Arras Widgets support](${base}/support): Contact the developer, troubleshoot menu bar controls and photo permissions, move a library, or get App Store purchase help. Support email: ${ARRAS_SUPPORT_EMAIL}.
 - [Security and privacy](${base}/security): Permissions, local storage, network activity, signing, and checksums.
@@ -43,7 +43,8 @@ export async function GET() {
 
 ${storeOffer ? `## Mac App Store edition: Arras Widgets
 - [Official Arras Widgets listing](${storeOffer.url}). Publicly available; US price ${storeOffer.price}. Local prices may vary.
-- Sandboxed, Apple-managed downloads and updates, and no Arras usage statistics.
+- A one-time paid purchase that supports independent development. Sandboxed, Apple-managed downloads and updates, and no Arras usage statistics.
+- Family Sharing: up to six family members can use the app with Family Sharing enabled, as shown on the official listing.
 - macOS ${product.minimumMacOS} or later; Apple Silicon and Intel Macs.
 - Uses a separate local library. Importing an explicitly selected existing library leaves the original unchanged.
 - The paid Store edition does not replace the free, MIT-licensed direct download.

@@ -1,6 +1,6 @@
 # Arras AEO operating plan
 
-Last updated: 2026-10-22
+Last updated: 2026-10-24
 
 This plan converts the public AEO playbook into work that is relevant and supportable for Arras. It deliberately excludes invented testimonials, keyword-density targets, fake expertise, and unverified industry statistics.
 
@@ -294,3 +294,16 @@ Apply advice against [Google's current AI-search guidance](https://developers.go
 Keep all ten reviewed questions on `/faq`; the three homepage answers are a convenient introduction, not a promise of rich-result eligibility. Google's [current documentation changelog](https://developers.google.com/search/updates) records retirement of the FAQ rich-result feature in 2026. Do not add artificial ratings, search boxes or unnecessary markup to chase unavailable results. The [sitelinks search box was retired](https://developers.google.com/search/blog/2024/10/sitelinks-search-box), and the [Mobile Usability report was retired](https://developers.google.com/search/blog/2016/05/a-new-mobile-friendly-testing-tool); validate actual responsive rendering instead.
 
 Reject fixed keyword-density or word-count targets, manufactured mentions, mass-produced query-variation pages, fake reviews and claims that special AI files guarantee citations. Retain the existing llms.txt as a factual navigation aid, with no ranking promise. Do not add new analytics vendors or session recording solely because a checklist suggests them. Field Core Web Vitals and long-term search trends require enough real traffic; a lab build or a short reporting window cannot establish those outcomes.
+
+
+## 24 October 2026 Store conversion and search review
+
+The public Apple listing for [Arras Widgets](https://apps.apple.com/app/id6824271927) was opened from the live website. It shows a US$4.99 purchase, macOS 14 compatibility, Data Not Collected and Family Sharing for up to six family members. The price is identified as a US price; local prices can differ. The website continues to distinguish the paid, sandboxed edition with Apple-managed updates and no Arras usage statistics from the free, open-source direct download. Buying supports independent development; no extra feature, lifetime-upgrade promise, rating or sales figure is invented.
+
+The purchase explanation now sits beside the Store badge and in the portfolio's Arras project. A shared answer explains why someone might buy while retaining the free option. Family Sharing and purchase support link to [Apple's Mac instructions](https://support.apple.com/guide/mac-help/share-purchases-family-sharing-group-mchlc2b37692/mac) and [refund eligibility guidance](https://support.apple.com/en-us/118223). The portfolio description and AI navigation distinguish the editions. Its Person identity matches the maker referenced by the product site's structured data.
+
+The portfolio now has its own robots file and canonical sitemap. IndexNow covers the new Arras Support URL and portfolio content changes; ownership is served on the portfolio host. The deterministic build audit now runs the rendered SEO and legacy-redirect assertions as well as AEO checks. This catches missing public routes, broken edition links and inconsistent structured answers before deployment.
+
+A fresh browser query, “Arras Widgets Mac App Store”, showed an outdated Google AI Overview claiming that Arras is unavailable on the Store and mentioning the retired Homebrew distribution. Its visible citations included the official FEATURES.md and Reddit; the result also linked tryarras.tech. No People Also Ask block was visible for that query. The current GitHub README and feature guide still described the Store target as awaiting review, so a separate documentation-only correction is appropriate. This is one observed result, not a general citation ranking. Do not adopt its obsolete claims or interpret notification acceptance as an answer-engine refresh.
+
+The previous 528-item relevance triage is reused rather than counted again. Current [Google AI-search guidance](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), [software-app markup guidance](https://developers.google.com/search/docs/appearance/structured-data/software-app), [Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) and [Apple marketing guidance](https://developer.apple.com/app-store/marketing/guidelines/) support crawlable, accurate edition facts and genuine listing links. Search appearance and purchases must be measured after publication; neither is guaranteed by markup or wording.

@@ -26,13 +26,10 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   if (!ready) throw new Error("production server did not become ready");
-  await run("node", ["scripts/check-puremac-aeo.mjs", "--arras-only"], {
-    env: {
-      ...env,
-      ARRAS_REQUEST_BASE_URL: `http://127.0.0.1:${port}`,
-      ARRAS_REQUEST_HOST: "arras.localhost",
-    },
-  });
+  const renderedEnv = { ...env, ARRAS_REQUEST_BASE_URL: `http://127.0.0.1:${port}`, ARRAS_REQUEST_HOST: "arras.localhost", PORTFOLIO_REQUEST_BASE_URL: `http://127.0.0.1:${port}` };
+  await run("node", ["scripts/check-puremac-aeo.mjs", "--arras-only"], { env: renderedEnv });
+  await run("node", ["scripts/check-arras-seo.mjs"], { env: renderedEnv });
+  await run("node", ["scripts/check-legacy-urls.mjs"], { env: renderedEnv });
 } finally {
   if (server.exitCode === null) {
     await new Promise(resolve => {

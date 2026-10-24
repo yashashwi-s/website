@@ -18,7 +18,7 @@ export const projects = [
   {
     title: arrasProduct.name,
     description:
-      "Free Mac photo widgets and editable desktop collages at each image’s true aspect ratio. Link Photos albums or Finder folders, add GIFs or muted videos, reuse appearance, keep reference notes and save desktop setups.",
+      "Mac photo widgets and editable desktop collages at each image’s true aspect ratio. Arras Widgets is on the Mac App Store, with a free open-source direct edition too. Link Photos albums or Finder folders, add GIFs or muted videos, reuse appearance, keep reference notes and save desktop setups.",
     tags: ["Swift", "SwiftUI", "AppKit", "Core Animation"],
     github: arrasProduct.repositoryUrl,
     live: arrasCanonicalUrl,

@@ -3,7 +3,7 @@ import test from "node:test";
 import { spawnSync } from "node:child_process";
 import { arrasUrls, changedProductUrls, productUrls } from "../lib/indexnow.mjs";
 
-const arrasPages = ["https://tryarras.tech/", "https://tryarras.tech/faq", "https://tryarras.tech/security"];
+const arrasPages = ["https://tryarras.tech/", "https://tryarras.tech/faq", "https://tryarras.tech/security", "https://tryarras.tech/support"];
 const sorted = values => [...values].sort();
 
 test("full submissions include all canonical Arras pages, without redirects or assets", () => {
@@ -46,5 +46,17 @@ test("unknown notification hosts are rejected before any submission", () => {
     const result = spawnSync(process.execPath, ["scripts/notify-indexnow.mjs", "--all", `--host=${host}`, "--dry-run"], { cwd: new URL("..", import.meta.url), encoding: "utf8", timeout: 5000 });
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /Unknown product host/);
+  }
+});
+
+test("portfolio updates notify the portfolio without other product pages", () => {
+  for (const file of ["app/page.js", "app/home-client.jsx", "app/portfolio.css", "data/projects.js", "app/robots.js", "app/sitemap.js", "public/llms.txt"]) {
+    assert.deepEqual(changedProductUrls([file]), ["https://yashashwi.me/"], file);
+  }
+});
+
+test("edition support changes notify the new support page", () => {
+  for (const file of ["app/puremac/arras/support/page.jsx", "lib/arras-support.mjs", "lib/arras-installation.mjs"]) {
+    assert.deepEqual(changedProductUrls([file]).filter(url => new URL(url).host === "tryarras.tech"), arrasPages, file);
   }
 });
