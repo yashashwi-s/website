@@ -37,7 +37,7 @@ export async function GET() {
 - Reference Tools offers non-destructive crop, quarter-turn rotation, flips, grayscale, notes and source links.
 - Choose visual photo looks and glass, paper or transparent collage backgrounds; adjust mats, borders, shadows and photo shapes.
 - Add transparent PNG widgets, animated GIF/APNG images and muted local video widgets.
-- Keep a screenshot or imported PDF page floating above application windows as a reference overlay.
+- Pin a photo on the Mac desktop or set Depth to Floating to keep an image, screenshot or imported PDF page above app windows. The desktop customization guide explains the controls; Pin to this Space separately limits the widget to its current desktop Space.
 - Rotate multiple photos in a Space slideshow on click or on a timer. Dynamic sizing preserves each photo's proportions; Fixed sizing intentionally crops.
 - Export and import explicit .arras layout backups with stored media copies.
 - Find step-by-step controls, supported formats and limitations in the FAQs above.
