@@ -19,6 +19,7 @@ export default async function sitemap() {
       priority: 1,
       images: ["launch-2.5.0-poster.jpg", "features/collages.webp", "features/slideshow-layers.webp", "features/appearance.webp"].map(path => `${SITE_URL}/puremac/arras/${path}`),
     },
+    { url: `${SITE_URL}/mac-desktop-customization`, lastModified: "2026-10-24", changeFrequency: "monthly", priority: 0.7, images: ["collages", "appearance", "slideshow-layers"].map(name => `${SITE_URL}/puremac/arras/features/${name}.webp`) },
     ...["faq", "security", "support"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: SUPPORT_UPDATED[path], changeFrequency: "monthly", priority: 0.7 })),
   ];
 }

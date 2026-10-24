@@ -6,7 +6,7 @@ const canonical = "https://tryarras.tech";
 const preview = process.env.ARRAS_REQUEST_BASE_URL;
 const arrasOrigin = preview ? new URL(preview).origin : canonical;
 const portfolioOrigin = process.env.PORTFOLIO_REQUEST_BASE_URL || (preview ? new URL(preview).origin : "https://yashashwi.me");
-const publicPaths = ["/", "/faq", "/security", "/support"];
+const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization"];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 const failures = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -71,6 +71,15 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
     check(app?.alternateName?.includes("Arras Widgets") && app?.sameAs?.includes(`https://apps.apple.com/app/id${product.appStore.appleId}`), "SoftwareApplication must connect Arras to its real Store listing");
     check(!app?.aggregateRating && !app?.review, "Do not invent app ratings or reviews");
     for (const url of [app?.screenshot, app?.image]) check(url && new URL(url).origin === canonical, "SoftwareApplication media URLs must use the Arras host");
+  }
+  if (path === "/mac-desktop-customization") {
+    const article = nodes.find(node => node["@type"] === "Article");
+    check(article?.url === expected && article?.mainEntityOfPage?.["@id"] === `${expected}#page`, "Desktop guide article must identify its canonical page");
+    check(article?.author?.["@id"] === "https://yashashwi.me/#person" && /maker of Arras/.test(visible(html)), "Desktop guide must disclose its real author and maker relationship");
+    check(article?.image?.length === 3, "Desktop guide needs the three real desktop examples");
+    check(anchors(metadataHtml).some(link => link.href === "https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac"), "Desktop guide must source native macOS widget instructions");
+    check((metadataHtml.match(/<h1\b/gi) || []).length === 1, "Desktop guide must have one H1");
+    check(!nodes.some(node => node["@type"] === "FAQPage"), "Desktop guide must preserve the reviewed FAQ contract on the FAQ page");
   }
   if (["/faq", "/support"].includes(path)) {
     check(anchors(metadataHtml).some(link => link.href?.startsWith("mailto:yashashwisinghania@gmail.com")), `${path}: support visitors need a direct developer contact`);

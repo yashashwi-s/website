@@ -18,6 +18,7 @@ export async function GET() {
 ## Canonical resources
 - [Product and official download](${base}/): Overview and compatibility.
 - [Installation and edition choice](${base}/#install): Paid Mac App Store purchase, free GitHub DMG and first-launch guidance.
+- [Mac desktop customization guide](${base}/mac-desktop-customization): Real desktop examples combining wallpaper, native widgets, Arras photo collages, appearance, layers and saved setups.
 - [FAQs and getting started](${base}/faq): Exact-photo selection, controls, slideshows, imports, updates, and backups.
 - [Arras Widgets support](${base}/support): Contact the developer, troubleshoot menu bar controls and photo permissions, move a library, or get App Store purchase help. Support email: ${ARRAS_SUPPORT_EMAIL}.
 - [Security and privacy](${base}/security): Permissions, local storage, network activity, signing, and checksums.
