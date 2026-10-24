@@ -485,12 +485,16 @@ body:has(.ys-site) > .noise-bg {
   border-radius: 3px;
 }
 .ys-store-label {
+  display: block;
   width: 196px;
   background: var(--red);
   padding: 13px 17px 11px;
   color: #fff9e9;
   box-shadow: 0 8px 15px -8px #6f1b1b55;
   position: relative;
+}
+.ys-site a.ys-store-label {
+  color: #fff9e9;
 }
 .ys-store-label::before,
 .ys-store-label::after {

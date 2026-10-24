@@ -26,10 +26,12 @@ import {
 import Image from "next/image";
 import KineticSculpture from "@/components/portfolio/kinetic-sculpture";
 import ArrasFilm from "@/components/portfolio/arras-film";
-import { arrasCanonicalUrl } from "@/data/arras-product";
+import { arrasCanonicalUrl, arrasProduct } from "@/data/arras-product";
+import { getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
 import "./portfolio.css";
 
 const EASE = [0.23, 1, 0.32, 1];
+const appStoreOffer = getArrasAppStoreOffer(arrasProduct);
 const NAV_ITEMS = [
   { id: "work", label: "The work", number: "01" },
   { id: "proof", label: "The proof", number: "02" },
@@ -154,10 +156,15 @@ function MagneticLink({ children, className = "", href, paused, ...rest }) {
 }
 
 function AppStoreLabel({ className = "" }) {
+  if (!appStoreOffer) return null;
+
   return (
-    <div
+    <a
       className={`ys-store-label ${className}`}
-      aria-label="Arras is coming soon to the Mac App Store"
+      href={appStoreOffer.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Download Arras Widgets on the Mac App Store"
     >
       <div className="ys-store-label-top">
         <span>THE NEXT CHAPTER</span>
@@ -166,14 +173,14 @@ function AppStoreLabel({ className = "" }) {
       <div className="ys-store-label-main">
         <AppStoreMark size={29} />
         <span>
-          App Store<em>coming soon.</em>
+          App Store<em>available now.</em>
         </span>
       </div>
       <div className="ys-store-label-bottom">
         <span className="ys-store-dot" />
-        <span>A NEW HOME FOR ARRAS.</span>
+        <span>ARRAS WIDGETS IS HERE.</span>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -675,13 +682,21 @@ function ArrasShowcase({ project, paused, stars }) {
           </div>
         </div>
         <div>
-          <div className="ys-store-inline">
-            <AppStoreMark size={18} />
-            <span>
-              Mac App Store <em>coming soon</em>
-            </span>
-            <span className="ys-store-dot" />
-          </div>
+          {appStoreOffer && (
+            <a
+              className="ys-store-inline"
+              href={appStoreOffer.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Download Arras Widgets on the Mac App Store"
+            >
+              <AppStoreMark size={18} />
+              <span>
+                Mac App Store <em>available now</em>
+              </span>
+              <span className="ys-store-dot" />
+            </a>
+          )}
           <div className="ys-tags">
             {project.tags.map((tag) => (
               <span key={tag}>{tag}</span>
