@@ -6,7 +6,7 @@ const canonical = "https://tryarras.tech";
 const preview = process.env.ARRAS_REQUEST_BASE_URL;
 const arrasOrigin = preview ? new URL(preview).origin : canonical;
 const portfolioOrigin = process.env.PORTFOLIO_REQUEST_BASE_URL || (preview ? new URL(preview).origin : "https://yashashwi.me");
-const publicPaths = ["/", "/faq", "/security"];
+const publicPaths = ["/", "/faq", "/security", "/support"];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 const failures = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -54,10 +54,10 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
   }
   const blocks = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].map(([, json]) => JSON.parse(json));
   const nodes = blocks.flatMap(block => block["@graph"] || [block]);
-  for (const node of nodes.filter(node => ["WebPage", "WebSite", "SoftwareApplication"].includes(node["@type"]))) {
+  for (const node of nodes.filter(node => ["WebPage", "ContactPage", "WebSite", "SoftwareApplication"].includes(node["@type"]))) {
     check(node.url && new URL(node.url).origin === canonical, `${path}: ${node["@type"]} uses the wrong website host`);
   }
-  for (const node of nodes.filter(node => node["@type"] === "WebPage")) check(node.url === expected, `${path}: WebPage URL differs from canonical`);
+  for (const node of nodes.filter(node => ["WebPage", "ContactPage"].includes(node["@type"]))) check(node.url === expected, `${path}: page URL differs from canonical`);
   if (path === "/") {
     const software = nodes.filter(node => node["@type"] === "SoftwareApplication");
     check(software.length === 1, "Landing page must have one SoftwareApplication");
@@ -65,7 +65,22 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
     check(app?.url === canonical && app?.["@id"] === `${canonical}#software`, "SoftwareApplication identity must use the canonical Arras URL");
     check(app?.softwareVersion === product.publicRelease.version, "SoftwareApplication must describe the reviewed website release");
     check(/Apple Silicon/.test(app?.processorRequirements) && /Intel/.test(app?.processorRequirements), "SoftwareApplication must describe both packaged architectures");
-    for (const url of [app?.offers?.url, app?.screenshot, app?.image]) check(url && new URL(url).origin === canonical, "SoftwareApplication offer and media URLs must use the Arras host");
+    const offers = [].concat(app?.offers || []);
+    check(offers.some(offer => offer.price === "0" && new URL(offer.url).origin === canonical), "SoftwareApplication must retain the free direct-download offer");
+    check(offers.some(offer => offer.price === product.appStore.price.amount && offer.priceCurrency === "USD" && offer.url === `https://apps.apple.com/app/id${product.appStore.appleId}`), "SoftwareApplication must identify the verified paid Store offer");
+    check(app?.alternateName?.includes("Arras Widgets") && app?.sameAs?.includes(`https://apps.apple.com/app/id${product.appStore.appleId}`), "SoftwareApplication must connect Arras to its real Store listing");
+    check(!app?.aggregateRating && !app?.review, "Do not invent app ratings or reviews");
+    for (const url of [app?.screenshot, app?.image]) check(url && new URL(url).origin === canonical, "SoftwareApplication media URLs must use the Arras host");
+  }
+  if (["/faq", "/support"].includes(path)) {
+    check(anchors(metadataHtml).some(link => link.href?.startsWith("mailto:yashashwisinghania@gmail.com")), `${path}: support visitors need a direct developer contact`);
+    check(/App Store/.test(visible(html)) && /free direct download/.test(visible(html)), `${path}: explain support for both editions`);
+    const faq = nodes.find(node => node["@type"] === "FAQPage");
+    for (const entry of faq?.mainEntity || []) {
+      check(visible(html).includes(entry.name), `${path}: schema question must be visible`);
+      for (const paragraph of entry.acceptedAnswer.text.split("\n\n")) check(visible(html).includes(paragraph.replace(/\s+/g, " ")), `${path}: schema answer must match the visible answer`);
+    }
+    check(nodes.some(node => node["@type"] === "BreadcrumbList"), `${path}: breadcrumb schema missing`);
   }
   for (const link of anchors(metadataHtml).filter(link => !/\.(?:png|jpe?g|webp|avif|svg|gif|mp4|webm)(?:[?#]|$)/i.test(link.href || ""))) check(!/puremac\.yashashwi\.me\/(?:puremac\/)?arras(?:\/|$)|^\/puremac\/arras(?:\/|$)/i.test(link.href || ""), `${path}: legacy Arras navigation URL ${link.href}`);
   return [path, { html, text: visible(html) }];
@@ -109,4 +124,4 @@ check(!/<(?:button|div|span)\b[^>]*(?:href|data-href)="https?:/i.test(portfolio)
 for (const link of portfolioLinks) check(Boolean(link.href), "Every rendered portfolio anchor must have an href");
 
 assert.equal(failures.length, 0, failures.join("\n"));
-console.log("SEO checks passed: Googlebot responses, indexable public pages, canonical/OG/JSON-LD hosts, reviewed 2.5.0 copy, robots, sitemap, and crawlable portfolio links (Fadeo intact).");
+console.log("SEO checks passed: crawlable public pages, Store and free offers, support contact, matching FAQ answers, canonical metadata, robots, sitemap, and portfolio links (Fadeo intact).");

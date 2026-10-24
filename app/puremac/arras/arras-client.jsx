@@ -12,6 +12,16 @@ function DesktopShot({ src, alt, caption }) {
   return <figure className="ar-desktop-shot"><a href={src} aria-label={`Enlarge: ${caption}`}><Image src={src} width={1470} height={956} sizes="(max-width: 800px) calc(100vw - 40px), 1180px" alt={alt} /></a><figcaption>{caption}<span aria-hidden="true">↗</span></figcaption></figure>;
 }
 
+function StoreOffer({ offer }) {
+  if (!offer) return null;
+  return <div className="ar-store-offer">
+    <a href={offer.url} aria-label="Get Arras Widgets on the Mac App Store">
+      <Image src="/puremac/arras/mac-app-store-badge.svg" width={156} height={52} alt="Download on the App Store" unoptimized />
+    </a>
+    <p><strong>Arras Widgets · {offer.price}</strong><br />Mac App Store · Local prices may vary.</p>
+  </div>;
+}
+
 export default function ArrasClient({ release, downloads, stars, links, posterProps, product }) {
   const SOURCE = product.repositoryUrl;
   const download = links.download;
@@ -23,19 +33,14 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
       <header id="arras-content" tabIndex={-1} className="ar-wrap ar-hero">
         <div><p className="ar-label">Mac desktop photo widgets · 2.5.0</p><h1>Your photos.<br /><em>Your kind of desktop.</em></h1></div>
         <div className="ar-hero-copy">
-          <p>Arras is a free, open-source Mac app for photo widgets, editable desktop collages and slideshows. Keep each photo’s natural proportions, choose its layer, and save a desktop that feels like yours.</p>
+          <p>Arras puts photo widgets, editable collages and slideshows on your Mac. Keep each photo’s natural proportions. Save a desktop that feels like yours.</p>
+          <StoreOffer offer={storeOffer} />
           <div className="ar-download-actions">
-            <ArrasDownloadLink className="ar-button" href={download}>Download Arras <span aria-hidden="true">↙</span></ArrasDownloadLink>
+            <ArrasDownloadLink className={`ar-button${storeOffer ? " ar-button-secondary" : ""}`} href={download}>Free direct download <span aria-hidden="true">↙</span></ArrasDownloadLink>
             <ArrasStar repository={SOURCE} stars={stars} />
           </div>
-          <p className="ar-fine">Free &amp; open source · No account · Photos stored locally</p>
+          <p className="ar-fine">Free direct download · Open source · No Arras account</p>
           <p className="ar-fine">{product.operatingSystem} · {product.architecture}</p>
-          {storeOffer && <div className="ar-store-offer">
-            <a href={storeOffer.url} aria-label="Get Arras Widgets on the Mac App Store">
-              <Image src="/puremac/arras/mac-app-store-badge.svg" width={120} height={40} alt="Download on the App Store" unoptimized />
-            </a>
-            <p>Optional paid edition · {storeOffer.price}<br />Local prices may vary.</p>
-          </div>}
           <a className="ar-text-link" href={links.security}>Security &amp; Privacy →</a><br />
           <a className="ar-text-link" href="#install">{product.publicRelease.notarized ? "Installation →" : "First time installing? Read this first →"}</a>
         </div>
@@ -68,14 +73,33 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
         <p className="ar-gallery-note"><a href={links.security}>Read what stays local, what connects, and what the privacy controls can do →</a></p>
       </section>
 
-      <section id="install" className="ar-wrap ar-section"><div className="ar-split"><div><p className="ar-label">Yours to use. Yours to inspect.</p><h2>A little room<br /><em>for your photos.</em></h2><p className="ar-intro">No subscription. No account. Photos stay local.<br />Just a native app, and your desktop.</p><div className="ar-download-actions"><ArrasDownloadLink className="ar-button" href={download}>Download for Mac <span aria-hidden="true">↙</span></ArrasDownloadLink><ArrasStar repository={SOURCE} stars={stars} /></div><p className="ar-fine">{`v${product.publicRelease.version}`}{downloads?.total ? ` · ${new Intl.NumberFormat("en-US").format(downloads.total)} GitHub asset downloads` : ""}</p><p className="ar-fine"><a href={links.security}>Security &amp; Privacy →</a></p><a className="ar-text-link" href={`${SOURCE}/releases`} referrerPolicy="origin">Release notes ↗</a></div><div className="ar-install-notes"><h3>Install Arras</h3><ol className="ar-steps">{installation.steps.map(step=><li key={step.name}>{step.text}</li>)}</ol><a className="ar-text-link" href={`${links.security}#first-launch`}>{installation.helpLabel}</a></div></div></section>
+      <section id="install" className="ar-wrap ar-section">
+        <div className="ar-split">
+          <div>
+            <p className="ar-label">A place for your photos. A choice of editions.</p>
+            <h2>Make yourself<br /><em>at home.</em></h2>
+            <p className="ar-intro">Choose Arras Widgets on the Mac App Store for Apple-managed installation and updates. Or get the free, open-source direct download. Your photos stay on your Mac.</p>
+            <StoreOffer offer={storeOffer} />
+            <div className="ar-download-actions"><ArrasDownloadLink className="ar-button ar-button-secondary" href={download}>Free direct download <span aria-hidden="true">↙</span></ArrasDownloadLink><ArrasStar repository={SOURCE} stars={stars} /></div>
+            <p className="ar-fine">{`v${product.publicRelease.version}`}{downloads?.total ? ` · ${new Intl.NumberFormat("en-US").format(downloads.total)} GitHub asset downloads` : ""}</p>
+            <p className="ar-fine"><a href={links.support}>Support &amp; edition differences →</a> · <a href={links.security}>Security &amp; Privacy →</a></p>
+            <a className="ar-text-link" href={`${SOURCE}/releases`} referrerPolicy="origin">Direct-download release notes ↗</a>
+          </div>
+          <div className="ar-install-notes">
+            {storeOffer && <div className="ar-store-install"><h3>From the Mac App Store</h3><p>Get <a href={storeOffer.url}>Arras Widgets</a>, then open it on your Mac. Its controls live in the menu bar. Apple manages your purchase and updates. This edition is sandboxed and sends no Arras usage statistics.</p></div>}
+            <h3>Install the free direct download</h3>
+            <ol className="ar-steps">{installation.steps.map(step => <li key={step.name}>{step.text}</li>)}</ol>
+            <a className="ar-text-link" href={`${links.security}#first-launch`}>{installation.helpLabel}</a>
+          </div>
+        </div>
+      </section>
       <section className="ar-wrap ar-faq ar-quick-answers" aria-labelledby="quick-answers-heading">
         <p className="ar-label">Before you get started</p>
         <h2 id="quick-answers-heading">A few quick answers.</h2>
         {arrasFaqs.filter(({ id }) => ["exact-photo", "free-open-source", "collages"].includes(id)).map(faq => <ArrasAnswer key={faq.id} {...faq} id={`quick-${faq.id}`} />)}
         <p className="ar-fine"><a className="ar-text-link" href={links.faqs}>All questions, setup steps and privacy details →</a></p>
       </section>
-      <section className="ar-wrap ar-help" aria-label="Help and information"><div id="how-to-use"><span id="controls-and-limits" /><a id="faq-heading" href={links.faqs}>FAQs &amp; getting started <span>→</span></a><p>Adding photos, arranging your desktop, and the details that matter.</p></div><div><a id="security-and-privacy" href={links.security}>Security &amp; Privacy <span>→</span></a><p>Permissions, local storage, updates, and official downloads.</p></div></section>
+      <section className="ar-wrap ar-help" aria-label="Help and information"><div id="how-to-use"><span id="controls-and-limits" /><a id="faq-heading" href={links.faqs}>FAQs &amp; getting started <span>→</span></a><p>Adding photos, arranging your desktop, and the details that matter.</p></div><div><a href={links.support}>Support, from the developer <span>→</span></a><p>Something not quite right? Get help with Arras Widgets, purchases, or the free download.</p><a className="ar-text-link" id="security-and-privacy" href={links.security}>Security &amp; Privacy →</a></div></section>
       <ArrasFooter links={links} />
     </main>
   );

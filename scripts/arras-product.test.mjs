@@ -7,6 +7,7 @@ import { arrasFaqs as faqData } from "../lib/arras-faqs.mjs";
 import { getArrasInstallation, getArrasAppStoreOffer } from "../lib/arras-installation.mjs";
 import { hasRetiredArrasTrustCopy } from "./lib/arras-trust-copy.mjs";
 import { releasedArrasProduct } from "./lib/arras-product.mjs";
+import { getArrasStoreFaqs } from "../lib/arras-support.mjs";
 
 function response(body, { ok = true, status = 200 } = {}) {
   return { ok, status, async json() { return structuredClone(body); } };
@@ -29,6 +30,29 @@ test("uses the validated fallback on an HTTP error", async () => {
   assert.equal(result.source, "fallback");
   assert.equal(result.product.publisher.name, "Yashashwi Singhania");
   assert.match(result.reason, /HTTP 503/);
+});
+
+test("older build review metadata cannot hide the website's verified Store listing", async () => {
+  const reviewedBuild = structuredClone(fallback);
+  reviewedBuild.appStore.status = "in-review";
+  const result = await getArrasProductResolution({ fetchImpl: async () => response(reviewedBuild) });
+  assert.equal(result.source, "remote");
+  assert.equal(result.product.appStore.status, "live");
+  assert.equal(getArrasAppStoreOffer(result.product).price, "US$4.99");
+  assert.deepEqual(result.product.publicRelease, reviewedBuild.publicRelease);
+  const synced = releasedArrasProduct(reviewedBuild, fallback, fallback.publicRelease.version);
+  assert.equal(synced.appStore.status, "live");
+});
+
+test("Store answers distinguish paid purchases, free downloads and edition privacy", () => {
+  const faqs = getArrasStoreFaqs(fallback);
+  assert.match(faqs[0].answer.join(" "), /US\$4\.99.*Local prices/);
+  assert.match(faqs[1].answer.join(" "), /does not send Arras usage statistics/);
+  assert.match(faqs[1].answer.join(" "), /free direct download.*limited statistics/);
+  assert.match(faqs[2].answer.join(" "), /original library unchanged/);
+  const notLive = structuredClone(fallback);
+  notLive.appStore.status = "in-review";
+  assert.deepEqual(getArrasStoreFaqs(notLive), []);
 });
 
 test("rejects malformed remote facts and uses fallback", async () => {

@@ -6,8 +6,10 @@ import { FaqJsonLd } from "../../faq-section";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";
 import ArrasAnswer from "../arras-answer";
+import ArrasContact from "../arras-contact";
+import { getArrasStoreFaqs } from "@/lib/arras-support.mjs";
 
-export const metadata = supportMetadata("faq", "Arras FAQ — Photo Widgets, Collages & Saved Setups", "Arrange photo widgets and editable collages, link Photos albums, add motion, copy appearance and save desktop setups in Arras 2.5.0.");
+export const metadata = supportMetadata("faq", "Arras Widgets FAQ — Photo Widgets, Setup & Support", "Answers and developer support for Arras Widgets and the free Mac download. Set up photo widgets, collages and slideshows, or move your existing library.");
 
 export default async function FaqPage() {
   const [links, product] = await Promise.all([getArrasLinks(), getArrasProduct()]);
@@ -17,11 +19,13 @@ export default async function FaqPage() {
     ...faq, question: installation.faqQuestion, answer: installation.faqAnswer,
   } : faq);
   const groups = [["getting-started", "Getting started"], ["photo-workflows", "Collages, collections & references"], ["personalize", "Appearance & slideshows"], ["controls-and-limits", "Controls & limits"], ["first-launch", "Before you open it"]];
+  const storeFaqs = getArrasStoreFaqs(product);
   return (
     <>
-      <FaqJsonLd faqs={faqs} />
+      <FaqJsonLd faqs={[...storeFaqs, ...faqs]} />
       <SupportPage links={links} active="faqs" label="FAQs & getting started" title={<>Mac photo widgets.<br /><em>Your questions, answered.</em></>} intro="Start with one uncropped photo or an editable example, then build a collage, link an album or save a setup. These answers cover Arras 2.5.0."
-        sections={[["how-to-use", "Your first photo"], ...groups]}>
+        sections={[["contact", "Contact support"], ["how-to-use", "Your first photo"], ...(storeFaqs.length ? [["app-store", "Mac App Store edition"]] : []), ...groups]}>
+        <ArrasContact links={links} compact />
         <section id="how-to-use">
           <h2>Your first photo, in three steps.</h2>
           <ol className="ar-steps">
@@ -34,6 +38,7 @@ export default async function FaqPage() {
           <p className="ar-fine"><a href="https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac" referrerPolicy="origin">Apple’s widget guide ↗</a> · <a href={featureUrl} referrerPolicy="origin">Arras feature documentation ↗</a></p>
           <p className="ar-fine">Arras lives in the menu bar. <a href={`${links.home}#install`}>Download and installation →</a></p>
         </section>
+        {storeFaqs.length > 0 && <section id="app-store"><h2>Arras Widgets on the Mac App Store</h2>{storeFaqs.map(faq => <ArrasAnswer key={faq.id} {...faq} />)}</section>}
         {groups.map(([id, title]) => <section id={id} key={id}>
           <h2>{title}</h2>
           {id === "photo-workflows" && <><p><strong>Editable collages.</strong> Choose Add → Create Collage. Drag the background to move the group, or hover a member’s corner to resize that photo. The boundary refits as members change. Edit Collage adds and removes members; depth and Space pinning apply to the group. <a href={`${links.home}#collages`}>See the collage →</a></p><p><strong>Linked collections.</strong> A Photos album or Finder folder can supply a slideshow. Arras keeps a managed local snapshot for offline use; downloading cloud-only Photos assets needs permission and a connection.</p></>}

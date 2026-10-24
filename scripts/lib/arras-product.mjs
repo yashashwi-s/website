@@ -26,6 +26,7 @@ export function releasedArrasProduct(released, website, version) {
     publisher: website.publisher,
     shortDescription: website.shortDescription,
     documentation: website.documentation,
+    appStore: website.appStore,
     publicRelease: { ...website.publicRelease, ...released.publicRelease, version },
     sourceBuild: { ...website.sourceBuild, ...released.sourceBuild },
   };

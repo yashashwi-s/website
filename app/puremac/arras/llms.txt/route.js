@@ -1,6 +1,7 @@
 import { summarizeArrasProduct } from "@/data/arras-product";
 import { getArrasProduct } from "@/lib/arras-product";
-import { getArrasInstallation } from "@/lib/arras-installation.mjs";
+import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
+import { ARRAS_SUPPORT_EMAIL } from "@/lib/arras-support.mjs";
 
 export const revalidate = 3600;
 
@@ -8,6 +9,7 @@ export async function GET() {
   const product = await getArrasProduct();
   const facts = summarizeArrasProduct(product);
   const installation = getArrasInstallation(product);
+  const storeOffer = getArrasAppStoreOffer(product);
   const base = product.canonicalUrl.replace(/\/$/, "");
   const text = `# ${product.name}
 
@@ -17,6 +19,7 @@ export async function GET() {
 - [Product and official download](${base}/): Overview and compatibility.
 - [Installation](${base}/#install): Official GitHub DMG and first-launch guidance.
 - [FAQs and getting started](${base}/faq): Exact-photo selection, controls, slideshows, imports, updates, and backups.
+- [Arras Widgets support](${base}/support): Contact the developer, troubleshoot menu bar controls and photo permissions, move a library, or get App Store purchase help. Support email: ${ARRAS_SUPPORT_EMAIL}.
 - [Security and privacy](${base}/security): Permissions, local storage, network activity, signing, and checksums.
 - [Current shipped feature contract](${product.documentation.featureContractUrl}): Reviewed user-reachable behavior; documentation corrections do not require an app release.
 - [Architecture](${product.repositoryUrl}/blob/main/ARCHITECTURE.md): Engineering ownership and implementation contracts.
@@ -38,13 +41,21 @@ export async function GET() {
 - Export and import explicit .arras layout backups with stored media copies.
 - Find step-by-step controls, supported formats and limitations in the FAQs above.
 
-## Distribution facts
+${storeOffer ? `## Mac App Store edition: Arras Widgets
+- [Official Arras Widgets listing](${storeOffer.url}). Publicly available; US price ${storeOffer.price}. Local prices may vary.
+- Sandboxed, Apple-managed downloads and updates, and no Arras usage statistics.
+- macOS ${product.minimumMacOS} or later; Apple Silicon and Intel Macs.
+- Uses a separate local library. Importing an explicitly selected existing library leaves the original unchanged.
+- The paid Store edition does not replace the free, MIT-licensed direct download.
+- Both editions keep photos and layouts on the Mac. No Arras account is required; Apple manages Store purchases.
+` : ""}
+## Direct-download distribution facts
 - Version: ${product.publicRelease.version}.
 - ${facts.operatingSystem}; ${facts.architecture}.
 - Signing: ${product.publicRelease.signing}; ${product.publicRelease.notarized ? "notarized" : "not notarized by Apple"}.
 - [Developer](${product.publisher.url}): ${product.publisher.name}.
 
-## Official downloads and first launch
+## Free direct download and first launch
 ${installation.trust} Official downloads originate from ${product.publicRelease.sourceUrl}, linked from ${base}/ through its /download redirect. The app has no account, advertising SDK, or external crash-reporting service.
 
 ${installation.verification}
@@ -52,7 +63,7 @@ ${installation.verification}
 ${installation.faqAnswer[1]}
 
 ## Citation guidance
-Use GitHub's published release and the feature contract together when checking shipped behavior. This website describes public Arras ${product.publicRelease.version}; development-branch plans are not public features. Imported photo copies stay local. Arras 2.5.0 sends limited configuration and milestone statistics linked by a random installation UUID. Configuration summaries use Wednesday–Tuesday UTC periods; a first launch reports promptly rather than waiting for Wednesday; no photo content, filenames, paths, notes or layouts are sent. See Security and privacy for identifiers, retention and controls. Version 2.4.9 downloads have telemetry disabled. Ordinary widgets preserve aspect ratio; Fixed slideshow sizing deliberately crops. Former names are Photo Widget OSX and Tableau. Measurements depend on media, visibility and workload; no universal zero-CPU, memory or battery-life figure is promised. This index is a navigation aid.
+Use GitHub's published release and the feature contract together when checking shipped behavior. This website describes public Arras ${product.publicRelease.version}; development-branch plans are not public features. Imported photo copies stay local. The free direct-download edition of Arras 2.5.0 sends limited configuration and milestone statistics linked by a random installation UUID; the Mac App Store edition does not send Arras usage statistics. Direct-download configuration summaries use Wednesday–Tuesday UTC periods; a first launch reports promptly rather than waiting for Wednesday; no photo content, filenames, paths, notes or layouts are sent. See Security and privacy for identifiers, retention and controls. Version 2.4.9 downloads have telemetry disabled. Ordinary widgets preserve aspect ratio; Fixed slideshow sizing deliberately crops. Former names are Photo Widget OSX and Tableau; Arras Widgets is the Mac App Store listing name. Measurements depend on media, visibility and workload; no universal zero-CPU, memory or battery-life figure is promised. This index is a navigation aid.
 `;
   return new Response(text, { headers: {
     "Content-Type": "text/plain; charset=utf-8",

@@ -106,10 +106,31 @@ html:has(#arras-page) { scroll-behavior: auto; }
 
 /* Download and repository actions share one calm, wrapping row. */
 .ar-download-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
-.ar-store-offer{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:18px}
+.ar-store-offer{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin:20px 0}
 .ar-store-offer>a{display:block;padding:10px 10px 10px 0}
-.ar-store-offer img{display:block;width:auto;height:40px}
+.ar-store-offer img{display:block;width:auto;height:52px}
 .ar-store-offer p{margin:0;font-size:11px;line-height:1.65;color:#66635e}
+.ar-store-offer strong{font-size:12px;color:#292927;font-weight:600}
+.ar-button-secondary{background:transparent;color:#292927!important;border:1px solid #29292740;padding:16px 20px}
+.ar-button-secondary:hover{background:#aa55390a;border-color:#aa5539}
+.ar-store-install{padding-bottom:12px;border-bottom:1px solid #29292725}
+.ar-store-install a{text-decoration:underline;text-underline-offset:4px}
+.ar-breadcrumb{display:flex;gap:10px;align-items:center;margin-bottom:30px;color:#66635e;font-size:12px;flex-wrap:wrap}
+.ar-breadcrumb a{text-decoration:underline;text-underline-offset:4px}
+.ar-contact-card{background:#eae4d8;padding:28px;margin-bottom:38px;border:1px solid #29292725;border-radius:6px;min-width:0;overflow-wrap:anywhere}
+#arras-page .ar-contact-card h2{font-size:28px;letter-spacing:-.8px;line-height:1.2;margin-bottom:20px}
+.ar-contact-card p{font-size:15px;line-height:1.85;color:#66635e;margin:0 0 16px}
+.ar-contact-card p a{text-decoration:underline;text-underline-offset:4px}
+.ar-contact-card .ar-label{color:#aa5539;font-size:10px;margin-bottom:18px}
+.ar-contact-card .ar-button{margin:4px 0 14px;text-decoration:none}
+.ar-document-body>.ar-contact-card>p:last-child{margin-bottom:0}
+.ar-footer>div:last-child{flex-wrap:wrap}
+.ar-hero{align-items:start}
+.ar-support-header-split{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;align-items:start}
+.ar-support-header-split .ar-contact-card{margin:0}
+.ar-contact-card .ar-fine{font-size:12px}
+@media(max-width:900px){.ar-support-header-split{grid-template-columns:1fr;gap:32px}}
+@media(max-width:520px){.ar-nav>div{flex-wrap:wrap;justify-content:flex-start;gap:12px 18px}.ar-nav-download{margin-left:auto}.ar-document-body>.ar-contact-card{padding:22px}.ar-store-offer{gap:12px}}
 .ar-github-star{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #29292740;border-radius:5px;padding:16px 14px;font-size:12px;min-height:52px;text-decoration:none;white-space:nowrap}
 .ar-github-star:hover{border-color:#aa5539;background:#aa55390a}
 .ar-star-count{font-variant-numeric:tabular-nums;border-left:1px solid #29292730;padding-left:9px}

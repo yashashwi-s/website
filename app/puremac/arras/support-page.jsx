@@ -13,15 +13,33 @@ export function supportMetadata(path, title, description) {
   };
 }
 
-export default function SupportPage({ links, active, label, title, intro, sections, children }) {
+export default function SupportPage({ links, active, label, title, intro, sections, children, pageType = "WebPage", headerAside }) {
+  const url = `${arrasCanonicalUrl}/${active === "faqs" ? "faq" : active}`;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": pageType, "@id": `${url}#page`, url, name: label, description: intro,
+        isPartOf: { "@id": `${arrasCanonicalUrl}/#website` },
+        about: { "@id": `${arrasCanonicalUrl}#software` },
+        breadcrumb: { "@id": `${url}#breadcrumb` } },
+      { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Arras", item: `${arrasCanonicalUrl}/` },
+        { "@type": "ListItem", position: 2, name: label, item: url },
+      ] },
+    ],
+  };
   return (
     <main id="arras-page" className="ar-support">
       <ArrasNavigation links={links} active={active} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "WebPage", url: `${arrasCanonicalUrl}/${active === "faqs" ? "faq" : active}`, name: label, description: intro, isPartOf: { "@id": `${arrasCanonicalUrl}/#website` } }).replace(/</g, "\\u003c") }} />
-      <header id="arras-content" tabIndex={-1} className="ar-wrap ar-support-header">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />
+      <header id="arras-content" tabIndex={-1} className={`ar-wrap ar-support-header${headerAside ? " ar-support-header-split" : ""}`}>
+        <div>
+        <nav className="ar-breadcrumb" aria-label="Breadcrumb"><a href={links.home}>Arras</a><span aria-hidden="true">/</span><span aria-current="page">{label}</span></nav>
         <p className="ar-label">{label}</p>
         <h1>{title}</h1>
         <p className="ar-intro">{intro}</p>
+        </div>
+        {headerAside}
       </header>
       <div className="ar-wrap ar-document">
         <aside><nav aria-label="On this page"><p className="ar-label">On this page</p>{sections.map(([id, title]) => <a key={id} href={`#${id}`}>{title}</a>)}</nav></aside>

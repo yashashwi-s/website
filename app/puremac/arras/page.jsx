@@ -8,15 +8,16 @@ import {
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasLinks } from "./arras-links";
 import { latestRelease, totalDownloads, repositoryStars } from "@/lib/github-release";
-import { getArrasInstallation } from "@/lib/arras-installation.mjs";
+import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
+import { ARRAS_SUPPORT_EMAIL } from "@/lib/arras-support.mjs";
 
 const SITE_URL = arrasCanonicalUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
-const CONTENT_UPDATED_AT = "2026-10-22";
-const TITLE = "Arras — Mac Photo Widgets & Editable Desktop Collages";
+const CONTENT_UPDATED_AT = "2026-10-24";
+const TITLE = "Arras Widgets — Mac Photo Widgets & Desktop Collages";
 const DESCRIPTION =
-  "Free Mac photo widgets and editable desktop collages. Keep true aspect ratios, link Photos albums, add muted videos, copy a look and save desktop setups.";
+  "Arras Widgets for Mac: photo widgets, editable collages and slideshows. Get it on the Mac App Store, or choose the free, open-source direct download.";
 const OG_IMAGE = "/puremac/arras/launch-2.5.0-poster.jpg";
 
 export const metadata = {
@@ -37,6 +38,7 @@ export const metadata = {
   },
   keywords: [
     "Arras",
+    "Arras Widgets",
     "Mac desktop photo widget without cropping",
     "single photo widget for Mac",
     "true aspect ratio desktop photos",
@@ -70,6 +72,7 @@ export const metadata = {
 function ArrasJsonLd({ release, downloads, dateModified, product }) {
   const summary = summarizeArrasProduct(product);
   const installation = getArrasInstallation(product);
+  const storeOffer = getArrasAppStoreOffer(product);
   const downloadUrl = OFFICIAL_DMG_URL;
   const graph = [
     {
@@ -95,18 +98,20 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       name: product.publisher.name,
       url: product.publisher.url,
       sameAs: ["https://github.com/yashashwi-s"],
+      contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: ARRAS_SUPPORT_EMAIL, url: `${ARRAS_URL}/support` },
     },
     {
       "@type": "SoftwareApplication",
       "@id": `${ARRAS_URL}#software`,
       name: product.name,
-      alternateName: product.historicalNames,
+      alternateName: [...product.historicalNames, ...(storeOffer ? [product.appStore.listingName] : [])],
       identifier: {
         "@type": "PropertyValue",
         propertyID: "macOS bundle identifier",
         value: product.bundleIdentifier,
       },
-      sameAs: [product.repositoryUrl],
+      sameAs: [product.repositoryUrl, ...(storeOffer ? [storeOffer.url] : [])],
+      softwareHelp: { "@type": "CreativeWork", url: `${ARRAS_URL}/support`, name: "Arras Widgets support" },
       description: DESCRIPTION,
       url: ARRAS_URL,
       downloadUrl,
@@ -123,13 +128,21 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
       publisher: { "@id": "https://yashashwi.me/#person" },
-      offers: {
+      offers: [{
         "@type": "Offer",
+        name: "Free direct download",
         price: "0",
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
         url: `${ARRAS_URL}/#install`,
-      },
+      }, ...(storeOffer ? [{
+        "@type": "Offer",
+        name: "Arras Widgets — Mac App Store edition (US storefront)",
+        price: product.appStore.price.amount,
+        priceCurrency: product.appStore.price.currency,
+        availability: "https://schema.org/InStock",
+        url: storeOffer.url,
+      }] : [])],
       featureList: [
         "Uncropped desktop photos at their true aspect ratio",
         "Single photo widgets without creating Apple Photos albums",

@@ -27,7 +27,7 @@
   {
     "question": "Is Arras free and open source?",
     "answer": [
-      "Yes. Arras is free under the MIT License, with no subscription or account required. GitHub hosts its source and official release files."
+      "The direct download of Arras is free and open source under the MIT License. GitHub hosts its source and official release files. Arras Widgets on the Mac App Store is a separate paid edition with Apple-managed updates. Neither edition needs an Arras account or subscription."
     ],
     "sources": [
       {
@@ -107,8 +107,8 @@
   {
     "question": "Does Arras collect usage statistics?",
     "answer": [
-      "Arras 2.5.0 sends limited configuration and milestone statistics linked by a random installation UUID. Photos, filenames, paths, layouts, captions and notes are not transmitted. Your photo content stays on your Mac.",
-      "Configuration summaries use weekly Wednesday–Tuesday UTC periods. The initial first-launch report can be sent sooner; an app that is closed reports when it next runs and is eligible. These reports are not a live-online-user counter. This version has no in-app statistics opt-out.",
+      "Arras Widgets on the Mac App Store does not send Arras usage statistics. The free direct-download edition of Arras 2.5.0 sends limited configuration and milestone statistics linked by a random installation UUID. Photos, filenames, paths, layouts, captions and notes are not transmitted. Your photo content stays on your Mac in both editions.",
+      "In the direct download, configuration summaries use weekly Wednesday–Tuesday UTC periods. The initial first-launch report can be sent sooner; an app that is closed reports when it next runs and is eligible. These reports are not a live-online-user counter. The direct-download version has no in-app statistics opt-out.",
       "Privacy explains the data, identifiers and retention. Website visit and download-request counters are separate and are not joined to the app installation ID."
     ],
     "sources": [

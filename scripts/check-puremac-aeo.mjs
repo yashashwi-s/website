@@ -214,8 +214,9 @@ check(arrasSitemap.includes("<lastmod>"), "Arras /sitemap.xml is missing a fresh
 
 const arrasLlms = arrasPages["/llms.txt"].body;
 check(arrasLlms.startsWith("# Arras"), "Arras /llms.txt must start with the product identity");
-check(arrasLlms.includes("## Distribution facts"), "Arras /llms.txt must expose distribution facts");
-check(arrasLlms.includes("## Official downloads and first launch"), "Arras /llms.txt must explain official downloads and first-launch confirmation");
+check(arrasLlms.includes("## Direct-download distribution facts"), "Arras /llms.txt must identify direct-download distribution facts");
+check(arrasLlms.includes("## Free direct download and first launch"), "Arras /llms.txt must explain direct-download installation");
+check(arrasLlms.includes("## Mac App Store edition: Arras Widgets") && arrasLlms.includes("no Arras usage statistics"), "Arras /llms.txt must distinguish the live Store edition and its privacy");
 check(arrasLlms.includes("## Citation guidance"), "Arras /llms.txt must include citation guidance");
 check(
   arrasPages["/favicon.ico"].response.headers.get("content-type")?.startsWith("image/"),
@@ -238,7 +239,7 @@ if (!arrasOnly) {
 const nodes = jsonLdBlocks.flatMap(block => block["@graph"] ?? [block]);
 const software = nodes.find(node => node["@type"] === "SoftwareApplication");
 check(software?.url === arrasBaseUrl, "Arras SoftwareApplication must identify its official website");
-check(software?.offers?.url === `${arrasBaseUrl}/#install`, "Arras offer must lead to the official installation section");
+check([].concat(software?.offers || []).some(offer => offer.url === `${arrasBaseUrl}/#install` && offer.price === "0"), "Arras free offer must lead to the official installation section");
 check(faqHtml.includes('id="how-to-use"'), "Arras FAQ usage guide is missing");
 check(arrasHtml.includes('id="install"'), "Arras first-party installation section is missing");
 const iconHref = arrasHtml.match(/<link[^>]+rel="icon"[^>]+href="([^"]+)"/)?.[1];
