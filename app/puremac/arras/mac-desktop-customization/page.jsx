@@ -47,7 +47,7 @@ export default async function DesktopCustomizationPage() {
     <SupportPage links={links} active={SLUG} label="Desktop customization guide"
       title={<>Customize your Mac desktop<br /><em>with photos and widgets.</em></>}
       intro="Build an aesthetic Mac setup around a wallpaper, useful widgets and photos that belong together. This guide shows real desktop arrangements made with Arras."
-      sections={[["choose-widgets", "Choose your widgets"], ["wallpaper", "Start with a palette"], ["collage", "Arrange the photos"], ["appearance", "Make the styles match"], ["layers", "Keep it useful"], ["save-setup", "Save your setup"], ["get-started", "Get started"]]}>
+      sections={[["choose-widgets", "Choose your widgets"], ["wallpaper", "Start with a palette"], ["collage", "Arrange the photos"], ["appearance", "Make the styles match"], ["layers", "Pin a photo"], ["save-setup", "Save your setup"], ["get-started", "Get started"]]}>
       <p className="ar-fine">By <a href={arrasProduct.publisher.url}>{arrasProduct.publisher.name}</a>, maker of Arras · Reviewed <time dateTime={REVIEWED}>24 October 2026</time> · Arras {arrasProduct.publicRelease.version}</p>
       <DesktopExample name="collages" alt="Three framed photos in a paper collage beside a transparent photo group, with captions on a real Mac desktop.">A shared background makes a small collection feel intentional. Paper and transparent groups create different kinds of separation.</DesktopExample>
       <section id="choose-widgets">
@@ -81,8 +81,15 @@ export default async function DesktopCustomizationPage() {
         <p>Keep the ordinary photo sizing when you want to preserve the whole image. Transparent PNGs can add a cutout or a small graphic. A deliberate tilt or unusual shape works best where it has room.</p>
       </section>
       <section id="layers">
-        <h2>Choose what stays visible while you work.</h2>
-        <p>Arras has four depth settings: Behind Icons, On Desktop, Above Widgets and Floating. Use Above Widgets when a photo should sit over the system widgets. Use Floating for a visual reference you need above app windows. A collage's depth applies to its whole group.</p>
+        <h2>Pin a photo on your Mac desktop.</h2>
+        <p>Keep a picture nearby while you work, whether it is a photo, a visual reference or a screenshot. To keep it above other app windows:</p>
+        <ol className="ar-steps">
+          <li>In Arras, choose Add → Add Photos or Videos, then select your image.</li>
+          <li>Drag the photo into place and resize it from a corner.</li>
+          <li>In Settings → Photos, expand its row, open More options and set Depth to Floating.</li>
+        </ol>
+        <p>Arras has four depth settings: Behind Icons, On Desktop, Above Widgets and Floating. Choose On Desktop to keep the photo at desktop level, or Above Widgets to sit over the system widgets. To float an entire collage, open Edit Collage, set Depth to Floating and choose Apply. Its photos and captions share that depth.</p>
+        <p>To keep a standalone photo on just your current desktop Space, enable Pin to this Space in More options. Space pinning controls which desktop shows it; Depth controls what it sits above.</p>
         <DesktopExample name="slideshow-layers" alt="An Arras slideshow and a separate photo with Floating depth selected in Settings, on a warm sand-dune Mac desktop.">A rotating collection and a steady reference can share the same desktop. Give them different jobs and different depths.</DesktopExample>
         <p>For changing photos, use a Space slideshow and choose its order and interval in Edit Slideshow. Dynamic sizing keeps each photo's proportions; Fixed sizing fills one frame and can crop. A Photos album or Finder folder can supply the collection.</p>
         <p>Before showing your screen to others, review <a href={links.security}>Privacy's screen-sharing controls and their limits</a>. Some recording apps can capture visible widgets, and browser meetings are not automatically detected.</p>
