@@ -3,6 +3,21 @@ name: Arras deterministic audit
 on:
   pull_request:
     paths:
+      - "app/page.js"
+      - "app/home-client.jsx"
+      - "app/portfolio.css"
+      - "app/layout.js"
+      - "app/globals.css"
+      - "app/robots.js"
+      - "app/sitemap.js"
+      - "app/7515130a027efb4813a91ff4482c0886.txt/**"
+      - "components/portfolio/**"
+      - "data/projects.js"
+      - "data/personal.js"
+      - "public/llms.txt"
+      - "lib/arras-support.mjs"
+      - "scripts/check-arras-seo.mjs"
+      - "scripts/check-legacy-urls.mjs"
       - "app/puremac/arras/**"
       - "app/puremac/arras-faqs.json"
       - "app/puremac/faq-data.js"
@@ -30,6 +45,21 @@ on:
   push:
     branches: [main]
     paths:
+      - "app/page.js"
+      - "app/home-client.jsx"
+      - "app/portfolio.css"
+      - "app/layout.js"
+      - "app/globals.css"
+      - "app/robots.js"
+      - "app/sitemap.js"
+      - "app/7515130a027efb4813a91ff4482c0886.txt/**"
+      - "components/portfolio/**"
+      - "data/projects.js"
+      - "data/personal.js"
+      - "public/llms.txt"
+      - "lib/arras-support.mjs"
+      - "scripts/check-arras-seo.mjs"
+      - "scripts/check-legacy-urls.mjs"
       - "app/puremac/arras/**"
       - "app/puremac/arras-faqs.json"
       - "app/puremac/faq-data.js"
