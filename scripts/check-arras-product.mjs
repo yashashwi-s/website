@@ -48,11 +48,11 @@ for (const faq of faqData) {
   }
 }
 check(sources.sharedLlms.includes("summarizeArrasProduct"), "Shared AI summary must derive Arras compatibility from the product contract");
-check(sources.press.includes("Apple Silicon and Intel") && sources.press.includes("2.5.0"), "Arras press compatibility must describe the reviewed universal 2.5.0 artifacts");
+check(sources.press.includes("Apple Silicon and Intel") && sources.press.includes(metadata.publicRelease.version), "Arras press compatibility must describe the reviewed universal release artifacts");
 check(sources.press.includes("/faq#how-to-use") && sources.sharedLlms.includes("https://tryarras.tech/faq"), "Shared Arras links must point to the canonical FAQ page");
 for (const [name, text] of [["FAQ", sources.faqData], ["Security", sources.security],
   ["Privacy policy", await readFile(resolve(root, "app/puremac/arras/telemetry-details.jsx"), "utf8")]]) {
-  check(text.includes("2.5.0") && /weekly|seven-day/i.test(text), `${name} must disclose 2.5.0 weekly statistics`);
+  check(text.includes(metadata.publicRelease.version) && /weekly|seven-day/i.test(text), `${name} must disclose current-release weekly statistics`);
 }
 const currentDocumentation = ["page", "client", "faqs", "security", "faqData", "llms", "sharedFaqs", "sharedLlms", "press"].map(key => sources[key]).join("\n");
 const arrasConsumerCopy = ["page", "client", "faqs", "security", "faqData", "llms"].map(key => sources[key]).join("\n");
@@ -61,10 +61,10 @@ for (const key of ["page", "client", "faqs", "security", "llms"]) {
   check(sources[key].includes("getArrasInstallation(product)"), `${paths[key]} must use the shared first-launch explanation`);
 }
 check(!/homebrew|brew tap|brew install|brew trust/i.test(currentDocumentation), "Current Arras documentation must not present retired Homebrew distribution");
-check(metadata.publicRelease.version === "2.5.0" && metadata.telemetry === true, "The prepared website must describe Arras 2.5.0 and its statistics contract");
+check(metadata.publicRelease.version === "2.5.1" && metadata.telemetry === true, "The prepared website must describe Arras 2.5.1 and its statistics contract");
 check(JSON.stringify(metadata.publicRelease.architectures) === JSON.stringify(["arm64", "x86_64"]), "The reviewed official download supports Apple Silicon and Intel");
 for (const phrase of ["Try an Example", "Create Collage", "Copy Appearance", "Reference Tools", "Photos album", "Finder folder", "desktop setups", "muted local video"]) {
-  check(currentDocumentation.includes(phrase), `The reviewed 2.5.0 copy must cover ${phrase}`);
+  check(currentDocumentation.includes(phrase), `The reviewed release copy must cover ${phrase}`);
 }
 
 for (const [value, label] of [

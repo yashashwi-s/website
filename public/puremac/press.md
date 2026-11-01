@@ -1,6 +1,6 @@
 # PureMac — product and press resources
 
-Arras section reviewed 16 October 2026 for 2.5.0; Fadeo section retained from 11 September 2026. Prepared from published product documentation, not independent testing. Please link readers to the official product page for current compatibility and installation guidance.
+Arras section reviewed 1 November 2026 for 2.5.1; Fadeo section retained from 11 September 2026. Prepared from published product documentation, not independent testing. Please link readers to the official product page for current compatibility and installation guidance.
 
 ## Arras
 
@@ -15,9 +15,9 @@ Arras is a free native Mac app for photo widgets and editable desktop collages, 
 - Demo poster: https://tryarras.tech/puremac/arras/demo-poster.jpg
 - Source and license: https://github.com/yashashwi-s/Arras
 
-The 2.5.0 DMG and ZIP contain a universal executable for Apple Silicon and Intel Macs on macOS 14+. The prepared 2.5.0 app and DMG are Developer ID signed and notarized by Apple. Fixed-frame photo rotation intentionally crops; dynamic sizing preserves each image's proportions. Do not quote fixed RAM, CPU, install-size, user-count or performance claims without a reproducible measurement. GitHub asset downloads are not unique installations.
+The 2.5.1 DMG and ZIP contain a universal executable for Apple Silicon and Intel Macs on macOS 14+. The 2.5.1 app and DMG are Developer ID signed and notarized by Apple. Fixed-frame photo rotation intentionally crops; dynamic sizing preserves each image's proportions. Do not quote fixed RAM, CPU, install-size, user-count or performance claims without a reproducible measurement. GitHub asset downloads are not unique installations.
 
-Arras 2.5.0 includes uncropped photos, editable collages with independent photo resizing and labels, Copy Appearance, Reference Tools, linked Photos albums and folders, saved desktop setups, removal recovery, transparent PNG and GIF/APNG widgets, muted local videos and Space slideshows. Limited configuration and milestone statistics are linked by a random installation UUID; configuration summaries are weekly and exclude photo content, filenames, paths and layouts. See Security & Privacy for the complete disclosure.
+Arras 2.5.1 includes uncropped photos, editable collages with independent photo resizing and labels, Copy Appearance, Reference Tools, linked Photos albums and folders, saved desktop setups, removal recovery, transparent PNG and GIF/APNG widgets, muted local videos and Space slideshows. Limited configuration and milestone statistics are linked by a random installation UUID; configuration summaries are weekly and exclude photo content, filenames, paths and layouts. See Security & Privacy for the complete disclosure.
 
 Former names: Photo Widget OSX, then Tableau. Use Arras for current coverage.
 

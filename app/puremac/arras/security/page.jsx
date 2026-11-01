@@ -56,7 +56,7 @@ export default async function SecurityPage() {
       <section id="telemetry">
         <h2>App statistics depend on your edition</h2>
         <p>The sandboxed TestFlight and App Store edition does not collect or send Arras usage statistics. Apple separately manages TestFlight feedback and distribution diagnostics.</p>
-        <p>The direct download of Arras 2.5.0 sends limited configuration counts and first-use or version milestones. Configuration summaries are weekly. A random installation UUID links reports from the same installation; reports do not contain photos, filenames, paths, notes, layouts or desktop contents.</p>
+        <p>The direct download of Arras 2.5.1 sends limited configuration counts and first-use or version milestones. Configuration summaries are weekly. A random installation UUID links reports from the same installation; reports do not contain photos, filenames, paths, notes, layouts or desktop contents.</p>
         <p>The direct download has no in-app opt-out switch in this version. Reports are not a live-online-user counter. <a href={links.privacyDetails}>Read the identifiers, exact data and retention details →</a></p>
         <ArrasTelemetryDetails installation={installation} links={links} />
       </section>
