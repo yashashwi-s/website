@@ -69,13 +69,13 @@ export const pureMacFaqs = [
   {
     question: "Do PureMac apps collect telemetry?",
     answer:
-      "Arras 2.5.0 keeps photo content local and sends limited configuration and milestone statistics linked by a random installation identifier. Configuration summaries are weekly; photos, filenames, paths, layouts and personal content are excluded. Update checks and downloads contact GitHub. Fadeo makes its workflow decisions locally and only sends limited information for actions such as license activation, optional diagnostics, feedback, or a mailing-list signup.",
+      "Arras 2.5.1 keeps photo content local and sends limited configuration and milestone statistics linked by a random installation identifier. Configuration summaries are weekly; photos, filenames, paths, layouts and personal content are excluded. Update checks and downloads contact GitHub. Fadeo makes its workflow decisions locally and only sends limited information for actions such as license activation, optional diagnostics, feedback, or a mailing-list signup.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
     question: "What version of macOS do PureMac apps require?",
     answer:
-      "Arras 2.5.0 supports Apple Silicon and Intel Macs running macOS 14 or later. Fadeo also requires macOS 14 or later; check its product page and GitHub release for the available architectures.",
+      "Arras 2.5.1 supports Apple Silicon and Intel Macs running macOS 14 or later. Fadeo also requires macOS 14 or later; check its product page and GitHub release for the available architectures.",
     sources: [SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {
@@ -87,7 +87,7 @@ export const pureMacFaqs = [
   {
     question: "Why can macOS show a Gatekeeper warning for a PureMac download?",
     answer:
-      "Arras 2.5.0 is Developer ID signed and notarized by Apple. Other PureMac apps may use different signing; check their current release guidance. macOS may therefore ask you to approve the app once in Privacy & Security. The warning reflects the distribution method, and you can inspect the public source before deciding to run it.",
+      "Arras 2.5.1 is Developer ID signed and notarized by Apple. Other PureMac apps may use different signing; check their current release guidance. macOS may therefore ask you to approve the app once in Privacy & Security. The warning reflects the distribution method, and you can inspect the public source before deciding to run it.",
     sources: [SOURCES.appleGatekeeper, SOURCES.arrasRepo, SOURCES.fadeoRepo],
   },
   {

@@ -32,7 +32,7 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
     <main id="arras-page">
       <ArrasNavigation links={links} />
       <header id="arras-content" tabIndex={-1} className="ar-wrap ar-hero">
-        <div><p className="ar-label">Mac desktop photo widgets · 2.5.0</p><h1>Your photos.<br /><em>Your kind of desktop.</em></h1></div>
+        <div><p className="ar-label">Mac desktop photo widgets · 2.5.1</p><h1>Your photos.<br /><em>Your kind of desktop.</em></h1></div>
         <div className="ar-hero-copy">
           <p>Arras puts photo widgets, editable collages and slideshows on your Mac. Keep each photo’s natural proportions. Save a desktop that feels like yours.</p>
           <StoreOffer offer={storeOffer} />

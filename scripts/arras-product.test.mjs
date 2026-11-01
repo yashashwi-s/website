@@ -150,17 +150,17 @@ test("a stale remote contract cannot replace this website release", async () => 
   previous.telemetry = false;
   const result = await getArrasProductResolution({ fetchImpl: async () => response(previous) });
   assert.equal(result.source, "fallback");
-  assert.equal(result.product.publicRelease.version, "2.5.0");
+  assert.equal(result.product.publicRelease.version, fallback.publicRelease.version);
   assert.equal(result.product.telemetry, true);
 });
 
-test("older 2.4.9 metadata cannot downgrade reviewed 2.5.0 facts", async () => {
+test("older 2.4.9 metadata cannot downgrade the reviewed release facts", async () => {
   const previous = structuredClone(fallback);
   previous.publicRelease.version = "2.4.9";
   previous.telemetry = false;
   const result = await getArrasProductResolution({ fetchImpl: async () => response(previous) });
   assert.equal(result.source, "fallback");
-  assert.equal(result.product.publicRelease.version, "2.5.0");
+  assert.equal(result.product.publicRelease.version, fallback.publicRelease.version);
   assert.equal(result.product.telemetry, true);
 });
 
@@ -170,7 +170,7 @@ test("a different release cannot replace the reviewed website metadata", async (
   future.telemetry = true;
   const result = await getArrasProductResolution({ fetchImpl: async () => response(future) });
   assert.equal(result.source, "fallback");
-  assert.equal(result.product.publicRelease.version, "2.5.0");
+  assert.equal(result.product.publicRelease.version, fallback.publicRelease.version);
   assert.equal(result.product.telemetry, true);
 });
 
@@ -181,7 +181,7 @@ test("stable-tag sync preserves canonical website URLs and the reviewed feature 
   legacy.shortDescription = "Legacy description";
   legacy.documentation.faqUrl = "https://arras.yashashwi.me/faqs";
   legacy.homebrew = { cask: "arras" };
-  const synced = releasedArrasProduct(legacy, fallback, "2.5.0");
+  const synced = releasedArrasProduct(legacy, fallback, fallback.publicRelease.version);
   assert.deepEqual(synced, fallback);
   assert.throws(() => releasedArrasProduct(legacy, fallback, "2.4.9"), /content review/);
 });
