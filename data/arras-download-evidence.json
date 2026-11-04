@@ -1,0 +1,816 @@
+{
+  "source": "~/.cache/arras-intel/current.json, maintained by ~/bss.sh",
+  "timezone": "Asia/Kolkata",
+  "snapshots": [
+    {
+      "timestamp": 1793755309,
+      "localTime": "2026-11-04T06:51:49+05:30",
+      "totalDownloads": 1628,
+      "arrasBrandedDownloads": 1494,
+      "releaseTotalsById": {
+        "430515345": 260,
+        "416265996": 478,
+        "394262932": 373,
+        "393133498": 50,
+        "387124280": 136,
+        "379586956": 82,
+        "379214050": 14,
+        "363590582": 80,
+        "363584694": 4,
+        "363516425": 8,
+        "363508722": 3,
+        "363505943": 6,
+        "362992113": 15,
+        "362986765": 6,
+        "362883658": 2,
+        "360203606": 7,
+        "349002555": 45,
+        "343521027": 26,
+        "339927872": 18,
+        "338998221": 15
+      },
+      "assetsById": {
+        "698043748": {
+          "count": 200,
+          "release": "430515345",
+          "arras": true,
+          "created_at": 1793529863
+        },
+        "698043750": {
+          "count": 60,
+          "release": "430515345",
+          "arras": true,
+          "created_at": 1793529863
+        },
+        "652636419": {
+          "count": 135,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "652636417": {
+          "count": 342,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "652636416": {
+          "count": 1,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "582802308": {
+          "count": 89,
+          "release": "394262932",
+          "arras": true,
+          "created_at": 1790131573
+        },
+        "582802309": {
+          "count": 284,
+          "release": "394262932",
+          "arras": true,
+          "created_at": 1790131573
+        },
+        "579456999": {
+          "count": 31,
+          "release": "393133498",
+          "arras": true,
+          "created_at": 1790009622
+        },
+        "579457002": {
+          "count": 19,
+          "release": "393133498",
+          "arras": true,
+          "created_at": 1790009622
+        },
+        "557450354": {
+          "count": 34,
+          "release": "387124280",
+          "arras": true,
+          "created_at": 1789138659
+        },
+        "557450353": {
+          "count": 102,
+          "release": "387124280",
+          "arras": true,
+          "created_at": 1789138659
+        },
+        "537650711": {
+          "count": 19,
+          "release": "379586956",
+          "arras": true,
+          "created_at": 1788162687
+        },
+        "537650712": {
+          "count": 63,
+          "release": "379586956",
+          "arras": true,
+          "created_at": 1788162687
+        },
+        "536312939": {
+          "count": 5,
+          "release": "379214050",
+          "arras": true,
+          "created_at": 1788076032
+        },
+        "536312941": {
+          "count": 9,
+          "release": "379214050",
+          "arras": true,
+          "created_at": 1788076032
+        },
+        "498125115": {
+          "count": 12,
+          "release": "363590582",
+          "arras": true,
+          "created_at": 1785607226
+        },
+        "498125116": {
+          "count": 68,
+          "release": "363590582",
+          "arras": true,
+          "created_at": 1785607226
+        },
+        "498107018": {
+          "count": 2,
+          "release": "363584694",
+          "arras": true,
+          "created_at": 1785605711
+        },
+        "498107016": {
+          "count": 2,
+          "release": "363584694",
+          "arras": true,
+          "created_at": 1785605711
+        },
+        "497875154": {
+          "count": 5,
+          "release": "363516425",
+          "arras": true,
+          "created_at": 1785586092
+        },
+        "497875155": {
+          "count": 3,
+          "release": "363516425",
+          "arras": true,
+          "created_at": 1785586092
+        },
+        "497847576": {
+          "count": 2,
+          "release": "363508722",
+          "arras": true,
+          "created_at": 1785583601
+        },
+        "497847575": {
+          "count": 1,
+          "release": "363508722",
+          "arras": true,
+          "created_at": 1785583601
+        },
+        "497836513": {
+          "count": 3,
+          "release": "363505943",
+          "arras": true,
+          "created_at": 1785582683
+        },
+        "497836510": {
+          "count": 3,
+          "release": "363505943",
+          "arras": true,
+          "created_at": 1785582683
+        },
+        "496565160": {
+          "count": 6,
+          "release": "362992113",
+          "arras": false,
+          "created_at": 1785493805
+        },
+        "496565161": {
+          "count": 9,
+          "release": "362992113",
+          "arras": false,
+          "created_at": 1785493806
+        },
+        "496556036": {
+          "count": 4,
+          "release": "362986765",
+          "arras": false,
+          "created_at": 1785493226
+        },
+        "496556037": {
+          "count": 2,
+          "release": "362986765",
+          "arras": false,
+          "created_at": 1785493226
+        },
+        "496326802": {
+          "count": 1,
+          "release": "362883658",
+          "arras": false,
+          "created_at": 1785478827
+        },
+        "496326804": {
+          "count": 1,
+          "release": "362883658",
+          "arras": false,
+          "created_at": 1785478827
+        },
+        "491018993": {
+          "count": 4,
+          "release": "360203606",
+          "arras": false,
+          "created_at": 1785126671
+        },
+        "491018995": {
+          "count": 3,
+          "release": "360203606",
+          "arras": false,
+          "created_at": 1785126671
+        },
+        "466494457": {
+          "count": 17,
+          "release": "349002555",
+          "arras": false,
+          "created_at": 1783186782
+        },
+        "466494456": {
+          "count": 28,
+          "release": "349002555",
+          "arras": false,
+          "created_at": 1783186782
+        },
+        "455654481": {
+          "count": 11,
+          "release": "343521027",
+          "arras": false,
+          "created_at": 1782221736
+        },
+        "455654480": {
+          "count": 15,
+          "release": "343521027",
+          "arras": false,
+          "created_at": 1782221736
+        },
+        "448898846": {
+          "count": 4,
+          "release": "339927872",
+          "arras": false,
+          "created_at": 1781589556
+        },
+        "448898967": {
+          "count": 14,
+          "release": "339927872",
+          "arras": false,
+          "created_at": 1781589570
+        },
+        "446645786": {
+          "count": 15,
+          "release": "338998221",
+          "arras": false,
+          "created_at": 1781364927
+        }
+      }
+    },
+    {
+      "timestamp": 1793763315,
+      "localTime": "2026-11-04T09:05:15+05:30",
+      "totalDownloads": 1630,
+      "arrasBrandedDownloads": 1496,
+      "releaseTotalsById": {
+        "430515345": 262,
+        "416265996": 478,
+        "394262932": 373,
+        "393133498": 50,
+        "387124280": 136,
+        "379586956": 82,
+        "379214050": 14,
+        "363590582": 80,
+        "363584694": 4,
+        "363516425": 8,
+        "363508722": 3,
+        "363505943": 6,
+        "362992113": 15,
+        "362986765": 6,
+        "362883658": 2,
+        "360203606": 7,
+        "349002555": 45,
+        "343521027": 26,
+        "339927872": 18,
+        "338998221": 15
+      },
+      "assetsById": {
+        "698043748": {
+          "count": 200,
+          "release": "430515345",
+          "arras": true,
+          "created_at": 1793529863
+        },
+        "698043750": {
+          "count": 62,
+          "release": "430515345",
+          "arras": true,
+          "created_at": 1793529863
+        },
+        "652636419": {
+          "count": 135,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "652636417": {
+          "count": 342,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "652636416": {
+          "count": 1,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "582802308": {
+          "count": 89,
+          "release": "394262932",
+          "arras": true,
+          "created_at": 1790131573
+        },
+        "582802309": {
+          "count": 284,
+          "release": "394262932",
+          "arras": true,
+          "created_at": 1790131573
+        },
+        "579456999": {
+          "count": 31,
+          "release": "393133498",
+          "arras": true,
+          "created_at": 1790009622
+        },
+        "579457002": {
+          "count": 19,
+          "release": "393133498",
+          "arras": true,
+          "created_at": 1790009622
+        },
+        "557450354": {
+          "count": 34,
+          "release": "387124280",
+          "arras": true,
+          "created_at": 1789138659
+        },
+        "557450353": {
+          "count": 102,
+          "release": "387124280",
+          "arras": true,
+          "created_at": 1789138659
+        },
+        "537650711": {
+          "count": 19,
+          "release": "379586956",
+          "arras": true,
+          "created_at": 1788162687
+        },
+        "537650712": {
+          "count": 63,
+          "release": "379586956",
+          "arras": true,
+          "created_at": 1788162687
+        },
+        "536312939": {
+          "count": 5,
+          "release": "379214050",
+          "arras": true,
+          "created_at": 1788076032
+        },
+        "536312941": {
+          "count": 9,
+          "release": "379214050",
+          "arras": true,
+          "created_at": 1788076032
+        },
+        "498125115": {
+          "count": 12,
+          "release": "363590582",
+          "arras": true,
+          "created_at": 1785607226
+        },
+        "498125116": {
+          "count": 68,
+          "release": "363590582",
+          "arras": true,
+          "created_at": 1785607226
+        },
+        "498107018": {
+          "count": 2,
+          "release": "363584694",
+          "arras": true,
+          "created_at": 1785605711
+        },
+        "498107016": {
+          "count": 2,
+          "release": "363584694",
+          "arras": true,
+          "created_at": 1785605711
+        },
+        "497875154": {
+          "count": 5,
+          "release": "363516425",
+          "arras": true,
+          "created_at": 1785586092
+        },
+        "497875155": {
+          "count": 3,
+          "release": "363516425",
+          "arras": true,
+          "created_at": 1785586092
+        },
+        "497847576": {
+          "count": 2,
+          "release": "363508722",
+          "arras": true,
+          "created_at": 1785583601
+        },
+        "497847575": {
+          "count": 1,
+          "release": "363508722",
+          "arras": true,
+          "created_at": 1785583601
+        },
+        "497836513": {
+          "count": 3,
+          "release": "363505943",
+          "arras": true,
+          "created_at": 1785582683
+        },
+        "497836510": {
+          "count": 3,
+          "release": "363505943",
+          "arras": true,
+          "created_at": 1785582683
+        },
+        "496565160": {
+          "count": 6,
+          "release": "362992113",
+          "arras": false,
+          "created_at": 1785493805
+        },
+        "496565161": {
+          "count": 9,
+          "release": "362992113",
+          "arras": false,
+          "created_at": 1785493806
+        },
+        "496556036": {
+          "count": 4,
+          "release": "362986765",
+          "arras": false,
+          "created_at": 1785493226
+        },
+        "496556037": {
+          "count": 2,
+          "release": "362986765",
+          "arras": false,
+          "created_at": 1785493226
+        },
+        "496326802": {
+          "count": 1,
+          "release": "362883658",
+          "arras": false,
+          "created_at": 1785478827
+        },
+        "496326804": {
+          "count": 1,
+          "release": "362883658",
+          "arras": false,
+          "created_at": 1785478827
+        },
+        "491018993": {
+          "count": 4,
+          "release": "360203606",
+          "arras": false,
+          "created_at": 1785126671
+        },
+        "491018995": {
+          "count": 3,
+          "release": "360203606",
+          "arras": false,
+          "created_at": 1785126671
+        },
+        "466494457": {
+          "count": 17,
+          "release": "349002555",
+          "arras": false,
+          "created_at": 1783186782
+        },
+        "466494456": {
+          "count": 28,
+          "release": "349002555",
+          "arras": false,
+          "created_at": 1783186782
+        },
+        "455654481": {
+          "count": 11,
+          "release": "343521027",
+          "arras": false,
+          "created_at": 1782221736
+        },
+        "455654480": {
+          "count": 15,
+          "release": "343521027",
+          "arras": false,
+          "created_at": 1782221736
+        },
+        "448898846": {
+          "count": 4,
+          "release": "339927872",
+          "arras": false,
+          "created_at": 1781589556
+        },
+        "448898967": {
+          "count": 14,
+          "release": "339927872",
+          "arras": false,
+          "created_at": 1781589570
+        },
+        "446645786": {
+          "count": 15,
+          "release": "338998221",
+          "arras": false,
+          "created_at": 1781364927
+        }
+      }
+    },
+    {
+      "timestamp": 1793777871,
+      "localTime": "2026-11-04T13:07:51+05:30",
+      "totalDownloads": 1633,
+      "arrasBrandedDownloads": 1499,
+      "releaseTotalsById": {
+        "430515345": 265,
+        "416265996": 478,
+        "394262932": 373,
+        "393133498": 50,
+        "387124280": 136,
+        "379586956": 82,
+        "379214050": 14,
+        "363590582": 80,
+        "363584694": 4,
+        "363516425": 8,
+        "363508722": 3,
+        "363505943": 6,
+        "362992113": 15,
+        "362986765": 6,
+        "362883658": 2,
+        "360203606": 7,
+        "349002555": 45,
+        "343521027": 26,
+        "339927872": 18,
+        "338998221": 15
+      },
+      "assetsById": {
+        "698043748": {
+          "count": 201,
+          "release": "430515345",
+          "arras": true,
+          "created_at": 1793529863
+        },
+        "698043750": {
+          "count": 64,
+          "release": "430515345",
+          "arras": true,
+          "created_at": 1793529863
+        },
+        "652636419": {
+          "count": 135,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "652636417": {
+          "count": 342,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "652636416": {
+          "count": 1,
+          "release": "416265996",
+          "arras": true,
+          "created_at": 1792303319
+        },
+        "582802308": {
+          "count": 89,
+          "release": "394262932",
+          "arras": true,
+          "created_at": 1790131573
+        },
+        "582802309": {
+          "count": 284,
+          "release": "394262932",
+          "arras": true,
+          "created_at": 1790131573
+        },
+        "579456999": {
+          "count": 31,
+          "release": "393133498",
+          "arras": true,
+          "created_at": 1790009622
+        },
+        "579457002": {
+          "count": 19,
+          "release": "393133498",
+          "arras": true,
+          "created_at": 1790009622
+        },
+        "557450354": {
+          "count": 34,
+          "release": "387124280",
+          "arras": true,
+          "created_at": 1789138659
+        },
+        "557450353": {
+          "count": 102,
+          "release": "387124280",
+          "arras": true,
+          "created_at": 1789138659
+        },
+        "537650711": {
+          "count": 19,
+          "release": "379586956",
+          "arras": true,
+          "created_at": 1788162687
+        },
+        "537650712": {
+          "count": 63,
+          "release": "379586956",
+          "arras": true,
+          "created_at": 1788162687
+        },
+        "536312939": {
+          "count": 5,
+          "release": "379214050",
+          "arras": true,
+          "created_at": 1788076032
+        },
+        "536312941": {
+          "count": 9,
+          "release": "379214050",
+          "arras": true,
+          "created_at": 1788076032
+        },
+        "498125115": {
+          "count": 12,
+          "release": "363590582",
+          "arras": true,
+          "created_at": 1785607226
+        },
+        "498125116": {
+          "count": 68,
+          "release": "363590582",
+          "arras": true,
+          "created_at": 1785607226
+        },
+        "498107018": {
+          "count": 2,
+          "release": "363584694",
+          "arras": true,
+          "created_at": 1785605711
+        },
+        "498107016": {
+          "count": 2,
+          "release": "363584694",
+          "arras": true,
+          "created_at": 1785605711
+        },
+        "497875154": {
+          "count": 5,
+          "release": "363516425",
+          "arras": true,
+          "created_at": 1785586092
+        },
+        "497875155": {
+          "count": 3,
+          "release": "363516425",
+          "arras": true,
+          "created_at": 1785586092
+        },
+        "497847576": {
+          "count": 2,
+          "release": "363508722",
+          "arras": true,
+          "created_at": 1785583601
+        },
+        "497847575": {
+          "count": 1,
+          "release": "363508722",
+          "arras": true,
+          "created_at": 1785583601
+        },
+        "497836513": {
+          "count": 3,
+          "release": "363505943",
+          "arras": true,
+          "created_at": 1785582683
+        },
+        "497836510": {
+          "count": 3,
+          "release": "363505943",
+          "arras": true,
+          "created_at": 1785582683
+        },
+        "496565160": {
+          "count": 6,
+          "release": "362992113",
+          "arras": false,
+          "created_at": 1785493805
+        },
+        "496565161": {
+          "count": 9,
+          "release": "362992113",
+          "arras": false,
+          "created_at": 1785493806
+        },
+        "496556036": {
+          "count": 4,
+          "release": "362986765",
+          "arras": false,
+          "created_at": 1785493226
+        },
+        "496556037": {
+          "count": 2,
+          "release": "362986765",
+          "arras": false,
+          "created_at": 1785493226
+        },
+        "496326802": {
+          "count": 1,
+          "release": "362883658",
+          "arras": false,
+          "created_at": 1785478827
+        },
+        "496326804": {
+          "count": 1,
+          "release": "362883658",
+          "arras": false,
+          "created_at": 1785478827
+        },
+        "491018993": {
+          "count": 4,
+          "release": "360203606",
+          "arras": false,
+          "created_at": 1785126671
+        },
+        "491018995": {
+          "count": 3,
+          "release": "360203606",
+          "arras": false,
+          "created_at": 1785126671
+        },
+        "466494457": {
+          "count": 17,
+          "release": "349002555",
+          "arras": false,
+          "created_at": 1783186782
+        },
+        "466494456": {
+          "count": 28,
+          "release": "349002555",
+          "arras": false,
+          "created_at": 1783186782
+        },
+        "455654481": {
+          "count": 11,
+          "release": "343521027",
+          "arras": false,
+          "created_at": 1782221736
+        },
+        "455654480": {
+          "count": 15,
+          "release": "343521027",
+          "arras": false,
+          "created_at": 1782221736
+        },
+        "448898846": {
+          "count": 4,
+          "release": "339927872",
+          "arras": false,
+          "created_at": 1781589556
+        },
+        "448898967": {
+          "count": 14,
+          "release": "339927872",
+          "arras": false,
+          "created_at": 1781589570
+        },
+        "446645786": {
+          "count": 15,
+          "release": "338998221",
+          "arras": false,
+          "created_at": 1781364927
+        }
+      }
+    }
+  ]
+}

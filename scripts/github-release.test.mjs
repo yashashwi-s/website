@@ -37,16 +37,16 @@ test("release helpers reject unknown repositories without fetching", async (cont
 
 
 test("historical downloads preserve the recorded minimum without counting surviving downloads twice", () => {
-  assert.equal(historicalArrasDownloads({ "v2.5.1": 268 }).total, 1628);
-  assert.equal(historicalArrasDownloads({ "v2.5.1": 278 }).total, 1638);
-  assert.equal(historicalArrasDownloads({ "v2.5.1": 268, "v2.5.0": 500 }).total, 1628);
-  assert.equal(historicalArrasDownloads({ "v2.5.1": 268, "v2.5.2": 12 }).total, 1640);
-  assert.equal(historicalArrasDownloads({ "v2.5.1": 0 }).total, 1628);
+  assert.equal(historicalArrasDownloads({ "v2.5.1": 265 }).total, 1633);
+  assert.equal(historicalArrasDownloads({ "v2.5.1": 268 }).total, 1636);
+  assert.equal(historicalArrasDownloads({ "v2.5.1": 265, "v2.5.0": 500 }).total, 1633);
+  assert.equal(historicalArrasDownloads({ "v2.5.1": 265, "v2.5.2": 12 }).total, 1645);
+  assert.equal(historicalArrasDownloads({ "v2.5.1": 0 }).total, 1633);
 });
 
 test("Arras retains the minimum on GitHub failure while Fadeo does not inherit it", async (context) => {
   context.mock.method(globalThis, "fetch", mockFetch({}, false));
-  assert.equal((await totalDownloads("Arras")).total, 1628);
+  assert.equal((await totalDownloads("Arras")).total, 1633);
   assert.equal((await totalDownloads("Arras")).isLowerBound, true);
   assert.equal(await totalDownloads("Fadeo"), null);
 });
