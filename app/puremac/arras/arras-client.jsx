@@ -84,7 +84,8 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
             <p className="ar-intro">Buying Arras Widgets supports my work on Arras. Get Apple-managed installation and updates, a sandboxed app and no Arras usage statistics. The free, open-source direct download is here too. Your photos stay on your Mac.</p>
             <StoreOffer offer={storeOffer} />
             <div className="ar-download-actions"><ArrasDownloadLink className="ar-button ar-button-secondary" href={download}>Free direct download <span aria-hidden="true">↙</span></ArrasDownloadLink><ArrasStar repository={SOURCE} stars={stars} /></div>
-            <p className="ar-fine">{`v${product.publicRelease.version}`}{downloads?.total ? ` · ${new Intl.NumberFormat("en-US").format(downloads.total)} GitHub asset downloads` : ""}</p>
+            <p className="ar-fine">{`v${product.publicRelease.version}`}{downloads?.total ? ` · ${new Intl.NumberFormat("en-US").format(downloads.total)}${downloads.isLowerBound ? "+" : ""} GitHub asset downloads` : ""}</p>
+            {downloads?.isLowerBound && <p className="ar-fine">Includes a recorded minimum from earlier releases, plus subsequent GitHub downloads. Downloads are not unique users or installations.</p>}
             <p className="ar-fine"><a href={links.support}>Support &amp; edition differences →</a> · <a href={links.security}>Security &amp; Privacy →</a></p>
             <a className="ar-text-link" href={`${SOURCE}/releases`} referrerPolicy="origin">Direct-download release notes ↗</a>
           </div>

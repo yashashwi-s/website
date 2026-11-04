@@ -1,0 +1,32 @@
+{
+  "minimumTotal": 1628,
+  "observedOn": "2026-11-04",
+  "source": "https://tryarras.tech/",
+  "evidence": "Live homepage read before release deletion in the website maintenance chat on 2026-11-04 displayed 1,628 GitHub asset downloads. Original per-release counts were not saved. This is a lower bound, not an exact deletion-time total.",
+  "survivingReleaseBaseline": {
+    "v2.5.1": 268
+  },
+  "baselineEvidence": "GitHub API after deletion on 2026-11-04: v2.5.1 Arras.app.zip 201; Arras.dmg 67. Only growth beyond this baseline is added, avoiding overlap with the historical total.",
+  "historicalTags": [
+    "v1.0.0",
+    "v2.0.0",
+    "v2.0.1",
+    "v2.0.2",
+    "v2.0.3",
+    "v2.1.0",
+    "v2.2.0",
+    "v2.2.1",
+    "v2.4.0",
+    "v2.4.1",
+    "v2.4.2",
+    "v2.4.3",
+    "v2.4.4",
+    "v2.4.5",
+    "v2.4.6",
+    "v2.4.7",
+    "v2.4.8",
+    "v2.4.9",
+    "v2.5.0",
+    "v2.5.1"
+  ]
+}
