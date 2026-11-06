@@ -6,7 +6,7 @@ const canonical = "https://tryarras.tech";
 const preview = process.env.ARRAS_REQUEST_BASE_URL;
 const arrasOrigin = preview ? new URL(preview).origin : canonical;
 const portfolioOrigin = process.env.PORTFOLIO_REQUEST_BASE_URL || (preview ? new URL(preview).origin : "https://yashashwi.me");
-const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization"];
+const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization", ...["guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks"].map(path => `/${path}`)];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 const failures = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -34,6 +34,7 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
   }
   const expected = path === "/" ? canonical : `${canonical}${path}`;
   check(response.status === 200, `${path}: must return 200 without a redirect`);
+  check((html.match(/<h1\b/gi) || []).length === 1, `${path}: expected one visible H1`);
   check(!/\b(noindex|nofollow|none)\b/i.test(response.headers.get("x-robots-tag") || ""), `${path}: blocking X-Robots-Tag`);
   const metadataHtml = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
   for (const name of ["robots", "googlebot"]) {
@@ -81,6 +82,12 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
     check((metadataHtml.match(/<h1\b/gi) || []).length === 1, "Desktop guide must have one H1");
     check(!nodes.some(node => node["@type"] === "FAQPage"), "Desktop guide must preserve the reviewed FAQ contract on the FAQ page");
   }
+  if (path.startsWith("/guides/")) {
+    const article = nodes.find(node => node["@type"] === "Article");
+    check(article?.url === expected && article?.mainEntityOfPage?.["@id"] === `${expected}#page`, `${path}: guide article must identify its canonical page`);
+    check(article?.author?.["@id"] === "https://yashashwi.me/#person" && /maker of Arras/.test(visible(html)), `${path}: guide must disclose the maker relationship`);
+    check(article?.image?.startsWith(`${canonical}/puremac/arras/features/`), `${path}: guide must use an existing real desktop capture`);
+  }
   if (["/faq", "/support"].includes(path)) {
     check(anchors(metadataHtml).some(link => link.href?.startsWith("mailto:yashashwisinghania@gmail.com")), `${path}: support visitors need a direct developer contact`);
     check(/App Store/.test(visible(html)) && /free direct download/.test(visible(html)), `${path}: explain support for both editions`);
@@ -94,6 +101,14 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
   for (const link of anchors(metadataHtml).filter(link => !/\.(?:png|jpe?g|webp|avif|svg|gif|mp4|webm)(?:[?#]|$)/i.test(link.href || ""))) check(!/puremac\.yashashwi\.me\/(?:puremac\/)?arras(?:\/|$)|^\/puremac\/arras(?:\/|$)/i.test(link.href || ""), `${path}: legacy Arras navigation URL ${link.href}`);
   return [path, { html, text: visible(html) }];
 })));
+
+for (const path of ["/guides/unknown-guide", "/guides/toString"]) {
+  const response = await requestPage(`${arrasOrigin}${path}`, { headers: { Host: "tryarras.tech" } });
+  check(response.status === 404, `${path}: unknown guides must return 404`);
+}
+const campaignLinks = anchors(pages["/"].html).filter(link => link.href?.startsWith(`https://apps.apple.com/app/id${product.appStore.appleId}?`)).map(link => new URL(link.href));
+for (const campaign of ["site-hero", "site-download"]) check(campaignLinks.some(url => url.searchParams.get("ct") === campaign && url.searchParams.get("pt") === "129614402" && url.searchParams.get("mt") === "12"), `Homepage needs the verified ${campaign} App Store campaign link`);
+check(anchors(pages["/thanks"].html).some(link => link.href === `https://apps.apple.com/app/id${product.appStore.appleId}?action=write-review`), "Thanks page needs the explicit App Store review link");
 
 for (const path of ["/", "/faq"]) {
   for (const term of [/true aspect ratio/i, /uncropped/i, /single photo/i, /Polaroid/, /Gallery/, /transparent PNG/i, /GIF/, /APNG/, /screenshot/i, /PDF/, /Space slideshow/i]) check(term.test(pages[path].text), `${path}: missing useful shipped-feature copy ${term}`);

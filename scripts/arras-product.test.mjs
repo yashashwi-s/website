@@ -233,3 +233,19 @@ test("Store metadata rejects an incorrect listing or distribution privacy claim"
     assert.throws(() => validateArrasProduct(product), /appStore|App Store/);
   }
 });
+
+
+test("Store campaign links preserve the app identity while canonical citations stay untagged", () => {
+  const canonical = getArrasAppStoreOffer(fallback);
+  assert.equal(new URL(canonical.url).search, "");
+  for (const source of ["site-hero", "site-download", "github-readme", "reddit", "hashnode", "inapp-support"]) {
+    const offer = getArrasAppStoreOffer(fallback, source);
+    const url = new URL(offer.url);
+    assert.equal(url.origin, "https://apps.apple.com");
+    assert.equal(url.pathname, new URL(canonical.url).pathname);
+    assert.equal(url.searchParams.get("ct"), source);
+    assert.equal(url.searchParams.get("pt"), "129614402");
+    assert.equal(url.searchParams.get("mt"), "12");
+    assert.equal(offer.price, canonical.price);
+  }
+});

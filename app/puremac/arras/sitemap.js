@@ -2,7 +2,7 @@ import { arrasCanonicalUrl } from "@/data/arras-product";
 import { latestRelease } from "@/lib/github-release";
 
 const SITE_URL = arrasCanonicalUrl;
-const HOME_UPDATED = "2026-10-24";
+const HOME_UPDATED = "2026-11-06";
 const SUPPORT_UPDATED = { faq: "2026-10-24", security: "2026-10-24", support: "2026-10-24" };
 
 export default async function sitemap() {
@@ -20,6 +20,7 @@ export default async function sitemap() {
       images: ["launch-2.5.0-poster.jpg", "features/collages.webp", "features/slideshow-layers.webp", "features/appearance.webp"].map(path => `${SITE_URL}/puremac/arras/${path}`),
     },
     { url: `${SITE_URL}/mac-desktop-customization`, lastModified: "2026-10-24", changeFrequency: "monthly", priority: 0.7, images: ["collages", "appearance", "slideshow-layers"].map(name => `${SITE_URL}/puremac/arras/features/${name}.webp`) },
+    ...["guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: "2026-11-06", changeFrequency: "monthly", priority: 0.6 })),
     ...["faq", "security", "support"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: SUPPORT_UPDATED[path], changeFrequency: "monthly", priority: 0.7 })),
   ];
 }

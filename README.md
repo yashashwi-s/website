@@ -48,7 +48,7 @@ permanently redirect to their matching new URLs. `/faq` and `/security` are the
 canonical support pages; legacy aliases remain compatible. Both domains retain
 a direct `/api/telemetry/v1` endpoint for installed copies, without a redirect.
 
-The site describes the Developer ID signed, notarized **2.5.0** release for Apple
+The site describes the Developer ID signed, notarized **2.5.1** release for Apple
 Silicon and Intel on macOS 14+. Its film and feature screenshots are real native
 Arras captures using sample media. Release facts, download destinations, FAQs,
 structured data and privacy disclosure must stay consistent with GitHub Releases
@@ -59,14 +59,12 @@ pages, API routes and environment configuration during Arras deployments. Unrela
 local Fadeo edits are outside this release. App statistics and anonymous website
 counters use separate namespaces; never join visitors to installation UUIDs.
 
-The App Store badge is prepared but hidden. `appStore.status` in the app’s
-canonical metadata must remain `in-preparation`, `in-review` or `approved` until
-Apple has approved the app **and** its public listing is verified available.
-Only then set it to `live` and sync `data/arras-product.json`; `unavailable`
-hides it again. Keep the free DMG as the primary action. The secondary badge uses
-Apple’s unmodified artwork and its listing ID `6824271927`. The privacy page
-separately covers direct-download and sandboxed TestFlight/Store copies; it does
-not imply that an unpublished Store listing is available. Badge artwork is provided
+The App Store listing is live. Its badge is controlled by `appStore.status` in
+the app’s canonical metadata, synced to `data/arras-product.json`; `unavailable`
+hides it if the public listing becomes unavailable. Keep the free DMG as the
+primary action. The secondary badge uses Apple’s unmodified artwork and its listing ID `6824271927`. The privacy page
+separately covers direct-download and sandboxed TestFlight/Store copies and
+distinguishes their network and storage behavior. Badge artwork is provided
 by [Apple’s marketing tools](https://toolbox.marketingtools.apple.com/en-us/app-store/us)
 and follows [Apple’s badge guidelines](https://developer.apple.com/app-store/marketing/guidelines/);
 it is not covered by this repository’s code license.

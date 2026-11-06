@@ -14,11 +14,11 @@ import { ARRAS_SUPPORT_EMAIL } from "@/lib/arras-support.mjs";
 const SITE_URL = arrasCanonicalUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
-const CONTENT_UPDATED_AT = "2026-10-24";
-const TITLE = "Arras Widgets — Mac Photo Widgets & Desktop Collages";
+const CONTENT_UPDATED_AT = "2026-11-06";
+const TITLE = "Arras for Mac: put photos on your desktop without cropping";
 const DESCRIPTION =
-  "Arras Widgets for Mac: photo widgets, editable collages and slideshows. Get it on the Mac App Store, or choose the free, open-source direct download.";
-const OG_IMAGE = "/puremac/arras/launch-2.5.0-poster.jpg";
+  "Put photos on your Mac desktop at their natural proportions. Build editable collages and slideshows. Free and open source, with an optional App Store edition.";
+const OG_IMAGE = "/puremac/arras/social.jpg";
 
 export const metadata = {
   title: TITLE,
@@ -59,7 +59,7 @@ export const metadata = {
     siteName: arrasProduct.name,
     locale: "en_US",
     type: "website",
-    images: [{ url: `${SITE_URL}${OG_IMAGE}`, width: 1470, height: 956, alt: "Arras widgets on a macOS desktop" }],
+    images: [{ url: `${SITE_URL}${OG_IMAGE}`, width: 1200, height: 630, alt: "Arras widgets on a macOS desktop" }],
   },
   twitter: {
     card: "summary_large_image",
