@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { guides } from './app/puremac/arras/guides/guide-data';
+import { comparisons } from './app/puremac/arras/vs/comparison-data';
 import { websiteObservation, recordWebsiteObservation } from './lib/arras-website-statistics.mjs';
 
 export const config = {
@@ -58,6 +60,20 @@ export default function proxy(req, event) {
     // its existing route group while exposing it at the subdomain root.
     if (!url.pathname.startsWith('/puremac/arras')) {
       const suffix = url.pathname === '/' ? '' : url.pathname;
+      const detail = /^\/(guides|vs)\/([^/]+)$/.exec(suffix);
+      if (detail) {
+        const records = detail[1] === 'guides' ? guides : comparisons;
+        try {
+          if (!Object.hasOwn(records, decodeURIComponent(detail[2]))) {
+            url.pathname = '/puremac/arras/page-not-found';
+            return NextResponse.rewrite(url);
+          }
+        } catch (error) {
+          if (!(error instanceof URIError)) throw error;
+          url.pathname = '/puremac/arras/page-not-found';
+          return NextResponse.rewrite(url);
+        }
+      }
       url.pathname = `/puremac/arras${suffix}`;
       return NextResponse.rewrite(url);
     }

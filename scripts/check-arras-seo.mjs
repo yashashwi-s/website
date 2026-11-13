@@ -6,7 +6,7 @@ const canonical = "https://tryarras.tech";
 const preview = process.env.ARRAS_REQUEST_BASE_URL;
 const arrasOrigin = preview ? new URL(preview).origin : canonical;
 const portfolioOrigin = process.env.PORTFOLIO_REQUEST_BASE_URL || (preview ? new URL(preview).origin : "https://yashashwi.me");
-const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization", ...["guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks", "vs/apple-photos-widget", "vs/smart-photo-widget", "vs/widgetwall", "vs/pureref", "vs/photo-widget-sindre-sorhus", "vs/photowidget-vatsal"].map(path => `/${path}`)];
+const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization", ...["guides", "guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks", "vs/apple-photos-widget", "vs/smart-photo-widget", "vs/widgetwall", "vs/pureref", "vs/photo-widget-sindre-sorhus", "vs/photowidget-vatsal"].map(path => `/${path}`)];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 const failures = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -102,9 +102,14 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
   return [path, { html, text: visible(html) }];
 })));
 
-for (const path of ["/guides/unknown-guide", "/guides/toString"]) {
+for (const guide of publicPaths.filter(path => path.startsWith("/guides/"))) {
+  check(anchors(pages["/guides"].html).some(link => link.href === guide), `/guides: missing a link to ${guide}`);
+}
+for (const path of ["/unknown-arras-page", "/guides/unknown-guide", "/guides/toString", "/vs/unknown-comparison"]) {
   const response = await requestPage(`${arrasOrigin}${path}`, { headers: { Host: "tryarras.tech" } });
-  check(response.status === 404, `${path}: unknown guides must return 404`);
+  const html = await response.text();
+  check(response.status === 404, `${path}: unknown Arras URLs must return 404`);
+  check(visible(html).includes("Page not found") && anchors(html).some(link => link.href === "/guides"), `${path}: show the Arras 404 with a way back to the guides`);
 }
 const campaignLinks = anchors(pages["/"].html).filter(link => link.href?.startsWith(`https://apps.apple.com/app/id${product.appStore.appleId}?`)).map(link => new URL(link.href));
 for (const campaign of ["site-hero", "site-download"]) check(campaignLinks.some(url => url.searchParams.get("ct") === campaign && url.searchParams.get("pt") === "129614402" && url.searchParams.get("mt") === "12"), `Homepage needs the verified ${campaign} App Store campaign link`);
