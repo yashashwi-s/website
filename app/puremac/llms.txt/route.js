@@ -21,7 +21,7 @@ const LLMS = `# PureMac
 - Compatibility: ${facts.operatingSystem}; ${facts.architecture}.
 - Download size and resource use depend on the release and workload; no fixed benchmark is claimed here.
 - Price and license: free, no subscription or account, MIT License.
-- Arras 2.5.1: single uncropped photos, editable collages, Copy Appearance, Reference Tools, linked Photos albums and Finder folders, saved desktop setups, removal recovery, transparent PNG, GIF/APNG and muted local video widgets, and Space slideshows.
+- Arras 2.5.2: single uncropped photos, editable collages, Copy Appearance, Reference Tools, linked Photos albums and Finder folders, saved desktop setups, removal recovery, transparent PNG, GIF/APNG and muted local video widgets, and Space slideshows.
 - Limited configuration and milestone statistics use a random installation UUID. Configuration summaries are weekly; photos, filenames, paths, layouts and personal content are excluded. Read Security & Privacy for details.
 - Display behavior: independent non-activating windows preserve source aspect ratios; images can be layered around desktop icons, macOS widgets, and applications.
 - Historical names: Photo Widget OSX, then Tableau, then Arras. Existing settings and bundle identity were retained.

@@ -23,7 +23,7 @@ export default async function FaqPage() {
   return (
     <>
       <FaqJsonLd faqs={[...storeFaqs, ...faqs]} />
-      <SupportPage links={links} active="faqs" label="FAQs & getting started" title={<>Mac photo widgets.<br /><em>Your questions, answered.</em></>} intro="Start with one uncropped photo or an editable example, then build a collage, link an album or save a setup. These answers cover Arras 2.5.1."
+      <SupportPage links={links} active="faqs" label="FAQs & getting started" title={<>Mac photo widgets.<br /><em>Your questions, answered.</em></>} intro="Start with one uncropped photo or an editable example, then build a collage, link an album or save a setup. These answers cover Arras 2.5.2."
         sections={[["how-to-use", "Your first photo"], ...(storeFaqs.length ? [["app-store", "Mac App Store edition"]] : []), ...groups, ["contact", "Still need help?"]]}>
         <section id="how-to-use">
           <h2>Your first photo, in three steps.</h2>
@@ -42,7 +42,7 @@ export default async function FaqPage() {
           <h2>{title}</h2>
           {id === "photo-workflows" && <><p><strong>Editable collages.</strong> Choose Add → Create Collage. Drag the background to move the group, or hover a member’s corner to resize that photo. The boundary refits as members change. Edit Collage adds and removes members; depth and Space pinning apply to the group. <a href={`${links.home}#collages`}>See the collage →</a></p><p><strong>Linked collections.</strong> A Photos album or Finder folder can supply a slideshow. Arras keeps a managed local snapshot for offline use; downloading cloud-only Photos assets needs permission and a connection.</p></>}
           {id === "personalize" && <p>Polaroid and Gallery are starting points for a photo’s frame, mat and shadow. Transparent PNG images keep their cutouts; GIF and APNG images can animate. A Space slideshow rotates several images in one widget.</p>}
-          {id === "controls-and-limits" && <p>Muted local video widgets pause when hidden or fully covered, and in Low Power Mode. If a visible video stops when another app gains focus, update to 2.5.1. Reference Tools adds non-destructive crop, rotation, flips, grayscale, a note and a source link to a reference photo.</p>}
+          {id === "controls-and-limits" && <p>Muted local video widgets pause when hidden or fully covered, and in Low Power Mode. If a visible video stops when another app gains focus, update to 2.5.1 or later. Reference Tools adds non-destructive crop, rotation, flips, grayscale, a note and a source link to a reference photo.</p>}
           {faqs.filter(faq => faq.group === id).map(faq => <ArrasAnswer key={faq.id} {...faq} />)}
           {id === "controls-and-limits" && <p className="ar-fine">For the full reviewed behavior contract, read <a href={featureUrl} referrerPolicy="origin">Current shipped features ↗</a>.</p>}
           {id === "first-launch" && <p>For permissions, network connections, local storage, and download verification, read <a href={links.security}>Security &amp; Privacy →</a>.</p>}
