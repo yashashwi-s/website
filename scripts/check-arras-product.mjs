@@ -61,7 +61,7 @@ for (const key of ["page", "client", "faqs", "security", "llms"]) {
   check(sources[key].includes("getArrasInstallation(product)"), `${paths[key]} must use the shared first-launch explanation`);
 }
 check(!/homebrew|brew tap|brew install|brew trust/i.test(currentDocumentation), "Current Arras documentation must not present retired Homebrew distribution");
-check(metadata.publicRelease.version === "2.5.1" && metadata.telemetry === true, "The prepared website must describe Arras 2.5.1 and its statistics contract");
+check(metadata.publicRelease.version === "2.5.2" && metadata.telemetry === true, "The prepared website must describe Arras 2.5.2 and its statistics contract");
 check(JSON.stringify(metadata.publicRelease.architectures) === JSON.stringify(["arm64", "x86_64"]), "The reviewed official download supports Apple Silicon and Intel");
 for (const phrase of ["Try an Example", "Create Collage", "Copy Appearance", "Reference Tools", "Photos album", "Finder folder", "desktop setups", "muted local video"]) {
   check(currentDocumentation.includes(phrase), `The reviewed release copy must cover ${phrase}`);
