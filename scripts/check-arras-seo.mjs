@@ -6,7 +6,7 @@ const canonical = "https://tryarras.tech";
 const preview = process.env.ARRAS_REQUEST_BASE_URL;
 const arrasOrigin = preview ? new URL(preview).origin : canonical;
 const portfolioOrigin = process.env.PORTFOLIO_REQUEST_BASE_URL || (preview ? new URL(preview).origin : "https://yashashwi.me");
-const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization", ...["guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks"].map(path => `/${path}`)];
+const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization", ...["guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks", "vs/apple-photos-widget", "vs/smart-photo-widget", "vs/widgetwall", "vs/pureref", "vs/photo-widget-sindre-sorhus", "vs/photowidget-vatsal"].map(path => `/${path}`)];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 const failures = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };

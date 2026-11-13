@@ -14,10 +14,10 @@ import { ARRAS_SUPPORT_EMAIL } from "@/lib/arras-support.mjs";
 const SITE_URL = arrasCanonicalUrl;
 const ARRAS_URL = SITE_URL;
 const OFFICIAL_DMG_URL = `${arrasProduct.repositoryUrl}/releases/latest/download/Arras.dmg`;
-const CONTENT_UPDATED_AT = "2026-11-06";
-const TITLE = "Arras for Mac: put photos on your desktop without cropping";
+const CONTENT_UPDATED_AT = "2026-11-13";
+const TITLE = "Arras for Mac | Desktop Photo Widgets Without Cropping";
 const DESCRIPTION =
-  "Put photos on your Mac desktop at their natural proportions. Build editable collages and slideshows. Free and open source, with an optional App Store edition.";
+  "Add uncropped photo widgets to your Mac desktop. Make editable collages, run slideshows, and float reference images. Free download or Mac App Store.";
 const OG_IMAGE = "/puremac/arras/social.jpg";
 
 export const metadata = {

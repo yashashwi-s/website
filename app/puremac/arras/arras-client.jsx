@@ -4,6 +4,8 @@ import ArrasDemo from "./arras-demo";
 import { ArrasDownloadLink } from "./arras-attribution";
 import ArrasStar from "./arras-star";
 import ArrasAnswer from "./arras-answer";
+import ArrasCommunity from "./arras-community";
+import { comparisons } from "./vs/comparison-data";
 import { arrasFaqs } from "@/lib/arras-faqs.mjs";
 import { getArrasStoreFaqs } from "@/lib/arras-support.mjs";
 import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
@@ -19,7 +21,10 @@ function StoreOffer({ offer }) {
     <a href={offer.url} aria-label="Get Arras Widgets on the Mac App Store">
       <Image src="/puremac/arras/mac-app-store-badge.svg" width={156} height={52} alt="Download on the App Store" unoptimized />
     </a>
-    <p><strong>Arras Widgets · {offer.price}</strong><br />One-time purchase · Local prices may vary.</p>
+    <div className="ar-store-details">
+      <p><strong>Arras Widgets · {offer.price}</strong><br />One-time purchase · Local prices may vary.</p>
+      <p className="ar-store-supporters">Backed by 10+ supporters</p>
+    </div>
   </div>;
 }
 
@@ -32,9 +37,9 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
     <main id="arras-page">
       <ArrasNavigation links={links} />
       <header id="arras-content" tabIndex={-1} className="ar-wrap ar-hero">
-        <div><p className="ar-label">Mac desktop photo widgets · 2.5.1</p><h1>Your photos.<br /><em>Your kind of desktop.</em></h1></div>
+        <div><p className="ar-label">Arras for Mac · {product.publicRelease.version}</p><h1>Photo widgets<br />for Mac.<br /><em>Keep the whole picture.</em></h1></div>
         <div className="ar-hero-copy">
-          <p>Arras puts photo widgets, editable collages and slideshows on your Mac. Keep each photo’s natural proportions. Save a desktop that feels like yours.</p>
+          <p>Put photos on your Mac desktop at their natural proportions. Arrange editable collages, create slideshows, and float a reference image above your apps.</p>
           <StoreOffer offer={getArrasAppStoreOffer(product, "site-hero")} />
           {storeOffer && <p className="ar-purchase-note">Buy once. Support independent development.<br /><span>Updates through Apple. No Arras usage statistics.</span></p>}
           <div className="ar-download-actions">
@@ -97,6 +102,15 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
           </div>
         </div>
       </section>
+      <ArrasCommunity />
+
+      <section className="ar-wrap ar-comparison-links" aria-labelledby="arras-comparison-heading">
+        <h2 id="arras-comparison-heading">Compare Mac photo widgets</h2>
+        <ul>{Object.entries(comparisons).map(([slug, comparison]) => (
+          <li key={slug}><a href={`${links.home}vs/${slug}`}>Arras vs {comparison.name} <span aria-hidden="true">↗</span></a></li>
+        ))}</ul>
+      </section>
+
       <section className="ar-wrap ar-faq ar-quick-answers" aria-labelledby="quick-answers-heading">
         <p className="ar-label">Before you get started</p>
         <h2 id="quick-answers-heading">A few quick answers.</h2>
