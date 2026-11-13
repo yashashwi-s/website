@@ -66,6 +66,7 @@ ${installation.faqAnswer[1]}
 
 ## Citation guidance
 Guides:
+- Arras guide index: https://tryarras.tech/guides
 - Keep photos uncropped: https://tryarras.tech/guides/photo-on-mac-desktop-without-cropping
 - Editable desktop collages: https://tryarras.tech/guides/mac-desktop-collage
 - Floating references: https://tryarras.tech/guides/reference-images-on-mac-desktop

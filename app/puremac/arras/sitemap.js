@@ -1,6 +1,7 @@
 import { arrasCanonicalUrl } from "@/data/arras-product";
 import { latestRelease } from "@/lib/github-release";
 
+import { guides } from "./guides/guide-data";
 import { comparisonDate, comparisons } from "./vs/comparison-data";
 
 const SITE_URL = arrasCanonicalUrl;
@@ -22,7 +23,7 @@ export default async function sitemap() {
       images: ["launch-2.5.0-poster.jpg", "features/collages.webp", "features/slideshow-layers.webp", "features/appearance.webp"].map(path => `${SITE_URL}/puremac/arras/${path}`),
     },
     { url: `${SITE_URL}/mac-desktop-customization`, lastModified: "2026-10-24", changeFrequency: "monthly", priority: 0.7, images: ["collages", "appearance", "slideshow-layers"].map(name => `${SITE_URL}/puremac/arras/features/${name}.webp`) },
-    ...["guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: "2026-11-06", changeFrequency: "monthly", priority: 0.6 })),
+    ...["guides", ...Object.keys(guides).map(slug => `guides/${slug}`), "changelog", "thanks"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: "2026-11-06", changeFrequency: "monthly", priority: 0.6 })),
     ...Object.keys(comparisons).map(slug => ({ url: `${SITE_URL}/vs/${slug}`, lastModified: comparisonDate })),
     ...["faq", "security", "support"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: SUPPORT_UPDATED[path], changeFrequency: "monthly", priority: 0.7 })),
   ];

@@ -36,6 +36,6 @@ export default async function GuidePage({ params }) {
     {guide.sections.map(section => <section id={section.id} key={section.id}><h2>{section.title}</h2>{section.paragraphs.map(text => <p key={text}>{text}</p>)}</section>)}
     <p><a href={`${links.home}#install`}>Choose the free download or Mac App Store edition →</a></p>
     <p className="ar-fine"><a href={arrasProduct.documentation.featureContractUrl} referrerPolicy="origin">Arras feature documentation ↗</a> · <a href={links.faqs}>Setup questions</a> · <a href={links.security}>Privacy and permissions</a></p>
-    <h2>More desktop workflows</h2><ul>{Object.entries(guides).filter(([key]) => key !== slug).map(([key, value]) => <li key={key}><a href={`${links.home}guides/${key}`}>{value.title}</a></li>)}</ul>
+    <h2>More desktop workflows</h2><p><a href={links.guides}>Browse all Arras guides</a></p><ul>{Object.entries(guides).filter(([key]) => key !== slug).map(([key, value]) => <li key={key}><a href={`${links.home}guides/${key}`}>{value.title}</a></li>)}</ul>
   </SupportPage>;
 }

@@ -10,6 +10,7 @@ export function ArrasNavigation({ links, active }) {
     <nav className="ar-wrap ar-nav" aria-label="Main navigation">
       <a className="ar-brand" href={links.home}><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />Arras<span>FOR MAC</span></a>
       <div>
+        <a href={links.guides} aria-current={active === "guides" ? "page" : undefined}>Guides</a>
         <a href={links.faqs} aria-current={active === "faqs" ? "page" : undefined}>FAQs</a>
         <a href={links.support} aria-current={active === "support" ? "page" : undefined}>Support</a>
         <a href={links.security} aria-current={active === "security" ? "page" : undefined}>Security &amp; Privacy</a>
@@ -25,7 +26,7 @@ export function ArrasFooter({ links }) {
     <footer className="ar-wrap ar-footer">
       <a className="ar-brand" href={links.home}><img src="/puremac/arras/mark.svg" width="34" height="30" alt="" />Arras</a>
       <p>Made by <a href="https://yashashwi.me">{personal.name}</a>.</p>
-      <div><a href={links.guide}>Desktop setup guide</a><a href={`${links.home}changelog`}>What’s new</a><a href={`${links.home}thanks`}>Rate Arras</a><a href={links.faqs}>FAQs</a><a href={links.support}>Support</a><a href={links.security}>Security &amp; Privacy</a><a href={arrasProduct.repositoryUrl} referrerPolicy="origin">Source ↗</a><a href={`${links.support}#contact`}>Contact</a></div>
+      <div><a href={links.guides}>Guides</a><a href={links.guide}>Desktop setup guide</a><a href={`${links.home}changelog`}>What’s new</a><a href={`${links.home}thanks`}>Rate Arras</a><a href={links.faqs}>FAQs</a><a href={links.support}>Support</a><a href={links.security}>Security &amp; Privacy</a><a href={arrasProduct.repositoryUrl} referrerPolicy="origin">Source ↗</a><a href={`${links.support}#contact`}>Contact</a></div>
     </footer>
   );
 }
