@@ -91,7 +91,7 @@ export default function ArrasDemo({ posterProps, setupUrl }) {
     <section className="ar-wrap ar-demo" aria-label="Arras product demonstration">
       <div className="ar-demo-media">
         <img {...posterProps} className="ar-demo-poster" aria-hidden="true" />
-        <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" poster={posterProps.src} data-frame-ready={demoHasFrame} onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/launch-2.5.0.mp4" type="video/mp4" />Your browser does not support video.</video>
+        <video id="arras-demo" ref={demoRef} muted loop playsInline preload="none" data-frame-ready={demoHasFrame} onPlay={() => setDemoPlaying(true)} onPause={() => setDemoPlaying(false)} aria-label="Arras photo widgets being arranged on a Mac desktop"><source src="/puremac/arras/launch-2.5.0.mp4" type="video/mp4" />Your browser does not support video.</video>
       </div>
       <div className="ar-caption"><a href={setupUrl}>Read the setup instructions →</a><button type="button" aria-controls="arras-demo" onClick={async () => {
         const demo = demoRef.current;
