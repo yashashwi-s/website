@@ -27,6 +27,7 @@ function move(track, direction) {
 export default function ArrasReviewCarousel({ children, count }) {
   const track = useRef(null);
   const rotationButton = useRef(null);
+  const touchStart = useRef(null);
   const [canScroll, setCanScroll] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -74,14 +75,30 @@ export default function ArrasReviewCarousel({ children, count }) {
     move(track.current, direction);
   }
 
+  function handleTouchStart(event) {
+    const { clientX, clientY } = event.touches[0];
+    touchStart.current = { x: clientX, y: clientY };
+  }
+
+  function handleTouchMove(event) {
+    const start = touchStart.current;
+    if (start === null) return;
+    const { clientX, clientY } = event.touches[0];
+    const horizontal = Math.abs(clientX - start.x);
+    const vertical = Math.abs(clientY - start.y);
+    if (Math.max(horizontal, vertical) < 8) return;
+    // A vertical swipe scrolls the page. Only a horizontal gesture takes
+    // control of the carousel.
+    touchStart.current = null;
+    if (horizontal > vertical) setPlaying(false);
+  }
+
   return (
     <div
       className="ar-reviews"
       role="group"
       aria-roledescription="carousel"
       aria-labelledby="arras-community-heading"
-      onPointerEnter={event => { if (event.pointerType === "mouse") setIsHovered(true); }}
-      onPointerLeave={event => { if (event.pointerType === "mouse") setIsHovered(false); }}
       onFocusCapture={event => {
         if (event.target !== rotationButton.current || event.target.matches(":focus-visible")) setPlaying(false);
       }}
@@ -101,8 +118,16 @@ export default function ArrasReviewCarousel({ children, count }) {
         role="group"
         aria-label="Scrollable Reddit comments"
         tabIndex={0}
-        onPointerDown={() => setPlaying(false)}
-        onWheel={event => { if (event.deltaX || event.shiftKey) setPlaying(false); }}
+        // Scrolling the section under a stationary pointer should still let
+        // it advance. Moving the pointer over a quote pauses it for reading.
+        onPointerMove={event => { if (event.pointerType === "mouse") setIsHovered(true); }}
+        onPointerLeave={event => { if (event.pointerType === "mouse") setIsHovered(false); }}
+        onPointerDown={event => { if (event.pointerType !== "touch") setPlaying(false); }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onWheel={event => {
+          if (Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.shiftKey) setPlaying(false);
+        }}
       >
         {children}
       </div>
