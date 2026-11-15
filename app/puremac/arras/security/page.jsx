@@ -1,4 +1,5 @@
 import ArrasTelemetryDetails from "../telemetry-details";
+import { ArrasGoogleAnalyticsPreferences } from "../google-analytics";
 import { personal } from "@/data/personal";
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasInstallation } from "@/lib/arras-installation.mjs";
@@ -88,6 +89,11 @@ export default async function SecurityPage() {
         <h2>This website</h2>
         <p>The website uses Vercel Analytics and Speed Insights for visits and performance. Those website measurements are separate from the app; no analytics SDK is embedded in Arras.</p>
         <p>On tryarras.tech, DataFast measures page views and traffic sources without visitor cookies. It uses browser and connection information to generate a visitor identifier that changes daily. It may use storage for the current browser session. <a href="https://datafa.st/docs/gdpr-cookieless-tracking">How DataFast measures visits</a>.</p>
+        <div id="google-analytics">
+          <h3>Google Analytics preferences</h3>
+          <p>If you allow Google Analytics, this site uses analytics cookies and sends browsing activity to Google to measure traffic. Advertising features are disabled. Use these controls to change your choice. <a href="https://policies.google.com/technologies/partner-sites">How Google uses this data</a>.</p>
+          <ArrasGoogleAnalyticsPreferences />
+        </div>
         <p>Download links pass through this site before redirecting to GitHub. They record a short source label or referring hostname and a coarse browser category in Vercel Runtime Logs. The first source is kept in this browser tab’s session storage; no cookie or visitor identifier is added. The custom event excludes full referring URLs, IP addresses and raw user-agent strings. Hosting providers still receive normal connection information. Logs follow the hosting provider’s retention limits.</p>
         <p>Daily Arras page and download-request totals also retain short referring-host and UTM campaign labels for up to 90 days. No IP address, full referring URL, cookie, visitor identifier or raw user-agent string is added to these counters. An event allowance bounds stored requests; a service failure can leave gaps. Historical Vercel reports cover the shared portfolio project, and its paid UTM export is not enabled.</p>
         <p>These are download requests, not unique people, completed transfers or installations. Known automated requests are marked separately, and HEAD and prefetch requests are excluded. The GitHub star count is fetched by the server and cached for up to an hour; opening GitHub sends only this site’s origin as the referrer. No app installation identifier is joined to these website measurements.</p>

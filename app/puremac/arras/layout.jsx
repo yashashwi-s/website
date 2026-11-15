@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { useSyncExternalStore } from "react";
+import { ArrasGoogleAnalytics } from "./google-analytics";
 
 function subscribeToHostname() {
   return () => {};
@@ -18,13 +19,16 @@ export default function ArrasLayout({ children }) {
     <>
       {children}
       {showAnalytics && (
-        <Script
-          src="https://datafa.st/js/script.cookieless.js"
-          data-website-id="dfid_m0tA3owcMMGSp2I4kmEhW"
-          data-domain="tryarras.tech"
-          data-disable-payments="true"
-          strategy="afterInteractive"
-        />
+        <>
+          <Script
+            src="https://datafa.st/js/script.cookieless.js"
+            data-website-id="dfid_m0tA3owcMMGSp2I4kmEhW"
+            data-domain="tryarras.tech"
+            data-disable-payments="true"
+            strategy="afterInteractive"
+          />
+          <ArrasGoogleAnalytics />
+        </>
       )}
     </>
   );

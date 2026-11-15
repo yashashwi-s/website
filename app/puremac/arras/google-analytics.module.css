@@ -1,0 +1,52 @@
+.notice {
+  position: fixed;
+  inset: auto 1rem max(1rem, env(safe-area-inset-bottom)) auto;
+  z-index: 20;
+  box-sizing: border-box;
+  width: min(21rem, calc(100% - 2rem));
+  padding: 0.875rem 1rem;
+  border: 1px solid #c2b7a6;
+  border-radius: 0.625rem;
+  background: #f5f1e8;
+  color: #292927;
+  box-shadow: 0 0.375rem 1.5rem #29292726;
+  font: 0.875rem/1.5 -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: auto;
+}
+
+.notice p {
+  margin: 0.25rem 0 0.625rem;
+}
+
+.notice a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.choices {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.choices button {
+  min-height: 2.5rem;
+  padding: 0.25rem 0.875rem;
+  border: 1px solid #8c8070;
+  border-radius: 0.25rem;
+  background: #f5f1e8;
+  color: #292927;
+  cursor: pointer;
+}
+
+.choices button:disabled {
+  border-color: #c2b7a6;
+  background: #eae3d5;
+  cursor: default;
+}
+
+.choices span {
+  color: #66635e;
+  font-size: 0.875rem;
+}
