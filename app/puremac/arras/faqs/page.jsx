@@ -32,6 +32,7 @@ export default async function FaqPage() {
             <li><strong>Find its place.</strong> Drag the picture to move it. Drag a corner to resize it while keeping its proportions.</li>
             <li><strong>Make it yours.</strong> Open a photo’s Appearance controls to choose a look or adjust its mat, border, shape, shadow or tilt. Copy Appearance reuses that look on another photo. Setups keeps an arrangement before you experiment.</li>
           </ol>
+          <p><a href={`${links.guides}/photo-on-mac-desktop-without-cropping`}>Pin a photo to your desktop</a> · <a href={`${links.guides}/reference-images-on-mac-desktop`}>Keep a photo above other windows</a></p>
           <h3>How is Arras different from the macOS Photos widget?</h3>
           <p>Apple’s Photos widget belongs to the macOS widget gallery. Arras places independent photo windows on the desktop: choose a single file, preserve its aspect ratio, arrange an editable collage, or keep a reference floating above your work.</p>
           <p className="ar-fine"><a href="https://support.apple.com/guide/mac-help/add-and-customize-widgets-mchl52be5da5/mac" referrerPolicy="origin">Apple’s widget guide ↗</a> · <a href={featureUrl} referrerPolicy="origin">Arras feature documentation ↗</a></p>

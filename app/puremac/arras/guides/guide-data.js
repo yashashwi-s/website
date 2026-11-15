@@ -1,13 +1,16 @@
+export const guidePublishedDate = "2026-11-06";
+
 export const guides = {
   "photo-on-mac-desktop-without-cropping": {
-    title: "Put a photo on your Mac desktop without cropping",
-    description: "Keep a portrait, landscape or panorama at its natural proportions with Arras. Add a photo, resize it and choose a frame without using a fixed widget grid.",
+    title: "Pin a photo on your Mac desktop without cropping",
+    description: "Add a photo from Finder and pin it to your Mac desktop with Arras. Resize a portrait, landscape or panorama without cropping the picture.",
+    updated: "2026-11-15",
     image: "slideshow-layers", alt: "A tall photo and a separate floating reference at their natural proportions on a real Mac desktop",
     caption: "A portrait slideshow and a separate floating photo. Existing Arras desktop capture with sample images.",
     sections: [
       { id: "add", title: "Start with the original picture", paragraphs: ["Open Arras from the menu bar and choose Add → Add Photos or Videos. Select a local photo, or choose Try an Example to start with bundled artwork. Arras copies imported media into its local library, so the widget remains available when the original file is moved."] },
-      { id: "fit", title: "Resize the photo, not a preset slot", paragraphs: ["Drag the picture to move it. Hover a corner and drag to resize it while preserving its aspect ratio. A tall portrait stays tall and a wide panorama stays wide. Choose a thin frame or Plain look if you want the edges of the original image to remain the focus.", "Shapes and Reference Tools are optional edits. A circle, arch or a crop you choose can mask part of a picture. For slideshows, Dynamic sizing preserves each picture’s proportions; Fixed sizing fills one frame and can crop. Choose the setting that matches the result you want."] },
-      { id: "place", title: "Choose where it belongs", paragraphs: ["Use On Desktop to keep the photo with your desktop. Choose Floating for a reference above app windows. Lock Position when the placement is right, then save a named Setup before trying another arrangement."] },
+      { id: "fit", title: "Resize at the photo’s original proportions", paragraphs: ["Drag the picture to move it. Hover a corner and drag to resize it while preserving its aspect ratio. A tall portrait stays tall and a wide panorama stays wide. Choose a thin frame or Plain look if you want the edges of the original image to remain the focus.", "Shapes and Reference Tools are optional edits. A circle, arch or a crop you choose can mask part of a picture. For slideshows, Dynamic sizing preserves each picture’s proportions; Fixed sizing fills one frame and can crop. Choose the setting that matches the result you want."] },
+      { id: "place", title: "Pin the photo to the desktop", paragraphs: ["In Arras Settings, open the photo’s controls and set Depth to On Desktop. If the photo is floating above your apps, click the Arras icon in the menu bar, open Widgets, find the photo and choose Pin to Desktop. Lock Position keeps it where you put it. Save the arrangement as a named Setup if you want to return to it later."] },
     ],
   },
   "mac-desktop-collage": {
@@ -22,12 +25,13 @@ export const guides = {
     ],
   },
   "reference-images-on-mac-desktop": {
-    title: "Keep reference images floating above your Mac apps",
-    description: "Pin a visual reference above your work with Arras Floating depth. Keep images independent, add source notes and save different reference arrangements.",
+    title: "Pin a photo above other windows on Mac",
+    description: "Keep a photo or reference image visible above your Mac apps. Float it from the Arras menu bar, then resize it or lock it in place.",
+    updated: "2026-11-15",
     image: "appearance", alt: "Independently shaped photo references and transparent collages on a real Mac desktop",
     caption: "Independent shapes and editable photo groups in an existing desktop capture. Floating depth is selected in each widget or collage’s controls.",
     sections: [
-      { id: "float", title: "Keep a picture beside your work", paragraphs: ["Add a local image to Arras, then change its Depth to Floating. It remains above ordinary app windows while you work. Resize it from a corner and lock its position if accidental movement would interrupt you. A collage can hold several references and controls their depth as a group.", "Pin to this Space controls desktop placement, not window depth. Use Floating to stay above apps. macOS does not expose stable numbered Space identifiers, so Space pinning follows the desktop where the widget currently sits."] },
+      { id: "float", title: "Float a photo from the menu bar", paragraphs: ["Add a photo in Arras. Click the Arras icon in the menu bar, open Widgets, find your photo and select Float Above Windows. You can also set Depth to Floating in the photo’s Settings controls. Resize it from a corner and lock the position once it is where you want it.", "Choose Pin to Desktop from the same menu to return the photo to the desktop. For several references, put them in a collage and set Depth to Floating in Edit Collage. Pin to this Space controls which desktop shows the photo. Use Floating when you want it to sit above app windows."] },
       { id: "context", title: "Keep the source and your edits", paragraphs: ["Reference Tools provides a non-destructive crop, quarter-turn rotation, flips and grayscale, plus a note and source link. These edits keep the managed original. You can also enable Paste as Widget, Add PDF Page and Capture Screen Region in Preferences → Menu bar.", "Screen-region capture needs macOS Screen Recording permission. Ordinary local photo widgets do not need Accessibility or Full Disk Access. Hide private reference images before sharing your screen: capture exclusion is a compatibility request and some recorders can still include visible widgets."] },
       { id: "reuse", title: "Save a reference arrangement", paragraphs: ["Keep different projects in named Setups and export a backup when you want to transfer a layout. Arras focuses on desktop images, collages and slideshows. It does not provide drawing, OCR, an infinite canvas or collaboration."] },
     ],
