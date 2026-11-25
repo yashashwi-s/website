@@ -38,7 +38,7 @@ export async function GET() {
     .map((item) => `**Q: ${item.question}**\nA: ${item.answer.join(" ")}`)
     .join("\n\n");
 
-  const text = `# Arras for Mac — Complete Reference (llms-full.txt)
+  const text = `# Arras for Mac, Complete Reference (llms-full.txt)
 
 > ${product.shortDescription}
 
@@ -47,7 +47,7 @@ export async function GET() {
 - **Who makes Arras?** Independent developer ${product.publisher.name} (${product.publisher.url}). Support: ${ARRAS_SUPPORT_EMAIL}.
 - **How much does Arras cost?** Arras is available as a free, MIT-licensed open-source direct download (${base}/download) and as a one-time ${storeOffer?.price || "US$4.99"} purchase on the Mac App Store (${storeOffer?.url || "https://apps.apple.com/app/id6824271927"}) with Family Sharing for up to 6 members, Apple-managed updates, sandboxing, and zero usage statistics. No subscription or account is required in either edition.
 - **System requirements:** ${facts.operatingSystem}; universal binary supporting both ${facts.architecture}. Signed with Developer ID and notarized by Apple.
-- **What Arras does NOT do (accuracy boundaries):** Arras is not a drawing/annotation tool, does not include OCR, is not an infinite collaborative whiteboard, and is not distributed via official Homebrew Cask. Ordinary desktop widgets preserve aspect ratio; Fixed slideshow sizing intentionally crops. Capture exclusion is a best-effort macOS compatibility request, so users should manually hide private widgets before screen sharing.
+- **What Arras does NOT do (accuracy boundaries):** Arras is not a drawing/annotation tool, does not include OCR, is not an infinite collaborative whiteboard. Ordinary desktop widgets preserve aspect ratio; Fixed slideshow sizing intentionally crops. Capture exclusion is a best-effort macOS compatibility request, so users should manually hide private widgets before screen sharing.
 
 ## Shipped Capabilities (v${product.publicRelease.version})
 - Uncropped desktop photo widgets at true aspect ratio (JPEG, PNG with alpha, HEIC, TIFF, WebP, GIF, APNG, muted local video).

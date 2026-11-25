@@ -44,7 +44,7 @@ export const guides = {
   },
   "mac-desktop-collage": {
     title: "Make an editable photo collage on your Mac desktop",
-    description: "Build a live Mac desktop photo collage with independent photos, glass or paper frames, captions, and alignment guides — without flattening the layout.",
+    description: "Build a live Mac desktop photo collage with independent photos, glass or paper frames, captions, and alignment guides, without flattening the layout.",
     updated: "2026-11-25",
     image: "collages",
     alt: "A paper collage and a transparent collage with individually framed photos and editable captions on a real Mac desktop",
@@ -88,7 +88,7 @@ export const guides = {
         title: "Float a photo above your open apps",
         paragraphs: [
           "Add any image in Arras, then click the Arras menu bar icon → Widgets → select your photo → Float Above Windows (or set Depth to Floating in Settings). Because Arras widgets are non-activating AppKit windows, scrolling to adjust opacity or viewing a floating reference never steals keyboard focus from your editor or design app.",
-          "Resize from any corner and lock its position once placed. For multiple references — such as a color palette, typography sample, and layout screenshot — group them into a collage and set the collage’s depth to Floating. Choose Pin to this Space if you only want the reference on your current desktop Space."
+          "Resize from any corner and lock its position once placed. For multiple references, such as a color palette, typography sample, and layout screenshot, group them into a collage and set the collage’s depth to Floating. Choose Pin to this Space if you only want the reference on your current desktop Space."
         ]
       },
       {
@@ -176,7 +176,7 @@ export const guides = {
   },
   "mac-desktop-slideshow-from-finder-folder": {
     title: "Make a Mac desktop slideshow from a Finder folder",
-    description: "Create a rotating Mac desktop photo slideshow linked directly to a local Finder folder or Apple Photos album — with no forced cropping.",
+    description: "Create a rotating Mac desktop photo slideshow linked directly to a local Finder folder or Apple Photos album, with no forced cropping.",
     updated: "2026-11-25",
     image: "slideshow-layers",
     alt: "A Mac desktop slideshow widget rotating photos from a linked collection beside a floating reference",
@@ -195,14 +195,14 @@ export const guides = {
         title: "Choose Dynamic proportions, Fixed framing, and cadence",
         paragraphs: [
           "Open the slideshow row in Arras Settings → Edit Slideshow to pick your rotation interval: on double-click, every 30 seconds, every 5 minutes, hourly, daily, or a custom interval. You can also advance or step back from the menu bar or Apple Shortcuts.",
-          "Use Dynamic sizing when your folder mixes portraits and landscapes — Arras remembers an independent true-ratio frame for each image. Choose Fixed sizing when you want every slide to fill one consistent frame."
+          "Use Dynamic sizing when your folder mixes portraits and landscapes, Arras remembers an independent true-ratio frame for each image. Choose Fixed sizing when you want every slide to fill one consistent frame."
         ]
       }
     ]
   },
   "single-photo-on-mac-desktop-without-album": {
     title: "Put a single photo on your Mac desktop without an album",
-    description: "Display one exact picture on your Mac desktop directly from Finder or the clipboard — without creating a single-photo album in Apple Photos.",
+    description: "Display one exact picture on your Mac desktop directly from Finder or the clipboard, without creating a single-photo album in Apple Photos.",
     updated: "2026-11-25",
     image: "collages",
     alt: "Individual uncropped desktop photo widgets styled with frames and mats on macOS",
@@ -212,7 +212,7 @@ export const guides = {
         id: "no-album-workaround",
         title: "Skip the single-photo Apple Photos album workaround",
         paragraphs: [
-          "Apple’s built-in macOS Photos widget has no option to pick one individual image file. To show a single picture, you have to import it into Apple Photos, create a dedicated one-photo album, and point the widget to that album — and even then, macOS crops it to a rigid widget rectangle.",
+          "Apple’s built-in macOS Photos widget has no option to pick one individual image file. To show a single picture, you have to import it into Apple Photos, create a dedicated one-photo album, and point the widget to that album, and even then, macOS crops it to a rigid widget rectangle.",
           "With Arras, simply drop any JPEG, PNG, HEIC, TIFF, WebP, or GIF file onto the menu bar icon, paste an image from your clipboard, or pick a photo in Settings → Add. It appears immediately on your desktop at its real proportions."
         ]
       },
@@ -271,7 +271,7 @@ export const guides = {
         title: "When you outgrow macOS’s fixed widget grid",
         paragraphs: [
           "WidgetKit widgets share three built-in limits: fixed square/rectangular aspect ratios, desktop-only placement behind app windows, and no animated GIF/video or live multi-photo collages.",
-          "WidgetWall is a strong choice if you want a broad desktop suite with clocks, timers, notes, and calendars alongside photos. PureRef is the cross-platform standard for artists who need a dedicated zoomable infinite reference canvas. Arras is built specifically for Mac users who want uncropped photos at their true aspect ratio, editable desktop collages, linked Finder folder slideshows, animated GIFs/videos, and optional floating references — available as a free MIT-licensed direct download or a one-time Mac App Store purchase."
+          "WidgetWall is a strong choice if you want a broad desktop suite with clocks, timers, notes, and calendars alongside photos. PureRef is the cross-platform standard for artists who need a dedicated zoomable infinite reference canvas. Arras is built specifically for Mac users who want uncropped photos at their true aspect ratio, editable desktop collages, linked Finder folder slideshows, animated GIFs/videos, and optional floating references, available as a free MIT-licensed direct download or a one-time Mac App Store purchase."
         ]
       },
       {
@@ -285,7 +285,7 @@ export const guides = {
   },
   "how-to-add-photo-widgets-on-macbook": {
     title: "How to add photo widgets on Mac and MacBook (2026)",
-    description: "Step-by-step guide to adding photo widgets on a MacBook or Mac desktop — using Apple’s built-in Photos widget or uncropped Arras photo widgets.",
+    description: "Step-by-step guide to adding photo widgets on a MacBook or Mac desktop, using Apple’s built-in Photos widget or uncropped Arras photo widgets.",
     updated: "2026-11-25",
     image: "collages",
     alt: "Photo widgets and editable collages arranged on a MacBook desktop using Arras",

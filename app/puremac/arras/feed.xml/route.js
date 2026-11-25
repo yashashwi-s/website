@@ -32,7 +32,7 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Arras for Mac — Guides &amp; Comparisons</title>
+    <title>Arras for Mac, Guides &amp; Comparisons</title>
     <link>${base}/</link>
     <atom:link href="${base}/feed.xml" rel="self" type="application/rss+xml" />
     <description>Guides, workflows, and comparisons for Arras desktop photo widgets, editable collages, slideshows, and floating references on macOS.</description>

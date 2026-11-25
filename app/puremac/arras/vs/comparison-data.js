@@ -180,7 +180,7 @@ export const comparisons = {
       ["Desktop presence", "Four depth layers from Behind Icons to Floating, plus saved desktop setups.", "Focused on temporary and archived floating captures above your work."],
     ],
     sections: [
-      ["Dedicated screenshot power tool vs. desktop visual workspace", "ScreenFloat 2 is purpose-built for people who take dozens of screenshots a day and want OCR, annotations, redaction, and an organized Shots Browser synced across devices. Arras is built for keeping visual references, photos, and editable collages as part of your Mac desktop — with optional screen-region capture and PDF pinning when you need them."],
+      ["Dedicated screenshot power tool vs. desktop visual workspace", "ScreenFloat 2 is purpose-built for people who take dozens of screenshots a day and want OCR, annotations, redaction, and an organized Shots Browser synced across devices. Arras is built for keeping visual references, photos, and editable collages as part of your Mac desktop, with optional screen-region capture and PDF pinning when you need them."],
       ["When to pick Arras", "Choose Arras if you want a free open-source (or $4.99 one-time App Store) native Mac app that handles both everyday desktop photo widgets/collages and floating reference images without switching tools."],
     ],
     guide: [referenceGuide, "Pin a floating reference image above windows on Mac"],
@@ -199,7 +199,7 @@ export const comparisons = {
       ["Best fit", "Always-visible desktop moodboards, photo frames, and rotating slideshows.", "Team brainstorming, diagramming, and cross-device Apple whiteboards."],
     ],
     sections: [
-      ["Always-visible desktop moodboard vs. whiteboard app", "Apple Freeform is a great free infinite canvas for sketching ideas and collaborating over iCloud, but it stays tucked inside an application window. Arras puts your moodboard directly on your Mac desktop — or floats a compact collage above your active workspace — so your visual references stay visible all day."],
+      ["Always-visible desktop moodboard vs. whiteboard app", "Apple Freeform is a great free infinite canvas for sketching ideas and collaborating over iCloud, but it stays tucked inside an application window. Arras puts your moodboard directly on your Mac desktop, or floats a compact collage above your active workspace, so your visual references stay visible all day."],
       ["Switch moodboards in one click", "With Arras Saved Setups, you can keep separate desktop moodboards for different projects and switch between them instantly while keeping every photo individually movable and resizable."],
     ],
     guide: [collageGuide, "Make an editable photo collage on your Mac desktop"],
@@ -218,7 +218,7 @@ export const comparisons = {
       ["Pricing & license", "Free MIT-licensed open-source download or one-time $4.99 Mac App Store purchase.", "Commercial aesthetic suite with paid theme/app access."],
     ],
     sections: [
-      ["Curated theme packs vs. your own photography", "Cozy is popular on r/macsetups for cohesive one-click aesthetic setups combining matching wallpapers, folder icons, and stylized widgets. Arras is built for people who want their own photographs, artwork, GIFs, and references to stay uncropped and freely arranged — with Polaroid, Gallery, Glass, and Paper looks you can tailor yourself."],
+      ["Curated theme packs vs. your own photography", "Cozy is popular on r/macsetups for cohesive one-click aesthetic setups combining matching wallpapers, folder icons, and stylized widgets. Arras is built for people who want their own photographs, artwork, GIFs, and references to stay uncropped and freely arranged, with Polaroid, Gallery, Glass, and Paper looks you can tailor yourself."],
       ["Combine both or keep it native", "If you want an all-in-one themed wallpaper and folder-icon makeover, Cozy covers that aesthetic. If you want fast, native Swift/AppKit photo widgets, editable collages, and floating references with zero subscription, start with Arras."],
     ],
     guide: ["guides/polaroid-photo-widget-mac-desktop", "Add Polaroid photo widgets to your Mac desktop"],
