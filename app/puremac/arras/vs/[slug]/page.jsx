@@ -4,6 +4,8 @@ import { getArrasLinks } from "../../arras-links";
 import SupportPage, { supportMetadata } from "../../support-page";
 import { comparisonDate, comparisons } from "../comparison-data";
 
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return Object.keys(comparisons).map(slug => ({ slug }));
 }
@@ -11,8 +13,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   if (!Object.hasOwn(comparisons, slug)) notFound();
-  const { title, description } = comparisons[slug];
-  return supportMetadata(`vs/${slug}`, `${title} | Arras`, description);
+  const { title, description, image } = comparisons[slug];
+  return supportMetadata(`vs/${slug}`, `${title} | Arras`, description, {
+    ogImage: `/puremac/arras/features/${image}.webp`,
+  });
 }
 
 export default async function ComparisonPage({ params }) {
@@ -20,6 +24,7 @@ export default async function ComparisonPage({ params }) {
   if (!Object.hasOwn(comparisons, slug)) notFound();
   const comparison = comparisons[slug];
   const links = await getArrasLinks();
+  const displayDate = new Intl.DateTimeFormat("en-GB", { dateStyle: "long", timeZone: "UTC" }).format(new Date(comparisonDate));
   const sectionLinks = [
     ["at-a-glance", "At a glance"],
     ...comparison.sections.map(([heading], index) => [`workflow-${index + 1}`, heading]),
@@ -29,18 +34,29 @@ export default async function ComparisonPage({ params }) {
   return (
     <SupportPage links={links} active={`vs/${slug}`} label="Comparison" title={comparison.title}
       intro={comparison.description} sections={sectionLinks}>
-      <p className="ar-fine">By Yashashwi Singhania, maker of Arras. Sources checked <time dateTime={comparisonDate}>13 November 2026</time>.</p>
+      <p className="ar-fine">By Yashashwi Singhania, maker of Arras. Sources checked <time dateTime={comparisonDate}>{displayDate}</time>.</p>
       <section id="at-a-glance">
         <h2>At a glance</h2>
-        <dl className="ar-comparison-grid">
-          {comparison.rows.map(([label, arras, other]) => (
-            <div key={label}>
-              <dt>{label}</dt>
-              <dd><strong>Arras</strong>{arras}</dd>
-              <dd><strong>{comparison.name}</strong>{other}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="ar-table-wrap">
+          <table className="ar-comparison-table">
+            <thead>
+              <tr>
+                <th scope="col">Feature</th>
+                <th scope="col">Arras</th>
+                <th scope="col">{comparison.name}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparison.rows.map(([label, arras, other]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  <td>{arras}</td>
+                  <td>{other}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
       <figure className="ar-desktop-shot">
         <Image src={`/puremac/arras/features/${comparison.image}.webp`} width={1470} height={956}

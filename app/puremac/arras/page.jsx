@@ -20,11 +20,19 @@ const DESCRIPTION =
   "Add uncropped photo widgets to your Mac desktop. Make editable collages, run slideshows, and float reference images. Free download or Mac App Store.";
 const OG_IMAGE = "/puremac/arras/social.jpg";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: TITLE,
   description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
-  alternates: { canonical: SITE_URL },
+  alternates: {
+    canonical: SITE_URL,
+    types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
+  },
+  other: {
+    "apple-itunes-app": "app-id=6824271927",
+  },
   robots: {
     index: true,
     follow: true,
@@ -97,7 +105,10 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       "@id": "https://yashashwi.me/#person",
       name: product.publisher.name,
       url: product.publisher.url,
-      sameAs: ["https://github.com/yashashwi-s"],
+      sameAs: [
+        "https://github.com/yashashwi-s",
+        "https://apps.apple.com/us/developer/yashashwi-singhania/id6822623830",
+      ],
       contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: ARRAS_SUPPORT_EMAIL, url: `${ARRAS_URL}/support` },
     },
     {
@@ -124,7 +135,12 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       operatingSystem: summary.operatingSystem,
       isAccessibleForFree: true,
       license: product.license.url,
-      screenshot: `${SITE_URL}/puremac/arras/features/collages.webp`,
+      screenshot: [
+        `${SITE_URL}/puremac/arras/features/collages.webp`,
+        `${SITE_URL}/puremac/arras/features/slideshow-layers.webp`,
+        `${SITE_URL}/puremac/arras/features/appearance.webp`,
+        `${SITE_URL}/puremac/arras/launch-2.5.0-poster.jpg`,
+      ],
       image: `${SITE_URL}/puremac/arras-icon.png`,
       author: { "@id": "https://yashashwi.me/#person" },
       publisher: { "@id": "https://yashashwi.me/#person" },
@@ -176,7 +192,7 @@ function ArrasJsonLd({ release, downloads, dateModified, product }) {
       thumbnailUrl: [`${SITE_URL}${OG_IMAGE}`],
       contentUrl: `${SITE_URL}/puremac/arras/launch-2.5.0.mp4`,
       uploadDate: "2026-10-18T00:00:00+05:30",
-      duration: "PT10.4S",
+      duration: "PT10S",
       isFamilyFriendly: true,
       publisher: { "@id": "https://yashashwi.me/#person" },
     },
@@ -220,7 +236,7 @@ export default async function ArrasPage() {
   ).toISOString().slice(0, 10);
   const { props: posterProps } = getImageProps({
     src: OG_IMAGE,
-    alt: "",
+    alt: "Arras desktop photo widgets, editable collage, and floating reference on macOS",
     width: 1470,
     height: 956,
     sizes: "(max-width: 800px) calc(100vw - 40px), (max-width: 1260px) calc(100vw - 80px), 1180px",

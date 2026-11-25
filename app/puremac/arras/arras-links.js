@@ -1,11 +1,15 @@
-import { headers } from "next/headers";
-
-// Rewrites can replace Host with the internal server address. Next preserves
-// the original host in X-Forwarded-Host, including in local subdomain previews.
+// Arras serves exclusively from tryarras.tech (legacy yashashwi.me/puremac/arras
+// routes 301-redirect in next.config.mjs). Keeping link resolution pure avoids
+// calling headers() on every request and unlocks Vercel edge ISR caching.
 export async function getArrasLinks() {
-  const requestHeaders = await headers();
-  const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "")
-    .split(",")[0].trim().split(":")[0].toLowerCase();
-  const base = host === "tryarras.tech" || host === "www.tryarras.tech" || host.startsWith("arras.") ? "" : "/puremac/arras";
-  return { download: `${base}/download`, home: `${base}/`, faqs: `${base}/faq`, support: `${base}/support`, guide: `${base}/mac-desktop-customization`, guides: `${base}/guides`, security: `${base}/security`, privacyDetails: `${base}/security#scope` };
+  return {
+    download: "/download",
+    home: "/",
+    faqs: "/faq",
+    support: "/support",
+    guide: "/mac-desktop-customization",
+    guides: "/guides",
+    security: "/security",
+    privacyDetails: "/security#scope",
+  };
 }

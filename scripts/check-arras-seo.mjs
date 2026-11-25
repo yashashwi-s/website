@@ -6,7 +6,32 @@ const canonical = "https://tryarras.tech";
 const preview = process.env.ARRAS_REQUEST_BASE_URL;
 const arrasOrigin = preview ? new URL(preview).origin : canonical;
 const portfolioOrigin = process.env.PORTFOLIO_REQUEST_BASE_URL || (preview ? new URL(preview).origin : "https://yashashwi.me");
-const publicPaths = ["/", "/faq", "/security", "/support", "/mac-desktop-customization", ...["guides", "guides/photo-on-mac-desktop-without-cropping", "guides/mac-desktop-collage", "guides/reference-images-on-mac-desktop", "changelog", "thanks", "vs/apple-photos-widget", "vs/smart-photo-widget", "vs/widgetwall", "vs/pureref", "vs/photo-widget-sindre-sorhus", "vs/photowidget-vatsal"].map(path => `/${path}`)];
+const publicPaths = [
+  "/", "/faq", "/security", "/support", "/mac-desktop-customization", "/guides", "/changelog",
+  ...[
+    "photo-on-mac-desktop-without-cropping",
+    "mac-desktop-collage",
+    "reference-images-on-mac-desktop",
+    "fix-mac-desktop-photo-widget-black-and-white",
+    "animated-gif-and-video-on-mac-desktop",
+    "mac-desktop-slideshow-from-finder-folder",
+    "single-photo-on-mac-desktop-without-album",
+    "pin-transparent-png-screenshot-or-pdf-on-mac-desktop",
+    "best-mac-desktop-photo-widget-apps",
+  ].map(slug => `/guides/${slug}`),
+  ...[
+    "apple-photos-widget",
+    "smart-photo-widget",
+    "widgetwall",
+    "pureref",
+    "photo-widget-sindre-sorhus",
+    "photowidget-vatsal",
+    "photostickies",
+    "color-widgets",
+    "screenfloat",
+    "apple-freeform",
+  ].map(slug => `/vs/${slug}`),
+];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 const failures = [];
 const check = (condition, message) => { if (!condition) failures.push(message); };
@@ -71,7 +96,7 @@ const pages = Object.fromEntries(await Promise.all(publicPaths.map(async path =>
     check(offers.some(offer => offer.price === product.appStore.price.amount && offer.priceCurrency === "USD" && offer.url === `https://apps.apple.com/app/id${product.appStore.appleId}`), "SoftwareApplication must identify the verified paid Store offer");
     check(app?.alternateName?.includes("Arras Widgets") && app?.sameAs?.includes(`https://apps.apple.com/app/id${product.appStore.appleId}`), "SoftwareApplication must connect Arras to its real Store listing");
     check(!app?.aggregateRating && !app?.review, "Do not invent app ratings or reviews");
-    for (const url of [app?.screenshot, app?.image]) check(url && new URL(url).origin === canonical, "SoftwareApplication media URLs must use the Arras host");
+    for (const url of [...[].concat(app?.screenshot || []), app?.image]) check(url && new URL(url).origin === canonical, "SoftwareApplication media URLs must use the Arras host");
   }
   if (path === "/mac-desktop-customization") {
     const article = nodes.find(node => node["@type"] === "Article");
@@ -113,7 +138,10 @@ for (const path of ["/unknown-arras-page", "/guides/unknown-guide", "/guides/toS
 }
 const campaignLinks = anchors(pages["/"].html).filter(link => link.href?.startsWith(`https://apps.apple.com/app/id${product.appStore.appleId}?`)).map(link => new URL(link.href));
 for (const campaign of ["site-hero", "site-download"]) check(campaignLinks.some(url => url.searchParams.get("ct") === campaign && url.searchParams.get("pt") === "129614402" && url.searchParams.get("mt") === "12"), `Homepage needs the verified ${campaign} App Store campaign link`);
-check(anchors(pages["/thanks"].html).some(link => link.href === `https://apps.apple.com/app/id${product.appStore.appleId}?action=write-review`), "Thanks page needs the explicit App Store review link");
+const thanksResponse = await requestPage(`${arrasOrigin}/thanks`, { headers: { Host: "tryarras.tech", "User-Agent": googlebot } });
+const thanksHtml = await thanksResponse.text();
+check(thanksResponse.status === 200 && anchors(thanksHtml).some(link => link.href === `https://apps.apple.com/app/id${product.appStore.appleId}?action=write-review`), "Thanks page needs the explicit App Store review link");
+check(metaValues(thanksHtml, "robots").some(v => /\bnoindex\b/i.test(v)), "Thanks page should be noindex");
 
 for (const path of ["/", "/faq"]) {
   for (const term of [/true aspect ratio/i, /uncropped/i, /single photo/i, /Polaroid/, /Gallery/, /transparent PNG/i, /GIF/, /APNG/, /screenshot/i, /PDF/, /Space slideshow/i]) check(term.test(pages[path].text), `${path}: missing useful shipped-feature copy ${term}`);

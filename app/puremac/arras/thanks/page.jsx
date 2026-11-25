@@ -1,8 +1,14 @@
+export const revalidate = 3600;
 import { arrasProduct } from "@/data/arras-product";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";
 
-export const metadata = supportMetadata("thanks", "Rate Arras Widgets or Support the Project", "Leave an honest App Store review, star the Arras source, or tell the developer what needs fixing. No rewards, prompts or account required by Arras.");
+export const metadata = supportMetadata(
+  "thanks",
+  "Rate Arras Widgets or Support the Project",
+  "Leave an honest App Store review, star the Arras source, or tell the developer what needs fixing. No rewards, prompts or account required by Arras.",
+  { noindex: true }
+);
 
 export default async function ThanksPage() {
   const links = await getArrasLinks();

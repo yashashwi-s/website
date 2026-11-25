@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { arrasProduct } from "@/data/arras-product";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";

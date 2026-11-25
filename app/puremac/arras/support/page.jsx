@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import { getArrasProduct } from "@/lib/arras-product";
 import { getArrasStoreFaqs, ARRAS_SUPPORT_EMAIL } from "@/lib/arras-support.mjs";
 import { FaqJsonLd } from "../../faq-section";
@@ -23,7 +24,7 @@ export default async function ArrasSupportPage() {
         active="support"
         pageType="ContactPage"
         label="Arras Widgets support"
-        title={<>Your desktop.<br /><em>Back on track.</em></>}
+        title={<>Your desktop. <br /><em>Back on track.</em></>}
         intro="Help for Arras Widgets on the Mac App Store and the free Arras direct download. A few useful fixes, and a direct line to the developer."
         headerAside={<ArrasContact links={links} />}
         sections={[["contact", "Contact the developer"], ["first-launch", "Find Arras & add a photo"], ["photos", "Photos & permissions"], ["app-store", "App Store & your library"], ["updates", "Updates & purchases"]]}

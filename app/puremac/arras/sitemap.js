@@ -27,12 +27,22 @@ export default async function sitemap() {
       images: ["launch-2.5.0-poster.jpg", "features/collages.webp", "features/slideshow-layers.webp", "features/appearance.webp"].map(path => `${SITE_URL}/puremac/arras/${path}`),
     },
     { url: `${SITE_URL}/mac-desktop-customization`, lastModified: "2026-10-24", changeFrequency: "monthly", priority: 0.7, images: ["collages", "appearance", "slideshow-layers"].map(name => `${SITE_URL}/puremac/arras/features/${name}.webp`) },
-    { url: `${SITE_URL}/guides`, lastModified: GUIDES_UPDATED, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/guides`, lastModified: GUIDES_UPDATED, changeFrequency: "monthly", priority: 0.7 },
     ...Object.entries(guides).map(([slug, guide]) => ({
-      url: `${SITE_URL}/guides/${slug}`, lastModified: guide.updated ?? guidePublishedDate, changeFrequency: "monthly", priority: 0.6,
+      url: `${SITE_URL}/guides/${slug}`,
+      lastModified: guide.updated ?? guidePublishedDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${SITE_URL}/puremac/arras/features/${guide.image}.webp`],
     })),
-    ...["changelog", "thanks"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: "2026-11-06", changeFrequency: "monthly", priority: 0.6 })),
-    ...Object.keys(comparisons).map(slug => ({ url: `${SITE_URL}/vs/${slug}`, lastModified: comparisonDate })),
+    { url: `${SITE_URL}/changelog`, lastModified: lastModified, changeFrequency: "monthly", priority: 0.6 },
+    ...Object.entries(comparisons).map(([slug, item]) => ({
+      url: `${SITE_URL}/vs/${slug}`,
+      lastModified: comparisonDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: [`${SITE_URL}/puremac/arras/features/${item.image}.webp`],
+    })),
     ...["faq", "security", "support"].map(path => ({ url: `${SITE_URL}/${path}`, lastModified: SUPPORT_UPDATED[path], changeFrequency: "monthly", priority: 0.7 })),
   ];
 }

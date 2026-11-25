@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import ArrasTelemetryDetails from "../telemetry-details";
 import { ArrasGoogleAnalyticsPreferences } from "../google-analytics";
 import { personal } from "@/data/personal";
@@ -18,7 +19,7 @@ export default async function SecurityPage() {
   const releaseApi = `https://api.github.com/repos/${new URL(source).pathname.slice(1)}/releases/latest`;
   const installation = getArrasInstallation(product);
   return (
-    <SupportPage links={links} active="security" label="Security & privacy" title={<>Your photos.<br /><em>Your choice.</em></>} intro="Open source. Photos stored locally. No account or advertising. The free direct download is published from the public GitHub repository."
+    <SupportPage links={links} active="security" label="Security & privacy" title={<>Your photos. <br /><em>Your choice.</em></>} intro="Open source. Photos stored locally. No account or advertising. The free direct download is published from the public GitHub repository."
       sections={[["at-a-glance", "At a glance"], ["first-launch", "First launch on macOS"], ["permissions", "Permissions"], ["local-data", "Your photos"], ["connections", "Connections & updates"], ["telemetry", "App statistics"], ["capture-privacy", "Screen sharing"], ["download-trust", "For technical users"], ["website", "This website"], ["contact", "Contact & privacy requests"]]}>
       <section id="at-a-glance">
         <h2>Open source. Photos stay local.</h2>

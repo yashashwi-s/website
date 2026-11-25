@@ -1,3 +1,4 @@
+export const revalidate = 3600;
 import Image from "next/image";
 import { arrasCanonicalUrl, arrasProduct, arrasFeatureContractUrl } from "@/data/arras-product";
 import { getArrasLinks } from "../arras-links";
@@ -45,7 +46,7 @@ export default async function DesktopCustomizationPage() {
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(article).replace(/</g, "\\u003c") }} />
     <SupportPage links={links} active={SLUG} label="Desktop customization guide"
-      title={<>Customize your Mac desktop<br /><em>with photos and widgets.</em></>}
+      title={<>Customize your Mac desktop <br /><em>with photos and widgets.</em></>}
       intro="Build an aesthetic Mac setup around a wallpaper, useful widgets and photos that belong together. This guide shows real desktop arrangements made with Arras."
       sections={[["choose-widgets", "Choose your widgets"], ["wallpaper", "Start with a palette"], ["collage", "Arrange the photos"], ["appearance", "Make the styles match"], ["layers", "Pin a photo"], ["save-setup", "Save your setup"], ["get-started", "Get started"]]}>
       <p className="ar-fine">By <a href={arrasProduct.publisher.url}>{arrasProduct.publisher.name}</a>, maker of Arras · Reviewed <time dateTime={REVIEWED}>24 October 2026</time> · Arras {arrasProduct.publicRelease.version}</p>

@@ -48,6 +48,20 @@ const nextConfig = {
         destination: 'https://tryarras.tech/security',
         statusCode: 301,
       },
+      ...['/privacy', '/privacy-policy'].map(source => ({
+        source,
+        has: arrasHost,
+        destination: 'https://tryarras.tech/security',
+        statusCode: 301,
+      })),
+      {
+        // Prevent duplicate HTTP 200 pages under /puremac/arras on tryarras.tech while
+        // keeping static media assets under /puremac/arras/* directly reachable.
+        source: '/puremac/arras/:path((?!.*\\.(?:png|jpg|jpeg|webp|avif|svg|gif|mp4|webm|ico)$).*[^/])?',
+        has: arrasHost,
+        destination: 'https://tryarras.tech/:path*',
+        statusCode: 301,
+      },
       {
         // Arras now has its own canonical host. Keep every legacy path as a
         // direct permanent redirect so crawlers never see duplicate content.

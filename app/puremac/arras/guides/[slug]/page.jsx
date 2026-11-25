@@ -5,6 +5,8 @@ import { getArrasLinks } from "../../arras-links";
 import SupportPage, { supportMetadata } from "../../support-page";
 import { guidePublishedDate, guides } from "../guide-data";
 
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return Object.keys(guides).map(slug => ({ slug }));
 }
@@ -13,7 +15,9 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const guide = Object.hasOwn(guides, slug) ? guides[slug] : null;
   if (!guide) notFound();
-  return supportMetadata(`guides/${slug}`, `${guide.title} | Arras`, guide.description);
+  return supportMetadata(`guides/${slug}`, `${guide.title} | Arras`, guide.description, {
+    ogImage: `/puremac/arras/features/${guide.image}.webp`,
+  });
 }
 
 export default async function GuidePage({ params }) {

@@ -288,6 +288,32 @@ html:has(#arras-page) { scroll-behavior: auto; }
 }
 
 .ar-comparison-grid { margin: 0; }
+.ar-table-wrap { overflow-x: auto; margin: 16px 0 8px; }
+.ar-comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.55; }
+.ar-comparison-table thead th {
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #66635e;
+  border-bottom: 1.5px solid #29292740;
+  padding: 10px 14px 10px 0;
+}
+.ar-comparison-table tbody th {
+  text-align: left;
+  font-weight: 650;
+  vertical-align: top;
+  padding: 13px 16px 13px 0;
+  border-bottom: 1px solid #29292725;
+  width: 24%;
+}
+.ar-comparison-table tbody td {
+  vertical-align: top;
+  padding: 13px 16px 13px 0;
+  border-bottom: 1px solid #29292725;
+  color: #4c4945;
+  width: 38%;
+}
 .ar-comparison-grid > div {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

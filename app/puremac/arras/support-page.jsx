@@ -2,29 +2,35 @@ import { arrasCanonicalUrl } from "@/data/arras-product";
 import { ArrasNavigation, ArrasFooter } from "./arras-navigation";
 import "./arras.css";
 
-export function supportMetadata(path, title, description) {
+export function supportMetadata(path, title, description, { ogImage, noindex = false } = {}) {
   const url = `${arrasCanonicalUrl}/${path}`;
+  const image = `${arrasCanonicalUrl}${ogImage || "/puremac/arras/launch-2.5.0-poster.jpg"}`;
+  const robots = noindex
+    ? { index: false, follow: true, googleBot: { index: false, follow: true } }
+    : { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-video-preview": -1, "max-snippet": -1 } };
   return {
     title, description, metadataBase: new URL(arrasCanonicalUrl),
     alternates: { canonical: url },
-    robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-video-preview": -1, "max-snippet": -1 } },
-    openGraph: { title, description, url, siteName: "Arras", type: "website", images: [{ url: `${arrasCanonicalUrl}/puremac/arras/launch-2.5.0-poster.jpg`, alt: "Arras photo widgets on a Mac desktop" }] },
-    twitter: { card: "summary_large_image", title, description, images: [{ url: `${arrasCanonicalUrl}/puremac/arras/launch-2.5.0-poster.jpg`, alt: "Arras photo widgets on a Mac desktop" }] },
+    other: { "apple-itunes-app": "app-id=6824271927" },
+    robots,
+    openGraph: { title, description, url, siteName: "Arras", type: "website", images: [{ url: image, alt: title }] },
+    twitter: { card: "summary_large_image", title, description, images: [{ url: image, alt: title }] },
   };
 }
 
 export default function SupportPage({ links, active, label, title, intro, sections, children, pageType = "WebPage", headerAside }) {
   const url = `${arrasCanonicalUrl}/${active === "faqs" ? "faq" : active}`;
+  const schemaName = typeof title === "string" && title.trim() ? title : label;
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": pageType, "@id": `${url}#page`, url, name: label, description: intro,
+      { "@type": pageType, "@id": `${url}#page`, url, name: schemaName, description: intro,
         isPartOf: { "@id": `${arrasCanonicalUrl}/#website` },
         about: { "@id": `${arrasCanonicalUrl}#software` },
         breadcrumb: { "@id": `${url}#breadcrumb` } },
       { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: [
         { "@type": "ListItem", position: 1, name: "Arras", item: `${arrasCanonicalUrl}/` },
-        { "@type": "ListItem", position: 2, name: label, item: url },
+        { "@type": "ListItem", position: 2, name: schemaName, item: url },
       ] },
     ],
   };
@@ -42,7 +48,7 @@ export default function SupportPage({ links, active, label, title, intro, sectio
         {headerAside}
       </header>
       <div className="ar-wrap ar-document">
-        <aside><nav aria-label="On this page"><p className="ar-label">On this page</p>{sections.map(([id, title]) => <a key={id} href={`#${id}`}>{title}</a>)}</nav></aside>
+        <aside><nav aria-label="On this page"><p className="ar-label">On this page</p>{sections.map(([id, sectionTitle]) => <a key={id} href={`#${id}`}>{sectionTitle}</a>)}</nav></aside>
         <article className="ar-document-body">{children}</article>
       </div>
       <ArrasFooter links={links} />

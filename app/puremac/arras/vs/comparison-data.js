@@ -1,22 +1,24 @@
 const photosGuide = "guides/photo-on-mac-desktop-without-cropping";
 const collageGuide = "guides/mac-desktop-collage";
 const referenceGuide = "guides/reference-images-on-mac-desktop";
+const gifGuide = "guides/animated-gif-and-video-on-mac-desktop";
 const arrasSource = ["Arras feature documentation", "https://github.com/yashashwi-s/Arras/blob/main/FEATURES.md"];
 
-export const comparisonDate = "2026-11-13";
+export const comparisonDate = "2026-11-25";
 
 export const comparisons = {
   "apple-photos-widget": {
     name: "Apple Photos widget",
     title: "Arras vs Apple’s Photos widget on Mac",
-    description: "Use Apple’s built-in widget for a Photos album in the widget gallery. Use Arras to place a specific picture at its natural proportions or keep it visible over your work.",
+    description: "Compare Arras with macOS’s built-in Photos widget: true aspect ratios, Finder folders, floating layers, and editable collages vs. Apple’s widget grid.",
     image: "appearance",
     imageAlt: "Arras photo widgets with different shapes and frames on a Mac desktop",
     caption: "A real Arras desktop with several independently placed photo widgets.",
     rows: [
-      ["Choose the image", "Import the exact photo or start a slideshow with a Photos album.", "Choose a Photos album from the widget’s settings."],
-      ["Size and shape", "Resize an individual widget and keep its original proportions in Dynamic mode.", "Choose one of the sizes offered by the widget gallery."],
-      ["Placement", "Arrange independent windows on the desktop or float a reference above apps.", "Add the widget to the desktop or Notification Center."],
+      ["Choose the image", "Import any exact Finder file, clipboard image, or Photos album.", "Choose an Apple Photos album or Memory in widget settings."],
+      ["Size and shape", "Resize freely at true aspect ratio in Dynamic mode; optional masks.", "Fixed Small, Medium, or Large widget sizes with auto-crop."],
+      ["Placement & color", "Behind Icons, On Desktop, Above Widgets, or Floating; always full color.", "Desktop or Notification Center; dims to monochrome in Automatic mode."],
+      ["Motion & collages", "Editable live collages, animated GIF/APNG, and muted local videos.", "Still Photos library images only."],
     ],
     sections: [
       ["One photograph, the way you framed it", "A portrait of a person and a wide photograph of a room ask for different amounts of space. In Arras, add each directly from Finder or Photos and give each a frame that follows the image. If you want the portrait near your files and the room photo next to an open app, set the second widget to Floating."],
@@ -29,7 +31,7 @@ export const comparisons = {
   "smart-photo-widget": {
     name: "Smart Photo Widget",
     title: "Arras vs Smart Photo Widget for Mac",
-    description: "Smart Photo Widget automatically frames and rotates a collection. Arras gives you control of each photo widget’s shape, placement and layer.",
+    description: "Smart Photo Widget auto-frames and rotates collections. Arras gives you full control of each photo’s aspect ratio, editable collage, and depth layer.",
     image: "slideshow-layers",
     imageAlt: "An Arras slideshow beside a separate floating photo reference on a Mac desktop",
     caption: "In Arras, a slideshow and a separate reference can share the same desktop.",
@@ -49,12 +51,12 @@ export const comparisons = {
   "widgetwall": {
     name: "WidgetWall",
     title: "Arras vs WidgetWall for Mac desktop widgets",
-    description: "WidgetWall is a broad desktop widget suite. Arras is built around uncropped photos, editable photo collages and carefully placed visual references.",
+    description: "WidgetWall is a broad desktop widget suite. Arras focuses on uncropped photos, editable desktop collages, folder slideshows, and floating references.",
     image: "collages",
     imageAlt: "Two editable Arras collages with independent frames and captions on a Mac desktop",
     caption: "Arras keeps the individual photos editable inside each collage.",
     rows: [
-      ["Desktop focus", "Photos, slideshows, visual references and desktop collages.", "Photos alongside tools including clocks, timers, notes and calendars."],
+      ["Desktop focus", "Uncropped photos, slideshows, floating references, and editable collages.", "Broad widget suite including clocks, timers, notes, calendars, and photos."],
       ["Image arrangement", "Move and resize each picture in a collage, then move the whole group by its background.", "Offers a Photos widget alongside Video and customizable desktop stickers."],
       ["How to get it", "Free MIT-licensed download or a one-time Mac App Store purchase.", "Free to start with additional widgets available through in-app purchases."],
     ],
@@ -69,14 +71,14 @@ export const comparisons = {
   "pureref": {
     name: "PureRef",
     title: "Arras vs PureRef for floating reference images",
-    description: "Use Arras for a few pinned references and photos that stay part of your Mac desktop. Use PureRef for a dedicated reference board you can navigate and take across platforms.",
+    description: "Compare Arras and PureRef on Mac: persistent desktop photo widgets and floating collages vs. a cross-platform infinite reference canvas.",
     image: "slideshow-layers",
     imageAlt: "Arras showing a desktop slideshow and a separate reference set to Floating",
     caption: "The Floating reference is independent from the slideshow on the desktop.",
     rows: [
-      ["Working surface", "Use independent desktop widgets or group related references in an editable collage.", "Collect, organize and navigate references on a dedicated canvas."],
-      ["Above your work", "Set a widget or collage to Floating while other photos remain on the desktop.", "Offers Always on Top and a documented free-floating mode."],
-      ["Platforms", "Mac, with a free direct edition and an optional Mac App Store edition.", "Mac, Windows and Linux."],
+      ["Working surface", "Independent desktop widgets or grouped editable collages directly on macOS.", "Dedicated zoomable infinite canvas for large reference collections."],
+      ["Above your work", "Set any widget or collage to Floating while other photos stay on the desktop.", "Offers Always on Top and a documented free-floating mode."],
+      ["Platforms", "Native macOS (Apple Silicon & Intel); free open-source or Mac App Store.", "Mac, Windows and Linux."],
     ],
     sections: [
       ["Keep a few references within reach", "A palette, a sketch and a crop of your current brief often work best as small windows next to the work itself. In Arras, set each to Floating, give it a note or source link, and keep it where you want it. The rest of your desktop can keep its photos or slideshows at another layer."],
@@ -89,14 +91,14 @@ export const comparisons = {
   "photo-widget-sindre-sorhus": {
     name: "Photo Widget by Sindre Sorhus",
     title: "Arras vs Photo Widget by Sindre Sorhus",
-    description: "Photo Widget offers single pictures and slideshows through Apple’s widget gallery. Arras offers freely sized desktop photos, floating references and editable collages.",
+    description: "Compare Arras and Sindre Sorhus’s Photo Widget on Mac: uncropped AppKit windows, Intel + Apple Silicon support, and floating collages vs. WidgetKit.",
     image: "appearance",
     imageAlt: "Custom Arras photo widgets in round, arch and rectangle frames",
     caption: "Independently placed Arras widgets can have different shapes and sizes.",
     rows: [
-      ["Photo source", "Add a single photo, a Finder folder or a Photos album.", "Create a widget for a single picture, a slideshow or a Photos album."],
-      ["Layout", "Size and place photos independently, then group them if they should move together.", "Add photo widgets through the system’s widget gallery."],
-      ["Platforms", "Runs on Apple Silicon and Intel Macs with macOS 14 or later.", "Available on macOS, iOS and visionOS. The Mac app requires Apple Silicon."],
+      ["Photo source", "Add a single photo, a Finder folder, clipboard image, or Photos album.", "Create a widget for a single picture, a slideshow or a Photos album."],
+      ["Layout & layers", "Free aspect ratio sizing, editable collages, and Floating depth above apps.", "System widget gallery sizes on the desktop layer."],
+      ["Platforms", "Runs on both Apple Silicon and Intel Macs with macOS 14 or later.", "Available on macOS, iOS and visionOS. The Mac app requires Apple Silicon."],
     ],
     sections: [
       ["Which kind of photo widget fits your desktop?", "Photo Widget is a good fit if you want a picture among the widgets you already use or if you want the same app on your iPhone. For a desktop with a tall portrait beside a wide photograph, Arras gives each picture its own dimensions and position."],
@@ -109,7 +111,7 @@ export const comparisons = {
   "photowidget-vatsal": {
     name: "PhotoWidget by Vatsal Vaghasiya",
     title: "Arras vs the open-source PhotoWidget for Mac",
-    description: "Both projects put your own photos on a Mac desktop. PhotoWidget uses Apple’s widget gallery with Fill and Fit options. Arras gives photos independently sized windows and optional floating placement.",
+    description: "Compare two MIT-licensed Mac photo widget apps: WidgetKit Fill/Fit grid boxes vs. Arras’s uncropped AppKit windows, collages, and floating layers.",
     image: "slideshow-layers",
     imageAlt: "An uncropped Arras slideshow and a standalone floating photo",
     caption: "A portrait slideshow stays tall while a separate Arras widget floats above apps.",
@@ -125,5 +127,82 @@ export const comparisons = {
     ],
     guide: [photosGuide, "Set up uncropped photo widgets"],
     sources: [["PhotoWidget source and documented features", "https://github.com/Vatsal057/PhotoWidget"], ["Arras installation guide", "https://tryarras.tech/#install"], arrasSource],
+  },
+  "photostickies": {
+    name: "PhotoStickies",
+    title: "Arras vs PhotoStickies for Mac",
+    description: "Compare Arras and PhotoStickies on macOS: modern editable collages, Finder folder slideshows, GIF/video widgets, and saved setups vs. classic image stickies.",
+    image: "appearance",
+    imageAlt: "Modern styled Arras photo widgets with custom shapes and frames on a Mac desktop",
+    caption: "Arras brings modern macOS 14+ frames, editable collages, slideshows, and saved setups to borderless desktop photos.",
+    rows: [
+      ["Core focus", "Uncropped photo widgets, editable collages, slideshows, GIF/video, and floating references.", "Classic floating image windows and live webcam/URL image feeds."],
+      ["Styling & layout", "Polaroid/Gallery frames, mats, masks, alignment guides, and saved desktop setups.", "Minimal floating frames with basic sizing and opacity."],
+      ["Modern macOS", "Built for macOS 14+ (Apple Silicon & Intel) with Shortcuts and notarized releases.", "Long-standing utility last updated in 2021 on the Mac App Store."],
+    ],
+    sections: [
+      ["If you liked PhotoStickies’ borderless freedom", "PhotoStickies earned loyal Mac fans by letting you stick any picture anywhere on screen without a fixed widget grid. Arras keeps that same borderless, true-aspect-ratio freedom while adding modern macOS 14+ support, Apple Silicon native performance, editable photo collages, linked Finder folder slideshows, and saved desktop setups."],
+      ["When PhotoStickies still makes sense", "If your main workflow is displaying a live remote URL or webcam snapshot feed that refreshes over HTTP, PhotoStickies specifically targets that niche. Arras intentionally keeps all photo media local to your Mac."],
+      ["Try a sticky-photo setup in Arras", "Drag any image or transparent PNG onto Arras’s menu bar icon, pick the Plain look, and set Depth to Floating or On Desktop. Lock the position when you want it to stay put across restarts."],
+    ],
+    guide: [photosGuide, "Pin a photo on your Mac desktop without cropping"],
+    sources: [["PhotoStickies on the Mac App Store", "https://apps.apple.com/us/app/photostickies/id447313635?mt=12"], arrasSource],
+  },
+  "color-widgets": {
+    name: "Color Widgets",
+    title: "Arras vs Color Widgets for Mac",
+    description: "Compare Arras and Color Widgets on Mac: private, uncropped native photo widgets with zero subscription vs. themed cross-device widget packs.",
+    image: "collages",
+    imageAlt: "Uncropped Arras desktop photo collages with glass and paper styling on macOS",
+    caption: "Arras keeps your Mac desktop focused on uncropped photos and collages with no subscription or account.",
+    rows: [
+      ["Pricing & account", "Free MIT-licensed download or one-time $4.99 Mac App Store purchase; no account.", "Freemium with subscription/in-app purchases for premium themes and packs."],
+      ["Photo proportions", "True aspect ratio windows plus editable live collages and floating depth.", "Fixed WidgetKit grid sizes geared toward themed aesthetic packs."],
+      ["Widget scope", "Native Mac photo widgets, slideshows, GIFs/videos, and visual references.", "Broad aesthetic widget catalog across iOS, iPadOS, and macOS (clocks, calendars, quotes)."],
+    ],
+    sections: [
+      ["Themed widget suites vs. native photo craft", "Color Widgets is popular for matching iPhone, iPad, and Mac themes with clocks, calendars, and stylized icons. If you specifically want real photographs on your Mac desktop without forced cropping, subscriptions, or accounts, Arras is purpose-built for macOS."],
+      ["Local privacy and one-time ownership", "Arras stores your photos locally on your Mac with no account sign-in. Choose the free open-source direct download or support independent development with a single one-time purchase on the Mac App Store."],
+    ],
+    guide: [gifGuide, "Put an animated GIF or video on your Mac desktop"],
+    sources: [["Color Widgets on the App Store", "https://apps.apple.com/us/app/color-widgets/id1531594277"], arrasSource],
+  },
+  "screenfloat": {
+    name: "ScreenFloat 2",
+    title: "Arras vs ScreenFloat 2 for floating references on Mac",
+    description: "Compare Arras and ScreenFloat 2 on macOS: persistent desktop photo widgets, collages, and pinned snips vs. a dedicated screenshot floating library.",
+    image: "slideshow-layers",
+    imageAlt: "A floating Arras reference image alongside a desktop slideshow on macOS",
+    caption: "Use Arras when your floating references live alongside persistent desktop photos and collages.",
+    rows: [
+      ["Primary strength", "Desktop photo widgets, editable collages, slideshows, and optional floating references.", "Dedicated screenshot capture, floating shots, OCR/text detection, and Shots Browser."],
+      ["Reference tools", "Non-destructive crop, rotate, flip, grayscale, notes, source link, PDF/region capture.", "Annotations, redaction, barcode/text recognition, iCloud sync, and screen recordings."],
+      ["Desktop presence", "Four depth layers from Behind Icons to Floating, plus saved desktop setups.", "Focused on temporary and archived floating captures above your work."],
+    ],
+    sections: [
+      ["Dedicated screenshot power tool vs. desktop visual workspace", "ScreenFloat 2 is purpose-built for people who take dozens of screenshots a day and want OCR, annotations, redaction, and an organized Shots Browser synced across devices. Arras is built for keeping visual references, photos, and editable collages as part of your Mac desktop — with optional screen-region capture and PDF pinning when you need them."],
+      ["When to pick Arras", "Choose Arras if you want a free open-source (or $4.99 one-time App Store) native Mac app that handles both everyday desktop photo widgets/collages and floating reference images without switching tools."],
+    ],
+    guide: [referenceGuide, "Pin a floating reference image above windows on Mac"],
+    sources: [["ScreenFloat 2 by Eternal Storms", "https://eternalstorms.at/ScreenFloat/"], arrasSource],
+  },
+  "apple-freeform": {
+    name: "Apple Freeform",
+    title: "Arras vs Apple Freeform for Mac desktop moodboards",
+    description: "Compare Arras and Apple Freeform on Mac: live editable photo collages directly on your desktop vs. an infinite collaborative whiteboard app.",
+    image: "collages",
+    imageAlt: "An editable Mac desktop moodboard collage made with Arras",
+    caption: "Arras turns your actual Mac desktop into an always-visible editable moodboard.",
+    rows: [
+      ["Where it lives", "Directly on your Mac desktop (or floating above apps) with no window chrome.", "Inside a standalone Freeform app window you open when brainstorming."],
+      ["Editing & canvas", "Editable photo collages with frames, captions, alignment guides, and saved setups.", "Infinite canvas with drawing, sticky notes, shapes, and iCloud collaboration."],
+      ["Best fit", "Always-visible desktop moodboards, photo frames, and rotating slideshows.", "Team brainstorming, diagramming, and cross-device Apple whiteboards."],
+    ],
+    sections: [
+      ["Always-visible desktop moodboard vs. whiteboard app", "Apple Freeform is a great free infinite canvas for sketching ideas and collaborating over iCloud, but it stays tucked inside an application window. Arras puts your moodboard directly on your Mac desktop — or floats a compact collage above your active workspace — so your visual references stay visible all day."],
+      ["Switch moodboards in one click", "With Arras Saved Setups, you can keep separate desktop moodboards for different projects and switch between them instantly while keeping every photo individually movable and resizable."],
+    ],
+    guide: [collageGuide, "Make an editable photo collage on your Mac desktop"],
+    sources: [["Apple Freeform user guide", "https://support.apple.com/guide/freeform/welcome/mac"], arrasSource],
   },
 };
