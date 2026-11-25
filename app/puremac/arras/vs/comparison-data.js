@@ -205,4 +205,23 @@ export const comparisons = {
     guide: [collageGuide, "Make an editable photo collage on your Mac desktop"],
     sources: [["Apple Freeform user guide", "https://support.apple.com/guide/freeform/welcome/mac"], arrasSource],
   },
+  "cozy": {
+    name: "Cozy",
+    title: "Arras vs Cozy for aesthetic Mac desktop widgets",
+    description: "Compare Arras and Cozy on Mac: uncropped native photo widgets, live collages, and one-time/free ownership vs. curated aesthetic desktop theme packs.",
+    image: "collages",
+    imageAlt: "Aesthetic Mac desktop setup with editable Arras photo collages and framed photos",
+    caption: "Arras lets you build an aesthetic Mac desktop around your own uncropped photos and collages.",
+    rows: [
+      ["Design approach", "Uncropped photo widgets, Polaroid/Gallery frames, and live editable collages.", "Curated aesthetic desktop packages with matching wallpapers, folder icons, and themed widgets."],
+      ["Photo flexibility", "Any aspect ratio, Finder folder slideshows, animated GIFs/videos, and Floating depth.", "Stylized retro/postcard frames focused on preset visual themes."],
+      ["Pricing & license", "Free MIT-licensed open-source download or one-time $4.99 Mac App Store purchase.", "Commercial aesthetic suite with paid theme/app access."],
+    ],
+    sections: [
+      ["Curated theme packs vs. your own photography", "Cozy is popular on r/macsetups for cohesive one-click aesthetic setups combining matching wallpapers, folder icons, and stylized widgets. Arras is built for people who want their own photographs, artwork, GIFs, and references to stay uncropped and freely arranged — with Polaroid, Gallery, Glass, and Paper looks you can tailor yourself."],
+      ["Combine both or keep it native", "If you want an all-in-one themed wallpaper and folder-icon makeover, Cozy covers that aesthetic. If you want fast, native Swift/AppKit photo widgets, editable collages, and floating references with zero subscription, start with Arras."],
+    ],
+    guide: ["guides/polaroid-photo-widget-mac-desktop", "Add Polaroid photo widgets to your Mac desktop"],
+    sources: [["Cozy for Mac", "https://cozyapp.app/"], arrasSource],
+  },
 };

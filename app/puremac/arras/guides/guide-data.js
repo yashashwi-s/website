@@ -278,7 +278,65 @@ export const guides = {
         id: "next-steps",
         title: "Compare specific apps side by side",
         paragraphs: [
-          "For detailed feature tables with primary sources, read our head-to-head comparisons against Apple’s Photos widget, Photo Widget by Sindre Sorhus, Smart Photo Widget, WidgetWall, PureRef, PhotoStickies, Color Widgets, ScreenFloat 2, and Apple Freeform."
+          "For detailed feature tables with primary sources, read our head-to-head comparisons against Apple’s Photos widget, Photo Widget by Sindre Sorhus, Smart Photo Widget, WidgetWall, PureRef, Cozy, PhotoStickies, Color Widgets, ScreenFloat 2, and Apple Freeform."
+        ]
+      }
+    ]
+  },
+  "how-to-add-photo-widgets-on-macbook": {
+    title: "How to add photo widgets on Mac and MacBook (2026)",
+    description: "Step-by-step guide to adding photo widgets on a MacBook or Mac desktop — using Apple’s built-in Photos widget or uncropped Arras photo widgets.",
+    updated: "2026-11-25",
+    image: "collages",
+    alt: "Photo widgets and editable collages arranged on a MacBook desktop using Arras",
+    caption: "Arras photo widgets and editable collages on a MacBook desktop, preserving each photo’s original proportions.",
+    sections: [
+      {
+        id: "built-in-method",
+        title: "Method 1: Add Apple’s built-in Photos widget on MacBook",
+        paragraphs: [
+          "On macOS Sonoma, Sequoia, or later, right-click (or two-finger tap on your MacBook trackpad) anywhere on the desktop and choose Edit Widgets. Search for Photos, pick Small, Medium, or Large, and drag it onto your desktop.",
+          "Right-click the placed widget and choose Edit Widget to select an Apple Photos album. Remember two macOS limits: Apple’s widget crops photos to a fixed rectangle and dims them to monochrome when another app is active unless you change System Settings → Desktop & Dock → Widget style to Full-color."
+        ]
+      },
+      {
+        id: "arras-method",
+        title: "Method 2: Add uncropped photo widgets from Finder or Photos with Arras",
+        paragraphs: [
+          "If you want to place a specific image from Finder, keep portraits and panoramas uncropped, build an editable collage, or keep a photo floating above your apps on a MacBook screen, install Arras (free open-source download or Mac App Store).",
+          "Click the Arras icon in your menu bar and choose Add → Add Photos or Videos, or drag any JPEG, PNG, HEIC, WebP, or GIF onto the menu bar icon. Drag to position, resize from any corner at the image’s true aspect ratio, and choose a frame or depth layer in Settings."
+        ]
+      },
+      {
+        id: "macbook-tips",
+        title: "Best settings for MacBook displays and external monitors",
+        paragraphs: [
+          "Arras remembers each widget’s exact frame per display. When you unplug your MacBook from an external monitor, widgets placed on that monitor hide cleanly and return to their saved positions when you reconnect. Enable automatic fullscreen hiding in Arras → Privacy to release image memory while watching videos or working in full-screen apps."
+        ]
+      }
+    ]
+  },
+  "polaroid-photo-widget-mac-desktop": {
+    title: "How to add Polaroid photo widgets to your Mac desktop",
+    description: "Style Mac desktop photos with instant-photo Polaroid frames, handwritten-style captions, subtle tilt, and editable photo walls using Arras.",
+    updated: "2026-11-25",
+    image: "appearance",
+    alt: "Polaroid and Gallery framed photo widgets with captions arranged on a Mac desktop",
+    caption: "Polaroid and instant-photo frames with custom mats, captions, and subtle tilt on a real Mac desktop.",
+    sections: [
+      {
+        id: "polaroid-look",
+        title: "Give any photo an instant-photo Polaroid frame",
+        paragraphs: [
+          "Add your photo in Arras, then open its Appearance controls in Settings. Select the Print or Warm Paper look (or start with White Polaroid inside an editable collage) to add a crisp paper mat and soft two-layer shadow around your picture.",
+          "Fine-tune the mat width, corner radius, border stroke, and tilt angle from −12° to +12° so a cluster of desktop photos feels like real prints pinned beside your workspace."
+        ]
+      },
+      {
+        id: "captions-and-wall",
+        title: "Add captions and group prints into an editable photo wall",
+        paragraphs: [
+          "Drag one Polaroid photo onto another to form a live collage, then add captions or freely placed text labels with custom fonts. Use Copy Appearance to apply your favorite Polaroid frame style to every photo in one click without replacing their images or placement."
         ]
       }
     ]

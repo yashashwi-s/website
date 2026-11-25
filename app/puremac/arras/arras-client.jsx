@@ -6,6 +6,7 @@ import ArrasStar from "./arras-star";
 import ArrasAnswer from "./arras-answer";
 import ArrasCommunity from "./arras-community";
 import { comparisons } from "./vs/comparison-data";
+import { guides } from "./guides/guide-data";
 import { arrasFaqs } from "@/lib/arras-faqs.mjs";
 import { getArrasStoreFaqs } from "@/lib/arras-support.mjs";
 import { getArrasInstallation, getArrasAppStoreOffer } from "@/lib/arras-installation.mjs";
@@ -103,6 +104,13 @@ export default function ArrasClient({ release, downloads, stars, links, posterPr
         </div>
       </section>
       <ArrasCommunity />
+
+      <section className="ar-wrap ar-comparison-links" aria-labelledby="arras-guides-heading">
+        <h2 id="arras-guides-heading">Mac &amp; MacBook photo widget guides</h2>
+        <ul>{Object.entries(guides).map(([slug, guide]) => (
+          <li key={slug}><a href={`${links.home}guides/${slug}`}>{guide.title} <span aria-hidden="true">→</span></a></li>
+        ))}</ul>
+      </section>
 
       <section className="ar-wrap ar-comparison-links" aria-labelledby="arras-comparison-heading">
         <h2 id="arras-comparison-heading">Compare Mac photo widgets</h2>

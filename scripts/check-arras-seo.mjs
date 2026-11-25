@@ -18,6 +18,8 @@ const publicPaths = [
     "single-photo-on-mac-desktop-without-album",
     "pin-transparent-png-screenshot-or-pdf-on-mac-desktop",
     "best-mac-desktop-photo-widget-apps",
+    "how-to-add-photo-widgets-on-macbook",
+    "polaroid-photo-widget-mac-desktop",
   ].map(slug => `/guides/${slug}`),
   ...[
     "apple-photos-widget",
@@ -30,6 +32,7 @@ const publicPaths = [
     "color-widgets",
     "screenfloat",
     "apple-freeform",
+    "cozy",
   ].map(slug => `/vs/${slug}`),
 ];
 const googlebot = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
