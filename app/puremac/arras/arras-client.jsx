@@ -24,7 +24,7 @@ function StoreOffer({ offer }) {
     </a>
     <div className="ar-store-details">
       <p><strong>Arras Widgets · {offer.price}</strong><br />One-time purchase · Local prices may vary.</p>
-      <p className="ar-store-supporters">Backed by 10+ supporters</p>
+      <p className="ar-store-supporters">Backed by 20+ supporters</p>
     </div>
   </div>;
 }
