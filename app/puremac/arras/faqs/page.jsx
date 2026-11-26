@@ -23,7 +23,7 @@ export default async function FaqPage() {
   return (
     <>
       <FaqJsonLd faqs={[...storeFaqs, ...faqs]} />
-      <SupportPage links={links} active="faqs" label="FAQs & getting started" title={<>Mac photo widgets.<br /><em>Your questions, answered.</em></>} intro="Start with one uncropped photo or an editable example, then build a collage, link an album or save a setup. These answers cover Arras 2.5.2."
+      <SupportPage links={links} active="faqs" label="FAQs & getting started" title={<>Mac photo widgets.<br /><em>Your questions, answered.</em></>} intro="Start with one uncropped photo or an editable example, then build a collage, link an album or save a setup. These answers cover Arras 2.5.3."
         sections={[["how-to-use", "Your first photo"], ...(storeFaqs.length ? [["app-store", "Mac App Store edition"]] : []), ...groups, ["contact", "Still need help?"]]}>
         <section id="how-to-use">
           <h2>Your first photo, in three steps.</h2>

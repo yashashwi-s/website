@@ -3,12 +3,18 @@ import { arrasProduct } from "@/data/arras-product";
 import { getArrasLinks } from "../arras-links";
 import SupportPage, { supportMetadata } from "../support-page";
 
-export const metadata = supportMetadata("changelog", "Arras Changelog: Published Updates for Mac", "See what changed in Arras for Mac, including lower backup memory use, better desktop recovery, and linked-folder repairs in 2.5.2.");
+export const metadata = supportMetadata("changelog", "Arras Changelog: Published Updates for Mac", "See what changed in Arras for Mac, including safer HTTPS update links, relocated-app backup protection, and quick menu bar links in 2.5.3.");
 
 export default async function ChangelogPage() {
   const links = await getArrasLinks();
   return <SupportPage links={links} active="changelog" label="Published updates" title="What’s new in Arras." intro="Published changes to the free Mac app. Apple reviews and distributes the Store edition separately."
-    sections={[["v252", "2.5.2"], ["v251", "2.5.1"], ["v250", "2.5.0"]]}>
+    sections={[["v253", "2.5.3"], ["v252", "2.5.2"], ["v251", "2.5.1"], ["v250", "2.5.0"]]}>
+    <section id="v253">
+      <h2>2.5.3 · 26 November 2026</h2>
+      <p>Update announcement links now open only when they point to an HTTPS website without embedded credentials. If Arras is moved during an update, rollback preserves the previous backup copy without disturbing the moved app or any replacement at the original path.</p>
+      <p>Added Support Arras to the free menu bar and Rate Arras to the Mac App Store menu bar, along with an optional native rating prompt after three active days in the Store edition.</p>
+      <p><a href={`${arrasProduct.repositoryUrl}/releases/tag/v2.5.3`} referrerPolicy="origin">Full 2.5.3 release notes ↗</a></p>
+    </section>
     <section id="v252">
       <h2>2.5.2</h2>
       <p>Large backups use less memory. Arras reads and writes media in small chunks, verifies imported files, and cleans up partial files if an import is cancelled or fails.</p>
